@@ -11,6 +11,10 @@ const Offers = lazy(() => import("./routes/Offers"));
 const Invoices = lazy(() => import("./routes/Invoices"));
 const TimeCapture = lazy(() => import("./routes/TimeCapture"));
 const OfferEdit = lazy(() => import("./routes/OfferEdit"));
+const Times = lazy(() => import("./routes/Times"));
+const Options = lazy(() => import("./routes/Options"));
+const Constructions = lazy(() => import("./routes/Constructions"));
+const Upload = lazy(() => import("./routes/Upload"));
 
 function LazyLoad({ children }: React.PropsWithChildren) {
   return <Suspense fallback={<Fallback />}>{children}</Suspense>;
@@ -35,10 +39,44 @@ export default function App() {
                   }
                 />
                 <Route
+                  path="upload"
+                  element={
+                    <LazyLoad>
+                      <Upload />
+                    </LazyLoad>
+                  }
+                />
+
+                <Route
+                  path="constructions"
+                  element={
+                    <LazyLoad>
+                      <Constructions />
+                    </LazyLoad>
+                  }
+                />
+
+                <Route
+                  path="options"
+                  element={
+                    <LazyLoad>
+                      <Options />
+                    </LazyLoad>
+                  }
+                />
+                <Route
                   path="time-capture"
                   element={
                     <LazyLoad>
                       <TimeCapture />
+                    </LazyLoad>
+                  }
+                />
+                <Route
+                  path="time"
+                  element={
+                    <LazyLoad>
+                      <Times />
                     </LazyLoad>
                   }
                 />

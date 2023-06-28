@@ -1,41 +1,63 @@
-import { Grid, Typography } from "@mui/material";
-import ArticleIcon from "@mui/icons-material/Article";
-import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
-import MoreTimeIcon from "@mui/icons-material/MoreTime";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import Tile from "./shared/Tile";
-import React from "react";
+import ArticleIcon from "@mui/icons-material/Article";
 import HandymanIcon from "@mui/icons-material/Handyman";
+import MoreTimeIcon from "@mui/icons-material/MoreTime";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import TuneIcon from "@mui/icons-material/Tune";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+import { Grid } from "@mui/material";
+import React, { useState } from "react";
+import Tile from "./shared/Tile";
 
 export default function MainNavigation() {
+  const [currentRole, setCurrentRole] = useState(1);
+
   return (
     <>
-      <Typography variant="h6">Aufträge</Typography>
       <ViewGrid>
-        <Tile to="offers" title="Angebote">
-          <ArticleIcon fontSize="large" />
+        <Tile role={1} currentRole={currentRole} to="offers" title="Angebote">
+          <ArticleIcon fontSize="large" color="secondary" />
         </Tile>
-        <Tile to="invoices" title="Rechnungen">
-          <ReceiptLongIcon fontSize="large" />
+        <Tile
+          role={1}
+          currentRole={currentRole}
+          to="invoices"
+          title="Rechnungen"
+        >
+          <ReceiptLongIcon fontSize="large" color="error" />
         </Tile>
-      </ViewGrid>
-      <Typography variant="h6">Arbeitszeiten</Typography>
-      <ViewGrid>
-        <Tile to="time-capture" title="Zeiterfassung">
-          <MoreTimeIcon fontSize="large" />
+
+        <Tile role={1} currentRole={currentRole} to="time" title="Alle Stunden">
+          <AccessTimeIcon fontSize="large" color="warning" />
         </Tile>
-        <Tile to="my-time" title="Meine Stunden">
-          <AccessTimeIcon fontSize="large" />
+        <Tile
+          role={0}
+          currentRole={currentRole}
+          to="time-capture"
+          title="Zeiterfassung"
+        >
+          <MoreTimeIcon fontSize="large" color="success" />
         </Tile>
-      </ViewGrid>
-      <Typography variant="h6">Einstellungen</Typography>
-      <ViewGrid>
-        <Tile to="constructions" title="Baustellen">
-          <HandymanIcon />
+
+        <Tile
+          role={1}
+          currentRole={currentRole}
+          to="constructions"
+          title="Baustellen"
+        >
+          <HandymanIcon fontSize="large" color="secondary" />
         </Tile>
-        <Tile to="options" title="Optionen">
-          <TuneIcon />
+        <Tile
+          role={0}
+          currentRole={currentRole}
+          to="upload"
+          title="Datei Upload"
+        >
+          <UploadFileIcon fontSize="large" color="primary" />
+        </Tile>
+
+        <Tile role={1} currentRole={currentRole} to="options" title="Optionen">
+          <TuneIcon fontSize="large" color="disabled" />
         </Tile>
       </ViewGrid>
     </>

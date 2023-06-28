@@ -1,6 +1,9 @@
 import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
+  shape: {
+    borderRadius: 6,
+  },
   palette: {
     background: {
       default: "#F3F6F9",

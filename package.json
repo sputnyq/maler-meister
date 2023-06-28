@@ -17,6 +17,7 @@
     "@mui/x-data-grid": "^6.9.0",
     "@reduxjs/toolkit": "^1.9.5",
     "array-move": "^4.0.0",
+    "axios": "^1.4.0",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

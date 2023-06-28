@@ -3,25 +3,28 @@ import HomeIcon from "@mui/icons-material/Home";
 import { Link, useLocation } from "react-router-dom";
 import { useMemo } from "react";
 import OfferActions from "./OfferActions";
+import Logout from "./Logout";
 
 export default function TopBar() {
   const location = useLocation();
   const isRootLocation = location.pathname === "/";
+  const isLoginLocation = location.pathname === "/login";
 
   const actions = useMemo(() => {
     if (location.pathname.startsWith("/offers/edit")) {
       return <OfferActions />;
     }
     if (isRootLocation) {
-      return "Maler Meister App";
+      return <Logout />;
     }
     return null;
   }, [location, isRootLocation]);
 
   const homeButton = useMemo(() => {
-    if (isRootLocation) {
+    if (isRootLocation || isLoginLocation) {
       return null;
     }
+
     return (
       <Link to="/">
         <IconButton>
@@ -29,7 +32,7 @@ export default function TopBar() {
         </IconButton>
       </Link>
     );
-  }, [isRootLocation]);
+  }, [isRootLocation, isLoginLocation]);
   return (
     <Box flexGrow={1}>
       <AppBar position="fixed" elevation={0} variant="outlined" color="inherit">

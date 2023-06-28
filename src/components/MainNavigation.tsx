@@ -28,7 +28,7 @@ export default function MainNavigation() {
       </ToggleButtonGroup>
       <ViewGrid>
         <Tile role={2} currentRole={currentRole} to="offers" title="Angebote">
-          <ArticleIcon fontSize="large" color="secondary" />
+          <ArticleIcon fontSize="large" color="info" />
         </Tile>
         <Tile
           role={2}

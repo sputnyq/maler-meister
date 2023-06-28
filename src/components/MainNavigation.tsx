@@ -5,21 +5,33 @@ import MoreTimeIcon from "@mui/icons-material/MoreTime";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import TuneIcon from "@mui/icons-material/Tune";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-import { Grid } from "@mui/material";
+import { Grid, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import React, { useState } from "react";
 import Tile from "./shared/Tile";
 
 export default function MainNavigation() {
-  const [currentRole, setCurrentRole] = useState(1);
+  const [currentRole, setCurrentRole] = useState(2);
+  console.log(currentRole);
 
   return (
     <>
+      <ToggleButtonGroup
+        exclusive
+        value={String(currentRole)}
+        onChange={(_, val) => {
+          console.log("val", val);
+          setCurrentRole(Number(val));
+        }}
+      >
+        <ToggleButton value={"2"}>Boss</ToggleButton>
+        <ToggleButton value={"1"}>Mitarbeiter</ToggleButton>
+      </ToggleButtonGroup>
       <ViewGrid>
-        <Tile role={1} currentRole={currentRole} to="offers" title="Angebote">
+        <Tile role={2} currentRole={currentRole} to="offers" title="Angebote">
           <ArticleIcon fontSize="large" color="secondary" />
         </Tile>
         <Tile
-          role={1}
+          role={2}
           currentRole={currentRole}
           to="invoices"
           title="Rechnungen"
@@ -27,11 +39,11 @@ export default function MainNavigation() {
           <ReceiptLongIcon fontSize="large" color="error" />
         </Tile>
 
-        <Tile role={1} currentRole={currentRole} to="time" title="Alle Stunden">
+        <Tile role={2} currentRole={currentRole} to="time" title="Alle Stunden">
           <AccessTimeIcon fontSize="large" color="warning" />
         </Tile>
         <Tile
-          role={0}
+          role={1}
           currentRole={currentRole}
           to="time-capture"
           title="Zeiterfassung"
@@ -40,7 +52,7 @@ export default function MainNavigation() {
         </Tile>
 
         <Tile
-          role={1}
+          role={2}
           currentRole={currentRole}
           to="constructions"
           title="Baustellen"
@@ -48,7 +60,7 @@ export default function MainNavigation() {
           <HandymanIcon fontSize="large" color="secondary" />
         </Tile>
         <Tile
-          role={0}
+          role={1}
           currentRole={currentRole}
           to="upload"
           title="Datei Upload"
@@ -56,7 +68,7 @@ export default function MainNavigation() {
           <UploadFileIcon fontSize="large" color="primary" />
         </Tile>
 
-        <Tile role={1} currentRole={currentRole} to="options" title="Optionen">
+        <Tile role={2} currentRole={currentRole} to="options" title="Optionen">
           <TuneIcon fontSize="large" color="disabled" />
         </Tile>
       </ViewGrid>

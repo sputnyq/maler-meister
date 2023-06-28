@@ -32,7 +32,7 @@ export default function TopBar() {
   }, [isRootLocation]);
   return (
     <Box flexGrow={1}>
-      <AppBar position="fixed" variant="outlined" color="inherit">
+      <AppBar position="fixed" elevation={0} variant="outlined" color="inherit">
         <Toolbar>
           {homeButton}
           <Box flex={1} display="flex" justifyContent={"flex-end"}>

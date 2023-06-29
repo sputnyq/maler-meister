@@ -1,9 +1,10 @@
 import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { lazy, Suspense } from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
+import AppLoader from "./components/AppLoader";
 import LoginProvider from "./components/LoginProvider";
 import MainNavigation from "./components/MainNavigation";
-import { Fallback } from "./components/shared/Fallback";
+import { LoadingScreen } from "./components/shared/LoadingScreen";
 import { RootBox } from "./components/shared/RootBox";
 import TopBar from "./components/TopBar";
 import Login from "./routes/Login";
@@ -19,7 +20,7 @@ const Constructions = lazy(() => import("./routes/Constructions"));
 const Upload = lazy(() => import("./routes/Upload"));
 
 function LazyLoad({ children }: React.PropsWithChildren) {
-  return <Suspense fallback={<Fallback />}>{children}</Suspense>;
+  return <Suspense fallback={<LoadingScreen />}>{children}</Suspense>;
 }
 
 export default function App() {
@@ -35,7 +36,9 @@ export default function App() {
                 path="/"
                 element={
                   <LoginProvider>
-                    <Outlet />
+                    <AppLoader>
+                      <Outlet />
+                    </AppLoader>
                   </LoginProvider>
                 }
               >

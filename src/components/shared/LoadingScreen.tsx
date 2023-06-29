@@ -1,6 +1,6 @@
 import { Backdrop, CircularProgress } from "@mui/material";
 
-export function Fallback() {
+export function LoadingScreen() {
   return (
     <Backdrop
       open

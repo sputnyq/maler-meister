@@ -1,28 +1,18 @@
-import { Box, Fab, Typography, useTheme } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import { Link } from "react-router-dom";
+import { Box, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
+import { useNavigate } from "react-router-dom";
 import OffersGrid from "../components/OffersGrid";
+import AddFab from "../components/shared/AddFab";
 
 export default function Offers() {
-  const theme = useTheme();
+  const navigate = useNavigate();
   return (
     <Box>
       <Typography variant="h6">
         <FormattedMessage id="offer.offer"></FormattedMessage>
       </Typography>
       <OffersGrid />
-      <Box
-        position={"absolute"}
-        bottom={theme.spacing(3)}
-        right={theme.spacing(3)}
-      >
-        <Link to="edit/-1">
-          <Fab size="large" color="primary">
-            <AddIcon />
-          </Fab>
-        </Link>
-      </Box>
+      <AddFab onClick={() => navigate("edit/-1")} />
     </Box>
   );
 }

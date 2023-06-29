@@ -26,3 +26,14 @@ interface Offer {
   offerServices: OfferService[];
   text: string;
 }
+
+interface LoginResponse {
+  jwt: string;
+  user: User;
+}
+interface User {
+  username: string;
+  email: string;
+  confirmed: boolean;
+  blocked: boolean;
+}

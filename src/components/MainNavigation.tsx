@@ -11,7 +11,6 @@ import Tile from "./shared/Tile";
 
 export default function MainNavigation() {
   const [currentRole, setCurrentRole] = useState(2);
-  console.log(currentRole);
 
   return (
     <>

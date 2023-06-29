@@ -1,10 +1,12 @@
 import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { lazy, Suspense } from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
+import LoginProvider from "./components/LoginProvider";
 import MainNavigation from "./components/MainNavigation";
 import { Fallback } from "./components/shared/Fallback";
 import { RootBox } from "./components/shared/RootBox";
 import TopBar from "./components/TopBar";
+import Login from "./routes/Login";
 import theme from "./theme";
 
 const Offers = lazy(() => import("./routes/Offers"));
@@ -28,8 +30,16 @@ export default function App() {
           <TopBar />
           <Box mt={8}>
             <Routes>
-              <Route index element={<MainNavigation />} />
-              <Route path="/" element={<Outlet />}>
+              <Route path="/login" element={<Login />} />
+              <Route
+                path="/"
+                element={
+                  <LoginProvider>
+                    <Outlet />
+                  </LoginProvider>
+                }
+              >
+                <Route index element={<MainNavigation />} />
                 <Route
                   path="invoices"
                   element={
@@ -46,7 +56,6 @@ export default function App() {
                     </LazyLoad>
                   }
                 />
-
                 <Route
                   path="constructions"
                   element={
@@ -55,7 +64,6 @@ export default function App() {
                     </LazyLoad>
                   }
                 />
-
                 <Route
                   path="options"
                   element={

@@ -1,21 +1,27 @@
 import { Box, Card, Grid, Typography } from "@mui/material";
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { AppState } from "../../store";
 
 interface Props {
   title: string;
   to: string;
-  role: number;
-  currentRole: number;
+  requiredRoles: UserRole[];
 }
 export default function Tile({
   title,
   to,
+  requiredRoles,
   children,
-  role,
-  currentRole,
 }: React.PropsWithChildren<Props>) {
-  if (currentRole < role) {
+  const currentRole = useSelector<AppState, UserRole | undefined>(
+    (s) => s.login.user?.userRole
+  );
+
+  const hasRight = currentRole && requiredRoles.includes(currentRole);
+
+  if (!hasRight) {
     return null;
   }
   return (

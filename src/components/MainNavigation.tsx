@@ -5,69 +5,56 @@ import MoreTimeIcon from "@mui/icons-material/MoreTime";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import TuneIcon from "@mui/icons-material/Tune";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-import { Grid, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import React, { useState } from "react";
+import { Grid } from "@mui/material";
+import React from "react";
 import Tile from "./shared/Tile";
 
 export default function MainNavigation() {
-  const [currentRole, setCurrentRole] = useState(2);
-
   return (
     <>
-      <ToggleButtonGroup
-        exclusive
-        value={String(currentRole)}
-        onChange={(_, val) => {
-          console.log("val", val);
-          setCurrentRole(Number(val));
-        }}
-      >
-        <ToggleButton value={"2"}>Boss</ToggleButton>
-        <ToggleButton value={"1"}>Mitarbeiter</ToggleButton>
-      </ToggleButtonGroup>
       <ViewGrid>
-        <Tile role={2} currentRole={currentRole} to="offers" title="Angebote">
+        <Tile
+          requiredRoles={["accountant", "admin"]}
+          to="offers"
+          title="Angebote"
+        >
           <ArticleIcon fontSize="large" color="info" />
         </Tile>
         <Tile
-          role={2}
-          currentRole={currentRole}
+          requiredRoles={["accountant", "admin"]}
           to="invoices"
           title="Rechnungen"
         >
           <ReceiptLongIcon fontSize="large" color="error" />
         </Tile>
 
-        <Tile role={2} currentRole={currentRole} to="time" title="Alle Stunden">
+        <Tile
+          requiredRoles={["accountant", "admin"]}
+          to="time"
+          title="Alle Stunden"
+        >
           <AccessTimeIcon fontSize="large" color="warning" />
         </Tile>
         <Tile
-          role={1}
-          currentRole={currentRole}
+          requiredRoles={["worker", "admin"]}
           to="time-capture"
           title="Zeiterfassung"
         >
           <MoreTimeIcon fontSize="large" color="success" />
         </Tile>
 
-        <Tile
-          role={2}
-          currentRole={currentRole}
-          to="constructions"
-          title="Baustellen"
-        >
+        <Tile requiredRoles={["admin"]} to="constructions" title="Baustellen">
           <HandymanIcon fontSize="large" color="secondary" />
         </Tile>
         <Tile
-          role={1}
-          currentRole={currentRole}
+          requiredRoles={["worker", "admin", "accountant"]}
           to="upload"
           title="Datei Upload"
         >
           <UploadFileIcon fontSize="large" color="primary" />
         </Tile>
 
-        <Tile role={2} currentRole={currentRole} to="options" title="Optionen">
+        <Tile requiredRoles={["admin"]} to="options" title="Optionen">
           <TuneIcon fontSize="large" color="disabled" />
         </Tile>
       </ViewGrid>

@@ -31,9 +31,13 @@ interface LoginResponse {
   jwt: string;
   user: User;
 }
+
+type UserRole = "admin" | "worker" | "accountant";
+
 interface User {
   username: string;
   email: string;
   confirmed: boolean;
   blocked: boolean;
+  userRole: UserRole;
 }

@@ -6,6 +6,8 @@ import Slide from "@mui/material/Slide";
 import Toolbar from "@mui/material/Toolbar";
 import { TransitionProps } from "@mui/material/transitions";
 import Typography from "@mui/material/Typography";
+import CheckIcon from "@mui/icons-material/Check";
+
 import * as React from "react";
 
 const Transition = React.forwardRef(function Transition(
@@ -18,6 +20,7 @@ const Transition = React.forwardRef(function Transition(
 });
 
 interface Props {
+  onConfirm(): void;
   onClose(): void;
   open: boolean;
   title?: string;
@@ -28,6 +31,7 @@ export function AppFullScreenDialog({
   onClose,
   open,
   title,
+  onConfirm,
 }: React.PropsWithChildren<Props>) {
   return (
     <div>
@@ -50,6 +54,9 @@ export function AppFullScreenDialog({
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               {title}
             </Typography>
+            <IconButton onClick={onConfirm} color="inherit">
+              <CheckIcon />
+            </IconButton>
           </Toolbar>
         </AppBar>
         {children}

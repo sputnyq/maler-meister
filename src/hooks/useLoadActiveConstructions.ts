@@ -4,17 +4,14 @@ import { AppDispatch, AppState } from "../store";
 import { loadActiveConstructions } from "../store/constructionReducer";
 
 export function useLoadActiveConstructions() {
-  const activeConstructions = useSelector<AppState, Construction[]>(
+  const activeConstructions = useSelector<AppState, Construction[] | undefined>(
     (s) => s.construction.activeConstructions
   );
 
-  const length = activeConstructions.length;
-
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    if (length === 0) {
-      console.log("will do");
+    if (!activeConstructions) {
       dispatch(loadActiveConstructions());
     }
-  }, [dispatch]);
+  }, [dispatch, activeConstructions]);
 }

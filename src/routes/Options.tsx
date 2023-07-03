@@ -1,5 +1,23 @@
-import React from "react";
+import { Box, Card, CardContent, Divider, Stack } from "@mui/material";
+import { Link, Outlet } from "react-router-dom";
 
 export default function Options() {
-  return <h3>diverse Einstellungen</h3>;
+  return (
+    <>
+      <Card>
+        <CardContent>
+          <Stack
+            direction="row"
+            divider={<Divider orientation="vertical" flexItem />}
+            spacing={2}
+          >
+            <Link to="">Tätigkeiten</Link>
+          </Stack>
+        </CardContent>
+      </Card>
+      <Box mt={3}>
+        <Outlet />
+      </Box>
+    </>
+  );
 }

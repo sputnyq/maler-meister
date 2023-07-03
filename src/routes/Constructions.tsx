@@ -1,5 +1,6 @@
-import { Paper } from "@mui/material";
+import { Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { AppDataGrid } from "../components/app-data-grid/AppDataGrid";
 import CreateConstruction from "../components/CreateConstruction";
 import { useLoadActiveConstructions } from "../hooks/useLoadActiveConstructions";
@@ -9,29 +10,39 @@ export default function Constructions() {
   useLoadActiveConstructions();
 
   const activeConstructions = useSelector<AppState, Construction[]>(
-    (s) => s.construction.activeConstructions
+    (s) => s.construction.activeConstructions || []
   );
 
   return (
     <>
-      <Paper>
-        <AppDataGrid
-          disablePagination
-          data={activeConstructions}
-          columns={[
-            {
-              field: "name",
-              headerName: "Name",
-            },
-            {
-              field: "active",
-              headerName: "Aktiv?",
-              type: "boolean",
-              editable: true,
-            },
-          ]}
-        />
-      </Paper>
+      <Card>
+        <CardHeader
+          title={<Typography variant="h4">Aktive Baustellen</Typography>}
+        ></CardHeader>
+        <CardContent>
+          <AppDataGrid
+            onUpdate={(next) => {
+              console.log(next); //TODO:
+            }}
+            disablePagination
+            data={activeConstructions}
+            columns={[
+              {
+                field: "id",
+                headerName: "ID",
+                renderCell({ id }) {
+                  return <Link to={`edit/${id}`}>{id}</Link>;
+                },
+              },
+              {
+                flex: 1,
+                field: "name",
+                headerName: "Name",
+              },
+            ]}
+          />
+        </CardContent>
+      </Card>
       <CreateConstruction />
     </>
   );

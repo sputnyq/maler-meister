@@ -3,24 +3,22 @@ import { appRequest } from "../fetch/fetch-client";
 import { genericConverter } from "../utils";
 
 interface RootState {
-  activeConstructions: Construction[];
+  activeConstructions?: Construction[];
 }
 
-const initialState: RootState = {
-  activeConstructions: [],
-};
+const initialState: RootState = {};
 
-const CONSTRUCTION_BASE = "constructions";
+const BASE = "constructions";
 
 export const loadActiveConstructions = createAsyncThunk(
   "constructions/load-active",
   () => {
-    return appRequest("get")(`${CONSTRUCTION_BASE}?active=true`).then(
+    return appRequest("get")(`${BASE}?filters[active][$eq]=true`).then(
       (data: any) => {
-        const after = (data.data as any[]).map((e) =>
+        const converted = (data.data as any[]).map((e) =>
           genericConverter<Construction>(e)
         );
-        return after;
+        return converted;
       }
     );
   }
@@ -31,13 +29,15 @@ const constructionSlice = createSlice({
   initialState,
   reducers: {
     addActiveConstruction(state, action: PayloadAction<Construction>) {
+      if (!state.activeConstructions) {
+        state.activeConstructions = new Array<Construction>();
+      }
       state.activeConstructions.push(action.payload);
     },
   },
   extraReducers(builder) {
     builder.addCase(loadActiveConstructions.fulfilled, (state, action) => {
-      console.log(action.payload);
-      state.activeConstructions.push(...action.payload);
+      state.activeConstructions = action.payload;
     });
   },
 });

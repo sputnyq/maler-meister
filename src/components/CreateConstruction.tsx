@@ -32,7 +32,7 @@ export default function CreateConstruction() {
   };
 
   const handleCreateRequest = () => {
-    appRequest("post")("constructions", { name, active: true })
+    appRequest("post")("constructions", { data: { name, active: true } })
       .then((data: any) => {
         const newConstruction = genericConverter<Construction>(data.data);
         dispatch(addActiveConstruction(newConstruction));

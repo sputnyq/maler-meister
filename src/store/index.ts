@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { constructionReducer } from "./constructionReducer";
+import { jobsReducer } from "./jobsReducer";
 import { loginReducer } from "./loginReducer";
 import { offerReducer } from "./offerReducer";
 
@@ -8,6 +9,7 @@ export const store = configureStore({
     offer: offerReducer,
     login: loginReducer,
     construction: constructionReducer,
+    jobs: jobsReducer,
   },
 });
 

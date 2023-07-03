@@ -8,11 +8,7 @@ export default function AddFab({ onClick }: Props) {
   const theme = useTheme();
 
   return (
-    <Box
-      position={"absolute"}
-      bottom={theme.spacing(3)}
-      right={theme.spacing(3)}
-    >
+    <Box position={"fixed"} bottom={theme.spacing(3)} right={theme.spacing(3)}>
       <Fab onClick={onClick} size="large" color="primary">
         <AddIcon />
       </Fab>

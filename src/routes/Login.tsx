@@ -50,7 +50,7 @@ export default function Login() {
   return (
     <Box mt={10} display={"flex"} justifyContent="center">
       <Card>
-        <CardHeader title={<Typography variant="h3">Anmeldung</Typography>} />
+        <CardHeader title={<Typography variant="h4">Anmeldung</Typography>} />
         <CardContent>
           <form>
             <Box display="flex" flexDirection="column" gap={3} minWidth="300px">

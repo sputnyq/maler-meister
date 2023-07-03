@@ -18,6 +18,7 @@ const Times = lazy(() => import("./routes/Times"));
 const Options = lazy(() => import("./routes/Options"));
 const Constructions = lazy(() => import("./routes/Constructions"));
 const Upload = lazy(() => import("./routes/Upload"));
+const Jobs = lazy(() => import("./routes/Jobs"));
 
 function LazyLoad({ children }: React.PropsWithChildren) {
   return <Suspense fallback={<LoadingScreen />}>{children}</Suspense>;
@@ -74,7 +75,16 @@ export default function App() {
                       <Options />
                     </LazyLoad>
                   }
-                />
+                >
+                  <Route
+                    index
+                    element={
+                      <LazyLoad>
+                        <Jobs />
+                      </LazyLoad>
+                    }
+                  ></Route>
+                </Route>
                 <Route
                   path="time-capture"
                   element={

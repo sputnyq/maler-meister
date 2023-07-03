@@ -27,7 +27,7 @@ export const getCurrentDBDate = () => {
 
 export const getMonthStart = (offset = 0) => {
   const date = new Date();
-  let month = date.getMonth() - offset;
+  let month = date.getMonth() + offset;
   let year = date.getFullYear();
   if (month < 0) {
     month = 11;

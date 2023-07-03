@@ -1,33 +1,39 @@
-import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { appRequest } from "../../fetch/fetch-client";
-import { AppState } from "../../store";
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { appRequest } from '../../fetch/fetch-client';
+import { AppState } from '../../store';
 
-import * as qs from "qs";
-import { getCurrentDBDate } from "../../utils";
+import * as qs from 'qs';
+import { getMonthStart } from '../../utils';
 
 export default function UserTimes() {
-  const [monthValue, setMonthValue] = useState<"current" | "last">("current");
-  const username = useSelector<AppState, string | undefined>(
-    (s) => s.login.user?.username
-  );
+  const [monthValue, setMonthValue] = useState<'current' | 'last'>('current');
+  const username = useSelector<AppState, string | undefined>((s) => s.login.user?.username);
 
   useEffect(() => {
-    const query = qs.stringify({
-      filters: {
-        username: {
-          $eq: username,
-        },
-        date: {
-          $gte: getCurrentDBDate(),
-        },
+    const filtersObj: any = {
+      username: {
+        $eq: username,
       },
+    };
+    if (monthValue === 'current') {
+      filtersObj.date = {
+        $gte: getMonthStart(),
+      };
+    } else {
+      filtersObj.date = {
+        $gte: getMonthStart(-1),
+        $lt: getMonthStart(),
+      };
+    }
+
+    const query = qs.stringify({ filters: filtersObj });
+
+    appRequest('get')(`daily-entries?${query}`).then((res) => {
+      console.log(res.data);
     });
-    appRequest("get")(`daily-entries?${query}`).then((res) => {
-      console.log(res);
-    });
-  }, [username]);
+  }, [username, monthValue]);
 
   return (
     <Box>

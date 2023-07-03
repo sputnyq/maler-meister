@@ -1,3 +1,4 @@
+/*eslint no-undef: "off"*/
 module.exports = {
   env: { browser: true, es2020: true },
   extends: [
@@ -11,5 +12,6 @@ module.exports = {
   rules: {
     "@typescript-eslint/ban-ts-comment": "off",
     "react-refresh/only-export-components": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
   },
 };

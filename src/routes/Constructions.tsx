@@ -1,14 +1,38 @@
-import React from "react";
+import { Paper } from "@mui/material";
+import { useSelector } from "react-redux";
+import { AppDataGrid } from "../components/app-data-grid/AppDataGrid";
+import CreateConstruction from "../components/CreateConstruction";
+import { useLoadActiveConstructions } from "../hooks/useLoadActiveConstructions";
+import { AppState } from "../store";
 
 export default function Constructions() {
+  useLoadActiveConstructions();
+
+  const activeConstructions = useSelector<AppState, Construction[]>(
+    (s) => s.construction.activeConstructions
+  );
+
   return (
-    <div>
-      <h3>Hier werden alle Basutellen erstellt</h3>
-      <p>Baustellen braucht man um:</p>
-      <ul>
-        <li>Die stunden des Mitarbeiters einer Baustelle zuzuordnen</li>
-        <li>Dateien zu der Baustelle hochladen, Fotos, Quttungen etc</li>
-      </ul>
-    </div>
+    <>
+      <Paper>
+        <AppDataGrid
+          disablePagination
+          data={activeConstructions}
+          columns={[
+            {
+              field: "name",
+              headerName: "Name",
+            },
+            {
+              field: "active",
+              headerName: "Aktiv?",
+              type: "boolean",
+              editable: true,
+            },
+          ]}
+        />
+      </Paper>
+      <CreateConstruction />
+    </>
   );
 }

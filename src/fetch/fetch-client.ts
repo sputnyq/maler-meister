@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const base = "/api";
+const base = "/api/";
 
 function initBaseURL() {
   if (!axios.defaults.baseURL) {
@@ -27,9 +27,9 @@ export const appRequest = <T>(type: "get" | "delete" | "put" | "post") => {
       return (url: string) => axios.delete(url);
     case "put":
       return (url: string, data?: any) =>
-        axios.put(url, data).then((res) => res.data as T);
+        axios.put(url, { data: { ...data } }).then((res) => res.data as T);
     case "post":
       return (url: string, data?: any) =>
-        axios.post(url, data).then((res) => res.data as T);
+        axios.post(url, { data: { ...data } }).then((res) => res.data as T);
   }
 };

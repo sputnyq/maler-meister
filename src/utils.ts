@@ -13,3 +13,10 @@ export function euroValue(value: string | number | undefined) {
     currency: "EUR",
   }).format(Number(toFormat));
 }
+
+export const genericConverter = <T>(entry: any) => {
+  return {
+    id: entry.id,
+    ...entry.attributes,
+  } as T;
+};

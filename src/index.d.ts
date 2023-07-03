@@ -41,3 +41,21 @@ interface User {
   blocked: boolean;
   userRole: UserRole;
 }
+
+type DailyEntryType = "Arbeit" | "Urlaub" | "Krankheit";
+
+interface Construction {
+  id: number;
+  name: string;
+  active: boolean;
+}
+interface WorkEntry {
+  construction: Construction;
+  hours: number;
+  job: string;
+}
+interface DailyEntry {
+  date: any;
+  type: DailyEntryType;
+  workEntries?: WorkEntry[];
+}

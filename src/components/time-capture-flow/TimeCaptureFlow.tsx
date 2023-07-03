@@ -1,12 +1,15 @@
-import AddIcon from "@mui/icons-material/Add";
-import { Box, Fab, useTheme } from "@mui/material";
 import { useState } from "react";
+import { useLoadActiveConstructions } from "../../hooks/useLoadActiveConstructions";
 import AddFab from "../shared/AddFab";
 import { AppFullScreenDialog } from "../shared/AppFullScreenDialog";
+import TimeEntryEditor from "../shared/TimeEntryEditor";
 
 export default function TimeCaptureFlow() {
-  const theme = useTheme();
+  useLoadActiveConstructions();
+
   const [open, setOpen] = useState(false);
+
+  const [timeEntry, setTimeEntry] = useState({});
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -23,7 +26,7 @@ export default function TimeCaptureFlow() {
         onClose={handleClose}
         title="Zeiten eintragen"
       >
-        Zeiten eintragen
+        <TimeEntryEditor />
       </AppFullScreenDialog>
       <AddFab onClick={handleClickOpen} />
     </>

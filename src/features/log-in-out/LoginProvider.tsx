@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCheckLogin } from "../hooks/useCheckLogin";
-import { getLoginData } from "../routes/Login";
+import { useCheckLogin } from "../../hooks/useCheckLogin";
+import { getLoginData } from "./Login";
 
 export default function LoginProvider({ children }: React.PropsWithChildren) {
   const checkLogin = useCheckLogin();

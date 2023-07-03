@@ -5,16 +5,16 @@ import {
   CardContent,
   CardHeader,
   IconButton,
-  Typography,
 } from "@mui/material";
 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AppTextField } from "../components/shared/AppTextField";
-import { appRequest, setFetchClientToken } from "../fetch/fetch-client";
-import { useCheckLogin } from "../hooks/useCheckLogin";
+import { AppTextField } from "../../components/aa-shared/AppTextField";
+import { appRequest, setFetchClientToken } from "../../fetch/fetch-client";
+import { useCheckLogin } from "../../hooks/useCheckLogin";
+import AppTypo from "../../components/aa-shared/AppTypo";
 
 export default function Login() {
   const [identifier, setIdetifier] = useState("");
@@ -50,7 +50,7 @@ export default function Login() {
   return (
     <Box mt={10} display={"flex"} justifyContent="center">
       <Card>
-        <CardHeader title={<Typography variant="h4">Anmeldung</Typography>} />
+        <CardHeader title={<AppTypo>Anmeldung</AppTypo>} />
         <CardContent>
           <form>
             <Box display="flex" flexDirection="column" gap={3} minWidth="300px">

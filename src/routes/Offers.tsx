@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import OffersGrid from "../components/OffersGrid";
-import AddFab from "../components/shared/AddFab";
+import AddFab from "../components/aa-shared/AddFab";
 
 export default function Offers() {
   const navigate = useNavigate();

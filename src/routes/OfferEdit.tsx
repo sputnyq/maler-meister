@@ -6,8 +6,8 @@ import { useLoadOffer } from "../hooks/useLoadOffer";
 import { AppDispatch } from "../store";
 import { setOfferProp } from "../store/offerReducer";
 import OfferCustomer from "../components/OfferCustomer";
-import ServicesWidget from "../components/shared/services-widget/ServicesWidget";
-import { TabPanel } from "../components/shared/TabPanel";
+import ServicesWidget from "../components/aa-shared/services-widget/ServicesWidget";
+import { TabPanel } from "../components/aa-shared/TabPanel";
 
 export default function OfferEdit() {
   useLoadOffer();

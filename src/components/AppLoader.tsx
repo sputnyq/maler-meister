@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { LoadingScreen } from "./shared/LoadingScreen";
+import { LoadingScreen } from "./aa-shared/LoadingScreen";
 
 type LoadingState = "loading" | "ready" | "failure";
 

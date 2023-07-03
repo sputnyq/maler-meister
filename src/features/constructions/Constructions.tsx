@@ -1,10 +1,11 @@
-import { Card, CardContent, CardHeader, Typography } from "@mui/material";
+import { Card, CardContent, CardHeader } from "@mui/material";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { AppDataGrid } from "../components/app-data-grid/AppDataGrid";
-import CreateConstruction from "../components/CreateConstruction";
-import { useLoadActiveConstructions } from "../hooks/useLoadActiveConstructions";
-import { AppState } from "../store";
+import { AppDataGrid } from "../../components/aa-shared/app-data-grid/AppDataGrid";
+import AppTypo from "../../components/aa-shared/AppTypo";
+import CreateConstruction from "./CreateConstruction";
+import { useLoadActiveConstructions } from "../../hooks/useLoadActiveConstructions";
+import { AppState } from "../../store";
 
 export default function Constructions() {
   useLoadActiveConstructions();
@@ -16,9 +17,7 @@ export default function Constructions() {
   return (
     <>
       <Card>
-        <CardHeader
-          title={<Typography variant="h4">Aktive Baustellen</Typography>}
-        ></CardHeader>
+        <CardHeader title={<AppTypo>Aktive Baustellen</AppTypo>}></CardHeader>
         <CardContent>
           <AppDataGrid
             onUpdate={(next) => {

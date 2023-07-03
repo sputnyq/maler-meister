@@ -3,7 +3,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import { Link, useLocation } from "react-router-dom";
 import { useMemo } from "react";
 import OfferActions from "./OfferActions";
-import Logout from "./Logout";
+import Logout from "../features/log-in-out/Logout";
 
 export default function TopBar() {
   const location = useLocation();

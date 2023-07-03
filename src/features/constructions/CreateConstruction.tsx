@@ -9,12 +9,12 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { appRequest } from "../fetch/fetch-client";
-import { AppDispatch } from "../store";
-import { addActiveConstruction } from "../store/constructionReducer";
-import { genericConverter } from "../utils";
-import AddFab from "./shared/AddFab";
-import { AppTextField } from "./shared/AppTextField";
+import { appRequest } from "../../fetch/fetch-client";
+import { AppDispatch } from "../../store";
+import { addActiveConstruction } from "../../store/constructionReducer";
+import { genericConverter } from "../../utils";
+import AddFab from "../../components/aa-shared/AddFab";
+import { AppTextField } from "../../components/aa-shared/AppTextField";
 
 export default function CreateConstruction() {
   const [open, setOpen] = useState(false);

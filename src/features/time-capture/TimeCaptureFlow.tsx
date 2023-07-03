@@ -5,9 +5,10 @@ import { appRequest } from "../../fetch/fetch-client";
 import { useLoadActiveConstructions } from "../../hooks/useLoadActiveConstructions";
 import { useLoadJobs } from "../../hooks/useLoadJobs";
 import { AppState } from "../../store";
-import AddFab from "../shared/AddFab";
-import { AppFullScreenDialog } from "../shared/AppFullScreenDialog";
-import TimeEntryEditor from "../shared/TimeEntryEditor";
+import { getCurrentDBDate } from "../../utils";
+import AddFab from "../../components/aa-shared/AddFab";
+import { AppFullScreenDialog } from "../../components/aa-shared/AppFullScreenDialog";
+import TimeEntryEditor from "../../components/aa-shared/TimeEntryEditor";
 
 export default function TimeCaptureFlow() {
   useLoadActiveConstructions();
@@ -20,7 +21,7 @@ export default function TimeCaptureFlow() {
   const [open, setOpen] = useState(false);
 
   const [dailyEntry, setDailyEntry] = useState<DailyEntry>({
-    date: new Date().toISOString().split("T")[0],
+    date: getCurrentDBDate(),
     type: "Arbeit",
   } as DailyEntry);
 
@@ -32,7 +33,7 @@ export default function TimeCaptureFlow() {
         ? dailyEntry.workEntries?.reduce((acc, next) => {
             return acc + Number(next.hours);
           }, 0)
-        : 0;
+        : 8;
     toPersist.sum = sum;
     toPersist.username = username;
     appRequest("post")("daily-entries", { data: toPersist })

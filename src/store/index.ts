@@ -1,8 +1,9 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { constructionReducer } from "./constructionReducer";
-import { jobsReducer } from "./jobsReducer";
-import { loginReducer } from "./loginReducer";
-import { offerReducer } from "./offerReducer";
+import { constructionReducer } from './constructionReducer';
+import { jobsReducer } from './jobsReducer';
+import { loginReducer } from './loginReducer';
+import { offerReducer } from './offerReducer';
+
+import { configureStore } from '@reduxjs/toolkit';
 
 export const store = configureStore({
   reducer: {

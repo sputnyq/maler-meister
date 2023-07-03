@@ -1,6 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { appRequest } from "../fetch/fetch-client";
-import { genericConverter } from "../utils";
+import { appRequest } from '../fetch/fetch-client';
+import { genericConverter } from '../utils';
+
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 interface RootState {
   activeConstructions?: Construction[];
@@ -8,24 +9,17 @@ interface RootState {
 
 const initialState: RootState = {};
 
-const BASE = "constructions";
+const BASE = 'constructions';
 
-export const loadActiveConstructions = createAsyncThunk(
-  "constructions/load-active",
-  () => {
-    return appRequest("get")(`${BASE}?filters[active][$eq]=true`).then(
-      (data: any) => {
-        const converted = (data.data as any[]).map((e) =>
-          genericConverter<Construction>(e)
-        );
-        return converted;
-      }
-    );
-  }
-);
+export const loadActiveConstructions = createAsyncThunk('constructions/load-active', () => {
+  return appRequest('get')(`${BASE}?filters[active][$eq]=true`).then((data: any) => {
+    const converted = (data.data as any[]).map((e) => genericConverter<Construction>(e));
+    return converted;
+  });
+});
 
 const constructionSlice = createSlice({
-  name: "construction",
+  name: 'construction',
   initialState,
   reducers: {
     addActiveConstruction(state, action: PayloadAction<Construction>) {

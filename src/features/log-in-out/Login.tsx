@@ -1,24 +1,18 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  IconButton,
-} from "@mui/material";
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Box, Button, Card, CardContent, CardHeader, IconButton } from '@mui/material';
 
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { AppTextField } from "../../components/aa-shared/AppTextField";
-import { appRequest, setFetchClientToken } from "../../fetch/fetch-client";
-import { useCheckLogin } from "../../hooks/useCheckLogin";
-import AppTypo from "../../components/aa-shared/AppTypo";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { AppTextField } from '../../components/aa-shared/AppTextField';
+import AppTypo from '../../components/aa-shared/AppTypo';
+import { appRequest, setFetchClientToken } from '../../fetch/fetch-client';
+import { useCheckLogin } from '../../hooks/useCheckLogin';
 
 export default function Login() {
-  const [identifier, setIdetifier] = useState("");
-  const [password, setPassword] = useState("");
+  const [identifier, setIdetifier] = useState('');
+  const [password, setPassword] = useState('');
 
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
@@ -30,7 +24,7 @@ export default function Login() {
 
   const loginUser = () => {
     if (identifier && password) {
-      appRequest("post")("/auth/local", {
+      appRequest('post')('/auth/local', {
         identifier,
         password,
       })
@@ -38,17 +32,17 @@ export default function Login() {
           const { jwt, user } = res as LoginResponse;
           setFetchClientToken(jwt);
           setLoginData({ jwt, user });
-          navigate("/");
+          navigate('/');
         })
         .catch((e) => {
           console.log(e);
-          alert("Login nicht erfolgreich!");
+          alert('Login nicht erfolgreich!');
         });
     }
   };
 
   return (
-    <Box mt={10} display={"flex"} justifyContent="center">
+    <Box mt={10} display={'flex'} justifyContent="center">
       <Card>
         <CardHeader title={<AppTypo>Anmeldung</AppTypo>} />
         <CardContent>
@@ -76,11 +70,11 @@ export default function Login() {
                   ),
                 }}
                 onKeyDown={({ key }) => {
-                  if (key === "Enter") {
+                  if (key === 'Enter') {
                     loginUser();
                   }
                 }}
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 label="Passwort"
                 value={password}
                 onChange={(ev) => {
@@ -98,9 +92,9 @@ export default function Login() {
   );
 }
 
-const EXPIRES_IN = "EXPIRES_IN";
-const TOKEN = "TOKEN";
-const USER = "USER";
+const EXPIRES_IN = 'EXPIRES_IN';
+const TOKEN = 'TOKEN';
+const USER = 'USER';
 
 export function setLoginData(param: { jwt: string; user: User }) {
   const { jwt, user } = param;

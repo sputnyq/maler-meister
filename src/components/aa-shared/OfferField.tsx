@@ -1,30 +1,25 @@
-import { MenuItem } from "@mui/material";
-import { useCallback, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, AppState } from "../../store";
-import { setOfferProp } from "../../store/offerReducer";
-import { AppTextField } from "./AppTextField";
+import { MenuItem } from '@mui/material';
+
+import { useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { AppDispatch, AppState } from '../../store';
+import { setOfferProp } from '../../store/offerReducer';
+import { AppTextField } from './AppTextField';
 
 type Path = keyof Offer;
 
 export interface OfferFieldProps {
   path: Path;
   label?: string;
-  type?: "text" | "number" | "email" | "tel";
+  type?: 'text' | 'number' | 'email' | 'tel';
   multiline?: true;
   select?: true;
   selectOptions?: string[];
   capitalize?: true;
 }
 
-export default function OfferField<T>({
-  select,
-  multiline,
-  type,
-  label,
-  selectOptions,
-  path,
-}: OfferFieldProps) {
+export default function OfferField<T>({ select, multiline, type, label, selectOptions, path }: OfferFieldProps) {
   const dispatch = useDispatch<AppDispatch>();
   const initValue = useOfferValue(path);
 
@@ -58,5 +53,5 @@ export default function OfferField<T>({
 function useOfferValue(path: Path) {
   const offer = useSelector<AppState, Offer | null>((s) => s.offer.current);
 
-  return offer?.[path] || "";
+  return offer?.[path] || '';
 }

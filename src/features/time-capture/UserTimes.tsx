@@ -1,11 +1,13 @@
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+
 import { appRequest } from '../../fetch/fetch-client';
 import { AppState } from '../../store';
+import { getMonthStart } from '../../utils';
 
 import * as qs from 'qs';
-import { getMonthStart } from '../../utils';
 
 export default function UserTimes() {
   const [monthValue, setMonthValue] = useState<'current' | 'last'>('current');

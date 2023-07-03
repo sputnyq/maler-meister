@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-const base = "/api/";
+const base = '/api/';
 
 function initBaseURL() {
   if (!axios.defaults.baseURL) {
@@ -9,27 +9,25 @@ function initBaseURL() {
 }
 
 export function removeToken() {
-  delete axios.defaults.headers.common["Authorization"];
+  delete axios.defaults.headers.common['Authorization'];
 }
 
 export function setFetchClientToken(token: string) {
   axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 }
 
-export const appRequest = (type: "get" | "delete" | "put" | "post") => {
+export const appRequest = (type: 'get' | 'delete' | 'put' | 'post') => {
   initBaseURL();
 
   switch (type) {
-    case "get":
+    case 'get':
       return (url: string) => axios.get(url).then((res) => res.data);
 
-    case "delete":
+    case 'delete':
       return (url: string) => axios.delete(url);
-    case "put":
-      return (url: string, data?: any) =>
-        axios.put(url, data).then((res) => res.data);
-    case "post":
-      return (url: string, data?: any) =>
-        axios.post(url, data).then((res) => res.data);
+    case 'put':
+      return (url: string, data?: any) => axios.put(url, data).then((res) => res.data);
+    case 'post':
+      return (url: string, data?: any) => axios.post(url, data).then((res) => res.data);
   }
 };

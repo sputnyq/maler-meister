@@ -1,26 +1,26 @@
-import { Box, CssBaseline, ThemeProvider } from "@mui/material";
-import { lazy, Suspense } from "react";
-import { Outlet, Route, Routes } from "react-router-dom";
-import AppLoader from "./components/AppLoader";
-import LoginProvider from "./features/log-in-out/LoginProvider";
-import MainNavigation from "./components/MainNavigation";
-import { LoadingScreen } from "./components/aa-shared/LoadingScreen";
-import { RootBox } from "./components/aa-shared/RootBox";
-import TopBar from "./components/TopBar";
-import Login from "./features/log-in-out/Login";
-import theme from "./theme";
+import { Box, CssBaseline, ThemeProvider } from '@mui/material';
 
-const Offers = lazy(() => import("./routes/Offers"));
-const Invoices = lazy(() => import("./routes/Invoices"));
-const TimeCapture = lazy(() => import("./features/time-capture/TimeCapture"));
-const OfferEdit = lazy(() => import("./routes/OfferEdit"));
-const Times = lazy(() => import("./routes/Times"));
-const Options = lazy(() => import("./routes/Options"));
-const Constructions = lazy(
-  () => import("./features/constructions/Constructions")
-);
-const Upload = lazy(() => import("./routes/Upload"));
-const Jobs = lazy(() => import("./routes/Jobs"));
+import { Suspense, lazy } from 'react';
+import { Outlet, Route, Routes } from 'react-router-dom';
+
+import AppLoader from './components/AppLoader';
+import MainNavigation from './components/MainNavigation';
+import TopBar from './components/TopBar';
+import { LoadingScreen } from './components/aa-shared/LoadingScreen';
+import { RootBox } from './components/aa-shared/RootBox';
+import Login from './features/log-in-out/Login';
+import LoginProvider from './features/log-in-out/LoginProvider';
+import theme from './theme';
+
+const Offers = lazy(() => import('./routes/Offers'));
+const Invoices = lazy(() => import('./routes/Invoices'));
+const TimeCapture = lazy(() => import('./features/time-capture/TimeCapture'));
+const OfferEdit = lazy(() => import('./routes/OfferEdit'));
+const Times = lazy(() => import('./routes/Times'));
+const Options = lazy(() => import('./routes/Options'));
+const Constructions = lazy(() => import('./features/constructions/Constructions'));
+const Upload = lazy(() => import('./routes/Upload'));
+const Jobs = lazy(() => import('./routes/Jobs'));
 
 function LazyLoad({ children }: React.PropsWithChildren) {
   return <Suspense fallback={<LoadingScreen />}>{children}</Suspense>;

@@ -1,9 +1,9 @@
-import { Badge, Divider, IconButton, Tooltip } from "@mui/material";
-import { Stack } from "@mui/system";
-import SaveIcon from "@mui/icons-material/Save";
-import FileCopyIcon from "@mui/icons-material/FileCopy";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from '@mui/icons-material/Delete';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import SaveIcon from '@mui/icons-material/Save';
+import { Badge, Divider, IconButton, Tooltip } from '@mui/material';
+import { Stack } from '@mui/system';
 
 interface Props {
   unsavedChanges: boolean;
@@ -13,26 +13,16 @@ interface Props {
   onDelete(): void;
 }
 
-export default function DocumentActions({
-  onCopy,
-  onDelete,
-  onDownload,
-  onSave,
-  unsavedChanges,
-}: Props) {
-  const color = unsavedChanges ? "error" : "default";
+export default function DocumentActions({ onCopy, onDelete, onDownload, onSave, unsavedChanges }: Props) {
+  const color = unsavedChanges ? 'error' : 'default';
 
   const handleDelete = () => {
-    if (window.confirm("Möchtest du diese Datei wirklich löschen?")) {
+    if (window.confirm('Möchtest du diese Datei wirklich löschen?')) {
       onDelete();
     }
   };
   return (
-    <Stack
-      direction="row"
-      spacing={1}
-      divider={<Divider orientation="vertical" flexItem />}
-    >
+    <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
       <Tooltip title="Speichern">
         <IconButton onClick={onSave}>
           <Badge color={color} variant="dot">

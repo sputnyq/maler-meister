@@ -1,4 +1,4 @@
-import { TextField, TextFieldProps } from "@mui/material";
+import { TextField, TextFieldProps } from '@mui/material';
 
 /**
  * extends @mui/material/textfield
@@ -21,23 +21,23 @@ import { TextField, TextFieldProps } from "@mui/material";
  */
 
 export function AppTextField(props: TextFieldProps) {
-  const { value = "" } = props;
+  const { value = '' } = props;
 
   const standardProps: TextFieldProps = {
-    variant: "outlined",
+    variant: 'outlined',
     fullWidth: true,
-    size: "small",
+    size: 'small',
   };
 
   let InputLabelProps = undefined;
-  if (props.type === "time") {
+  if (props.type === 'time') {
     InputLabelProps = { shrink: true };
   }
 
   return (
     <TextField
       inputProps={{
-        "data-hj-allow": "",
+        'data-hj-allow': '',
       }}
       minRows={8}
       InputLabelProps={InputLabelProps}

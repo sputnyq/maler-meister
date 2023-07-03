@@ -1,22 +1,17 @@
-import {
-  Card,
-  CardContent,
-  Grid,
-  MenuItem,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from "@mui/material";
-import { Box } from "@mui/system";
-import { cloneDeep } from "lodash";
-import React, { useCallback } from "react";
-import { useSelector } from "react-redux";
-import { AppState } from "../../store";
-import { AddButton } from "../AddButton";
-import AppGrid from "./AppGrid";
-import { AppTextField } from "./AppTextField";
-import BeachAccessIcon from "@mui/icons-material/BeachAccess";
-import MasksIcon from "@mui/icons-material/Masks";
+import BeachAccessIcon from '@mui/icons-material/BeachAccess';
+import MasksIcon from '@mui/icons-material/Masks';
+import { Card, CardContent, Grid, MenuItem, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { Box } from '@mui/system';
+
+import React, { useCallback } from 'react';
+import { useSelector } from 'react-redux';
+
+import { AppState } from '../../store';
+import { AddButton } from '../AddButton';
+import AppGrid from './AppGrid';
+import { AppTextField } from './AppTextField';
+
+import { cloneDeep } from 'lodash';
 
 interface Props {
   dailyEntry: DailyEntry;
@@ -45,21 +40,21 @@ export default function TimeEntryEditor({ dailyEntry, setDailyEntry }: Props) {
         <GridItem>
           <AppTextField
             label="Datum"
-            type={"date"}
+            type={'date'}
             value={dailyEntry.date}
             onChange={(ev) => {
-              onPropChange("date")(ev.target.value);
+              onPropChange('date')(ev.target.value);
             }}
           />
         </GridItem>
         <GridItem>
-          <Box width={"100%"} display="flex" justifyContent={"center"}>
+          <Box width={'100%'} display="flex" justifyContent={'center'}>
             <ToggleButtonGroup
               fullWidth
               exclusive
               value={dailyEntry.type}
               onChange={(_, value) => {
-                value && onPropChange("type")(value);
+                value && onPropChange('type')(value);
               }}
             >
               <ToggleButton size="small" value="Arbeit">
@@ -76,21 +71,12 @@ export default function TimeEntryEditor({ dailyEntry, setDailyEntry }: Props) {
         </GridItem>
       </AppGrid>
 
-      <Box width={"100%"} marginY={1}>
-        {dailyEntry.type === "Arbeit" ? (
-          <WorkEntriesEditor
-            workEntries={dailyEntry.workEntries || []}
-            onChange={onPropChange("workEntries")}
-          />
+      <Box width={'100%'} marginY={1}>
+        {dailyEntry.type === 'Arbeit' ? (
+          <WorkEntriesEditor workEntries={dailyEntry.workEntries || []} onChange={onPropChange('workEntries')} />
         ) : (
-          <Box
-            mt={5}
-            display="flex"
-            alignItems="center"
-            flexDirection="column"
-            gap={2}
-          >
-            {dailyEntry.type === "Urlaub" ? (
+          <Box mt={5} display="flex" alignItems="center" flexDirection="column" gap={2}>
+            {dailyEntry.type === 'Urlaub' ? (
               <>
                 <BeachAccessIcon sx={{ fontSize: 80 }} color="disabled" />
                 <Typography variant="subtitle2">Genieße die Zeit!</Typography>
@@ -117,7 +103,7 @@ interface WEProps {
 
 function WorkEntriesEditor({ onChange, workEntries }: WEProps) {
   const handleAdd = useCallback(() => {
-    onChange([...workEntries, { hours: "8" } as WorkEntry]);
+    onChange([...workEntries, { hours: '8' } as WorkEntry]);
   }, [workEntries, onChange]);
 
   const updateWorkEntryByIndex = (index: number) => {
@@ -132,11 +118,7 @@ function WorkEntriesEditor({ onChange, workEntries }: WEProps) {
   return (
     <>
       {workEntries.map((workEntry, index) => (
-        <WorkEntryLine
-          key={index}
-          workEntry={workEntry}
-          update={updateWorkEntryByIndex(index)}
-        />
+        <WorkEntryLine key={index} workEntry={workEntry} update={updateWorkEntryByIndex(index)} />
       ))}
       <Box marginY={1}>
         <AddButton onAdd={handleAdd} />
@@ -151,9 +133,7 @@ interface WEEntryLineProps {
 }
 function WorkEntryLine({ workEntry, update }: WEEntryLineProps) {
   const appJobs = useSelector<AppState, AppJob[]>((s) => s.jobs.jobs || []);
-  const constructions = useSelector<AppState, Construction[]>(
-    (s) => s.construction.activeConstructions || []
-  );
+  const constructions = useSelector<AppState, Construction[]>((s) => s.construction.activeConstructions || []);
 
   const onBlur = () => {
     update(workEntry);
@@ -161,7 +141,7 @@ function WorkEntryLine({ workEntry, update }: WEEntryLineProps) {
 
   return (
     <Box mt={2}>
-      <Card variant="outlined" sx={{ background: "#fafafa" }}>
+      <Card variant="outlined" sx={{ background: '#fafafa' }}>
         <CardContent>
           <AppGrid>
             <GridItem>

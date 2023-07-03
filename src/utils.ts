@@ -1,16 +1,16 @@
 export function euroValue(value: string | number | undefined) {
-  if (typeof value == "undefined" || value === "") {
-    return "";
+  if (typeof value == 'undefined' || value === '') {
+    return '';
   }
 
   let toFormat = value;
-  if (typeof value == "string") {
-    toFormat = value.replace(",", ".");
+  if (typeof value == 'string') {
+    toFormat = value.replace(',', '.');
   }
 
-  return new Intl.NumberFormat("de-DE", {
-    style: "currency",
-    currency: "EUR",
+  return new Intl.NumberFormat('de-DE', {
+    style: 'currency',
+    currency: 'EUR',
   }).format(Number(toFormat));
 }
 
@@ -22,7 +22,7 @@ export const genericConverter = <T>(entry: any) => {
 };
 
 export const getCurrentDBDate = () => {
-  return new Date().toISOString().split("T")[0];
+  return new Date().toISOString().split('T')[0];
 };
 
 export const getMonthStart = (offset = 0) => {
@@ -34,6 +34,6 @@ export const getMonthStart = (offset = 0) => {
     year = year - 1;
   }
 
-  const dbMonth = String(month + 1).padStart(2, "0");
+  const dbMonth = String(month + 1).padStart(2, '0');
   return `${year}-${dbMonth}-01`;
 };

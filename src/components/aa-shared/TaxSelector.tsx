@@ -1,5 +1,6 @@
-import { MenuItem, TextFieldProps } from "@mui/material";
-import { AppTextField } from "./AppTextField";
+import { MenuItem, TextFieldProps } from '@mui/material';
+
+import { AppTextField } from './AppTextField';
 
 export default function TaxSelector(props: TextFieldProps) {
   return (

@@ -1,19 +1,20 @@
-import { Box, Paper } from "@mui/material";
-import { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AddButton } from "../components/AddButton";
-import { AppDataGrid } from "../components/aa-shared/app-data-grid/AppDataGrid";
-import { useLoadJobs } from "../hooks/useLoadJobs";
-import { AppDispatch, AppState } from "../store";
-import { createJob, updateJob } from "../store/jobsReducer";
+import { Box, Paper } from '@mui/material';
+
+import { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { AddButton } from '../components/AddButton';
+import { AppDataGrid } from '../components/aa-shared/app-data-grid/AppDataGrid';
+import { useLoadJobs } from '../hooks/useLoadJobs';
+import { AppDispatch, AppState } from '../store';
+import { createJob, updateJob } from '../store/jobsReducer';
 
 export default function Jobs() {
   useLoadJobs();
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const appJobs =
-    useSelector<AppState, AppJob[] | undefined>((s) => s.jobs.jobs) || [];
+  const appJobs = useSelector<AppState, AppJob[] | undefined>((s) => s.jobs.jobs) || [];
 
   const handleCreateRequest = useCallback(() => {
     dispatch(createJob());
@@ -23,7 +24,7 @@ export default function Jobs() {
     (next: AppJob) => {
       dispatch(updateJob(next));
     },
-    [dispatch]
+    [dispatch],
   );
 
   return (
@@ -35,12 +36,12 @@ export default function Jobs() {
           data={appJobs}
           columns={[
             {
-              field: "id",
-              headerName: "ID",
+              field: 'id',
+              headerName: 'ID',
             },
             {
-              field: "name",
-              headerName: "Name",
+              field: 'name',
+              headerName: 'Name',
               editable: true,
               flex: 1,
             },

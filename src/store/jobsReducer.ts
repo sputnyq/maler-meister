@@ -1,6 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { appRequest } from "../fetch/fetch-client";
-import { genericConverter } from "../utils";
+import { appRequest } from '../fetch/fetch-client';
+import { genericConverter } from '../utils';
+
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 interface RootState {
   jobs?: AppJob[];
@@ -8,35 +9,29 @@ interface RootState {
 
 const initialState: RootState = {};
 
-const BASE = "jobs";
+const BASE = 'jobs';
 
-export const loadAllJobs = createAsyncThunk("jobs/load-all", () => {
-  return appRequest("get")(BASE).then((res: any) => {
-    const converted = (res.data as any[]).map((e) =>
-      genericConverter<AppJob>(e)
-    );
+export const loadAllJobs = createAsyncThunk('jobs/load-all', () => {
+  return appRequest('get')(BASE).then((res: any) => {
+    const converted = (res.data as any[]).map((e) => genericConverter<AppJob>(e));
     return converted;
   });
 });
 
-export const createJob = createAsyncThunk("jobs/create", () => {
-  return appRequest("post")(BASE, { data: { name: "NEU" } }).then(
-    (res: any) => {
-      return genericConverter<AppJob>(res.data);
-    }
-  );
+export const createJob = createAsyncThunk('jobs/create', () => {
+  return appRequest('post')(BASE, { data: { name: 'NEU' } }).then((res: any) => {
+    return genericConverter<AppJob>(res.data);
+  });
 });
 
-export const updateJob = createAsyncThunk("jobs/update", (next: AppJob) => {
-  return appRequest("put")(`${BASE}/${next.id}`, { ...next }).then(
-    (res: any) => {
-      return genericConverter<AppJob>(res.data);
-    }
-  );
+export const updateJob = createAsyncThunk('jobs/update', (next: AppJob) => {
+  return appRequest('put')(`${BASE}/${next.id}`, { ...next }).then((res: any) => {
+    return genericConverter<AppJob>(res.data);
+  });
 });
 
 const jobsSlice = createSlice({
-  name: "jobs",
+  name: 'jobs',
   initialState,
   reducers: {},
   extraReducers(builder) {

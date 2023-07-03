@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   shape: {
@@ -6,8 +6,8 @@ const theme = createTheme({
   },
   palette: {
     background: {
-      default: "#F3F6F9",
-      paper: "#fff",
+      default: '#F3F6F9',
+      paper: '#fff',
     },
   },
 });

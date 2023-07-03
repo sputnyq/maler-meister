@@ -1,13 +1,10 @@
-import { Card, CardContent, CardHeader, Grid, Typography } from "@mui/material";
+import { Card, CardContent, CardHeader, Grid, Typography } from '@mui/material';
 
 interface WrapperProps {
   title: string;
 }
 
-export function Wrapper({
-  children,
-  title,
-}: React.PropsWithChildren<WrapperProps>) {
+export function Wrapper({ children, title }: React.PropsWithChildren<WrapperProps>) {
   return (
     <Card>
       <CardHeader title={<Typography variant="h6">{title}</Typography>} />

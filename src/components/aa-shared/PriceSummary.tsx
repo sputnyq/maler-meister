@@ -1,6 +1,8 @@
-import { Box, Typography, TypographyProps } from "@mui/material";
-import { useMemo } from "react";
-import { euroValue } from "../../utils";
+import { Box, Typography, TypographyProps } from '@mui/material';
+
+import { useMemo } from 'react';
+
+import { euroValue } from '../../utils';
 
 interface Props {
   offerServices: OfferService[];
@@ -27,9 +29,9 @@ export function PriceSummary({ offerServices }: Props) {
 
   const grayTextProps = useMemo(() => {
     return {
-      align: "right",
-      color: "GrayText",
-      variant: "h6",
+      align: 'right',
+      color: 'GrayText',
+      variant: 'h6',
     } as TypographyProps;
   }, []);
 
@@ -38,9 +40,7 @@ export function PriceSummary({ offerServices }: Props) {
       <Typography align="right" color="primary" variant="h5">
         Netto: {euroValue(netto)}
       </Typography>
-      {tax > 0 && (
-        <Typography {...grayTextProps}>MwSt 19%: {euroValue(tax)}</Typography>
-      )}
+      {tax > 0 && <Typography {...grayTextProps}>MwSt 19%: {euroValue(tax)}</Typography>}
       <Typography {...grayTextProps}>Brutto: {euroValue(brutto)}</Typography>
     </Box>
   );

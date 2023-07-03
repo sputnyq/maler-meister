@@ -7,10 +7,7 @@ export default function Invoices() {
         <li>Kunde- Name Adresse etc.</li>
         <li>Leistungen aus dem Angebot</li>
       </ul>
-      <p>
-        Rechnungen werden als PDF Generiert und können z.b. Direkt in Google
-        Drive hochgeladen werden
-      </p>
+      <p>Rechnungen werden als PDF Generiert und können z.b. Direkt in Google Drive hochgeladen werden</p>
     </div>
   );
 }

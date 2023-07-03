@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useCheckLogin } from "../../hooks/useCheckLogin";
-import { getLoginData } from "./Login";
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { useCheckLogin } from '../../hooks/useCheckLogin';
+import { getLoginData } from './Login';
 
 export default function LoginProvider({ children }: React.PropsWithChildren) {
   const checkLogin = useCheckLogin();
@@ -10,7 +11,7 @@ export default function LoginProvider({ children }: React.PropsWithChildren) {
 
   useEffect(() => {
     if (!loginData) {
-      navigate("/login");
+      navigate('/login');
       return;
     }
     checkLogin(false);

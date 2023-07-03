@@ -1,25 +1,19 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { appRequest } from "../../fetch/fetch-client";
-import { AppDispatch } from "../../store";
-import { addActiveConstruction } from "../../store/constructionReducer";
-import { genericConverter } from "../../utils";
-import AddFab from "../../components/aa-shared/AddFab";
-import { AppTextField } from "../../components/aa-shared/AppTextField";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import AddFab from '../../components/aa-shared/AddFab';
+import { AppTextField } from '../../components/aa-shared/AppTextField';
+import { appRequest } from '../../fetch/fetch-client';
+import { AppDispatch } from '../../store';
+import { addActiveConstruction } from '../../store/constructionReducer';
+import { genericConverter } from '../../utils';
 
 export default function CreateConstruction() {
   const [open, setOpen] = useState(false);
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -32,15 +26,15 @@ export default function CreateConstruction() {
   };
 
   const handleCreateRequest = () => {
-    appRequest("post")("constructions", { data: { name, active: true } })
+    appRequest('post')('constructions', { data: { name, active: true } })
       .then((data: any) => {
         const newConstruction = genericConverter<Construction>(data.data);
         dispatch(addActiveConstruction(newConstruction));
-        setName("");
+        setName('');
       })
       .catch((e) => {
         console.log(e);
-        alert("Fehler! Baustelle konnte nicht erstellt werden.");
+        alert('Fehler! Baustelle konnte nicht erstellt werden.');
       })
       .finally(handleClose);
   };
@@ -50,10 +44,8 @@ export default function CreateConstruction() {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Baustelle erstellen</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Es wird eine Aktive Baustelle angelegt.
-          </DialogContentText>
-          <Box minWidth={"270px"} marginY={2}>
+          <DialogContentText>Es wird eine Aktive Baustelle angelegt.</DialogContentText>
+          <Box minWidth={'270px'} marginY={2}>
             <AppTextField
               variant="standard"
               value={name}

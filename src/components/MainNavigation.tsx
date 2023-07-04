@@ -16,24 +16,24 @@ export default function MainNavigation() {
     <>
       <ViewGrid>
         <Tile requiredRoles={['accountant', 'admin']} to="offers" title="Angebote">
-          <ArticleIcon fontSize="large" color="info" />
+          <ArticleIcon fontSize="large" color="disabled" />
         </Tile>
         <Tile requiredRoles={['accountant', 'admin']} to="invoices" title="Rechnungen">
-          <ReceiptLongIcon fontSize="large" color="error" />
+          <ReceiptLongIcon fontSize="large" color="disabled" />
         </Tile>
 
         <Tile requiredRoles={['accountant', 'admin']} to="time" title="Alle Stunden">
-          <AccessTimeIcon fontSize="large" color="warning" />
+          <AccessTimeIcon fontSize="large" color="disabled" />
         </Tile>
         <Tile requiredRoles={['worker', 'admin']} to="time-capture" title="Zeiterfassung">
-          <MoreTimeIcon fontSize="large" color="success" />
+          <MoreTimeIcon fontSize="large" color="disabled" />
         </Tile>
 
         <Tile requiredRoles={['admin']} to="constructions" title="Baustellen">
-          <HandymanIcon fontSize="large" color="secondary" />
+          <HandymanIcon fontSize="large" color="disabled" />
         </Tile>
         <Tile requiredRoles={['worker', 'admin', 'accountant']} to="upload" title="Datei Upload">
-          <UploadFileIcon fontSize="large" color="primary" />
+          <UploadFileIcon fontSize="large" color="disabled" />
         </Tile>
 
         <Tile requiredRoles={['admin']} to="options" title="Optionen">

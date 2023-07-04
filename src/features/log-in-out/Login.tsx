@@ -42,9 +42,9 @@ export default function Login() {
   };
 
   return (
-    <Box mt={10} display={'flex'} justifyContent="center">
+    <Box mt={10} display="flex" justifyContent="center">
       <Card>
-        <CardHeader title={<AppTypo>Anmeldung</AppTypo>} />
+        <CardHeader title="Anmeldung" />
         <CardContent>
           <form>
             <Box display="flex" flexDirection="column" gap={3} minWidth="300px">

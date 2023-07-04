@@ -17,7 +17,7 @@ export default function Constructions() {
   return (
     <>
       <Card>
-        <CardHeader title={<AppTypo>Aktive Baustellen</AppTypo>}></CardHeader>
+        <CardHeader title="Aktive Baustellen" />
         <CardContent>
           <AppDataGrid
             onUpdate={(next) => {

@@ -36,7 +36,6 @@ export default function Tile({ title, to, requiredRoles, children }: React.Props
             </Box>
           </Link>
         </CardContent>
-        <Card
       </Card>
     </Grid>
   );

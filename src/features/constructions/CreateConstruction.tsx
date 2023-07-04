@@ -51,7 +51,7 @@ export default function CreateConstruction() {
               value={name}
               label="Name der Baustelle"
               onChange={(ev) => {
-                setName(ev.target.value?.trim());
+                setName(ev.target.value?.trimStart());
               }}
             />
           </Box>

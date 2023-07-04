@@ -15,6 +15,7 @@ import theme from './theme';
 const Offers = lazy(() => import('./routes/Offers'));
 const Invoices = lazy(() => import('./routes/Invoices'));
 const TimeCapture = lazy(() => import('./features/time-capture/TimeCapture'));
+const DailyEntryView = lazy(() => import('./features/time-capture/DailyEntryView'));
 const OfferEdit = lazy(() => import('./routes/OfferEdit'));
 const Times = lazy(() => import('./routes/Times'));
 const Options = lazy(() => import('./routes/Options'));
@@ -87,6 +88,14 @@ export default function App() {
                     }
                   ></Route>
                 </Route>
+                <Route
+                  path="daily-entry/:id"
+                  element={
+                    <LazyLoad>
+                      <DailyEntryView />
+                    </LazyLoad>
+                  }
+                ></Route>
                 <Route
                   path="time-capture"
                   element={

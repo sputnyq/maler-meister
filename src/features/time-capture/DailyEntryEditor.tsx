@@ -1,24 +1,36 @@
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
+import DeleteIcon from '@mui/icons-material/Delete';
 import MasksIcon from '@mui/icons-material/Masks';
-import { Card, CardContent, Grid, MenuItem, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  Grid,
+  IconButton,
+  MenuItem,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from '@mui/material';
 import { Box } from '@mui/system';
 
 import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
+import { AddButton } from '../../components/AddButton';
+import AppGrid from '../../components/aa-shared/AppGrid';
+import { AppTextField } from '../../components/aa-shared/AppTextField';
 import { AppState } from '../../store';
-import { AddButton } from '../AddButton';
-import AppGrid from './AppGrid';
-import { AppTextField } from './AppTextField';
 
 import { cloneDeep } from 'lodash';
 
 interface Props {
   dailyEntry: DailyEntry;
-  setDailyEntry(de: DailyEntry): void;
+  workEntries: WorkEntry[];
+  setDailyEntry(dailyEntries: DailyEntry): void;
+  setWorkEntries(workEntries: WorkEntry[]): void;
 }
 
-export default function DailyEntryEditor({ dailyEntry, setDailyEntry }: Props) {
+export default function DailyEntryEditor({ dailyEntry, workEntries, setWorkEntries, setDailyEntry }: Props) {
   const onPropChange = (prop: keyof DailyEntry) => {
     return function (value: any) {
       const next = { ...dailyEntry, [prop]: value };
@@ -65,7 +77,7 @@ export default function DailyEntryEditor({ dailyEntry, setDailyEntry }: Props) {
 
       <Box width={'100%'}>
         {dailyEntry.type === 'Arbeit' ? (
-          <WorkEntriesEditor workEntries={dailyEntry.workEntries || []} onChange={onPropChange('workEntries')} />
+          <WorkEntriesEditor workEntries={workEntries} setWorkEntries={setWorkEntries} />
         ) : (
           <Box mt={5} display="flex" alignItems="center" flexDirection="column" gap={2}>
             {dailyEntry.type === 'Urlaub' ? (
@@ -98,20 +110,29 @@ function GridItem(props: React.PropsWithChildren) {
 
 interface WorkEntryEditorProps {
   workEntries: WorkEntry[];
-  onChange(workEntries: WorkEntry[]): void;
+  setWorkEntries(workEntries: WorkEntry[]): void;
 }
 
-function WorkEntriesEditor({ onChange, workEntries }: WorkEntryEditorProps) {
+function WorkEntriesEditor({ setWorkEntries, workEntries }: WorkEntryEditorProps) {
   const handleAdd = useCallback(() => {
-    onChange([...workEntries, { hours: '8' } as WorkEntry]);
-  }, [workEntries, onChange]);
+    setWorkEntries([...workEntries, { hours: '8' } as WorkEntry]);
+  }, [workEntries, setWorkEntries]);
 
   const updateWorkEntryByIndex = (index: number) => {
     return function (workEntry: WorkEntry) {
       const next = cloneDeep(workEntries);
       next.splice(index, 1, workEntry);
 
-      onChange(next);
+      setWorkEntries(next);
+    };
+  };
+
+  const deleteByIndex = (index: number) => {
+    return function () {
+      const next = cloneDeep(workEntries);
+      next.splice(index, 1);
+
+      setWorkEntries(next);
     };
   };
 
@@ -119,7 +140,12 @@ function WorkEntriesEditor({ onChange, workEntries }: WorkEntryEditorProps) {
     <>
       <Box display="flex" flexDirection="column" gap={2}>
         {workEntries.map((workEntry, index) => (
-          <WorkEntryLine key={index} workEntry={workEntry} update={updateWorkEntryByIndex(index)} />
+          <WorkEntryLine
+            key={index}
+            workEntry={workEntry}
+            deleteEntry={deleteByIndex(index)}
+            update={updateWorkEntryByIndex(index)}
+          />
         ))}
         <Box>
           <AddButton onAdd={handleAdd} />
@@ -132,9 +158,10 @@ function WorkEntriesEditor({ onChange, workEntries }: WorkEntryEditorProps) {
 interface WorkEntryTile {
   workEntry: WorkEntry;
   update(workEntry: WorkEntry): void;
+  deleteEntry(): void;
 }
 
-function WorkEntryLine({ workEntry, update }: WorkEntryTile) {
+function WorkEntryLine({ workEntry, update, deleteEntry }: WorkEntryTile) {
   const appJobs = useSelector<AppState, AppJob[]>((s) => s.jobs.jobs || []);
   const constructions = useSelector<AppState, Construction[]>((s) => s.construction.activeConstructions || []);
 
@@ -143,56 +170,66 @@ function WorkEntryLine({ workEntry, update }: WorkEntryTile) {
       <Card variant="outlined" sx={{ background: '#fafafa' }}>
         <CardContent>
           <AppGrid>
-            <GridItem>
-              <AppTextField
-                select
-                label="Baustelle"
-                value={workEntry.constructionName}
-                onChange={(ev) => {
-                  update({
-                    ...workEntry,
-                    constructionName: ev.target.value,
-                  });
-                }}
-              >
-                {constructions.map((c) => (
-                  <MenuItem key={c.id} value={c.name}>
-                    {c.name}
-                  </MenuItem>
-                ))}
-              </AppTextField>
-            </GridItem>
-            <GridItem>
-              <AppTextField
-                onChange={(ev) => {
-                  update({ ...workEntry, job: ev.target.value });
-                }}
-                value={workEntry.job}
-                select
-                label="Tätigkeit"
-              >
-                {appJobs.map((job) => {
-                  return (
-                    <MenuItem key={job.id} value={job.name}>
-                      {job.name}
-                    </MenuItem>
-                  );
-                })}
-              </AppTextField>
-            </GridItem>
-            <GridItem>
-              <AppTextField
-                value={workEntry.hours}
-                label="Stunden"
-                type="number"
-                onChange={(ev) => {
-                  update({
-                    ...workEntry,
-                    hours: ev.target.value,
-                  });
-                }}
-              />
-            </GridItem>
+            <Grid item xs={10}>
+              <AppGrid>
+                <GridItem>
+                  <AppTextField
+                    select
+                    label="Baustelle"
+                    value={workEntry.constructionId}
+                    onChange={(ev) => {
+                      update({
+                        ...workEntry,
+                        //@ts-ignore
+                        constructionId: ev.target.value,
+                      });
+                    }}
+                  >
+                    {constructions.map(({ id, name }) => (
+                      <MenuItem key={id} value={id}>
+                        {`${id} - ${name}`}
+                      </MenuItem>
+                    ))}
+                  </AppTextField>
+                </GridItem>
+                <GridItem>
+                  <AppTextField
+                    onChange={(ev) => {
+                      update({ ...workEntry, job: ev.target.value });
+                    }}
+                    value={workEntry.job}
+                    select
+                    label="Tätigkeit"
+                  >
+                    {appJobs.map((job) => {
+                      return (
+                        <MenuItem key={job.id} value={job.name}>
+                          {job.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </AppTextField>
+                </GridItem>
+                <GridItem>
+                  <AppTextField
+                    value={workEntry.hours}
+                    label="Stunden"
+                    type="number"
+                    onChange={(ev) => {
+                      update({
+                        ...workEntry,
+                        hours: ev.target.value,
+                      });
+                    }}
+                  />
+                </GridItem>
+              </AppGrid>
+            </Grid>
+            <Grid item xs={2}>
+              <IconButton onClick={deleteEntry} color="error">
+                <DeleteIcon />
+              </IconButton>
+            </Grid>
           </AppGrid>
         </CardContent>
       </Card>

@@ -32,7 +32,7 @@ interface LoginResponse {
   user: User;
 }
 
-type UserRole = "admin" | "worker" | "accountant";
+type UserRole = 'admin' | 'worker' | 'accountant';
 
 interface User {
   username: string;
@@ -42,7 +42,7 @@ interface User {
   userRole: UserRole;
 }
 
-type DailyEntryType = "Arbeit" | "Urlaub" | "Krank";
+type DailyEntryType = 'Arbeit' | 'Urlaub' | 'Krank';
 
 interface Construction {
   id: number;
@@ -50,16 +50,22 @@ interface Construction {
   active: boolean;
 }
 interface WorkEntry {
-  constructionName: string;
+  id?: number;
+  date: any;
+  constructionId: number;
+  username: string;
   hours: string;
   job: string;
 }
 interface DailyEntry {
+  id?: number;
   date: any;
-  sum?: number;
+  sum: number;
+  overload: number;
+  underload: number;
   username: string;
   type: DailyEntryType;
-  workEntries?: WorkEntry[];
+  work_entries?: WorkEntry[] | number[];
 }
 
 interface AppJob {

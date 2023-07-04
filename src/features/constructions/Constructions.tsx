@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import AppTypo from '../../components/aa-shared/AppTypo';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
 import { useLoadActiveConstructions } from '../../hooks/useLoadActiveConstructions';
 import { AppState } from '../../store';

@@ -14,10 +14,12 @@ export default function Logout() {
   const navigate = useNavigate();
 
   const onClick = () => {
-    dispatch(logout());
-    destroyLoginData();
-    removeToken();
-    navigate('/login');
+    if (confirm('Möchtest du dich wirklich abmelden?')) {
+      dispatch(logout());
+      destroyLoginData();
+      removeToken();
+      navigate('/login');
+    }
   };
 
   return (

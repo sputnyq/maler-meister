@@ -11,7 +11,7 @@ import { appRequest } from '../../fetch/fetch-client';
 import { AppState } from '../../store';
 import { genericConverter, getMonthStart } from '../../utils';
 
-import * as qs from 'qs';
+import qs from 'qs';
 
 interface Props {
   update: number;

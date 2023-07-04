@@ -14,7 +14,7 @@ import FilterGridItem from './FilterGridItem';
 import UserNameFilter from './UserNameFilter';
 
 import { DateRange } from 'mui-daterange-picker-orient';
-import * as qs from 'qs';
+import qs from 'qs';
 
 export default function WorkEntriesTimesView() {
   const [curUsername, setCurUsername] = useState('');

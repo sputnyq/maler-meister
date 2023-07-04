@@ -12,7 +12,7 @@ import { DateRangeWidget } from './DateRangeWidget';
 import UserNameFilter from './UserNameFilter';
 
 import { DateRange } from 'mui-daterange-picker-orient';
-import * as qs from 'qs';
+import qs from 'qs';
 
 export default function DailyTimesView() {
   const [curUsername, setCurUsername] = useState('');
@@ -94,6 +94,7 @@ export default function DailyTimesView() {
         setData(data);
       })
       .catch((e) => {
+        console.log(e);
         alert('Fehler beim Laden');
       })
       .finally(() => {

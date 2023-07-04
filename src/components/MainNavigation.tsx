@@ -25,7 +25,7 @@ export default function MainNavigation() {
         <Tile requiredRoles={['accountant', 'admin']} to="time" title="Alle Stunden">
           <AccessTimeIcon fontSize="large" color="disabled" />
         </Tile>
-        <Tile requiredRoles={['worker', 'admin']} to="time-capture" title="Zeiterfassung">
+        <Tile requiredRoles={['worker']} to="time-capture" title="Zeiterfassung">
           <MoreTimeIcon fontSize="large" color="disabled" />
         </Tile>
 

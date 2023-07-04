@@ -17,9 +17,9 @@ const Invoices = lazy(() => import('./routes/Invoices'));
 const TimeCapture = lazy(() => import('./features/time-capture/TimeCapture'));
 const DailyEntryView = lazy(() => import('./features/time-capture/DailyEntryView'));
 const OfferEdit = lazy(() => import('./routes/OfferEdit'));
-const Times = lazy(() => import('./routes/Times'));
 const Options = lazy(() => import('./routes/Options'));
 const Constructions = lazy(() => import('./features/constructions/Constructions'));
+const Times = lazy(() => import('./features/times/Times'));
 const Upload = lazy(() => import('./routes/Upload'));
 const Jobs = lazy(() => import('./routes/Jobs'));
 

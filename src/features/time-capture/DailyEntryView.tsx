@@ -59,7 +59,8 @@ export default function DailyEntryView() {
                       <Card key={index} variant="outlined" sx={{ background: '#fafafa' }}>
                         <CardHeader title={<ConstructionView constructionId={we.constructionId} />}></CardHeader>
                         <CardContent>
-                          <Box display={'flex'} justifyContent="space-between">
+                          <Typography variant="subtitle1">{we.username}</Typography>
+                          <Box mt={3} display={'flex'} justifyContent="space-between">
                             <Typography variant="caption">{we.job}</Typography>
                             <Typography variant="caption">{`${we.hours} Stunden`}</Typography>
                           </Box>

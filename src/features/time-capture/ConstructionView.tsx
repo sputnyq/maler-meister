@@ -18,5 +18,5 @@ export default function ConstructionView({ constructionId }: Props) {
       setName(resolved.name);
     });
   }, [constructionId]);
-  return <Typography variant="h6">{`${constructionId} | ${name}`}</Typography>;
+  return <Typography>{`${constructionId} - ${name}`}</Typography>;
 }

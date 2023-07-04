@@ -1,4 +1,4 @@
-import { Alert, AlertColor, Snackbar } from '@mui/material';
+import { Alert, AlertColor, Box, Snackbar } from '@mui/material';
 
 import { useCallback, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -82,6 +82,7 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
           }, 0) || 0
         : DEFAULT_HOURS;
 
+    toPersist.username = username;
     toPersist.sum = sum;
     if (sum > DEFAULT_HOURS) {
       toPersist.overload = sum - DEFAULT_HOURS;
@@ -112,12 +113,14 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
   return (
     <>
       <AppFullScreenDialog title="Zeit eintragen" open={open} onClose={() => setOpen(false)} onConfirm={handleSave}>
-        <DailyEntryEditor
-          workEntries={workEntries}
-          dailyEntry={dailyEntry}
-          setWorkEntries={setWorkEntries}
-          setDailyEntry={setDailyEntry}
-        />
+        <Box width={'inherit'} maxWidth={1000} marginX="auto" height={'100%'}>
+          <DailyEntryEditor
+            workEntries={workEntries}
+            dailyEntry={dailyEntry}
+            setWorkEntries={setWorkEntries}
+            setDailyEntry={setDailyEntry}
+          />
+        </Box>
       </AppFullScreenDialog>
       <AddFab onClick={() => setOpen(true)} />
       <Snackbar

@@ -18,15 +18,7 @@ interface Props {
   setDailyEntry(de: DailyEntry): void;
 }
 
-function GridItem(props: React.PropsWithChildren) {
-  return (
-    <Grid item xs={12} sm={3}>
-      {props.children}
-    </Grid>
-  );
-}
-
-export default function TimeEntryEditor({ dailyEntry, setDailyEntry }: Props) {
+export default function DailyEntryEditor({ dailyEntry, setDailyEntry }: Props) {
   const onPropChange = (prop: keyof DailyEntry) => {
     return function (value: any) {
       const next = { ...dailyEntry, [prop]: value };
@@ -35,7 +27,7 @@ export default function TimeEntryEditor({ dailyEntry, setDailyEntry }: Props) {
   };
 
   return (
-    <Box p={2}>
+    <Box p={2} display="flex" flexDirection={'column'} gap={2}>
       <AppGrid>
         <GridItem>
           <AppTextField
@@ -71,7 +63,7 @@ export default function TimeEntryEditor({ dailyEntry, setDailyEntry }: Props) {
         </GridItem>
       </AppGrid>
 
-      <Box width={'100%'} marginY={1}>
+      <Box width={'100%'}>
         {dailyEntry.type === 'Arbeit' ? (
           <WorkEntriesEditor workEntries={dailyEntry.workEntries || []} onChange={onPropChange('workEntries')} />
         ) : (
@@ -96,12 +88,20 @@ export default function TimeEntryEditor({ dailyEntry, setDailyEntry }: Props) {
   );
 }
 
-interface WEProps {
-  workEntries: WorkEntry[];
-  onChange(we: WorkEntry[]): void;
+function GridItem(props: React.PropsWithChildren) {
+  return (
+    <Grid item xs={12} sm={4}>
+      {props.children}
+    </Grid>
+  );
 }
 
-function WorkEntriesEditor({ onChange, workEntries }: WEProps) {
+interface WorkEntryEditorProps {
+  workEntries: WorkEntry[];
+  onChange(workEntries: WorkEntry[]): void;
+}
+
+function WorkEntriesEditor({ onChange, workEntries }: WorkEntryEditorProps) {
   const handleAdd = useCallback(() => {
     onChange([...workEntries, { hours: '8' } as WorkEntry]);
   }, [workEntries, onChange]);
@@ -117,37 +117,35 @@ function WorkEntriesEditor({ onChange, workEntries }: WEProps) {
 
   return (
     <>
-      {workEntries.map((workEntry, index) => (
-        <WorkEntryLine key={index} workEntry={workEntry} update={updateWorkEntryByIndex(index)} />
-      ))}
-      <Box marginY={1}>
-        <AddButton onAdd={handleAdd} />
+      <Box display="flex" flexDirection="column" gap={2}>
+        {workEntries.map((workEntry, index) => (
+          <WorkEntryLine key={index} workEntry={workEntry} update={updateWorkEntryByIndex(index)} />
+        ))}
+        <Box>
+          <AddButton onAdd={handleAdd} />
+        </Box>
       </Box>
     </>
   );
 }
 
-interface WEEntryLineProps {
+interface WorkEntryTile {
   workEntry: WorkEntry;
   update(workEntry: WorkEntry): void;
 }
-function WorkEntryLine({ workEntry, update }: WEEntryLineProps) {
+
+function WorkEntryLine({ workEntry, update }: WorkEntryTile) {
   const appJobs = useSelector<AppState, AppJob[]>((s) => s.jobs.jobs || []);
   const constructions = useSelector<AppState, Construction[]>((s) => s.construction.activeConstructions || []);
 
-  const onBlur = () => {
-    update(workEntry);
-  };
-
   return (
-    <Box mt={2}>
+    <Box>
       <Card variant="outlined" sx={{ background: '#fafafa' }}>
         <CardContent>
           <AppGrid>
             <GridItem>
               <AppTextField
                 select
-                onBlur={onBlur}
                 label="Baustelle"
                 value={workEntry.constructionName}
                 onChange={(ev) => {

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import AddFab from '../../components/aa-shared/AddFab';
 import { AppFullScreenDialog } from '../../components/aa-shared/AppFullScreenDialog';
-import TimeEntryEditor from '../../components/aa-shared/TimeEntryEditor';
+import DailyEntryEditor from '../../components/aa-shared/DailyEntryEditor';
 import { appRequest } from '../../fetch/fetch-client';
 import { useLoadActiveConstructions } from '../../hooks/useLoadActiveConstructions';
 import { useLoadJobs } from '../../hooks/useLoadJobs';
@@ -52,7 +52,7 @@ export default function TimeCaptureFlow() {
   return (
     <>
       <AppFullScreenDialog title="Zeit eintragen" open={open} onClose={() => setOpen(false)} onConfirm={handleSave}>
-        <TimeEntryEditor
+        <DailyEntryEditor
           dailyEntry={dailyEntry}
           setDailyEntry={(de) => {
             setDailyEntry(de);

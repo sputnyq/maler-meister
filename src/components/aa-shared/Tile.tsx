@@ -21,7 +21,7 @@ export default function Tile({ title, to, requiredRoles, children }: React.Props
   }
   return (
     <Grid item xs={6} sm={4} md={3} lg={2}>
-      <Card elevation={3}>
+      <Card elevation={6}>
         <CardHeader
           title={
             <Typography align="center" variant="h6">

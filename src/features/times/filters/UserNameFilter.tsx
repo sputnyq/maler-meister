@@ -21,7 +21,7 @@ export default function UserNameFilter({ curUsername, setUsername }: Props) {
         select
         label="Mitarbeiter"
       >
-        <MenuItem value={''}>-</MenuItem>
+        <MenuItem value={undefined}>-</MenuItem>
         {userNames.map((username, index) => {
           return (
             <MenuItem key={index} value={username}>

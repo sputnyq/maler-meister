@@ -1,17 +1,18 @@
 import { Box, Card, CardContent, CardHeader } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { AppTextField } from '../../components/aa-shared/AppTextField';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
 import { appRequest } from '../../fetch/fetch-client';
 import { buildQuery, genericConverter } from '../../utils';
 import ConstructionView from '../time-capture/ConstructionView';
-import { DateRangeWidget } from './DateRangeWidget';
-import FilterGridItem from './FilterGridItem';
-import { FilterTile } from './FilterTile';
-import UserNameFilter from './UserNameFilter';
+import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
+import { DateRangeWidget } from './filters/DateRangeWidget';
+import FilterGridItem from './filters/FilterGridItem';
+import { FilterTile } from './filters/FilterTile';
+import UserNameFilter from './filters/UserNameFilter';
 
 import { DateRange } from 'mui-daterange-picker-orient';
 
@@ -61,11 +62,26 @@ export default function WorkEntriesTimesView() {
     return cols;
   }, []);
 
-  const reset = () => {
+  const hours = useMemo(() => {
+    let sum = 0;
+
+    data.forEach((de) => {
+      sum += Number(de.hours);
+    });
+
+    return [
+      {
+        amount: sum,
+        title: 'Gesamt',
+      },
+    ] as HoursType[];
+  }, [data]);
+
+  const reset = useCallback(() => {
     setCurUsername('');
     setDateRange({});
     setConstructionId('');
-  };
+  }, []);
 
   const buildSearchQuery = () => {
     return buildQuery({
@@ -117,14 +133,13 @@ export default function WorkEntriesTimesView() {
           </FilterGridItem>
         </FilterTile>
 
+        <HoursOverviewCard hours={hours} />
+
         <Card>
           <CardHeader title="Ergebnisse" />
           <CardContent>
             <AppDataGrid loading={loading} disablePagination data={data} columns={columns}></AppDataGrid>
           </CardContent>
-        </Card>
-        <Card>
-          <CardContent></CardContent>
         </Card>
       </Box>
     </>

@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 
-import { getLoginData } from '../features/log-in-out/Login';
+import { getLoginData } from '../features/log-in-out/login-utils';
 import { setFetchClientToken } from '../fetch/fetch-client';
 import { AppDispatch } from '../store';
 import { login } from '../store/loginReducer';

@@ -1,6 +1,7 @@
 import { Card, CardContent, Divider, Stack } from '@mui/material';
 
-import HoursTile from './HoursTile';
+import { useIsSmall } from '../../hooks/useIsSmall';
+import { HoursTile } from './HoursTile';
 
 export type HoursType = {
   title: string;
@@ -12,10 +13,16 @@ interface Props {
 }
 
 export function HoursOverviewCard({ hours }: Props) {
+  const small = useIsSmall();
+
   return (
     <Card>
       <CardContent>
-        <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />}>
+        <Stack
+          direction={small ? 'column' : 'row'}
+          spacing={1}
+          divider={<Divider orientation={small ? 'horizontal' : 'vertical'} flexItem />}
+        >
           {hours.map((hourObj, index) => (
             <HoursTile {...hourObj} key={index} />
           ))}

@@ -1,6 +1,6 @@
 import { MenuItem } from '@mui/material';
 
-import { AppTextField } from '../../components/aa-shared/AppTextField';
+import { AppTextField } from '../../../components/aa-shared/AppTextField';
 import FilterGridItem from './FilterGridItem';
 
 interface Props {

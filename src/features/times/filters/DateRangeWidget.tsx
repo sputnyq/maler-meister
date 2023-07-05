@@ -3,15 +3,16 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/
 import { useState } from 'react';
 
 import FilterGridItem from './FilterGridItem';
-import { getDateRanges } from './dateRangeWiget-utils';
 
+import { addMonths, addYears, endOfMonth, endOfYear, startOfMonth, startOfYear } from 'date-fns';
 import { de } from 'date-fns/locale';
-import { DateRange, DateRangePicker } from 'mui-daterange-picker-orient';
+import { DateRange, DateRangePicker, DefinedRange } from 'mui-daterange-picker-orient';
 
 interface Props {
   dateRange: DateRange;
   setDateRange(dateRange: DateRange): void;
 }
+
 export function DateRangeWidget({ dateRange, setDateRange }: Props) {
   const [open, setOpen] = useState(false);
 
@@ -61,4 +62,31 @@ export function DateRangeWidget({ dateRange, setDateRange }: Props) {
       </FilterGridItem>
     </>
   );
+}
+
+function getDateRanges(): DefinedRange[] {
+  const date = new Date();
+
+  return [
+    {
+      label: 'Laufender Monat',
+      startDate: startOfMonth(date),
+      endDate: endOfMonth(date),
+    },
+    {
+      label: 'Letzter Monat',
+      startDate: startOfMonth(addMonths(date, -1)),
+      endDate: endOfMonth(addMonths(date, -1)),
+    },
+    {
+      label: 'Laufendes Jahr',
+      startDate: startOfYear(date),
+      endDate: endOfYear(date),
+    },
+    {
+      label: 'Letztes Jahr',
+      startDate: startOfYear(addYears(date, -1)),
+      endDate: endOfYear(addYears(date, -1)),
+    },
+  ];
 }

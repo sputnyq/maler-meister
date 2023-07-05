@@ -8,11 +8,11 @@ import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGri
 import { appRequest } from '../../fetch/fetch-client';
 import { buildQuery, genericConverter } from '../../utils';
 import { DailyEntryView } from '../time-capture/DailyEntryView';
-import DailyEntryTypeFilter from './DailyEntryTypeFilter';
-import { DateRangeWidget } from './DateRangeWidget';
-import { FilterTile } from './FilterTile';
 import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
-import UserNameFilter from './UserNameFilter';
+import DailyEntryTypeFilter from './filters/DailyEntryTypeFilter';
+import { DateRangeWidget } from './filters/DateRangeWidget';
+import { FilterTile } from './filters/FilterTile';
+import UserNameFilter from './filters/UserNameFilter';
 
 import { DateRange } from 'mui-daterange-picker-orient';
 

@@ -32,7 +32,7 @@ export default function App() {
       <CssBaseline>
         <RootBox>
           <TopBar />
-          <Box mt={8}>
+          <Box mt={6}>
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route

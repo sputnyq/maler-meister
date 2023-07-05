@@ -12,13 +12,12 @@ import { AppState } from '../../store';
 import { buildQuery, genericConverter, getMonthStart } from '../../utils';
 import { DailyEntryView } from './DailyEntryView';
 
-import qs from 'qs';
-
 interface Props {
   update: number;
+  requestUpdate(): void;
 }
 
-export function UserTimes({ update }: Props) {
+export function UserTimes({ update, requestUpdate }: Props) {
   const username = useSelector<AppState, string | undefined>((s) => s.login.user?.username);
 
   const [monthValue, setMonthValue] = useState<'current' | 'last'>('current');
@@ -101,7 +100,8 @@ export function UserTimes({ update }: Props) {
     setDialogOpen(true);
   };
 
-  const closeDialog = () => {
+  const handleCloseRequest = () => {
+    requestUpdate();
     setDialogOpen(false);
   };
 
@@ -136,7 +136,7 @@ export function UserTimes({ update }: Props) {
         <AppDataGrid loading={loading} data={data} columns={columns} disablePagination />
       </Box>
 
-      <DailyEntryView closeDialog={closeDialog} dailyEntryId={dailyEntryId.current} dialogOpen={dialogOpen} />
+      <DailyEntryView closeDialog={handleCloseRequest} dailyEntryId={dailyEntryId.current} dialogOpen={dialogOpen} />
     </>
   );
 }

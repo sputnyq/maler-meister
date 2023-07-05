@@ -5,7 +5,7 @@ import { Box } from '@mui/system';
 
 import React from 'react';
 
-import AppGrid from '../../components/aa-shared/AppGrid';
+import AppGrid from '../../../components/aa-shared/AppGrid';
 import FilterGridItem from './FilterGridItem';
 
 interface Props {

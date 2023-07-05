@@ -12,7 +12,7 @@ export default function TimeCapture() {
     <Card>
       <CardHeader title="Meine Zeiten" />
       <CardContent>
-        <UserTimes update={update} />
+        <UserTimes update={update} requestUpdate={() => setUpdate((u) => u + 1)} />
       </CardContent>
       <TimeCaptureFlow requestUpdate={() => setUpdate((u) => u + 1)} />
     </Card>

@@ -25,7 +25,7 @@ export const createJob = createAsyncThunk('jobs/create', () => {
 });
 
 export const updateJob = createAsyncThunk('jobs/update', (next: AppJob) => {
-  return appRequest('put')(`${BASE}/${next.id}`, { ...next }).then((res: any) => {
+  return appRequest('put')(`${BASE}/${next.id}`, { data: { ...next } }).then((res: any) => {
     return genericConverter<AppJob>(res.data);
   });
 });

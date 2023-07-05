@@ -39,7 +39,7 @@ export function DailyEntryView({ closeDialog, dailyEntryId, dialogOpen }: Props)
         </Box>
       </DialogTitle>
       <DialogContent>
-        <DailyEntryViewCard dailyEntryId={dailyEntryId} />
+        <DailyEntryViewCard dailyEntryId={dailyEntryId} closeDialog={closeDialog} />
       </DialogContent>
     </Dialog>
   );

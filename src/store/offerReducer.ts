@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { set, cloneDeep } from "lodash";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { cloneDeep, set } from 'lodash';
 
 interface RootState {
   current: Offer | null;
@@ -14,13 +14,13 @@ const initialState: RootState = {
 const createOffer = () => {
   const offer = {
     offerServices: new Array<OfferService>(),
-    text: "",
+    text: '',
   } as Offer;
   return offer;
 };
 
 const offerSlice = createSlice({
-  name: "offer",
+  name: 'offer',
   initialState,
   reducers: {
     initOffer(state) {

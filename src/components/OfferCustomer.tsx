@@ -1,17 +1,13 @@
-import { Box, Grid } from "@mui/material";
-import OfferField, { OfferFieldProps } from "./shared/OfferField";
-import { Wrapper } from "./shared/Wrapper";
+import { Box, Grid } from '@mui/material';
+
+import OfferField, { OfferFieldProps } from './aa-shared/OfferField';
+import { Wrapper } from './aa-shared/Wrapper';
 
 export default function OfferCustomer() {
   return (
     <Box mt={1} display="flex" flexDirection="column" gap={2}>
       <Wrapper title="Name">
-        <Field
-          path="salutation"
-          label="Anrede"
-          select
-          selectOptions={["Herr", "Frau", " "]}
-        />
+        <Field path="salutation" label="Anrede" select selectOptions={['Herr', 'Frau', ' ']} />
         <Field path="firstName" label="Vorname" />
         <Field path="lastname" label="Nachname" />
         <Field path="company" label="Frmenname" />

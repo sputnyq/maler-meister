@@ -1,13 +1,13 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   shape: {
-    borderRadius: 6,
+    borderRadius: 8,
   },
   palette: {
     background: {
-      default: "#F3F6F9",
-      paper: "#fff",
+      default: '#F3F6F9',
+      paper: '#fff',
     },
   },
 });

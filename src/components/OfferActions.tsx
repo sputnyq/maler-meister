@@ -1,24 +1,23 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { AppState } from "../store";
-import DocumentActions from "./shared/DocumentActions";
+import React from 'react';
+import { useSelector } from 'react-redux';
+
+import { AppState } from '../store';
+import DocumentActions from './aa-shared/DocumentActions';
 
 export default function OfferActions() {
-  const unsavedChanges = useSelector<AppState, boolean>(
-    (s) => s.offer.unsavedChanges
-  );
+  const unsavedChanges = useSelector<AppState, boolean>((s) => s.offer.unsavedChanges);
 
   const onDelete = () => {
-    console.log("");
+    console.log('');
   };
   const onDownload = () => {
-    console.log("");
+    console.log('');
   };
   const onCopy = () => {
-    console.log("");
+    console.log('');
   };
   const onSave = () => {
-    console.log("");
+    console.log('');
   };
 
   return (

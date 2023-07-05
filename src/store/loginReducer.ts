@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface RootState {
   user: User | null;
@@ -11,7 +11,7 @@ const initialState: RootState = {
 };
 
 const loginSlice = createSlice({
-  name: "login",
+  name: 'login',
   initialState,
   reducers: {
     login(state, action: PayloadAction<User>) {

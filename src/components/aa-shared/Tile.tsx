@@ -21,7 +21,7 @@ export default function Tile({ title, to, requiredRoles, children }: React.Props
   }
   return (
     <Grid item xs={6} sm={4} md={3} lg={2}>
-      <Card elevation={2}>
+      <Card elevation={2} sx={{ padding: 0 }}>
         <Link style={{ textDecoration: 'none', color: 'inherit' }} to={to}>
           <CardHeader
             title={
@@ -30,7 +30,7 @@ export default function Tile({ title, to, requiredRoles, children }: React.Props
               </Typography>
             }
           />
-          <CardContent>
+          <CardContent sx={{ padding: 0 }}>
             <Box display={'flex'} flexDirection="column" alignItems={'center'} justifyContent="center">
               {children}
             </Box>

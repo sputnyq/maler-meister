@@ -3,8 +3,8 @@ import { Alert, AlertColor, Box, Snackbar } from '@mui/material';
 import { useCallback, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import { AppDialog } from '../../components/AppDialog';
 import AddFab from '../../components/aa-shared/AddFab';
-import { AppFullScreenDialog } from '../../components/aa-shared/AppFullScreenDialog';
 import { DEFAULT_HOURS } from '../../constants';
 import { appRequest } from '../../fetch/fetch-client';
 import { useLoadActiveConstructions } from '../../hooks/useLoadActiveConstructions';
@@ -112,7 +112,7 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
 
   return (
     <>
-      <AppFullScreenDialog title="Zeit eintragen" open={open} onClose={() => setOpen(false)} onConfirm={handleSave}>
+      <AppDialog title="Zeit eintragen" open={open} onClose={() => setOpen(false)} onConfirm={handleSave}>
         <Box width={'inherit'} maxWidth={1000} marginX="auto" height={'100%'}>
           <DailyEntryEditor
             workEntries={workEntries}
@@ -121,7 +121,7 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
             setDailyEntry={setDailyEntry}
           />
         </Box>
-      </AppFullScreenDialog>
+      </AppDialog>
       <AddFab onClick={() => setOpen(true)} />
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}

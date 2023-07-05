@@ -1,7 +1,9 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 import { useMemo, useState } from 'react';
 
+import { AppDialog } from '../../../components/AppDialog';
+import { useIsSmall } from '../../../hooks/useIsSmall';
 import FilterGridItem from './FilterGridItem';
 
 import { addMonths, addYears, endOfMonth, endOfYear, startOfMonth, startOfYear } from 'date-fns';
@@ -16,7 +18,11 @@ interface Props {
 export function DateRangeWidget({ dateRange, setDateRange }: Props) {
   const [open, setOpen] = useState(false);
 
+  const isSmall = useIsSmall();
+
   const toggle = () => setOpen(!open);
+
+  const handleClose = () => setOpen(false);
 
   const definedRanges = getDateRanges();
 
@@ -31,9 +37,8 @@ export function DateRangeWidget({ dateRange, setDateRange }: Props) {
 
   return (
     <>
-      <Dialog maxWidth={'md'} fullWidth={true} open={open}>
-        <DialogTitle>Zeiraum auswählen</DialogTitle>
-        <DialogContent
+      <AppDialog title="Zeitraum auswählen" open={open} onClose={handleClose} onConfirm={handleClose}>
+        <Box
           sx={{
             '& .MuiPaper-root': {
               boxShadow: 'none',
@@ -50,17 +55,15 @@ export function DateRangeWidget({ dateRange, setDateRange }: Props) {
           }}
         >
           <DateRangePicker
+            verticalOrientation={isSmall}
             definedRanges={definedRanges}
             locale={de}
             open={open}
             toggle={toggle}
             onChange={setDateRange}
           />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>OK</Button>
-        </DialogActions>
-      </Dialog>
+        </Box>
+      </AppDialog>
 
       <FilterGridItem>
         <Button sx={{ height: 40 }} fullWidth variant="outlined" disableElevation onClick={toggle}>

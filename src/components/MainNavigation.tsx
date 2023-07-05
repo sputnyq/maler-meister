@@ -16,28 +16,28 @@ export default function MainNavigation() {
     <>
       <ViewGrid>
         <Tile requiredRoles={['accountant', 'admin']} to="offers" title="Angebote">
-          <ArticleIcon fontSize="large" color="disabled" />
+          <ArticleIcon fontSize="large" color="primary" />
         </Tile>
         <Tile requiredRoles={['accountant', 'admin']} to="invoices" title="Rechnungen">
-          <ReceiptLongIcon fontSize="large" color="disabled" />
+          <ReceiptLongIcon fontSize="large" color="primary" />
         </Tile>
 
         <Tile requiredRoles={['accountant', 'admin']} to="time" title="Alle Stunden">
-          <AccessTimeIcon fontSize="large" color="disabled" />
+          <AccessTimeIcon fontSize="large" color="primary" />
         </Tile>
         <Tile requiredRoles={['worker']} to="time-capture" title="Zeiterfassung">
-          <MoreTimeIcon fontSize="large" color="disabled" />
+          <MoreTimeIcon fontSize="large" color="primary" />
         </Tile>
 
         <Tile requiredRoles={['admin']} to="constructions" title="Baustellen">
-          <HandymanIcon fontSize="large" color="disabled" />
+          <HandymanIcon fontSize="large" color="primary" />
         </Tile>
         <Tile requiredRoles={['worker', 'admin', 'accountant']} to="upload" title="Datei Upload">
-          <UploadFileIcon fontSize="large" color="disabled" />
+          <UploadFileIcon fontSize="large" color="primary" />
         </Tile>
 
         <Tile requiredRoles={['admin']} to="options" title="Optionen">
-          <TuneIcon fontSize="large" color="disabled" />
+          <TuneIcon fontSize="large" color="primary" />
         </Tile>
       </ViewGrid>
     </>

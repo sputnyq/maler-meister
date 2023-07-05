@@ -1,25 +1,9 @@
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Chip,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, CardHeader, Chip, Stack, Typography } from '@mui/material';
 
 import { useEffect, useMemo, useState } from 'react';
 
-import { AppFullScreenDialog } from '../../components/aa-shared/AppFullScreenDialog';
+import { AppDialog } from '../../components/AppDialog';
 import { appRequest } from '../../fetch/fetch-client';
-import { useIsSmall } from '../../hooks/useIsSmall';
 import { genericConverter } from '../../utils';
 import ConstructionView from './ConstructionView';
 
@@ -30,30 +14,15 @@ interface Props {
 }
 
 export function DailyEntryView({ closeDialog, dailyEntryId, dialogOpen }: Props) {
-  const isSmall = useIsSmall();
-
   const dailyEntryView = useMemo(
     () => <DailyEntryViewCard dailyEntryId={dailyEntryId} closeDialog={closeDialog} />,
     [dailyEntryId, closeDialog],
   );
-  const title = 'Tagesansicht';
 
-  return isSmall ? (
-    <AppFullScreenDialog open={dialogOpen} title={title} onClose={closeDialog} showConfirm={false}>
+  return (
+    <AppDialog showConfirm={false} open={dialogOpen} onClose={closeDialog} title="Tagesansicht">
       {dailyEntryView}
-    </AppFullScreenDialog>
-  ) : (
-    <Dialog open={dialogOpen} onClose={closeDialog}>
-      <DialogTitle>
-        <Box display={'flex'} alignItems="center">
-          <Typography flexGrow={1}>{title}</Typography>
-          <IconButton onClick={closeDialog}>
-            <CloseOutlinedIcon />
-          </IconButton>
-        </Box>
-      </DialogTitle>
-      <DialogContent>{dailyEntryView}</DialogContent>
-    </Dialog>
+    </AppDialog>
   );
 }
 

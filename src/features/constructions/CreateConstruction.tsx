@@ -1,8 +1,9 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { AppDialog } from '../../components/AppDialog';
 import AddFab from '../../components/aa-shared/AddFab';
 import { AppTextField } from '../../components/aa-shared/AppTextField';
 import { appRequest } from '../../fetch/fetch-client';
@@ -41,28 +42,23 @@ export default function CreateConstruction() {
 
   return (
     <>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Baustelle erstellen</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Es wird eine Aktive Baustelle angelegt.</DialogContentText>
-          <Box minWidth={'270px'} marginY={2}>
-            <AppTextField
-              variant="standard"
-              value={name}
-              label="Name der Baustelle"
-              onChange={(ev) => {
-                setName(ev.target.value?.trimStart());
-              }}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Abbrechen</Button>
-          <Button disabled={name.length === 0} onClick={handleCreateRequest}>
-            Erstellen
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <AppDialog open={open} onClose={handleClose} onConfirm={handleCreateRequest} title="Baustelle erstellen">
+        <Box p={2}>
+          <AppTextField
+            margin="normal"
+            label="Name der Baustelle"
+            value={name}
+            onChange={(ev) => {
+              setName(ev.target.value?.trimStart());
+            }}
+          />
+          <Typography color={'GrayText'} variant="subtitle1">
+            Es wird eine neue Baustelle angelegt und aktiviert. Die Baustelle ist für alle Mitarbeiter beim Eintragen
+            der Arbeitszeit sichtbar.
+          </Typography>
+        </Box>
+      </AppDialog>
+
       <AddFab onClick={handleClickOpen} />
     </>
   );

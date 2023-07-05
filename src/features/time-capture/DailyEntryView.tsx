@@ -1,17 +1,51 @@
-import { Box, Button, Card, CardActions, CardContent, CardHeader, Chip, Stack, Typography } from '@mui/material';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Chip,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Stack,
+  Typography,
+} from '@mui/material';
 
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 
 import { appRequest } from '../../fetch/fetch-client';
 import { genericConverter } from '../../utils';
 import ConstructionView from './ConstructionView';
 
-export default function DailyEntryView() {
-  const params = useParams();
-  const id = params?.id;
-  const navigate = useNavigate();
+interface Props {
+  dailyEntryId: string | number;
+  dialogOpen: boolean;
+  closeDialog(): void;
+}
 
+export function DailyEntryView({ closeDialog, dailyEntryId, dialogOpen }: Props) {
+  return (
+    <Dialog open={dialogOpen} onClose={closeDialog}>
+      <DialogTitle>
+        <Box display={'flex'} alignItems="center">
+          <Typography flexGrow={1}>Tagesansicht</Typography>
+          <IconButton onClick={closeDialog}>
+            <CloseOutlinedIcon />
+          </IconButton>
+        </Box>
+      </DialogTitle>
+      <DialogContent>
+        <DailyEntryViewCard dailyEntryId={dailyEntryId} />
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
   const [dailyEntry, setDailyEntry] = useState<DailyEntry | null>(null);
 
   useEffect(() => {
@@ -35,15 +69,22 @@ export default function DailyEntryView() {
         }
       }
       await deleteRequest(`daily-entries/${dailyEntry?.id}`);
-      navigate('/time-capture');
+      closeDialog?.();
     }
   };
   return (
     <Box display="flex" flexDirection={'column'} gap={2}>
       {dailyEntry !== null && (
-        <Card>
+        <Card elevation={0} sx={{ background: '#fafafa' }}>
           <CardHeader
-            title={new Intl.DateTimeFormat('de-DE', { dateStyle: 'full' }).format(new Date(dailyEntry.date))}
+            title={
+              <Box>
+                <Typography variant="h6">
+                  {new Intl.DateTimeFormat('de-DE', { dateStyle: 'full' }).format(new Date(dailyEntry.date))}
+                </Typography>
+                <Typography>{dailyEntry.username}</Typography>
+              </Box>
+            }
           />
           <CardContent>
             <Box display="flex" flexDirection={'column'} gap={2}>
@@ -56,13 +97,12 @@ export default function DailyEntryView() {
                 {dailyEntry.work_entries?.map((we, index) => {
                   if (typeof we !== 'number') {
                     return (
-                      <Card key={index} variant="outlined" sx={{ background: '#fafafa' }}>
+                      <Card key={index} variant="outlined">
                         <CardHeader title={<ConstructionView constructionId={we.constructionId} />}></CardHeader>
                         <CardContent>
-                          <Typography variant="subtitle1">{we.username}</Typography>
-                          <Box mt={3} display={'flex'} justifyContent="space-between">
-                            <Typography variant="caption">{we.job}</Typography>
-                            <Typography variant="caption">{`${we.hours} Stunden`}</Typography>
+                          <Box display={'flex'} justifyContent="space-between">
+                            <Typography variant="subtitle2">{we.job}</Typography>
+                            <Typography variant="subtitle2">{`${we.hours} Stunden`}</Typography>
                           </Box>
                         </CardContent>
                       </Card>
@@ -73,8 +113,8 @@ export default function DailyEntryView() {
             </Box>
           </CardContent>
           <CardActions>
-            <Button onClick={handleDeleteRequest} color="error">
-              Löschen
+            <Button variant="outlined" onClick={handleDeleteRequest} color="error">
+              Eintrag löschen
             </Button>
           </CardActions>
         </Card>

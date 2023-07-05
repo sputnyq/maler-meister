@@ -1,5 +1,5 @@
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
+import CheckIcon from '@mui/icons-material/CheckOutlined';
+import CloseIcon from '@mui/icons-material/CloseOutlined';
 import AppBar from '@mui/material/AppBar';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';

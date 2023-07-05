@@ -1,5 +1,5 @@
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import VisibilityOff from '@mui/icons-material/VisibilityOffOutlined';
+import Visibility from '@mui/icons-material/VisibilityOutlined';
 import { Box, Button, Card, CardContent, CardHeader, IconButton } from '@mui/material';
 
 import { useEffect, useState } from 'react';

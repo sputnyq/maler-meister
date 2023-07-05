@@ -1,4 +1,4 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
 
 import { useMemo } from 'react';
@@ -13,14 +13,14 @@ export default function TopBar() {
   const isRootLocation = location.pathname === '/';
   const isLoginLocation = location.pathname === '/login';
 
-  const backButton = useMemo(() => {
+  const homeButton = useMemo(() => {
     if (isRootLocation || isLoginLocation) {
       return null;
     }
 
     return (
-      <IconButton onClick={() => navigate(-1)}>
-        <ArrowBackIcon />
+      <IconButton color="primary" onClick={() => navigate('/')}>
+        <HomeOutlinedIcon />
       </IconButton>
     );
   }, [isRootLocation, isLoginLocation, navigate]);
@@ -39,7 +39,7 @@ export default function TopBar() {
     <Box flexGrow={1}>
       <AppBar position="fixed" elevation={0} variant="outlined" color="inherit">
         <Toolbar>
-          {backButton}
+          {homeButton}
           <Box flex={1} display="flex" justifyContent={'flex-end'}>
             {actions}
           </Box>

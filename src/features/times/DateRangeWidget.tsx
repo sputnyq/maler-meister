@@ -31,6 +31,12 @@ export function DateRangeWidget({ dateRange, setDateRange }: Props) {
             '&  .MuiList-root': {
               height: '100%',
             },
+            paddingBottom: 0,
+            borderTop: '1px solid #ededed',
+            borderBottom: '1px solid #ededed',
+            ' & hr': {
+              display: 'none',
+            },
           }}
         >
           <DateRangePicker

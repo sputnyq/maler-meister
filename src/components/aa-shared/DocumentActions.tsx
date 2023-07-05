@@ -1,7 +1,7 @@
-import DeleteIcon from '@mui/icons-material/Delete';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
+import FileDownloadIcon from '@mui/icons-material/FileDownloadOutlined';
+import SaveIcon from '@mui/icons-material/SaveOutlined';
 import { Badge, Divider, IconButton, Tooltip } from '@mui/material';
 import { Stack } from '@mui/system';
 

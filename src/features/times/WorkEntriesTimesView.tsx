@@ -1,20 +1,19 @@
-import { Box, Button, Card, CardContent, CardHeader } from '@mui/material';
+import { Box, Card, CardContent, CardHeader } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
 import { useMemo, useState } from 'react';
 
-import AppGrid from '../../components/aa-shared/AppGrid';
 import { AppTextField } from '../../components/aa-shared/AppTextField';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
 import { appRequest } from '../../fetch/fetch-client';
-import { genericConverter } from '../../utils';
+import { buildQuery, genericConverter } from '../../utils';
 import ConstructionView from '../time-capture/ConstructionView';
 import { DateRangeWidget } from './DateRangeWidget';
 import FilterGridItem from './FilterGridItem';
+import { FilterTile } from './FilterTile';
 import UserNameFilter from './UserNameFilter';
 
 import { DateRange } from 'mui-daterange-picker-orient';
-import qs from 'qs';
 
 export default function WorkEntriesTimesView() {
   const [curUsername, setCurUsername] = useState('');
@@ -68,8 +67,8 @@ export default function WorkEntriesTimesView() {
     setConstructionId('');
   };
 
-  const buildQuery = () => {
-    const query = qs.stringify({
+  const buildSearchQuery = () => {
+    return buildQuery({
       filters: {
         username: curUsername === '' ? undefined : curUsername,
         date: {
@@ -80,14 +79,12 @@ export default function WorkEntriesTimesView() {
       },
       sort: { '0': 'date:desc' },
     });
-
-    return query;
   };
 
   const handleSearchRequest = () => {
     setLoading(true);
-    const query = buildQuery();
-    appRequest('get')(`work-entries?${query}`)
+
+    appRequest('get')(`work-entries?${buildSearchQuery()}`)
       .then((res) => {
         const data = res.data.map((e: any) => genericConverter<WorkEntry[]>(e));
 
@@ -105,32 +102,21 @@ export default function WorkEntriesTimesView() {
   return (
     <>
       <Box display="flex" flexDirection="column" gap={2}>
-        <Card>
-          <CardContent>
-            <AppGrid>
-              <DateRangeWidget dateRange={dateRange} setDateRange={setDateRange} />
-              <UserNameFilter curUsername={curUsername} setUsername={setCurUsername} />
-              <FilterGridItem>
-                <AppTextField
-                  value={constructionId}
-                  onChange={(ev) => {
-                    setConstructionId(ev.target.value);
-                  }}
-                  label="Baustelle"
-                  type="number"
-                />
-              </FilterGridItem>
-            </AppGrid>
-            <Box mt={2} display="flex" justifyContent="flex-end" gap={2}>
-              <Button onClick={reset} variant="outlined">
-                Zurücksetzen
-              </Button>
-              <Button onClick={handleSearchRequest} variant="contained">
-                Suchen
-              </Button>
-            </Box>
-          </CardContent>
-        </Card>
+        <FilterTile onReset={reset} onSearch={handleSearchRequest}>
+          <DateRangeWidget dateRange={dateRange} setDateRange={setDateRange} />
+          <UserNameFilter curUsername={curUsername} setUsername={setCurUsername} />
+          <FilterGridItem>
+            <AppTextField
+              value={constructionId}
+              onChange={(ev) => {
+                setConstructionId(ev.target.value);
+              }}
+              label="Baustelle"
+              type="number"
+            />
+          </FilterGridItem>
+        </FilterTile>
+
         <Card>
           <CardHeader title="Ergebnisse" />
           <CardContent>

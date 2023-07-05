@@ -1,6 +1,6 @@
-import BeachAccessIcon from '@mui/icons-material/BeachAccess';
-import DeleteIcon from '@mui/icons-material/Delete';
-import MasksIcon from '@mui/icons-material/Masks';
+import BeachAccessIcon from '@mui/icons-material/BeachAccessOutlined';
+import DeleteIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import MasksIcon from '@mui/icons-material/MasksOutlined';
 import {
   Card,
   CardContent,

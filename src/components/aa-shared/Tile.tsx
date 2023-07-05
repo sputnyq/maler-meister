@@ -21,7 +21,7 @@ export default function Tile({ title, to, requiredRoles, children }: React.Props
   }
   return (
     <Grid item xs={6} sm={4} md={3} lg={2}>
-      <Card elevation={6}>
+      <Card elevation={2}>
         <Link style={{ textDecoration: 'none', color: 'inherit' }} to={to}>
           <CardHeader
             title={

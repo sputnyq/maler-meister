@@ -1,4 +1,4 @@
-import AddIcon from '@mui/icons-material/Add';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { Button } from '@mui/material';
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 export function AddButton({ onAdd }: Props) {
   return (
     <Button size="large" variant="outlined" disableElevation onClick={onAdd}>
-      <AddIcon />
+      <AddOutlinedIcon />
     </Button>
   );
 }

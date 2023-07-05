@@ -1,10 +1,10 @@
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import ArticleIcon from '@mui/icons-material/Article';
-import HandymanIcon from '@mui/icons-material/Handyman';
-import MoreTimeIcon from '@mui/icons-material/MoreTime';
-import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import TuneIcon from '@mui/icons-material/Tune';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
+import AccessTimeIcon from '@mui/icons-material/AccessTimeOutlined';
+import ArticleIcon from '@mui/icons-material/ArticleOutlined';
+import HandymanIcon from '@mui/icons-material/HandymanOutlined';
+import MoreTimeIcon from '@mui/icons-material/MoreTimeOutlined';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLongOutlined';
+import TuneIcon from '@mui/icons-material/TuneOutlined';
+import UploadFileIcon from '@mui/icons-material/UploadFileOutlined';
 import { Grid } from '@mui/material';
 
 import React from 'react';

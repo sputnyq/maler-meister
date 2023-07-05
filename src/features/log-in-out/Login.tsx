@@ -51,8 +51,12 @@ export default function Login() {
               <AppTextField
                 value={identifier}
                 label="Nutzer"
+                autoCapitalize="none"
                 onChange={(ev) => {
                   setIdetifier(ev.target.value);
+                }}
+                inputProps={{
+                  autoCapitalize: 'none',
                 }}
               />
               <AppTextField

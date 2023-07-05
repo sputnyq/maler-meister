@@ -12,9 +12,14 @@ const initialState: RootState = {};
 const BASE = 'constructions';
 
 export const loadActiveConstructions = createAsyncThunk('constructions/load-active', () => {
-  return appRequest('get')(`${BASE}?filters[active][$eq]=true`).then((data: any) => {
-    const converted = (data.data as any[]).map((e) => genericConverter<Construction>(e));
-    return converted;
+  return appRequest('get')(`${BASE}?filters[active][$eq]=true`).then((res: any) => {
+    return (res.data as any[]).map((e) => genericConverter<Construction>(e));
+  });
+});
+
+export const updateConstruction = createAsyncThunk('constructions/update', (construction: Construction) => {
+  return appRequest('put')(`${BASE}/${construction.id}`, { data: construction }).then((res: any) => {
+    return genericConverter<Construction>(res.data);
   });
 });
 
@@ -29,10 +34,18 @@ const constructionSlice = createSlice({
       state.activeConstructions.push(action.payload);
     },
   },
+
   extraReducers(builder) {
-    builder.addCase(loadActiveConstructions.fulfilled, (state, action) => {
-      state.activeConstructions = action.payload;
-    });
+    builder
+      .addCase(loadActiveConstructions.fulfilled, (state, action) => {
+        state.activeConstructions = action.payload;
+      })
+      .addCase(updateConstruction.fulfilled, (state, action) => {
+        const index = state.activeConstructions?.findIndex((ac) => ac.id === action.payload.id);
+        if (index) {
+          state.activeConstructions?.splice(index, 1, action.payload);
+        }
+      });
   },
 });
 

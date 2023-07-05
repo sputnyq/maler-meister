@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import FilterGridItem from './FilterGridItem';
 
@@ -20,22 +20,31 @@ export function DateRangeWidget({ dateRange, setDateRange }: Props) {
 
   const definedRanges = getDateRanges();
 
+  const title = useMemo(() => {
+    if (dateRange.endDate && dateRange.startDate) {
+      return `${dateRange.startDate?.toLocaleDateString('ru') || ''} - ${
+        dateRange.endDate?.toLocaleDateString('ru') || ''
+      }`;
+    }
+    return 'Zeitraum auswählen';
+  }, [dateRange]);
+
   return (
     <>
       <Dialog maxWidth={'md'} fullWidth={true} open={open}>
         <DialogTitle>Zeiraum auswählen</DialogTitle>
         <DialogContent
           sx={{
-            '&  .MuiPaper-root': {
+            '& .MuiPaper-root': {
               boxShadow: 'none',
             },
-            '&  .MuiList-root': {
+            '& .MuiList-root': {
               height: '100%',
             },
             paddingBottom: 0,
             borderTop: '1px solid #ededed',
             borderBottom: '1px solid #ededed',
-            ' & hr': {
+            '& hr': {
               display: 'none',
             },
           }}
@@ -49,15 +58,13 @@ export function DateRangeWidget({ dateRange, setDateRange }: Props) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)}>Schließen</Button>
+          <Button onClick={() => setOpen(false)}>OK</Button>
         </DialogActions>
       </Dialog>
 
       <FilterGridItem>
         <Button sx={{ height: 40 }} fullWidth variant="outlined" disableElevation onClick={toggle}>
-          {`Zeitraum ${dateRange.startDate?.toLocaleDateString('ru') || ''} - ${
-            dateRange.endDate?.toLocaleDateString('ru') || ''
-          }`}
+          {title}
         </Button>
       </FilterGridItem>
     </>

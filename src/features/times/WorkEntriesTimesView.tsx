@@ -94,6 +94,7 @@ export default function WorkEntriesTimesView() {
         setData(data);
       })
       .catch((e) => {
+        console.log(e);
         alert('Fehler beim Laden');
       })
       .finally(() => {
@@ -135,6 +136,9 @@ export default function WorkEntriesTimesView() {
           <CardContent>
             <AppDataGrid loading={loading} disablePagination data={data} columns={columns}></AppDataGrid>
           </CardContent>
+        </Card>
+        <Card>
+          <CardContent></CardContent>
         </Card>
       </Box>
     </>

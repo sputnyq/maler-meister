@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, CardHeader } from '@mui/material';
+import { Box, Button, Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
 import { useMemo, useState } from 'react';
@@ -9,6 +9,7 @@ import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGri
 import { appRequest } from '../../fetch/fetch-client';
 import { genericConverter } from '../../utils';
 import { DateRangeWidget } from './DateRangeWidget';
+import HoursTile from './HoursTile';
 import UserNameFilter from './UserNameFilter';
 
 import { DateRange } from 'mui-daterange-picker-orient';
@@ -102,6 +103,18 @@ export default function DailyTimesView() {
       });
   };
 
+  const sum = data.reduce((acc, cur) => {
+    return acc + cur.sum;
+  }, 0);
+
+  const overload = data.reduce((acc, cur) => {
+    return acc + cur.overload;
+  }, 0);
+
+  const underload = data.reduce((acc, cur) => {
+    return acc + cur.underload;
+  }, 0);
+
   return (
     <Box display="flex" flexDirection="column" gap={2}>
       <Card>
@@ -124,6 +137,15 @@ export default function DailyTimesView() {
         <CardHeader title="Ergebnisse"></CardHeader>
         <CardContent>
           <AppDataGrid loading={loading} disablePagination data={data} columns={columns}></AppDataGrid>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardContent>
+          <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />}>
+            <HoursTile title="Gesamt" amount={sum} />
+            <HoursTile title="Überstunden" amount={overload} />
+            <HoursTile title="Unterstunden" amount={underload} />
+          </Stack>
         </CardContent>
       </Card>
     </Box>

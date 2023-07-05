@@ -10,7 +10,7 @@ export default defineConfig({
     VitePWA({
       manifest: {
         name: 'Maler Meister',
-        short_name: 'MM',
+        short_name: 'Maler Meister',
       },
     }),
   ],

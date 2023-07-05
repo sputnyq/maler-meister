@@ -1,12 +1,6 @@
-import { DeleteOutlined } from "@mui/icons-material";
-import {
-  Backdrop,
-  Box,
-  CircularProgress,
-  IconButton,
-  Paper,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { Backdrop, Box, CircularProgress, IconButton, Paper } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import {
   DataGrid,
   GridColDef,
@@ -14,10 +8,11 @@ import {
   GridFeatureMode,
   GridPaginationModel,
   GridRowClassNameParams,
-} from "@mui/x-data-grid";
+} from '@mui/x-data-grid';
 
-import { useMemo } from "react";
-import { prepareCols } from "./appDataGridUtils";
+import { useMemo } from 'react';
+
+import { prepareCols } from './appDataGridUtils';
 
 interface Props {
   data: any[];
@@ -37,7 +32,7 @@ export function AppDataGrid({
   paginationModel,
   columns,
   data,
-  paginationMode = "server",
+  paginationMode = 'server',
   disablePagination,
   allowDeletion,
   loading,
@@ -49,20 +44,20 @@ export function AppDataGrid({
   const gridColumns = useMemo(() => {
     if (allowDeletion) {
       const deleteCol: GridColDef = {
-        field: "__delete",
-        headerName: "Löschen",
-        align: "left",
+        field: '__delete',
+        headerName: 'Löschen',
+        align: 'left',
         renderCell({ row }) {
           return (
             <IconButton
               color="error"
               onClick={() => {
-                if (window.confirm("Möchtest du es wirklich löschen?")) {
+                if (window.confirm('Möchtest du es wirklich löschen?')) {
                   onDelete?.(row.id);
                 }
               }}
             >
-              <DeleteOutlined />
+              <DeleteOutlineOutlinedIcon />
             </IconButton>
           );
         },
@@ -76,27 +71,27 @@ export function AppDataGrid({
   return (
     <Paper elevation={0}>
       <Box
-        position={"relative"}
+        position={'relative'}
         sx={{
-          "& .MuiDataGrid-footerContainer": {
-            display: `${disablePagination ? "none" : "block"}`,
-            borderTop: "none",
+          '& .MuiDataGrid-footerContainer': {
+            display: `${disablePagination ? 'none' : 'block'}`,
+            borderTop: 'none',
           },
-          "& .MuiTablePagination-displayedRows, & .MuiTablePagination-selectLabel, & .MuiTablePagination-selectLabel + .MuiInputBase-root":
+          '& .MuiTablePagination-displayedRows, & .MuiTablePagination-selectLabel, & .MuiTablePagination-selectLabel + .MuiInputBase-root':
             {
-              display: "none !important",
+              display: 'none !important',
             },
-          "& .MuiDataGrid-root": {
-            border: "none",
+          '& .MuiDataGrid-root': {
+            border: 'none',
           },
         }}
       >
         <Backdrop
           open={loading || false}
           sx={{
-            color: "#fff",
+            color: '#fff',
             zIndex: (theme) => theme.zIndex.drawer - 1,
-            position: "absolute",
+            position: 'absolute',
           }}
         >
           <CircularProgress color="primary" />
@@ -105,7 +100,7 @@ export function AppDataGrid({
         <StyledDataGrid
           rowHeight={45}
           localeText={{
-            noResultsOverlayLabel: "Keine Ergebnisse",
+            noResultsOverlayLabel: 'Keine Ergebnisse',
           }}
           getRowClassName={getRowClassName}
           disableRowSelectionOnClick
@@ -125,7 +120,7 @@ export function AppDataGrid({
               const next = { ...params.row };
               next[params.field] = value;
               onUpdate?.(next);
-            }) as GridEventListener<"cellEditStop">
+            }) as GridEventListener<'cellEditStop'>
           }
         />
       </Box>
@@ -134,7 +129,7 @@ export function AppDataGrid({
 }
 
 const StyledDataGrid = styled(DataGrid)(() => ({
-  "& .bold": {
-    fontWeight: "bold",
+  '& .bold': {
+    fontWeight: 'bold',
   },
 }));

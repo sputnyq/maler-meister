@@ -1,10 +1,12 @@
-import DeleteIcon from "@mui/icons-material/Delete";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { Card, CardContent, Grid, IconButton } from "@mui/material";
-import { cloneDeep } from "lodash";
-import { AppTextField } from "../AppTextField";
-import TaxSelector from "../TaxSelector";
+import DeleteIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
+import { Card, CardContent, Grid, IconButton } from '@mui/material';
+
+import { AppTextField } from '../AppTextField';
+import TaxSelector from '../TaxSelector';
+
+import { cloneDeep } from 'lodash';
 
 interface Props {
   offerService: OfferService;
@@ -15,14 +17,7 @@ interface Props {
   moveEntry: (offset: number) => void;
 }
 
-export function ServicesWidgetRow({
-  offerService,
-  disableDown,
-  disableUp,
-  update,
-  moveEntry,
-  onDelete,
-}: Props) {
+export function ServicesWidgetRow({ offerService, disableDown, disableUp, update, moveEntry, onDelete }: Props) {
   const handleChange = (prop: keyof OfferService) => {
     return function (ev: React.ChangeEvent) {
       const next = cloneDeep(offerService);
@@ -40,12 +35,7 @@ export function ServicesWidgetRow({
     };
   };
 
-  const ServiceField = (
-    prop: keyof OfferService,
-    label: string,
-    type?: "number" | "text",
-    endAdornment?: string
-  ) => {
+  const ServiceField = (prop: keyof OfferService, label: string, type?: 'number' | 'text', endAdornment?: string) => {
     return (
       <AppTextField
         label={label}
@@ -62,22 +52,19 @@ export function ServicesWidgetRow({
       <CardContent>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} sm={4} lg={5}>
-            {ServiceField("description", "Leistung")}
+            {ServiceField('description', 'Leistung')}
           </Grid>
           <Grid item xs={4} sm={2} lg={1}>
-            {ServiceField("quantity", "Menge", "number")}
+            {ServiceField('quantity', 'Menge', 'number')}
           </Grid>
           <Grid item xs={4} sm={2} lg={1}>
-            {ServiceField("unitPrice", "Einzelpreis", "number", "€")}
+            {ServiceField('unitPrice', 'Einzelpreis', 'number', '€')}
           </Grid>
           <Grid item xs={4} sm={2} lg={1}>
-            {ServiceField("netto", "Netto", "number", "€")}
+            {ServiceField('netto', 'Netto', 'number', '€')}
           </Grid>
           <Grid item xs={6} sm={2} lg={1}>
-            <TaxSelector
-              value={offerService.taxRate}
-              onChange={handleChange("taxRate")}
-            />
+            <TaxSelector value={offerService.taxRate} onChange={handleChange('taxRate')} />
           </Grid>
           <Grid item xs={6} sm={3} lg={2}>
             <IconButton onClick={() => moveEntry(1)} disabled={disableDown}>

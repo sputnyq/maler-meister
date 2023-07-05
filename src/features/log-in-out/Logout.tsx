@@ -1,4 +1,4 @@
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from '@mui/icons-material/LogoutOutlined';
 import { IconButton, Tooltip } from '@mui/material';
 
 import { useDispatch } from 'react-redux';

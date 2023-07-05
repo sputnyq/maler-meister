@@ -1,3 +1,5 @@
+import qs from 'qs';
+
 export function euroValue(value: string | number | undefined) {
   if (typeof value == 'undefined' || value === '') {
     return '';
@@ -21,11 +23,11 @@ export const genericConverter = <T>(entry: any) => {
   } as T;
 };
 
-export const getCurrentDBDate = () => {
+export function getCurrentDBDate() {
   return new Date().toISOString().split('T')[0];
-};
+}
 
-export const getMonthStart = (offset = 0) => {
+export function getMonthStart(offset = 0) {
   const date = new Date();
   let month = date.getMonth() + offset;
   let year = date.getFullYear();
@@ -36,4 +38,8 @@ export const getMonthStart = (offset = 0) => {
 
   const dbMonth = String(month + 1).padStart(2, '0');
   return `${year}-${dbMonth}-01`;
-};
+}
+
+export function buildQuery(queryObj: object) {
+  return qs.stringify(queryObj);
+}

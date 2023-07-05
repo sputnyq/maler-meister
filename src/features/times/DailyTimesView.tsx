@@ -1,26 +1,38 @@
-import { Box, Button, Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
+import { Box, Card, CardContent, CardHeader } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
-import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useMemo, useRef, useState } from 'react';
 
-import AppGrid from '../../components/aa-shared/AppGrid';
+import RequestDailyViewButton from '../../components/RequestDailyViewButton';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
 import { appRequest } from '../../fetch/fetch-client';
-import { genericConverter } from '../../utils';
+import { buildQuery, genericConverter } from '../../utils';
+import { DailyEntryView } from '../time-capture/DailyEntryView';
+import DailyEntryTypeFilter from './DailyEntryTypeFilter';
 import { DateRangeWidget } from './DateRangeWidget';
-import HoursTile from './HoursTile';
+import { FilterTile } from './FilterTile';
+import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
 import UserNameFilter from './UserNameFilter';
 
 import { DateRange } from 'mui-daterange-picker-orient';
-import qs from 'qs';
 
 export default function DailyTimesView() {
   const [curUsername, setCurUsername] = useState('');
   const [dateRange, setDateRange] = useState<DateRange>({});
-
+  const [dailyEntryType, setDailyEntryType] = useState<DailyEntryType | undefined>(undefined);
   const [data, setData] = useState<DailyEntry[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const dailyEntryId = useRef('');
+
+  const closeDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const handleDialogRequest = (id: any) => {
+    dailyEntryId.current = id;
+    setDialogOpen(true);
+  };
 
   const columns = useMemo(() => {
     const cols: GridColDef[] = [
@@ -29,13 +41,7 @@ export default function DailyTimesView() {
         width: 250,
         headerName: 'Datum',
         renderCell({ value, id }) {
-          return (
-            <Link target={'_blank'} style={{ textDecoration: 'none' }} to={`/daily-entry/${id}`}>
-              {new Intl.DateTimeFormat('de-DE', {
-                dateStyle: 'full',
-              }).format(new Date(value))}
-            </Link>
-          );
+          return <RequestDailyViewButton value={value} onClick={() => handleDialogRequest(id)} />;
         },
       },
       {
@@ -68,11 +74,13 @@ export default function DailyTimesView() {
   const reset = () => {
     setCurUsername('');
     setDateRange({});
+    setDailyEntryType(undefined);
   };
 
-  const buildQuery = () => {
-    const query = qs.stringify({
+  const buildSearchQuery = () => {
+    const query = buildQuery({
       filters: {
+        type: dailyEntryType,
         username: curUsername === '' ? undefined : curUsername,
         date: {
           $gte: dateRange.startDate,
@@ -87,8 +95,8 @@ export default function DailyTimesView() {
 
   const handleSearchRequest = () => {
     setLoading(true);
-    const query = buildQuery();
-    appRequest('get')(`daily-entries?${query}`)
+
+    appRequest('get')(`daily-entries?${buildSearchQuery()}`)
       .then((res) => {
         const data = res.data.map((e: any) => genericConverter<DailyEntry[]>(e));
 
@@ -103,51 +111,71 @@ export default function DailyTimesView() {
       });
   };
 
-  const sum = data.reduce((acc, cur) => {
-    return acc + cur.sum;
-  }, 0);
+  const hours = useMemo(() => {
+    let sum = 0;
 
-  const overload = data.reduce((acc, cur) => {
-    return acc + cur.overload;
-  }, 0);
+    let underload = 0;
 
-  const underload = data.reduce((acc, cur) => {
-    return acc + cur.underload;
-  }, 0);
+    let overload = 0;
+
+    let holidays = 0;
+
+    let illness = 0;
+
+    data.forEach((dailyEntry) => {
+      sum += dailyEntry.sum;
+      underload += dailyEntry.underload;
+      overload += dailyEntry.overload;
+      if (dailyEntry.type === 'Urlaub') {
+        holidays += 1;
+      }
+      if (dailyEntry.type === 'Krank') {
+        illness += 1;
+      }
+    });
+
+    return [
+      {
+        amount: sum,
+        title: 'Gesamt (Std.)',
+      },
+      {
+        amount: overload,
+        title: 'Überstunden (Std.)',
+      },
+      {
+        amount: underload,
+        title: 'Unterstunden (Std.)',
+      },
+      {
+        amount: holidays,
+        title: 'Urlaub (Tag)',
+      },
+      {
+        amount: illness,
+        title: 'Krankheit (Tag)',
+      },
+    ] as HoursType[];
+  }, [data]);
 
   return (
-    <Box display="flex" flexDirection="column" gap={2}>
-      <Card>
-        <CardContent>
-          <AppGrid>
-            <DateRangeWidget dateRange={dateRange} setDateRange={setDateRange} />
-            <UserNameFilter curUsername={curUsername} setUsername={setCurUsername} />
-          </AppGrid>
-          <Box mt={2} display="flex" justifyContent="flex-end" gap={2}>
-            <Button onClick={reset} variant="outlined">
-              Zurücksetzen
-            </Button>
-            <Button onClick={handleSearchRequest} variant="contained">
-              Suchen
-            </Button>
-          </Box>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader title="Ergebnisse"></CardHeader>
-        <CardContent>
-          <AppDataGrid loading={loading} disablePagination data={data} columns={columns}></AppDataGrid>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardContent>
-          <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />}>
-            <HoursTile title="Gesamt" amount={sum} />
-            <HoursTile title="Überstunden" amount={overload} />
-            <HoursTile title="Unterstunden" amount={underload} />
-          </Stack>
-        </CardContent>
-      </Card>
-    </Box>
+    <>
+      <Box display="flex" flexDirection="column" gap={2}>
+        <FilterTile onReset={reset} onSearch={handleSearchRequest}>
+          <DateRangeWidget dateRange={dateRange} setDateRange={setDateRange} />
+          <UserNameFilter curUsername={curUsername} setUsername={setCurUsername} />
+          <DailyEntryTypeFilter setType={setDailyEntryType} type={dailyEntryType} />
+        </FilterTile>
+        <HoursOverviewCard hours={hours} />
+
+        <Card>
+          <CardHeader title="Ergebnisse"></CardHeader>
+          <CardContent>
+            <AppDataGrid loading={loading} disablePagination data={data} columns={columns}></AppDataGrid>
+          </CardContent>
+        </Card>
+      </Box>
+      <DailyEntryView closeDialog={closeDialog} dailyEntryId={dailyEntryId.current} dialogOpen={dialogOpen} />
+    </>
   );
 }

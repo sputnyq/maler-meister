@@ -43,10 +43,6 @@ export default function Constructions() {
                 headerName: 'Name',
                 editable: true,
               },
-              {
-                field: 'active',
-                type: 'boolean',
-              },
             ]}
           />
         </CardContent>

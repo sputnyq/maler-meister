@@ -20,13 +20,21 @@ const Transition = React.forwardRef(function Transition(
 });
 
 interface Props {
-  onConfirm(): void;
-  onClose(): void;
   open: boolean;
+  onClose(): void;
   title?: string;
+  showConfirm?: boolean;
+  onConfirm?: () => void;
 }
 
-export function AppFullScreenDialog({ children, onClose, open, title, onConfirm }: React.PropsWithChildren<Props>) {
+export function AppFullScreenDialog({
+  children,
+  open,
+  title,
+  showConfirm = true,
+  onClose,
+  onConfirm,
+}: React.PropsWithChildren<Props>) {
   return (
     <div>
       <Dialog fullScreen open={open} onClose={onClose} TransitionComponent={Transition}>
@@ -38,9 +46,11 @@ export function AppFullScreenDialog({ children, onClose, open, title, onConfirm 
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               {title}
             </Typography>
-            <IconButton onClick={onConfirm} color="inherit">
-              <CheckIcon />
-            </IconButton>
+            {showConfirm && (
+              <IconButton onClick={onConfirm} color="inherit">
+                <CheckIcon />
+              </IconButton>
+            )}
           </Toolbar>
         </AppBar>
         {children}

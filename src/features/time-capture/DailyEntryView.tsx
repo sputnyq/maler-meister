@@ -15,9 +15,11 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
+import { AppFullScreenDialog } from '../../components/aa-shared/AppFullScreenDialog';
 import { appRequest } from '../../fetch/fetch-client';
+import { useIsSmall } from '../../hooks/useIsSmall';
 import { genericConverter } from '../../utils';
 import ConstructionView from './ConstructionView';
 
@@ -28,19 +30,29 @@ interface Props {
 }
 
 export function DailyEntryView({ closeDialog, dailyEntryId, dialogOpen }: Props) {
-  return (
+  const isSmall = useIsSmall();
+
+  const dailyEntryView = useMemo(
+    () => <DailyEntryViewCard dailyEntryId={dailyEntryId} closeDialog={closeDialog} />,
+    [dailyEntryId, closeDialog],
+  );
+  const title = 'Tagesansicht';
+
+  return isSmall ? (
+    <AppFullScreenDialog open={dialogOpen} title={title} onClose={closeDialog} showConfirm={false}>
+      {dailyEntryView}
+    </AppFullScreenDialog>
+  ) : (
     <Dialog open={dialogOpen} onClose={closeDialog}>
       <DialogTitle>
         <Box display={'flex'} alignItems="center">
-          <Typography flexGrow={1}>Tagesansicht</Typography>
+          <Typography flexGrow={1}>{title}</Typography>
           <IconButton onClick={closeDialog}>
             <CloseOutlinedIcon />
           </IconButton>
         </Box>
       </DialogTitle>
-      <DialogContent>
-        <DailyEntryViewCard dailyEntryId={dailyEntryId} closeDialog={closeDialog} />
-      </DialogContent>
+      <DialogContent>{dailyEntryView}</DialogContent>
     </Dialog>
   );
 }
@@ -75,7 +87,7 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
   return (
     <Box display="flex" flexDirection={'column'} gap={2}>
       {dailyEntry !== null && (
-        <Card elevation={0} sx={{ background: '#fafafa' }}>
+        <Card elevation={0}>
           <CardHeader
             title={
               <Box>
@@ -113,7 +125,7 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
             </Box>
           </CardContent>
           <CardActions>
-            <Button variant="outlined" onClick={handleDeleteRequest} color="error">
+            <Button onClick={handleDeleteRequest} color="error">
               Eintrag löschen
             </Button>
           </CardActions>

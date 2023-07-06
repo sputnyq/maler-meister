@@ -7,7 +7,7 @@ interface Props {
 
 export function AddButton({ onAdd }: Props) {
   return (
-    <Button size="large" variant="outlined" disableElevation onClick={onAdd}>
+    <Button color="secondary" variant="contained" disableElevation onClick={onAdd}>
       <AddOutlinedIcon />
     </Button>
   );

@@ -24,7 +24,7 @@ export default function DocumentActions({ onCopy, onDelete, onDownload, onSave, 
   return (
     <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
       <Tooltip title="Speichern">
-        <IconButton onClick={onSave}>
+        <IconButton color="inherit" onClick={onSave}>
           <Badge color={color} variant="dot">
             <SaveIcon />
           </Badge>
@@ -32,13 +32,13 @@ export default function DocumentActions({ onCopy, onDelete, onDownload, onSave, 
       </Tooltip>
 
       <Tooltip title="Kopieren">
-        <IconButton onClick={onCopy}>
+        <IconButton color="inherit" onClick={onCopy}>
           <FileCopyIcon />
         </IconButton>
       </Tooltip>
 
       <Tooltip title="Als PDF speichern">
-        <IconButton onClick={onDownload}>
+        <IconButton color="inherit" onClick={onDownload}>
           <FileDownloadIcon />
         </IconButton>
       </Tooltip>

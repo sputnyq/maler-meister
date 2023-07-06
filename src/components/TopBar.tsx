@@ -19,7 +19,7 @@ export default function TopBar() {
     }
 
     return (
-      <IconButton color="primary" onClick={() => navigate('/')}>
+      <IconButton color="inherit" onClick={() => navigate('/')}>
         <HomeOutlinedIcon />
       </IconButton>
     );
@@ -37,8 +37,8 @@ export default function TopBar() {
 
   return (
     <Box flexGrow={1}>
-      <AppBar position="fixed" elevation={0} variant="outlined" color="inherit">
-        <Toolbar variant="dense">
+      <AppBar position="fixed" elevation={1} color="primary">
+        <Toolbar variant="regular">
           {homeButton}
           <Box flex={1} display="flex" justifyContent={'flex-end'}>
             {actions}

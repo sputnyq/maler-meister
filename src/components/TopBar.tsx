@@ -33,7 +33,7 @@ export default function TopBar() {
     if (isRootLocation) {
       return <Logout />;
     }
-    return null;
+    return <Box width={40} />;
   }, [location, isRootLocation]);
 
   const pageName = useMemo(() => {

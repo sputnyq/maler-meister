@@ -32,7 +32,7 @@ export default function MainNavigation() {
         <Tile requiredRoles={['admin']} to="constructions" title="Baustellen">
           <HandymanIcon fontSize="large" color="primary" />
         </Tile>
-        <Tile requiredRoles={['worker', 'admin', 'accountant']} to="upload" title="Datei Upload">
+        <Tile requiredRoles={['worker', 'admin', 'accountant']} to="upload" title="Upload">
           <UploadFileIcon fontSize="large" color="primary" />
         </Tile>
 

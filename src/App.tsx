@@ -10,6 +10,7 @@ import { LoadingScreen } from './components/aa-shared/LoadingScreen';
 import { RootBox } from './components/aa-shared/RootBox';
 import Login from './features/log-in-out/Login';
 import LoginProvider from './features/log-in-out/LoginProvider';
+import { useIsSmall } from './hooks/useIsSmall';
 import theme from './theme';
 
 const Offers = lazy(() => import('./routes/Offers'));
@@ -28,12 +29,13 @@ function LazyLoad({ children }: React.PropsWithChildren) {
 }
 
 export default function App() {
+  const isSmall = useIsSmall();
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline>
         <RootBox>
           <TopBar />
-          <Box mt={6}>
+          <Box mt={isSmall ? 7 : 8}>
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route

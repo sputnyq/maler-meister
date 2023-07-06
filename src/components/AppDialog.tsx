@@ -92,7 +92,9 @@ function DesktopDialog({
       <DialogContent>{children}</DialogContent>
       {showConfirm && (
         <DialogActions>
-          <Button onClick={onConfirm}>OK</Button>
+          <Button variant="contained" disableElevation onClick={onConfirm}>
+            OK
+          </Button>
         </DialogActions>
       )}
     </Dialog>

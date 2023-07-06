@@ -12,7 +12,7 @@ export default function Options() {
           </Stack>
         </CardContent>
       </Card>
-      <Box mt={3}>
+      <Box mt={2}>
         <Outlet />
       </Box>
     </>

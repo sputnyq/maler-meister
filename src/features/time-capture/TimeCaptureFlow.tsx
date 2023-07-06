@@ -36,7 +36,7 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
 
   const [dailyEntry, setDailyEntry] = useState<DailyEntry>(initialDailyEntry);
 
-  const [workEntries, setWorkEntries] = useState<WorkEntry[]>([]);
+  const [workEntries, setWorkEntries] = useState<WorkEntry[]>([{} as WorkEntry]);
 
   const workEntriesIds = useRef<number[]>([]);
   const severity = useRef<AlertColor>('error');

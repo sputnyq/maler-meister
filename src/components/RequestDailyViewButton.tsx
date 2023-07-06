@@ -8,7 +8,7 @@ interface Props {
 
 export default function RequestDailyViewButton({ value, onClick }: Props) {
   return (
-    <Button startIcon={<OpenInNewOutlinedIcon />} onClick={onClick}>
+    <Button color="info" startIcon={<OpenInNewOutlinedIcon />} onClick={onClick}>
       {new Intl.DateTimeFormat('de-DE', {
         month: 'short',
         weekday: 'short',

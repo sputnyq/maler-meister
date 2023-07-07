@@ -14,7 +14,7 @@ import { downloadAsCsv } from './csv/csv-export-utils';
 import DailyEntryTypeFilter from './filters/DailyEntryTypeFilter';
 import { DateRangeWidget } from './filters/DateRangeWidget';
 import { FilterTile } from './filters/FilterTile';
-import UserNameFilter from './filters/UserNameFilter';
+import WorkerNameFilter from './filters/WorkerNameFilter';
 
 import { DateRange } from 'mui-daterange-picker-orient';
 
@@ -171,7 +171,7 @@ export default function DailyTimesView() {
       <Box display="flex" flexDirection="column" gap={2}>
         <FilterTile onReset={reset} onSearch={handleSearchRequest}>
           <DateRangeWidget dateRange={dateRange} setDateRange={setDateRange} />
-          <UserNameFilter curUsername={curUsername} setUsername={setCurUsername} />
+          <WorkerNameFilter curUsername={curUsername} setUsername={setCurUsername} />
           <DailyEntryTypeFilter setType={setDailyEntryType} type={dailyEntryType} />
         </FilterTile>
 

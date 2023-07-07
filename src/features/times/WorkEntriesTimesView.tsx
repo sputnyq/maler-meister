@@ -12,7 +12,7 @@ import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
 import { DateRangeWidget } from './filters/DateRangeWidget';
 import FilterGridItem from './filters/FilterGridItem';
 import { FilterTile } from './filters/FilterTile';
-import UserNameFilter from './filters/UserNameFilter';
+import WorkerNameFilter from './filters/WorkerNameFilter';
 
 import { DateRange } from 'mui-daterange-picker-orient';
 
@@ -120,7 +120,7 @@ export default function WorkEntriesTimesView() {
       <Box display="flex" flexDirection="column" gap={2}>
         <FilterTile onReset={reset} onSearch={handleSearchRequest}>
           <DateRangeWidget dateRange={dateRange} setDateRange={setDateRange} />
-          <UserNameFilter curUsername={curUsername} setUsername={setCurUsername} />
+          <WorkerNameFilter curUsername={curUsername} setUsername={setCurUsername} />
           <FilterGridItem>
             <AppTextField
               value={constructionId}

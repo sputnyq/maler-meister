@@ -2,13 +2,12 @@ import { useEffect, useState } from 'react';
 
 import { appRequest } from '../fetch/fetch-client';
 
-export function useUsernames() {
-  const [userNames, setUserNames] = useState<string[]>([]);
+export function useLoadUsers() {
+  const [userNames, setUserNames] = useState<User[]>([]);
 
   useEffect(() => {
     appRequest('get')('users').then((res) => {
-      const userNames = res.map((user: User) => user.username);
-      setUserNames(userNames);
+      setUserNames(res);
     });
   }, []);
 

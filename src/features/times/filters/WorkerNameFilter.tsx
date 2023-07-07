@@ -1,7 +1,7 @@
 import { MenuItem } from '@mui/material';
 
 import { AppTextField } from '../../../components/aa-shared/AppTextField';
-import { useUsernames } from '../../../hooks/useUsernames';
+import { useLoadUsers } from '../../../hooks/useLoadUsers';
 import FilterGridItem from './FilterGridItem';
 
 interface Props {
@@ -9,8 +9,10 @@ interface Props {
   setUsername(username: string): void;
 }
 
-export default function UserNameFilter({ curUsername, setUsername }: Props) {
-  const userNames = useUsernames();
+export default function WorkerNameFilter({ curUsername, setUsername }: Props) {
+  const allUsers = useLoadUsers();
+
+  const workerUserNames = allUsers.filter((user) => user.userRole === 'worker').map((user) => user.username);
   return (
     <FilterGridItem>
       <AppTextField
@@ -22,7 +24,7 @@ export default function UserNameFilter({ curUsername, setUsername }: Props) {
         label="Mitarbeiter"
       >
         <MenuItem value={undefined}>-</MenuItem>
-        {userNames.map((username, index) => {
+        {workerUserNames.map((username, index) => {
           return (
             <MenuItem key={index} value={username}>
               {username}

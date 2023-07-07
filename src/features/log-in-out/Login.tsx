@@ -94,15 +94,16 @@ export default function Login() {
           </CardContent>
         </Card>
       </Box>
-      <Box width={'100%'} position={'absolute'} bottom={30} display="flex" justifyContent={'center'}>
-        <Link
-          target="_blank"
-          href="https://de.freepik.com/vektoren-kostenlos/illustration-der-malereirollenikone-auf-blauem-hintergrund_2632302.htm#query=painter%20roller&position=19&from_view=search&track=ais"
-          sx={{ textDecoration: 'none' }}
-        >
-          Logo von rawpixel.com auf Freepik
-        </Link>
-      </Box>
+      <Link
+        position={'absolute'}
+        bottom="20px"
+        left={'50%'}
+        target="_blank"
+        href="https://de.freepik.com/vektoren-kostenlos/illustration-der-malereirollenikone-auf-blauem-hintergrund_2632302.htm#query=painter%20roller&position=19&from_view=search&track=ais"
+        sx={{ textDecoration: 'none', transform: 'translateX(-50%)' }}
+      >
+        Logo von rawpixel.com auf Freepik
+      </Link>
     </>
   );
 }

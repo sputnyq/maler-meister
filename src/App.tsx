@@ -1,4 +1,4 @@
-import { Box, CssBaseline, ThemeProvider } from '@mui/material';
+import { Box, CssBaseline, ThemeProvider, Typography } from '@mui/material';
 
 import { Suspense, lazy } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';

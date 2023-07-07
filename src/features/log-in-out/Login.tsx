@@ -1,6 +1,6 @@
 import VisibilityOff from '@mui/icons-material/VisibilityOffOutlined';
 import Visibility from '@mui/icons-material/VisibilityOutlined';
-import { Box, Button, Card, CardContent, CardHeader, IconButton } from '@mui/material';
+import { Box, Button, Card, CardContent, CardHeader, IconButton, Typography } from '@mui/material';
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -42,56 +42,66 @@ export default function Login() {
   };
 
   return (
-    <Box mt={10} display="flex" justifyContent="center">
-      <Card>
-        <CardHeader title="Anmeldung" />
-        <CardContent>
-          <form>
-            <Box display="flex" flexDirection="column" gap={3} minWidth="300px">
-              <AppTextField
-                value={identifier}
-                label="Nutzer"
-                autoCapitalize="none"
-                onChange={(ev) => {
-                  setIdetifier(ev.target.value);
-                }}
-                inputProps={{
-                  autoCapitalize: 'none',
-                }}
-              />
-              <AppTextField
-                InputProps={{
-                  endAdornment: (
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => {
-                        setShowPassword((sp) => !sp);
-                      }}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  ),
-                }}
-                onKeyDown={({ key }) => {
-                  if (key === 'Enter') {
-                    loginUser();
-                  }
-                }}
-                type={showPassword ? 'text' : 'password'}
-                label="Passwort"
-                value={password}
-                onChange={(ev) => {
-                  setPassword(ev.target.value);
-                }}
-              />
-              <Button disableElevation onClick={loginUser} variant="contained">
-                Login
-              </Button>
-            </Box>
-          </form>
-        </CardContent>
-      </Card>
-    </Box>
+    <>
+      <Box mt={10} display="flex" justifyContent="center">
+        <Card>
+          <CardHeader title="Anmeldung" />
+          <CardContent>
+            <form>
+              <Box display="flex" flexDirection="column" gap={3} minWidth="300px">
+                <AppTextField
+                  value={identifier}
+                  label="Nutzer"
+                  autoCapitalize="none"
+                  onChange={(ev) => {
+                    setIdetifier(ev.target.value);
+                  }}
+                  inputProps={{
+                    autoCapitalize: 'none',
+                  }}
+                />
+                <AppTextField
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => {
+                          setShowPassword((sp) => !sp);
+                        }}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    ),
+                  }}
+                  onKeyDown={({ key }) => {
+                    if (key === 'Enter') {
+                      loginUser();
+                    }
+                  }}
+                  type={showPassword ? 'text' : 'password'}
+                  label="Passwort"
+                  value={password}
+                  onChange={(ev) => {
+                    setPassword(ev.target.value);
+                  }}
+                />
+                <Button disableElevation onClick={loginUser} variant="contained">
+                  Login
+                </Button>
+              </Box>
+            </form>
+          </CardContent>
+        </Card>
+      </Box>
+      <footer>
+        <Box position={'absolute'} bottom={10}>
+          <a href="https://de.freepik.com/vektoren-kostenlos/illustration-der-malereirollenikone-auf-blauem-hintergrund_2632302.htm#query=painter%20roller&position=19&from_view=search&track=ais">
+            Logo von rawpixel.com
+          </a>{' '}
+          auf Freepik
+        </Box>
+      </footer>
+    </>
   );
 }

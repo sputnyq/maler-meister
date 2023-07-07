@@ -1,1 +1,1 @@
-<a href="https://de.freepik.com/vektoren-kostenlos/illustration-der-malereirollenikone-auf-blauem-hintergrund_2632302.htm#query=painter%20roller&position=19&from_view=search&track=ais">Bild von rawpixel.com</a> auf Freepik
+

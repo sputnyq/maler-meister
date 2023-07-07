@@ -12,7 +12,7 @@ interface Props {
 export default function WorkerNameFilter({ curUsername, setUsername }: Props) {
   const allUsers = useLoadUsers();
 
-  const workerUserNames = allUsers.filter((user) => user.userRole === 'worker').map((user) => user.username);
+  const allWorker = allUsers.filter((user) => user.userRole === 'worker');
   return (
     <FilterGridItem>
       <AppTextField
@@ -24,10 +24,10 @@ export default function WorkerNameFilter({ curUsername, setUsername }: Props) {
         label="Mitarbeiter"
       >
         <MenuItem value={undefined}>-</MenuItem>
-        {workerUserNames.map((username, index) => {
+        {allWorker.map((worker, index) => {
           return (
-            <MenuItem key={index} value={username}>
-              {username}
+            <MenuItem key={index} value={worker.username}>
+              {`${worker.firstName} ${worker.lastName}`}
             </MenuItem>
           );
         })}

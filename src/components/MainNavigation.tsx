@@ -5,15 +5,21 @@ import MoreTimeIcon from '@mui/icons-material/MoreTimeOutlined';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLongOutlined';
 import TuneIcon from '@mui/icons-material/TuneOutlined';
 import UploadFileIcon from '@mui/icons-material/UploadFileOutlined';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
 import React from 'react';
+import { useSelector } from 'react-redux';
 
+import { AppState } from '../store';
 import Tile from './aa-shared/Tile';
 
 export default function MainNavigation() {
+  const currentUser = useSelector<AppState, User | null>((s) => s.login.user);
+
   return (
     <>
+      <Typography color={'GrayText'} p={3} variant="h4" align="center">{`Hallo ${currentUser?.firstName}!`}</Typography>
+
       <ViewGrid>
         <Tile requiredRoles={['accountant', 'admin']} to="offers" title="Angebote">
           <ArticleIcon fontSize="large" color="primary" />

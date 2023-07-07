@@ -137,6 +137,7 @@ export default function App() {
             </Routes>
           </Box>
         </RootBox>
+        <img width={'100%'} style={{ position: 'fixed', bottom: '0', zIndex: '-1' }} src="skyline.svg"></img>
       </CssBaseline>
     </ThemeProvider>
   );

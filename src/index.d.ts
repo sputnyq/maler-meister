@@ -40,6 +40,8 @@ interface User {
   confirmed: boolean;
   blocked: boolean;
   userRole: UserRole;
+  firstName: string;
+  lastName: string;
 }
 
 type DailyEntryType = 'Arbeit' | 'Urlaub' | 'Krank';

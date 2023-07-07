@@ -96,8 +96,9 @@ export default function Login() {
       </Box>
       <Box width={'100%'} position={'absolute'} bottom={30} display="flex" justifyContent={'center'}>
         <Link
-          sx={{ textDecoration: 'none' }}
+          target="_blank"
           href="https://de.freepik.com/vektoren-kostenlos/illustration-der-malereirollenikone-auf-blauem-hintergrund_2632302.htm#query=painter%20roller&position=19&from_view=search&track=ais"
+          sx={{ textDecoration: 'none' }}
         >
           Logo von rawpixel.com auf Freepik
         </Link>

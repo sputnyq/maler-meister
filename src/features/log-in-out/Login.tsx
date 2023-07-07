@@ -1,6 +1,6 @@
 import VisibilityOff from '@mui/icons-material/VisibilityOffOutlined';
 import Visibility from '@mui/icons-material/VisibilityOutlined';
-import { Box, Button, Card, CardContent, CardHeader, IconButton, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, CardHeader, IconButton, Link } from '@mui/material';
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -94,14 +94,14 @@ export default function Login() {
           </CardContent>
         </Card>
       </Box>
-      <footer>
-        <Box position={'absolute'} bottom={10}>
-          <a href="https://de.freepik.com/vektoren-kostenlos/illustration-der-malereirollenikone-auf-blauem-hintergrund_2632302.htm#query=painter%20roller&position=19&from_view=search&track=ais">
-            Logo von rawpixel.com
-          </a>{' '}
-          auf Freepik
-        </Box>
-      </footer>
+      <Box width={'100%'} position={'absolute'} bottom={30} display="flex" justifyContent={'center'}>
+        <Link
+          sx={{ textDecoration: 'none' }}
+          href="https://de.freepik.com/vektoren-kostenlos/illustration-der-malereirollenikone-auf-blauem-hintergrund_2632302.htm#query=painter%20roller&position=19&from_view=search&track=ais"
+        >
+          Logo von rawpixel.com auf Freepik
+        </Link>
+      </Box>
     </>
   );
 }

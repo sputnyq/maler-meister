@@ -1,9 +1,7 @@
 import React from 'react';
 
+import Wip from '../components/Wip';
+
 export default function Upload() {
-  return (
-    <div>
-      <h3>Datei Upload für die Baustelle</h3>
-    </div>
-  );
+  return <Wip></Wip>;
 }

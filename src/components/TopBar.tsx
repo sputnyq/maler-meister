@@ -50,7 +50,7 @@ export default function TopBar() {
   return (
     <Box flexGrow={1}>
       <AppBar position="fixed" elevation={1} color="primary">
-        <Toolbar variant="regular">
+        <Toolbar variant="dense">
           {homeButton}
           <Typography variant="h6" flex={1} align="center">
             {pageName}

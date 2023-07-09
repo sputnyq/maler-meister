@@ -74,3 +74,9 @@ interface AppJob {
   name: string;
   id: number;
 }
+
+interface Feiertag {
+  date: string;
+  fname: string;
+  comment: string;
+}

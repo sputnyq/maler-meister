@@ -36,7 +36,7 @@ export default function App() {
       <CssBaseline>
         <RootBox>
           <TopBar />
-          <Box mt={isSmall ? 7 : 8}>
+          <Box mt={isSmall ? 5 : 6}>
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route

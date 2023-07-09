@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { loadDailyEntries } from '../../fetch/api';
 import { useHolidays } from '../../hooks/useHolidays';
 import { useIsSmall } from '../../hooks/useIsSmall';
+import { useLoadUsers } from '../../hooks/useLoadUsers';
 import { buildQuery } from '../../utils';
 
 import { EventSourceInput } from '@fullcalendar/core';
@@ -24,7 +25,10 @@ export default function CalendarView() {
   const [multiMonthMaxColumns, setMultiMonthMaxColumns] = useState(1);
   const [currentEvent, setCurrentEvent] = useState<EventDateRange>({});
   const [dailyEntries, setDailyEntries] = useState<DailyEntry[]>([]);
+
+  const users = useLoadUsers();
   const holidays = useHolidays(curYear);
+
   const small = useIsSmall();
 
   useEffect(() => {
@@ -48,10 +52,10 @@ export default function CalendarView() {
 
   const events = useMemo(() => {
     const hols = holidays2Events(holidays);
-    const vacations = dailyEntries2Event(dailyEntries);
+    const vacations = dailyEntries2Event(dailyEntries, users);
 
     return [...hols, ...vacations];
-  }, [holidays, dailyEntries]);
+  }, [holidays, dailyEntries, users]);
 
   const customButtons = useMemo(() => {
     const zoomIn = () => {
@@ -106,37 +110,35 @@ export default function CalendarView() {
   );
 }
 
-function dailyEntries2Event(dailyEntries: DailyEntry[]): EventSourceInput[] {
+function dailyEntries2Event(dailyEntries: DailyEntry[], users: User[]): EventSourceInput[] {
   return dailyEntries.map((de) => {
+    const name = users.find((u) => u.username === de.username)?.lastName || de.username;
     return {
       date: de.date,
-      title: `Urlaub ${de.username}`,
-      color: 'blue',
+      title: `🏝️ ${name}`,
+      color: '#19BEC3',
       textColor: 'white',
     };
   });
 }
 
 function holidays2Events(holidays: Feiertag[]): EventSourceInput[] {
-  return holidays.map((h) => {
-    const obj = {
-      date: h.date,
-      title: h.fname,
-      description: h.comment,
-      borderColor: 'green',
-    };
-    if (h.comment) {
-      return {
-        ...obj,
-        backgroundColor: 'white',
-        textColor: 'green',
-      };
-    } else {
-      return {
-        ...obj,
-        backgroundColor: 'green',
-        textColor: 'white',
-      };
+  const arr = new Array<EventSourceInput>();
+
+  for (const h of holidays) {
+    if (h.fname.toUpperCase() === 'AUGSBURGER FRIEDENSFEST') {
+      // not relevant
+      continue;
     }
-  });
+
+    arr.push({
+      borderColor: 'transparent',
+      backgroundColor: 'green',
+      textColor: 'white',
+      //@ts-ignore
+      date: h.date,
+      title: `🎉 ${h.fname}`,
+    });
+  }
+  return arr;
 }

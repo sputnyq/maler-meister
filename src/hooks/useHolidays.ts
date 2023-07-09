@@ -1,23 +1,25 @@
-import { useEffect } from 'react';
-
-import { useLocalStorage } from './useLocalStorage';
+import { useEffect, useState } from 'react';
 
 export function useHolidays(year: number | string) {
-  const [holidays, setHolidays] = useLocalStorage<Feiertag[]>(`holidays-${year}`, '[]');
+  const [holidays, setHolidays] = useState<Feiertag[]>([]);
 
   useEffect(() => {
-    if (holidays.length === 0) {
+    const itemName = `holidays-${year}`;
+    const stored = localStorage.getItem(itemName);
+    if (stored !== null) {
+      setHolidays(JSON.parse(stored));
+    } else {
       fetch(`https://get.api-feiertage.de?years=${year}&states=by`, { method: 'get' })
         .then((res) => res.json())
         .then((data) => {
           if (data.status === 'success') {
-            //@ts-ignore
             setHolidays(data.feiertage);
+            localStorage.setItem(itemName, JSON.stringify(data.feiertage));
           }
         })
         .catch(console.log);
     }
-  }, [holidays, year, setHolidays]);
+  }, [year]);
 
   return holidays as Feiertag[];
 }

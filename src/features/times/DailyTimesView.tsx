@@ -6,6 +6,7 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 
 import RequestDailyViewButton from '../../components/RequestDailyViewButton';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
+import { loadDailyEntries } from '../../fetch/api';
 import { appRequest } from '../../fetch/fetch-client';
 import { buildQuery, genericConverter } from '../../utils';
 import { DailyEntryView } from '../time-capture/DailyEntryView';
@@ -150,15 +151,8 @@ export default function DailyTimesView() {
   const handleSearchRequest = () => {
     setLoading(true);
 
-    appRequest('get')(`daily-entries?${buildSearchQuery()}`)
-      .then((res) => {
-        const data = res.data.map((e: any) => genericConverter<DailyEntry[]>(e));
-        setData(data);
-      })
-      .catch((e) => {
-        console.log(e);
-        alert('Fehler beim Laden');
-      })
+    loadDailyEntries(buildSearchQuery())
+      .then(setData)
       .finally(() => {
         setLoading(false);
       });

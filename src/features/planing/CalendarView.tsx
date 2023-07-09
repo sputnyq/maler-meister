@@ -1,106 +1,142 @@
-import { Box, Card, CardContent, Typography } from '@mui/material';
+import { Card, CardContent } from '@mui/material';
 
 import FullCalendar from '@fullcalendar/react';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
+import { loadDailyEntries } from '../../fetch/api';
 import { useHolidays } from '../../hooks/useHolidays';
+import { useIsSmall } from '../../hooks/useIsSmall';
+import { buildQuery } from '../../utils';
 
 import { EventSourceInput } from '@fullcalendar/core';
 import deLocale from '@fullcalendar/core/locales/de';
-import dayGridPlugin from '@fullcalendar/daygrid';
 import multiMonthPlugin from '@fullcalendar/multimonth';
+import timeGridPlugin from '@fullcalendar/timegrid';
+
+type EventDateRange = {
+  start?: Date;
+  end?: Date;
+};
 
 export default function CalendarView() {
-  const holidays = useHolidays('2023');
+  const [curYear, setCurYear] = useState(new Date().getFullYear());
+
+  const [multiMonthMaxColumns, setMultiMonthMaxColumns] = useState(1);
+  const [currentEvent, setCurrentEvent] = useState<EventDateRange>({});
+  const [dailyEntries, setDailyEntries] = useState<DailyEntry[]>([]);
+  const holidays = useHolidays(curYear);
+  const small = useIsSmall();
+
+  useEffect(() => {
+    const newYear = currentEvent.start?.getFullYear();
+    newYear && setCurYear(newYear);
+  }, [currentEvent]);
+
+  useEffect(() => {
+    const query = buildQuery({
+      filters: {
+        type: 'Urlaub',
+
+        date: {
+          $gte: currentEvent.start,
+          $lte: currentEvent.end,
+        },
+      },
+    });
+    loadDailyEntries(query).then((data) => setDailyEntries(data));
+  }, [currentEvent]);
 
   const events = useMemo(() => {
     const hols = holidays2Events(holidays);
+    const vacations = dailyEntries2Event(dailyEntries);
 
-    return [
-      ...hols,
-      {
-        startParam: '2023-08-10',
-        endParam: '2023-08-20',
-        title: 'Baustelle 1',
-      },
-      {
-        backgroundColor: '#b8d4f3',
-        borderColor: 'transparent',
-        textColor: 'blue',
-        start: '2023-08-14',
-        end: '2023-08-19',
-        title: `[Urlaub] Dima Ivanov`,
-      },
-      {
-        backgroundColor: 'red',
-        borderColor: 'transparent',
-        textColor: 'white',
-        start: '2023-08-07',
-        end: '2023-08-19',
-        title: `[6 Personen] Albrechtstr. 12`,
-      },
-      {
-        backgroundColor: 'orange',
-        borderColor: 'transparent',
-        textColor: 'white',
-        start: '2023-08-16',
-        end: '2023-08-25',
-        title: `[8 Personen] Marienstr. 12`,
-      },
-      {
-        backgroundColor: 'transparent',
-        borderColor: 'purple',
-        textColor: 'purple',
-        start: '2023-08-28',
-        end: '2023-09-10',
-        title: `?? [7 Personen] Karlsplatz. 34`,
-      },
-    ];
-  }, [holidays]);
+    return [...hols, ...vacations];
+  }, [holidays, dailyEntries]);
+
+  const customButtons = useMemo(() => {
+    const zoomIn = () => {
+      setMultiMonthMaxColumns((cur) => Math.min(cur + 1, 3));
+    };
+
+    const zoomOut = () => {
+      setMultiMonthMaxColumns((cur) => Math.max(cur - 1, 1));
+    };
+    return small
+      ? undefined
+      : {
+          plus: {
+            text: 'Vergrößern',
+            click: zoomOut,
+          },
+          minus: {
+            text: 'Verkleinern',
+
+            click: zoomIn,
+          },
+        };
+  }, [small]);
+
+  const headerToolbar = useMemo(() => {
+    return {
+      left: 'prev,next today',
+      center: small ? undefined : 'title',
+      right: small ? 'multiMonthYear,timeGridWeek' : 'minus,plus multiMonthYear,timeGridWeek',
+    };
+  }, [small]);
+
   return (
     <Card>
       <CardContent>
         <FullCalendar
           events={events}
-          height={'calc(100vh - 150px)'}
+          height={'calc(100vh - 170px)'}
           datesSet={(params) => {
-            console.log(params);
+            setCurrentEvent({ end: params.end, start: params.start });
           }}
-          headerToolbar={{
-            center: 'zoomIn',
-          }}
-          customButtons={{
-            zoomIn: {
-              text: 'Zoom IN',
-              click: function () {
-                alert('clicked custom button 1!');
-              },
-            },
-          }}
+          weekNumbers
+          headerToolbar={headerToolbar}
+          customButtons={customButtons}
           locale={deLocale}
-          plugins={[multiMonthPlugin]}
-          multiMonthMaxColumns={1}
+          plugins={[multiMonthPlugin, timeGridPlugin]}
+          multiMonthMaxColumns={multiMonthMaxColumns}
           initialView="multiMonthYear"
-          //   eventContent={function (arg) {
-          //     return (
-          //       <Box>
-          //         <Typography sx={{ whiteSpace: 'break-spaces', fontSize: '12px' }}>{arg.event.title}</Typography>
-          //       </Box>
-          //     );
-          //   }}
         />
       </CardContent>
     </Card>
   );
 }
 
+function dailyEntries2Event(dailyEntries: DailyEntry[]): EventSourceInput[] {
+  return dailyEntries.map((de) => {
+    return {
+      date: de.date,
+      title: `Urlaub ${de.username}`,
+      color: 'blue',
+      textColor: 'white',
+    };
+  });
+}
+
 function holidays2Events(holidays: Feiertag[]): EventSourceInput[] {
-  return holidays.map((h) => ({
-    backgroundColor: 'white',
-    borderColor: 'transparent',
-    textColor: 'green',
-    date: h.date,
-    title: `[Feiertag] ${h.fname}`,
-    description: h.comment,
-  }));
+  return holidays.map((h) => {
+    const obj = {
+      date: h.date,
+      title: h.fname,
+      description: h.comment,
+      borderColor: 'green',
+    };
+    if (h.comment) {
+      return {
+        ...obj,
+        backgroundColor: 'white',
+        textColor: 'green',
+      };
+    } else {
+      return {
+        ...obj,
+        backgroundColor: 'green',
+        textColor: 'white',
+      };
+    }
+  });
 }

@@ -8,7 +8,6 @@ import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useHolidays } from '../../hooks/useHolidays';
 import { useIsSmall } from '../../hooks/useIsSmall';
 import { useLoadUsers } from '../../hooks/useLoadUsers';
-import { buildQuery } from '../../utils';
 
 import { EventInput } from '@fullcalendar/core';
 import deLocale from '@fullcalendar/core/locales/de';

@@ -9,7 +9,7 @@ export function useLoadJobs() {
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     if (!appJobs) {
-      dispatch(loadAllJobs());
+      dispatch(loadAllJobs({}));
     }
   });
 }

@@ -1,7 +1,8 @@
+import { AppState } from '.';
 import { appRequest } from '../fetch/fetch-client';
-import { genericConverter } from '../utils';
+import { buildQuery, genericConverter } from '../utils';
 
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 interface RootState {
   jobs?: AppJob[];
@@ -11,15 +12,25 @@ const initialState: RootState = {};
 
 const BASE = 'jobs';
 
-export const loadAllJobs = createAsyncThunk('jobs/load-all', () => {
-  return appRequest('get')(BASE).then((res: any) => {
-    const converted = (res.data as any[]).map((e) => genericConverter<AppJob>(e));
-    return converted;
-  });
-});
+export const loadAllJobs = createAsyncThunk<AppJob[], void, { state: AppState }>(
+  'jobs/load-all',
+  async (_, thunkApi) => {
+    const state = thunkApi.getState();
+    const query = buildQuery({
+      filters: {
+        tenant: state.login.user?.tenant,
+      },
+    });
+    return appRequest('get')(`${BASE}?${query}`).then((res: any) => {
+      const converted = (res.data as any[]).map((e) => genericConverter<AppJob>(e));
+      return converted;
+    });
+  },
+);
 
-export const createJob = createAsyncThunk('jobs/create', () => {
-  return appRequest('post')(BASE, { data: { name: 'NEU' } }).then((res: any) => {
+export const createJob = createAsyncThunk<AppJob, void, { state: AppState }>('jobs/create', async (aj, thunkApi) => {
+  const state = thunkApi.getState();
+  return appRequest('post')(BASE, { data: { name: 'NEU', tenant: state.login.user?.tenant } }).then((res: any) => {
     return genericConverter<AppJob>(res.data);
   });
 });
@@ -36,7 +47,7 @@ const jobsSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(loadAllJobs.fulfilled, (state, action) => {
+      .addCase(loadAllJobs.fulfilled, (state, action: PayloadAction<AppJob[]>) => {
         state.jobs = action.payload;
       })
       .addCase(createJob.fulfilled, (state, action) => {

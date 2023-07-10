@@ -7,12 +7,14 @@ import { AppDialog } from '../../components/AppDialog';
 import AddFab from '../../components/aa-shared/AddFab';
 import { DEFAULT_HOURS } from '../../constants';
 import { appRequest } from '../../fetch/fetch-client';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useLoadActiveConstructions } from '../../hooks/useLoadActiveConstructions';
 import { useLoadJobs } from '../../hooks/useLoadJobs';
 import { AppState } from '../../store';
 import { getCurrentDBDate } from '../../utils';
 import DailyEntryEditor from './DailyEntryEditor';
 
+import { current } from '@reduxjs/toolkit';
 import { cloneDeep } from 'lodash';
 
 interface Props {
@@ -23,7 +25,7 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
   useLoadActiveConstructions();
   useLoadJobs();
 
-  const username = useSelector<AppState, string>((s) => s.login.user?.username || '');
+  const user = useCurrentUser();
 
   const [open, setOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -31,7 +33,8 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
   const initialDailyEntry = {
     date: getCurrentDBDate(),
     type: 'Arbeit',
-    username,
+    username: user?.username,
+    tenant: user?.tenant,
   } as DailyEntry;
 
   const [dailyEntry, setDailyEntry] = useState<DailyEntry>(initialDailyEntry);
@@ -55,12 +58,17 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
   }, []);
 
   const handleSave = async () => {
+    if (!user) {
+      //never happens
+      return;
+    }
     if (dailyEntry.type === 'Arbeit') {
       /*
       UPLOAD WORK ENTRIES
       */
       for (const we of workEntries) {
-        we.username = username;
+        we.username = user.tenant;
+        we.tenant = user.tenant;
         we.date = dailyEntry.date;
         await appRequest('post')('work-entries', {
           data: we,
@@ -86,7 +94,8 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
           }, 0) || 0
         : DEFAULT_HOURS;
 
-    toPersist.username = username;
+    toPersist.username = user.username;
+    toPersist.tenant = user.tenant;
     toPersist.sum = sum;
     if (sum > DEFAULT_HOURS) {
       toPersist.overload = sum - DEFAULT_HOURS;

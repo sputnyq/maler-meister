@@ -7,11 +7,13 @@ import { AppDialog } from '../../components/AppDialog';
 import AddFab from '../../components/aa-shared/AddFab';
 import { AppTextField } from '../../components/aa-shared/AppTextField';
 import { appRequest } from '../../fetch/fetch-client';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { AppDispatch } from '../../store';
 import { addActiveConstruction } from '../../store/constructionReducer';
 import { genericConverter } from '../../utils';
 
 export default function CreateConstruction() {
+  const user = useCurrentUser();
   const [open, setOpen] = useState(false);
 
   const [name, setName] = useState('');
@@ -27,7 +29,7 @@ export default function CreateConstruction() {
   };
 
   const handleCreateRequest = () => {
-    appRequest('post')('constructions', { data: { name, active: true } })
+    appRequest('post')('constructions', { data: { name, active: true, tenant: user?.tenant } as Construction })
       .then((data: any) => {
         const newConstruction = genericConverter<Construction>(data.data);
         dispatch(addActiveConstruction(newConstruction));

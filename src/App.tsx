@@ -4,9 +4,9 @@ import { Suspense, lazy } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
 
 import AppLoader from './components/AppLoader';
+import { LoadingScreen } from './components/LoadingScreen';
 import MainNavigation from './components/MainNavigation';
 import TopBar from './components/TopBar';
-import { LoadingScreen } from './components/aa-shared/LoadingScreen';
 import { RootBox } from './components/aa-shared/RootBox';
 import Login from './features/log-in-out/Login';
 import LoginProvider from './features/log-in-out/LoginProvider';

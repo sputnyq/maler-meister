@@ -67,7 +67,7 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
       UPLOAD WORK ENTRIES
       */
       for (const we of workEntries) {
-        we.username = user.tenant;
+        we.username = user.username;
         we.tenant = user.tenant;
         we.date = dailyEntry.date;
         await appRequest('post')('work-entries', {

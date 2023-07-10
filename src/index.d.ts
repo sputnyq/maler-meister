@@ -42,11 +42,13 @@ interface User {
   userRole: UserRole;
   firstName: string;
   lastName: string;
+  tenant: string;
 }
 
 type DailyEntryType = 'Arbeit' | 'Urlaub' | 'Krank';
 
 interface Construction {
+  tenant: string;
   id: number;
   name: string;
   active: boolean;
@@ -58,6 +60,7 @@ interface WorkEntry {
   username: string;
   hours: string;
   job: string;
+  tenant: string;
 }
 interface DailyEntry {
   id?: number;
@@ -68,9 +71,11 @@ interface DailyEntry {
   username: string;
   type: DailyEntryType;
   work_entries?: WorkEntry[] | number[];
+  tenant: string;
 }
 
 interface AppJob {
+  tenant: string;
   name: string;
   id: number;
 }

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { AppDialog } from '../../components/AppDialog';
 import { appRequest } from '../../fetch/fetch-client';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { genericConverter } from '../../utils';
 import ConstructionView from './ConstructionView';
 

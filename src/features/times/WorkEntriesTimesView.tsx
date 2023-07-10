@@ -6,6 +6,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { AppTextField } from '../../components/aa-shared/AppTextField';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
 import { appRequest } from '../../fetch/fetch-client';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { buildQuery, genericConverter } from '../../utils';
 import ConstructionView from '../time-capture/ConstructionView';
 import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
@@ -17,6 +18,8 @@ import WorkerNameFilter from './filters/WorkerNameFilter';
 import { DateRange } from 'mui-daterange-picker-orient';
 
 export default function WorkEntriesTimesView() {
+  const user = useCurrentUser();
+
   const [curUsername, setCurUsername] = useState('');
   const [constructionId, setConstructionId] = useState('');
   const [dateRange, setDateRange] = useState<DateRange>({});
@@ -86,6 +89,7 @@ export default function WorkEntriesTimesView() {
   const buildSearchQuery = () => {
     return buildQuery({
       filters: {
+        tenant: user?.tenant,
         username: curUsername === '' ? undefined : curUsername,
         date: {
           $gte: dateRange.startDate,

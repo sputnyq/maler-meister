@@ -1,5 +1,6 @@
+import { AppState } from '.';
 import { appRequest } from '../fetch/fetch-client';
-import { genericConverter } from '../utils';
+import { buildQuery, genericConverter } from '../utils';
 
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
@@ -11,17 +12,30 @@ const initialState: RootState = {};
 
 const BASE = 'constructions';
 
-export const loadActiveConstructions = createAsyncThunk('constructions/load-active', () => {
-  return appRequest('get')(`${BASE}?filters[active][$eq]=true`).then((res: any) => {
-    return (res.data as any[]).map((e) => genericConverter<Construction>(e));
-  });
-});
+export const loadActiveConstructions = createAsyncThunk<Construction[], void, { state: AppState }>(
+  'constructions/load-active',
+  async (_, thunkApi) => {
+    const appState = thunkApi.getState();
+    const query = buildQuery({
+      filters: {
+        tenant: appState.login.user?.tenant,
+        active: true,
+      },
+    });
+    return appRequest('get')(`${BASE}?${query}`).then((res: any) => {
+      return (res.data as any[]).map((e) => genericConverter<Construction>(e));
+    });
+  },
+);
 
-export const updateConstruction = createAsyncThunk('constructions/update', (construction: Construction) => {
-  return appRequest('put')(`${BASE}/${construction.id}`, { data: construction }).then((res: any) => {
-    return genericConverter<Construction>(res.data);
-  });
-});
+export const updateConstruction = createAsyncThunk<Construction, Construction, { state: AppState }>(
+  'constructions/update',
+  async (construction) => {
+    return appRequest('put')(`${BASE}/${construction.id}`, { data: construction }).then((res: any) => {
+      return genericConverter<Construction>(res.data);
+    });
+  },
+);
 
 const constructionSlice = createSlice({
   name: 'construction',
@@ -35,7 +49,7 @@ const constructionSlice = createSlice({
     },
   },
 
-  extraReducers(builder) {
+  extraReducers: (builder) => {
     builder
       .addCase(loadActiveConstructions.fulfilled, (state, action) => {
         state.activeConstructions = action.payload;

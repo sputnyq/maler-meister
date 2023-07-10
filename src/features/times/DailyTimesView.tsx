@@ -8,6 +8,7 @@ import RequestDailyViewButton from '../../components/RequestDailyViewButton';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
 import { loadDailyEntries } from '../../fetch/api';
 import { appRequest } from '../../fetch/fetch-client';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { buildQuery, genericConverter } from '../../utils';
 import { DailyEntryView } from '../time-capture/DailyEntryView';
 import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
@@ -20,6 +21,8 @@ import WorkerNameFilter from './filters/WorkerNameFilter';
 import { DateRange } from 'mui-daterange-picker-orient';
 
 export default function DailyTimesView() {
+  const user = useCurrentUser();
+
   const [data, setData] = useState<DailyEntry[]>([]);
 
   const [curUsername, setCurUsername] = useState('');
@@ -135,6 +138,7 @@ export default function DailyTimesView() {
   const buildSearchQuery = () => {
     const query = buildQuery({
       filters: {
+        tenant: user?.tenant,
         type: dailyEntryType,
         username: curUsername === '' ? undefined : curUsername,
         date: {
@@ -144,7 +148,6 @@ export default function DailyTimesView() {
       },
       sort: { '0': 'date:desc' },
     });
-
     return query;
   };
 

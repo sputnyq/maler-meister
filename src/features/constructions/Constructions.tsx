@@ -16,7 +16,6 @@ export default function Constructions() {
 
   const activeConstructions = useSelector<AppState, Construction[]>((s) => s.construction.activeConstructions || []);
 
-  console.log(activeConstructions);
   return (
     <>
       <Card>

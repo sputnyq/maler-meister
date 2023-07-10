@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { LoadingScreen } from './aa-shared/LoadingScreen';
+import { LoadingScreen } from './LoadingScreen';
 
 type LoadingState = 'loading' | 'ready' | 'failure';
 

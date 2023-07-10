@@ -48,10 +48,14 @@ interface User {
 type DailyEntryType = 'Arbeit' | 'Urlaub' | 'Krank';
 
 interface Construction {
-  tenant: string;
   id: number;
   name: string;
   active: boolean;
+  tenant: string;
+  confirmed: boolean;
+  start: any;
+  end: any;
+  allocatedPersons: number;
 }
 interface WorkEntry {
   id?: number;

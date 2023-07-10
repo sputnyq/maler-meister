@@ -3,7 +3,7 @@ import { Card, CardContent } from '@mui/material';
 import FullCalendar from '@fullcalendar/react';
 import { useEffect, useMemo, useState } from 'react';
 
-import { loadDailyEntries } from '../../fetch/api';
+import { loadConstructions, loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useHolidays } from '../../hooks/useHolidays';
 import { useIsSmall } from '../../hooks/useIsSmall';
@@ -19,12 +19,15 @@ type EventDateRange = {
   end?: Date;
 };
 
+const COLOR_CODES = ['#5856d6', '#71e2fa', '#0c6378', '#808994', '#ae2c1c', '#0e738a'];
+
 export default function CalendarView() {
   const [curYear, setCurYear] = useState(new Date().getFullYear());
 
   const [multiMonthMaxColumns, setMultiMonthMaxColumns] = useState(1);
   const [eventRange, setEventRange] = useState<EventDateRange>({});
   const [dailyEntries, setDailyEntries] = useState<DailyEntry[]>([]);
+  const [constructions, setConstructions] = useState<Construction[]>([]);
 
   const users = useLoadUsers();
 
@@ -41,7 +44,6 @@ export default function CalendarView() {
   useEffect(() => {
     const queryObj = {
       filters: {
-        type: 'Urlaub',
         tenant: user?.tenant,
         date: {
           $gte: eventRange.start,
@@ -49,15 +51,31 @@ export default function CalendarView() {
         },
       },
     };
+    loadConstructions(queryObj).then(setConstructions);
+  }, [eventRange, user]);
+
+  useEffect(() => {
+    const queryObj = {
+      filters: {
+        type: 'Urlaub',
+        tenant: user?.tenant,
+        date: {
+          $gte: eventRange.start,
+          $lte: eventRange.end,
+        },
+        sort: { '0': 'start:desc' },
+      },
+    };
     loadDailyEntries(queryObj).then((data) => setDailyEntries(data));
   }, [eventRange, user]);
 
   const events = useMemo(() => {
-    const hols = holidays2Events(holidays);
-    const vacations = dailyEntries2Event(dailyEntries, users);
+    const holidayEvents = holidays2Events(holidays);
+    const vacationEvents = dailyEntries2Event(dailyEntries, users);
+    const constructionEvents = constructions2Events(constructions);
 
-    return [...hols, ...vacations];
-  }, [holidays, dailyEntries, users]);
+    return [...holidayEvents, ...vacationEvents, ...constructionEvents];
+  }, [holidays, dailyEntries, users, constructions]);
 
   const customButtons = useMemo(() => {
     const zoomIn = () => {
@@ -76,7 +94,6 @@ export default function CalendarView() {
           },
           minus: {
             text: 'Verkleinern',
-
             click: zoomIn,
           },
         };
@@ -112,14 +129,40 @@ export default function CalendarView() {
   );
 }
 
+function constructions2Events(constructions: Construction[]): EventInput[] {
+  return constructions.map((cstr, index) => {
+    const curColor = COLOR_CODES[index % COLOR_CODES.length];
+
+    const obj: EventInput = {
+      title: `[${cstr.allocatedPersons || ''}] ${cstr.name}`,
+      start: cstr.start,
+      end: cstr.end,
+      textColor: curColor,
+      borderColor: curColor,
+      backgroundColor: 'white',
+    };
+
+    if (cstr.confirmed) {
+      return {
+        ...obj,
+        backgroundColor: curColor,
+        textColor: 'white',
+      } as EventInput;
+    }
+
+    return obj;
+  });
+}
+
 function dailyEntries2Event(dailyEntries: DailyEntry[], users: User[]): EventInput[] {
   return dailyEntries.map((de) => {
     const name = users.find((u) => u.username === de.username)?.lastName || de.username;
     return {
       date: de.date,
       title: `🏝️ ${name}`,
-      color: '#19BEC3',
+      color: 'red',
       textColor: 'white',
+      allDay: true,
     } as EventInput;
   });
 }
@@ -138,6 +181,7 @@ function holidays2Events(holidays: Feiertag[]): EventInput[] {
       backgroundColor: 'green',
       textColor: 'white',
       date: h.date,
+      allDay: true,
       title: `🎉 ${h.fname}`,
     });
   }

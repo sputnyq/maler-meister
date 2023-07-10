@@ -9,7 +9,7 @@ export default function AddFab({ onClick }: Props) {
 
   return (
     <Box position={'fixed'} bottom={theme.spacing(3)} right={theme.spacing(3)}>
-      <Fab onClick={onClick} size="large" color="secondary">
+      <Fab onClick={onClick} size="large" color="primary">
         <AddIcon />
       </Fab>
     </Box>

@@ -9,6 +9,14 @@ export async function loadConstructionById(constructionId: string | number) {
     .catch(console.log);
 }
 
+export async function loadConstructions(queryObj: object) {
+  const query = buildQuery(queryObj);
+
+  const response = await appRequest('get')(`constructions?${query}`);
+
+  return (response.data as any[]).map((e) => genericConverter<Construction>(e));
+}
+
 export async function loadDailyEntries(queryObj: object) {
   const query = buildQuery(queryObj);
   return appRequest('get')(`daily-entries?${query}`)

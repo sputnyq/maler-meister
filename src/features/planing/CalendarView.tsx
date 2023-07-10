@@ -4,12 +4,13 @@ import FullCalendar from '@fullcalendar/react';
 import { useEffect, useMemo, useState } from 'react';
 
 import { loadDailyEntries } from '../../fetch/api';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useHolidays } from '../../hooks/useHolidays';
 import { useIsSmall } from '../../hooks/useIsSmall';
 import { useLoadUsers } from '../../hooks/useLoadUsers';
 import { buildQuery } from '../../utils';
 
-import { EventSourceInput } from '@fullcalendar/core';
+import { EventInput } from '@fullcalendar/core';
 import deLocale from '@fullcalendar/core/locales/de';
 import multiMonthPlugin from '@fullcalendar/multimonth';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -23,32 +24,34 @@ export default function CalendarView() {
   const [curYear, setCurYear] = useState(new Date().getFullYear());
 
   const [multiMonthMaxColumns, setMultiMonthMaxColumns] = useState(1);
-  const [currentEvent, setCurrentEvent] = useState<EventDateRange>({});
+  const [eventRange, setEventRange] = useState<EventDateRange>({});
   const [dailyEntries, setDailyEntries] = useState<DailyEntry[]>([]);
 
   const users = useLoadUsers();
+
+  const user = useCurrentUser();
   const holidays = useHolidays(curYear);
 
   const small = useIsSmall();
 
   useEffect(() => {
-    const newYear = currentEvent.start?.getFullYear();
+    const newYear = eventRange.start?.getFullYear();
     newYear && setCurYear(newYear);
-  }, [currentEvent]);
+  }, [eventRange]);
 
   useEffect(() => {
-    const query = buildQuery({
+    const queryObj = {
       filters: {
         type: 'Urlaub',
-
+        tenant: user?.tenant,
         date: {
-          $gte: currentEvent.start,
-          $lte: currentEvent.end,
+          $gte: eventRange.start,
+          $lte: eventRange.end,
         },
       },
-    });
-    loadDailyEntries(query).then((data) => setDailyEntries(data));
-  }, [currentEvent]);
+    };
+    loadDailyEntries(queryObj).then((data) => setDailyEntries(data));
+  }, [eventRange, user]);
 
   const events = useMemo(() => {
     const hols = holidays2Events(holidays);
@@ -95,7 +98,7 @@ export default function CalendarView() {
           events={events}
           height={'calc(100vh - 170px)'}
           datesSet={(params) => {
-            setCurrentEvent({ end: params.end, start: params.start });
+            setEventRange({ end: params.end, start: params.start });
           }}
           weekNumbers
           headerToolbar={headerToolbar}
@@ -110,7 +113,7 @@ export default function CalendarView() {
   );
 }
 
-function dailyEntries2Event(dailyEntries: DailyEntry[], users: User[]): EventSourceInput[] {
+function dailyEntries2Event(dailyEntries: DailyEntry[], users: User[]): EventInput[] {
   return dailyEntries.map((de) => {
     const name = users.find((u) => u.username === de.username)?.lastName || de.username;
     return {
@@ -118,12 +121,12 @@ function dailyEntries2Event(dailyEntries: DailyEntry[], users: User[]): EventSou
       title: `🏝️ ${name}`,
       color: '#19BEC3',
       textColor: 'white',
-    };
+    } as EventInput;
   });
 }
 
-function holidays2Events(holidays: Feiertag[]): EventSourceInput[] {
-  const arr = new Array<EventSourceInput>();
+function holidays2Events(holidays: Feiertag[]): EventInput[] {
+  const eventInputs = new Array<EventInput>();
 
   for (const h of holidays) {
     if (h.fname.toUpperCase() === 'AUGSBURGER FRIEDENSFEST') {
@@ -131,14 +134,13 @@ function holidays2Events(holidays: Feiertag[]): EventSourceInput[] {
       continue;
     }
 
-    arr.push({
+    eventInputs.push({
       borderColor: 'transparent',
       backgroundColor: 'green',
       textColor: 'white',
-      //@ts-ignore
       date: h.date,
       title: `🎉 ${h.fname}`,
     });
   }
-  return arr;
+  return eventInputs;
 }

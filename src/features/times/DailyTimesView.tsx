@@ -135,8 +135,8 @@ export default function DailyTimesView() {
     downloadAsCsv(data, fileName);
   }, [data, curUsername, dateRange]);
 
-  const buildSearchQuery = () => {
-    const query = buildQuery({
+  const handleSearchRequest = () => {
+    const queryObj = {
       filters: {
         tenant: user?.tenant,
         type: dailyEntryType,
@@ -147,14 +147,11 @@ export default function DailyTimesView() {
         },
       },
       sort: { '0': 'date:desc' },
-    });
-    return query;
-  };
+    };
 
-  const handleSearchRequest = () => {
     setLoading(true);
 
-    loadDailyEntries(buildSearchQuery())
+    loadDailyEntries(queryObj)
       .then(setData)
       .finally(() => {
         setLoading(false);

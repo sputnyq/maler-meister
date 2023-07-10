@@ -1,4 +1,4 @@
-import { genericConverter } from '../utils';
+import { buildQuery, genericConverter } from '../utils';
 import { appRequest } from './fetch-client';
 
 export async function loadConstructionById(constructionId: string | number) {
@@ -9,7 +9,8 @@ export async function loadConstructionById(constructionId: string | number) {
     .catch(console.log);
 }
 
-export async function loadDailyEntries(query: string) {
+export async function loadDailyEntries(queryObj: object) {
+  const query = buildQuery(queryObj);
   return appRequest('get')(`daily-entries?${query}`)
     .then((res) => {
       const data = res.data.map((e: any) => genericConverter<DailyEntry[]>(e));

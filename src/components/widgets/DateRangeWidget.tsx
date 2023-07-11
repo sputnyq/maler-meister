@@ -2,20 +2,19 @@ import { Box, Button } from '@mui/material';
 
 import { useMemo, useState } from 'react';
 
-import { AppDialog } from '../../../components/AppDialog';
-import { useIsSmall } from '../../../hooks/useIsSmall';
-import FilterGridItem from './FilterGridItem';
+import { useIsSmall } from '../../hooks/useIsSmall';
+import { AppDialog } from '../AppDialog';
 
-import { addMonths, addYears, endOfMonth, endOfYear, startOfMonth, startOfYear } from 'date-fns';
 import { de } from 'date-fns/locale';
 import { DateRange, DateRangePicker, DefinedRange } from 'mui-daterange-picker-orient';
 
 interface Props {
   dateRange: DateRange;
   setDateRange(dateRange: DateRange): void;
+  definedRanges: DefinedRange[];
 }
 
-export function DateRangeWidget({ dateRange, setDateRange }: Props) {
+export function DateRangeWidget({ dateRange, setDateRange, definedRanges }: Props) {
   const [open, setOpen] = useState(false);
 
   const isSmall = useIsSmall();
@@ -23,8 +22,6 @@ export function DateRangeWidget({ dateRange, setDateRange }: Props) {
   const toggle = () => setOpen(!open);
 
   const handleClose = () => setOpen(false);
-
-  const definedRanges = getDateRanges();
 
   const title = useMemo(() => {
     if (dateRange.endDate && dateRange.startDate) {
@@ -64,39 +61,9 @@ export function DateRangeWidget({ dateRange, setDateRange }: Props) {
           />
         </Box>
       </AppDialog>
-
-      <FilterGridItem>
-        <Button sx={{ height: 40 }} fullWidth variant="outlined" disableElevation onClick={toggle}>
-          {title}
-        </Button>
-      </FilterGridItem>
+      <Button sx={{ height: 40 }} fullWidth variant="outlined" disableElevation onClick={toggle}>
+        {title}
+      </Button>
     </>
   );
-}
-
-function getDateRanges(): DefinedRange[] {
-  const date = new Date();
-
-  return [
-    {
-      label: 'Laufender Monat',
-      startDate: startOfMonth(date),
-      endDate: endOfMonth(date),
-    },
-    {
-      label: 'Letzter Monat',
-      startDate: startOfMonth(addMonths(date, -1)),
-      endDate: endOfMonth(addMonths(date, -1)),
-    },
-    {
-      label: 'Laufendes Jahr',
-      startDate: startOfYear(date),
-      endDate: endOfYear(date),
-    },
-    {
-      label: 'Letztes Jahr',
-      startDate: startOfYear(addYears(date, -1)),
-      endDate: endOfYear(addYears(date, -1)),
-    },
-  ];
 }

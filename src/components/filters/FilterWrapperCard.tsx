@@ -5,7 +5,7 @@ import { Box } from '@mui/system';
 
 import React from 'react';
 
-import AppGrid from '../../../components/aa-shared/AppGrid';
+import AppGrid from '../aa-shared/AppGrid';
 import FilterGridItem from './FilterGridItem';
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
   onReset(): void;
 }
 
-export function FilterTile({ onReset, onSearch, children }: React.PropsWithChildren<Props>) {
+export function FilterWrapperCard({ onReset, onSearch, children }: React.PropsWithChildren<Props>) {
   return (
     <Card>
       <CardContent>

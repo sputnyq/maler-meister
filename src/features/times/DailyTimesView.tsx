@@ -6,14 +6,14 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 
 import RequestDailyViewButton from '../../components/RequestDailyViewButton';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
+import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { DailyEntryView } from '../time-capture/DailyEntryView';
+import { PastDateRange } from '../time-capture/PastDateRange';
 import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
 import { downloadAsCsv } from './csv/csv-export-utils';
 import DailyEntryTypeFilter from './filters/DailyEntryTypeFilter';
-import { DateRangeWidget } from './filters/DateRangeWidget';
-import { FilterTile } from './filters/FilterTile';
 import WorkerNameFilter from './filters/WorkerNameFilter';
 
 import { DateRange } from 'mui-daterange-picker-orient';
@@ -49,6 +49,7 @@ export default function DailyTimesView() {
       {
         field: 'type',
         headerName: 'Tätigkeit',
+        flex: 1,
       },
       {
         field: 'username',
@@ -161,11 +162,11 @@ export default function DailyTimesView() {
   return (
     <>
       <Box display="flex" flexDirection="column" gap={2}>
-        <FilterTile onReset={reset} onSearch={handleSearchRequest}>
-          <DateRangeWidget dateRange={dateRange} setDateRange={setDateRange} />
+        <FilterWrapperCard onReset={reset} onSearch={handleSearchRequest}>
+          <PastDateRange dateRange={dateRange} setDateRange={setDateRange} />
           <WorkerNameFilter curUsername={curUsername} setUsername={setCurUsername} />
           <DailyEntryTypeFilter setType={setDailyEntryType} type={dailyEntryType} />
-        </FilterTile>
+        </FilterWrapperCard>
 
         <HoursOverviewCard hours={hours} />
 

@@ -4,8 +4,8 @@ import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import Logout from '../features/log-in-out/Logout';
-import OfferActions from './OfferActions';
+import Logout from '../log-in-out/Logout';
+import OfferActions from '../offers/OfferActions';
 
 export default function TopBar() {
   const location = useLocation();

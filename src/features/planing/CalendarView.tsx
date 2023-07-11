@@ -140,6 +140,7 @@ function constructions2Events(constructions: Construction[]): EventInput[] {
       textColor: curColor,
       borderColor: curColor,
       backgroundColor: 'white',
+      url: `/constructions/${cstr.id}`,
     };
 
     if (cstr.confirmed) {

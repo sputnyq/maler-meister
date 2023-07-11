@@ -1,7 +1,6 @@
 import { Alert, AlertColor, Box, Snackbar } from '@mui/material';
 
 import { useCallback, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import { AppDialog } from '../../components/AppDialog';
 import AddFab from '../../components/aa-shared/AddFab';
@@ -10,11 +9,9 @@ import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useLoadActiveConstructions } from '../../hooks/useLoadActiveConstructions';
 import { useLoadJobs } from '../../hooks/useLoadJobs';
-import { AppState } from '../../store';
-import { getCurrentDBDate } from '../../utils';
+import { getCurrentDBDate } from '../../utilities';
 import DailyEntryEditor from './DailyEntryEditor';
 
-import { current } from '@reduxjs/toolkit';
 import { cloneDeep } from 'lodash';
 
 interface Props {

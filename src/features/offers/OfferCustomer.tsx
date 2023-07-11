@@ -1,7 +1,7 @@
 import { Box, Grid } from '@mui/material';
 
-import OfferField, { OfferFieldProps } from './aa-shared/OfferField';
-import { Wrapper } from './aa-shared/Wrapper';
+import OfferField, { OfferFieldProps } from '../../components/aa-shared/OfferField';
+import { Wrapper } from '../../components/aa-shared/Wrapper';
 
 export default function OfferCustomer() {
   return (

@@ -1,52 +1,110 @@
-import { Card, CardContent, CardHeader } from '@mui/material';
+import { Box, Card, CardContent, CardHeader } from '@mui/material';
+import { GridColDef } from '@mui/x-data-grid';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
-import { useLoadActiveConstructions } from '../../hooks/useLoadActiveConstructions';
-import { AppDispatch, AppState } from '../../store';
-import { updateConstruction } from '../../store/constructionReducer';
+import FilterGridItem from '../../components/filters/FilterGridItem';
+import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
+import { GenericBooleanFilter } from '../../components/filters/GenericBooleanFilter';
+import { loadConstructions } from '../../fetch/api';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { ConstructionsDateRangeFilter } from './ConstructionsDateRangeFilter';
 import CreateConstruction from './CreateConstruction';
 
+import { DateRange } from 'mui-daterange-picker-orient';
+
 export default function Constructions() {
-  useLoadActiveConstructions();
+  const user = useCurrentUser();
+  const [constructions, setConstructions] = useState<Construction[]>([]);
+  const [dateRange, setDateRange] = useState<DateRange>({});
+  const [active, setActive] = useState<boolean | undefined>(true);
+  const [confirmed, setConfirmed] = useState<boolean | undefined>(undefined);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const columns: GridColDef[] = useMemo(() => {
+    const arr: GridColDef[] = [
+      {
+        field: 'id',
+        headerName: 'ID',
+        renderCell({ id }) {
+          return <Link to={`${id}`}>{id}</Link>;
+        },
+      },
+      {
+        field: 'name',
+        headerName: 'Name',
+        flex: 1,
+      },
+      {
+        field: 'start',
+        headerName: 'Anfang',
+      },
+      {
+        field: 'end',
+        headerName: 'Ende',
+      },
+      {
+        field: 'allocatedPersons',
+        headerName: 'Arbeiter',
+      },
+      {
+        headerName: 'Aktiv',
+        field: 'active',
+        type: 'boolean',
+      },
+      {
+        headerName: 'Bestätigt',
+        field: 'confirmed',
+        type: 'boolean',
+      },
+    ];
+    return arr;
+  }, []);
 
-  const activeConstructions = useSelector<AppState, Construction[]>((s) => s.construction.activeConstructions || []);
+  const onReset = useCallback(() => {
+    setActive(undefined);
+    setConfirmed(undefined);
+    setDateRange({});
+  }, []);
+
+  const handleSearchRequest = () => {
+    const queryObj = {
+      filters: {
+        start: {
+          $gte: dateRange.startDate,
+          $lte: dateRange.endDate,
+        },
+        tenant: user?.tenant,
+        active,
+        confirmed,
+      },
+      sort: { '0': 'start:asc' },
+    };
+
+    loadConstructions(queryObj).then(setConstructions).catch(console.log);
+  };
 
   return (
     <>
-      <Card>
-        <CardHeader title="Aktive Baustellen" />
-        <CardContent>
-          <AppDataGrid
-            key={activeConstructions.length}
-            onUpdate={(next) => {
-              dispatch(updateConstruction(next));
-            }}
-            disablePagination
-            data={activeConstructions}
-            columns={[
-              {
-                field: 'id',
-                headerName: 'ID',
-                renderCell({ id }) {
-                  return <Link to={`${id}`}>{id}</Link>;
-                },
-              },
-              {
-                flex: 1,
-                field: 'name',
-                headerName: 'Name',
-                editable: true,
-              },
-            ]}
-          />
-        </CardContent>
-      </Card>
-      <CreateConstruction />
+      <Box display="flex" flexDirection="column" gap={2}>
+        <FilterWrapperCard onSearch={handleSearchRequest} onReset={onReset}>
+          <ConstructionsDateRangeFilter dateRange={dateRange} setDateRange={setDateRange} />
+          <FilterGridItem>
+            <GenericBooleanFilter label="Aktiv" value={active} setValue={setActive} />
+          </FilterGridItem>
+          <FilterGridItem>
+            <GenericBooleanFilter label="Bestätigt" value={confirmed} setValue={setConfirmed} />
+          </FilterGridItem>
+        </FilterWrapperCard>
+        <Card>
+          <CardHeader title="Ergebnisse" />
+          <CardContent>
+            <AppDataGrid disablePagination data={constructions} columns={columns} />
+          </CardContent>
+        </Card>
+        <CreateConstruction />
+      </Box>
     </>
   );
 }

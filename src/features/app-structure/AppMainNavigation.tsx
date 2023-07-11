@@ -8,14 +8,13 @@ import TuneIcon from '@mui/icons-material/TuneOutlined';
 import UploadFileIcon from '@mui/icons-material/UploadFileOutlined';
 import { Grid, SvgIconProps, Typography } from '@mui/material';
 
-import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useMemo } from 'react';
 
-import { AppState } from '../store';
-import Tile from './aa-shared/Tile';
+import Tile from '../../components/aa-shared/Tile';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 
 export default function MainNavigation() {
-  const currentUser = useSelector<AppState, User | null>((s) => s.login.user);
+  const currentUser = useCurrentUser();
 
   const iconProps = useMemo((): SvgIconProps => ({ fontSize: 'large', color: 'primary' }), []);
 
@@ -23,7 +22,7 @@ export default function MainNavigation() {
     <>
       <Typography color={'GrayText'} p={3} variant="h4" align="center">{`Hallo ${currentUser?.firstName}!`}</Typography>
 
-      <ViewGrid>
+      <Grid container spacing={3} p={2}>
         <Tile requiredRoles={['accountant', 'admin']} to="offers" title="Angebote">
           <ArticleIcon {...iconProps} />
         </Tile>
@@ -52,15 +51,7 @@ export default function MainNavigation() {
         <Tile requiredRoles={['admin']} to="options" title="Optionen">
           <TuneIcon {...iconProps} />
         </Tile>
-      </ViewGrid>
+      </Grid>
     </>
-  );
-}
-
-function ViewGrid({ children }: React.PropsWithChildren) {
-  return (
-    <Grid container spacing={3} p={2}>
-      {children}
-    </Grid>
   );
 }

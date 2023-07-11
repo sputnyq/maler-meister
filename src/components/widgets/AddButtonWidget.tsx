@@ -5,7 +5,7 @@ interface Props {
   onAdd: () => void;
 }
 
-export function AddButton({ onAdd }: Props) {
+export function AddButtonWidget({ onAdd }: Props) {
   return (
     <Button color="primary" variant="outlined" disableElevation onClick={onAdd}>
       <AddOutlinedIcon />

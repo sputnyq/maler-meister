@@ -1,9 +1,10 @@
-import { Box } from "@mui/material";
+import { Box } from '@mui/material';
 
-import { arrayMoveImmutable } from "array-move";
-import { AddButton } from "../../AddButton";
-import { PriceSummary } from "../PriceSummary";
-import { ServicesWidgetRow } from "./ServicesWidgetRow";
+import { AddButtonWidget } from '../../widgets/AddButtonWidget';
+import { PriceSummary } from '../PriceSummary';
+import { ServicesWidgetRow } from './ServicesWidgetRow';
+
+import { arrayMoveImmutable } from 'array-move';
 
 interface Props {
   title: string;
@@ -41,7 +42,7 @@ export default function ServicesWidget({ offerServices = [], update }: Props) {
   };
 
   return (
-    <Box mt={1} display="flex" flexDirection={"column"} gap={2}>
+    <Box mt={1} display="flex" flexDirection={'column'} gap={2}>
       {offerServices.map((offerService, index) => (
         <ServicesWidgetRow
           key={index}
@@ -55,7 +56,7 @@ export default function ServicesWidget({ offerServices = [], update }: Props) {
       ))}
 
       <Box display="flex" justifyContent="flex-end">
-        <AddButton onAdd={onAdd} />
+        <AddButtonWidget onAdd={onAdd} />
       </Box>
 
       <PriceSummary offerServices={offerServices} />

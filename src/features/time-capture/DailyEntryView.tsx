@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { AppDialog } from '../../components/AppDialog';
 import { appRequest } from '../../fetch/fetch-client';
-import { genericConverter } from '../../utils';
+import { genericConverter } from '../../utilities';
 import ConstructionView from './ConstructionView';
 
 interface Props {

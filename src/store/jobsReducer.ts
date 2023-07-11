@@ -1,6 +1,6 @@
 import { AppState } from '.';
 import { appRequest } from '../fetch/fetch-client';
-import { buildQuery, genericConverter } from '../utils';
+import { buildQuery, genericConverter } from '../utilities';
 
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 

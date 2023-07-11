@@ -1,8 +1,8 @@
 import { MenuItem } from '@mui/material';
 
 import { AppTextField } from '../../../components/aa-shared/AppTextField';
+import FilterGridItem from '../../../components/filters/FilterGridItem';
 import { useLoadUsers } from '../../../hooks/useLoadUsers';
-import FilterGridItem from './FilterGridItem';
 
 interface Props {
   curUsername: string;

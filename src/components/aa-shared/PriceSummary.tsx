@@ -2,7 +2,7 @@ import { Box, Typography, TypographyProps } from '@mui/material';
 
 import { useMemo } from 'react';
 
-import { euroValue } from '../../utils';
+import { euroValue } from '../../utilities';
 
 interface Props {
   offerServices: OfferService[];

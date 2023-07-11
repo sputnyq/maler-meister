@@ -2,21 +2,24 @@ import { Button, Card, CardActions, CardContent, CardHeader, Typography } from '
 
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { loadConstructionById } from '../../fetch/api';
-import { AppDispatch } from '../../store';
-import { updateConstruction } from '../../store/constructionReducer';
+import { loadConstructionById } from '../fetch/api';
+import { AppDispatch } from '../store';
+import { updateConstruction } from '../store/constructionReducer';
 
-export default function EditConstruction() {
+interface Props {
+  id: string | number;
+}
+
+export default function EditConstructionWidget(props: Props) {
   const [construction, setConstruction] = useState<Construction | null>(null);
-  const params = useParams();
 
   const navigate = useNavigate();
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const constructionId = params.id;
+  const constructionId = props.id;
 
   useEffect(() => {
     if (constructionId) {

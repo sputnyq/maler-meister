@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { AppState } from '../store';
-import DocumentActions from './aa-shared/DocumentActions';
+import DocumentActions from '../../components/aa-shared/DocumentActions';
+import { AppState } from '../../store';
 
 export default function OfferActions() {
   const unsavedChanges = useSelector<AppState, boolean>((s) => s.offer.unsavedChanges);

@@ -10,7 +10,7 @@ import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { AppDispatch } from '../../store';
 import { addActiveConstruction } from '../../store/constructionReducer';
-import { genericConverter } from '../../utils';
+import { genericConverter } from '../../utilities';
 
 export default function CreateConstruction() {
   const user = useCurrentUser();

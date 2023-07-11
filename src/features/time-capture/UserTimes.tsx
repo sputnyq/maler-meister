@@ -9,7 +9,7 @@ import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGri
 import { DEFAULT_HOURS } from '../../constants';
 import { appRequest } from '../../fetch/fetch-client';
 import { AppState } from '../../store';
-import { buildQuery, genericConverter, getMonthStart } from '../../utils';
+import { buildQuery, genericConverter, getMonthStart } from '../../utilities';
 import { DailyEntryView } from './DailyEntryView';
 
 interface Props {

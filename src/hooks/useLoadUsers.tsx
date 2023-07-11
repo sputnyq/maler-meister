@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { appRequest } from '../fetch/fetch-client';
-import { buildQuery } from '../utils';
+import { buildQuery } from '../utilities';
 import { useCurrentUser } from './useCurrentUser';
 
 export function useLoadUsers() {

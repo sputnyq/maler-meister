@@ -16,9 +16,9 @@ import { Box } from '@mui/system';
 import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
-import { AddButton } from '../../components/AddButton';
 import AppGrid from '../../components/aa-shared/AppGrid';
 import { AppTextField } from '../../components/aa-shared/AppTextField';
+import { AddButtonWidget } from '../../components/widgets/AddButtonWidget';
 import { AppState } from '../../store';
 
 import { cloneDeep } from 'lodash';
@@ -148,7 +148,7 @@ function WorkEntriesEditor({ setWorkEntries, workEntries }: WorkEntryEditorProps
           />
         ))}
         <Box>
-          <AddButton onAdd={handleAdd} />
+          <AddButtonWidget onAdd={handleAdd} />
         </Box>
       </Box>
     </>

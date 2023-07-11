@@ -1,4 +1,4 @@
-import { buildQuery, genericConverter } from '../utils';
+import { buildQuery, genericConverter } from '../utilities';
 import { appRequest } from './fetch-client';
 
 export async function loadConstructionById(constructionId: string | number) {

@@ -3,15 +3,15 @@ import { Box, CssBaseline, ThemeProvider } from '@mui/material';
 import { Suspense, lazy } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
 
-import AppLoader from './components/AppLoader';
-import { LoadingScreen } from './components/LoadingScreen';
-import MainNavigation from './components/MainNavigation';
-import TopBar from './components/TopBar';
 import { RootBox } from './components/aa-shared/RootBox';
+import AppLoader from './features/app-structure/AppLoader';
+import MainNavigation from './features/app-structure/AppMainNavigation';
+import { LoadingScreen } from './features/app-structure/LoadingScreen';
+import TopBar from './features/app-structure/TopBar';
 import Login from './features/log-in-out/Login';
 import LoginProvider from './features/log-in-out/LoginProvider';
 import { useIsSmall } from './hooks/useIsSmall';
-import theme from './theme';
+import theme from './style/theme';
 
 const Offers = lazy(() => import('./routes/Offers'));
 const Invoices = lazy(() => import('./routes/Invoices'));
@@ -19,7 +19,7 @@ const TimeCapture = lazy(() => import('./features/time-capture/TimeCapture'));
 const OfferEdit = lazy(() => import('./routes/OfferEdit'));
 const Options = lazy(() => import('./routes/Options'));
 const Constructions = lazy(() => import('./features/constructions/Constructions'));
-const EditConstruction = lazy(() => import('./features/constructions/EditConstruction'));
+const EditConstructionRoute = lazy(() => import('./features/constructions/EditConstructionRoute'));
 const Times = lazy(() => import('./features/times/Times'));
 const Upload = lazy(() => import('./routes/Upload'));
 const Jobs = lazy(() => import('./routes/Jobs'));
@@ -86,7 +86,7 @@ export default function App() {
                   path="constructions/:id"
                   element={
                     <LazyLoad>
-                      <EditConstruction />
+                      <EditConstructionRoute />
                     </LazyLoad>
                   }
                 />

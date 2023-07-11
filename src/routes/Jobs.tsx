@@ -3,8 +3,8 @@ import { Box, Paper } from '@mui/material';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AddButton } from '../components/AddButton';
 import { AppDataGrid } from '../components/aa-shared/app-data-grid/AppDataGrid';
+import { AddButtonWidget } from '../components/widgets/AddButtonWidget';
 import { useLoadJobs } from '../hooks/useLoadJobs';
 import { AppDispatch, AppState } from '../store';
 import { createJob, updateJob } from '../store/jobsReducer';
@@ -49,7 +49,7 @@ export default function Jobs() {
         />
       </Paper>
       <Box marginY={2}>
-        <AddButton onAdd={handleCreateRequest} />
+        <AddButtonWidget onAdd={handleCreateRequest} />
       </Box>
     </>
   );

@@ -45,7 +45,7 @@ interface User {
   tenant: string;
 }
 
-type DailyEntryType = 'Arbeit' | 'Urlaub' | 'Krank';
+type DailyEntryType = 'Arbeit' | 'Urlaub' | 'Krank' | 'Schule';
 
 interface Construction {
   tenant: string;

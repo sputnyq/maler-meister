@@ -16,6 +16,7 @@ export default function DailyEntryTypeFilter({ setType, type }: Props) {
         <MenuItem value={'Arbeit'}>Arbeit</MenuItem>
         <MenuItem value={'Urlaub'}>Urlaub</MenuItem>
         <MenuItem value={'Krank'}>Krank</MenuItem>
+        <MenuItem value={'Schule'}>Schule</MenuItem>
       </AppTextField>
     </FilterGridItem>
   );

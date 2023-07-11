@@ -1,18 +1,21 @@
 import { Card, CardContent } from '@mui/material';
 
 import FullCalendar from '@fullcalendar/react';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { loadConstructions, loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useHolidays } from '../../hooks/useHolidays';
 import { useIsSmall } from '../../hooks/useIsSmall';
 import { useLoadUsers } from '../../hooks/useLoadUsers';
+import EditConstructionDialog from '../constructions/EditConstructionDialog';
 
-import { EventInput } from '@fullcalendar/core';
+import { DateSelectArg, EventInput } from '@fullcalendar/core';
 import deLocale from '@fullcalendar/core/locales/de';
+import interactionPlugin from '@fullcalendar/interaction';
 import multiMonthPlugin from '@fullcalendar/multimonth';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import { addDays } from 'date-fns';
 
 type EventDateRange = {
   start?: Date;
@@ -22,19 +25,22 @@ type EventDateRange = {
 const COLOR_CODES = ['#5856d6', '#71e2fa', '#0c6378', '#808994', '#ae2c1c', '#0e738a'];
 
 export default function CalendarView() {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [weekends, setWeekends] = useState(false);
   const [curYear, setCurYear] = useState(new Date().getFullYear());
-
   const [multiMonthMaxColumns, setMultiMonthMaxColumns] = useState(1);
   const [eventRange, setEventRange] = useState<EventDateRange>({});
   const [dailyEntries, setDailyEntries] = useState<DailyEntry[]>([]);
   const [constructions, setConstructions] = useState<Construction[]>([]);
+  const [update, setUpdate] = useState(0);
 
-  const users = useLoadUsers();
-
-  const user = useCurrentUser();
-  const holidays = useHolidays(curYear);
+  const constructionIdRef = useRef(undefined);
+  const dateSelectArg = useRef<DateSelectArg | null>(null);
 
   const small = useIsSmall();
+  const users = useLoadUsers();
+  const user = useCurrentUser();
+  const holidays = useHolidays(curYear);
 
   useEffect(() => {
     const newYear = eventRange.start?.getFullYear();
@@ -52,12 +58,14 @@ export default function CalendarView() {
       },
     };
     loadConstructions(queryObj).then(setConstructions);
-  }, [eventRange, user]);
+  }, [eventRange, user, update]);
 
   useEffect(() => {
     const queryObj = {
       filters: {
-        type: 'Urlaub',
+        type: {
+          $in: ['Urlaub', 'Schule'],
+        },
         tenant: user?.tenant,
         date: {
           $gte: eventRange.start,
@@ -85,47 +93,75 @@ export default function CalendarView() {
     const zoomOut = () => {
       setMultiMonthMaxColumns((cur) => Math.max(cur - 1, 1));
     };
-    return small
-      ? undefined
-      : {
-          plus: {
-            text: 'Vergrößern',
-            click: zoomOut,
-          },
-          minus: {
-            text: 'Verkleinern',
-            click: zoomIn,
-          },
-        };
-  }, [small]);
+    return {
+      plus: {
+        text: 'Vergrößern',
+        click: zoomOut,
+      },
+      minus: {
+        text: 'Verkleinern',
+        click: zoomIn,
+      },
+      weekends: {
+        text: 'WE',
+        click: () => {
+          setWeekends((we) => !we);
+        },
+      },
+    };
+  }, []);
 
   const headerToolbar = useMemo(() => {
     return {
-      left: 'prev,next today',
+      left: small ? 'prev,next today' : 'prev,next today weekends',
       center: small ? undefined : 'title',
       right: small ? 'multiMonthYear,timeGridWeek' : 'minus,plus multiMonthYear,timeGridWeek',
     };
   }, [small]);
 
+  const handleDateSelect = useCallback((arg: DateSelectArg) => {
+    console.log(arg);
+    constructionIdRef.current = undefined;
+    dateSelectArg.current = arg;
+    setDialogOpen(true);
+  }, []);
+
+  const onClose = useCallback(() => {
+    setDialogOpen(false);
+    setUpdate((u) => u + 1);
+  }, []);
+
   return (
-    <Card>
-      <CardContent>
-        <FullCalendar
-          events={events}
-          height={'calc(100vh - 170px)'}
-          datesSet={(params) => {
-            setEventRange({ end: params.end, start: params.start });
-          }}
-          weekNumbers
-          headerToolbar={headerToolbar}
-          customButtons={customButtons}
-          locale={deLocale}
-          plugins={[multiMonthPlugin, timeGridPlugin]}
-          multiMonthMaxColumns={multiMonthMaxColumns}
-          initialView="multiMonthYear"
-        />
-      </CardContent>
-    </Card>
+    <>
+      <EditConstructionDialog
+        initStart={dateSelectArg.current?.startStr}
+        initEnd={dateSelectArg.current?.endStr && addDays(new Date(dateSelectArg.current?.endStr), -1)}
+        dialogOpen={dialogOpen}
+        constructionId={constructionIdRef.current}
+        onClose={onClose}
+      />
+      <Card>
+        <CardContent>
+          <FullCalendar
+            weekends={weekends}
+            events={events}
+            height={'calc(100vh - 170px)'}
+            datesSet={(params) => {
+              setEventRange({ end: params.end, start: params.start });
+            }}
+            selectable
+            select={handleDateSelect}
+            weekNumbers
+            headerToolbar={headerToolbar}
+            customButtons={customButtons}
+            locale={deLocale}
+            plugins={[multiMonthPlugin, timeGridPlugin, interactionPlugin]}
+            multiMonthMaxColumns={multiMonthMaxColumns}
+            initialView="multiMonthYear"
+          />
+        </CardContent>
+      </Card>
+    </>
   );
 }
 
@@ -134,13 +170,15 @@ function constructions2Events(constructions: Construction[]): EventInput[] {
     const curColor = COLOR_CODES[index % COLOR_CODES.length];
 
     const obj: EventInput = {
+      allDay: true,
       title: `[${cstr.allocatedPersons || ''}] ${cstr.name}`,
-      start: cstr.start,
-      end: cstr.end,
+      start: new Date(cstr.start),
+      end: addDays(new Date(cstr.end), 1),
       textColor: curColor,
       borderColor: curColor,
       backgroundColor: 'white',
-      url: `/constructions/${cstr.id}`,
+
+      extendedProps: { constructionId: cstr.id },
     };
 
     if (cstr.confirmed) {
@@ -160,8 +198,8 @@ function dailyEntries2Event(dailyEntries: DailyEntry[], users: User[]): EventInp
     const name = users.find((u) => u.username === de.username)?.lastName || de.username;
     return {
       date: de.date,
-      title: `🏝️ ${name}`,
-      color: 'red',
+      title: `${de.type === 'Urlaub' ? '🏝️' : '🎓'} ${name}`,
+      color: de.type === 'Urlaub' ? 'red' : '#f29999',
       textColor: 'white',
       allDay: true,
     } as EventInput;

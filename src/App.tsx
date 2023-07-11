@@ -20,7 +20,6 @@ const TimeCapture = lazy(() => import('./features/time-capture/TimeCapture'));
 const OfferEdit = lazy(() => import('./routes/OfferEdit'));
 const Options = lazy(() => import('./routes/Options'));
 const Constructions = lazy(() => import('./features/constructions/Constructions'));
-const EditConstructionRoute = lazy(() => import('./features/constructions/EditConstructionRoute'));
 const Times = lazy(() => import('./features/times/Times'));
 const Upload = lazy(() => import('./routes/Upload'));
 const Jobs = lazy(() => import('./routes/Jobs'));
@@ -83,14 +82,7 @@ export default function App() {
                     </LazyLoad>
                   }
                 />
-                <Route
-                  path="constructions/:id"
-                  element={
-                    <LazyLoad>
-                      <EditConstructionRoute />
-                    </LazyLoad>
-                  }
-                />
+
                 <Route
                   path="options"
                   element={

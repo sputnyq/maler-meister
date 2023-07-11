@@ -1,8 +1,8 @@
-import { Box, Card, CardContent, CardHeader } from '@mui/material';
+import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
+import { Box, Button, Card, CardContent, CardHeader } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
-import { useCallback, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { AppGridField } from '../../components/AppGridField';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
@@ -12,6 +12,7 @@ import { loadConstructions } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { ConstructionsDateRangeFilter } from './ConstructionsDateRangeFilter';
 import CreateConstruction from './CreateConstruction';
+import EditConstructionDialog from './EditConstructionDialog';
 
 import { DateRange } from 'mui-daterange-picker-orient';
 
@@ -22,19 +23,34 @@ export default function Constructions() {
   const [active, setActive] = useState<boolean | undefined>(true);
   const [confirmed, setConfirmed] = useState<boolean | undefined>(undefined);
 
+  const [constructionDialogOpen, setConstructionDialogOpen] = useState(false);
+  const curConstructionId = useRef(-1);
+
   const columns: GridColDef[] = useMemo(() => {
     const arr: GridColDef[] = [
       {
         field: 'id',
         headerName: 'ID',
         renderCell({ id }) {
-          return <Link to={`${id}`}>{id}</Link>;
+          return (
+            <Button
+              onClick={() => {
+                curConstructionId.current = Number(id);
+                setConstructionDialogOpen(true);
+              }}
+              color="info"
+              startIcon={<OpenInNewOutlinedIcon />}
+            >
+              {id}
+            </Button>
+          );
         },
       },
       {
         field: 'name',
         headerName: 'Name',
         flex: 1,
+        align: 'left',
       },
       {
         field: 'start',
@@ -87,6 +103,11 @@ export default function Constructions() {
 
   return (
     <>
+      <EditConstructionDialog
+        onClose={() => setConstructionDialogOpen(false)}
+        constructionId={curConstructionId.current}
+        dialogOpen={constructionDialogOpen}
+      />
       <Box display="flex" flexDirection="column" gap={2}>
         <FilterWrapperCard onSearch={handleSearchRequest} onReset={onReset}>
           <ConstructionsDateRangeFilter dateRange={dateRange} setDateRange={setDateRange} />

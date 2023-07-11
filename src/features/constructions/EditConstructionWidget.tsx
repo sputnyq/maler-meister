@@ -1,138 +1,70 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  FormControlLabel,
-  FormGroup,
-  Switch,
-} from '@mui/material';
+import { Box, Card, CardContent, CardHeader, FormControlLabel, FormGroup, Switch, Typography } from '@mui/material';
 
-import { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useCallback } from 'react';
 
-import AppGrid from '../../components/AppGrid';
-import { AppGridField } from '../../components/AppGridField';
 import { AppTextField } from '../../components/aa-shared/AppTextField';
 import { DateRangeWidget } from '../../components/widgets/DateRangeWidget';
-import { appRequest } from '../../fetch/fetch-client';
 
 interface Props {
   construction: Construction;
-  hideDelete?: true;
-  onSave?: () => void;
+  setConstruction(c: Construction): void;
 }
 
-export default function EditConstructionWidget({ onSave, construction: init, hideDelete }: Props) {
-  const [construction, setConstruction] = useState<Construction>(init);
-
-  const navigate = useNavigate();
-
-  const handleDeleteRequest = useCallback(() => {
-    if (confirm('Baustelle wirklich löschen?\nNur nicht bestätigte Baustellen sollen gelöscht werden.')) {
-      appRequest('delete')(`constructions/${construction.id}`)
-        .then(() => {
-          navigate(-1);
-        })
-        .catch((e) => {
-          console.log(e);
-          alert('Beim Löschen ist ein Fehler aufgetreten');
-        });
-    }
-  }, [construction.id, navigate]);
-
-  const setProp = useCallback((prop: keyof Construction, value: any) => {
-    setConstruction((cstr) => ({ ...cstr, [prop]: value } as Construction));
-  }, []);
-
-  const handleSaveRequest = () => {
-    appRequest(construction.id ? 'put' : 'post')(`constructions/${construction.id || ''}`, { data: construction })
-      .then(() => {
-        onSave?.();
-      })
-      .catch((e) => {
-        console.log(e);
-        alert('Fehler beim speichern!');
-      });
-  };
-
-  if (!construction) {
-    return null;
-  }
+export default function EditConstructionWidget({ setConstruction, construction }: Props) {
+  const setProp = useCallback(
+    (prop: keyof Construction, value: any) => {
+      setConstruction({ ...construction, [prop]: value } as Construction);
+    },
+    [setConstruction, construction],
+  );
 
   return (
     <Card elevation={0}>
-      <CardHeader title={`Baustelle: ${construction.id || ' -1'}`} />
+      <CardHeader title={`Baustelle: ${construction.id || ' Neu'}`} />
 
       <CardContent>
-        <Box display={'flex'} flexDirection="column" gap={4}>
-          <AppGrid>
-            <AppGridField>
-              <AppTextField value={construction.name} onChange={(ev) => setProp('name', ev.target.value)} />
-            </AppGridField>
+        <Box display={'flex'} flexDirection="column" gap={2} maxWidth={'400px'}>
+          <AppTextField
+            label="Bezeichnung"
+            value={construction.name}
+            onChange={(ev) => setProp('name', ev.target.value)}
+          />
 
-            <AppGridField>
-              <AppTextField
-                label="Arbeiter"
-                type="number"
-                value={construction.allocatedPersons}
-                onChange={(ev) => setProp('allocatedPersons', ev.target.value)}
-              />
-            </AppGridField>
+          <AppTextField
+            label="Arbeiter"
+            type="number"
+            value={construction.allocatedPersons}
+            onChange={(ev) => setProp('allocatedPersons', ev.target.value)}
+          />
 
-            <AppGridField>
-              <DateRangeWidget
-                definedRanges={[]}
-                setDateRange={(dr) => {
-                  setConstruction((c) => ({ ...c, start: dr.startDate, end: dr.endDate } as Construction));
-                }}
-                dateRange={{ startDate: new Date(construction.start), endDate: new Date(construction.end) }}
-              />
-            </AppGridField>
-          </AppGrid>
+          <DateRangeWidget
+            definedRanges={[]}
+            setDateRange={(dr) => {
+              setConstruction({ ...construction, start: dr.startDate, end: dr.endDate } as Construction);
+            }}
+            dateRange={{ startDate: new Date(construction.start), endDate: new Date(construction.end) }}
+          />
 
-          <AppGrid>
-            <AppGridField>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Switch onChange={(ev) => setProp('active', ev.target.checked)} checked={construction.active} />
-                  }
-                  label="Aktiv"
-                />
-              </FormGroup>
-            </AppGridField>
+          <FormGroup>
+            <FormControlLabel
+              control={<Switch onChange={(ev) => setProp('active', ev.target.checked)} checked={construction.active} />}
+              label="Aktiv"
+            />
+          </FormGroup>
+          <Typography variant="subtitle2">
+            Aktive Baustellen sind für die Arbeiter sichtbar. Die Arbeitstunden können auf aktive Baustellen gebucht
+            werden.
+          </Typography>
 
-            <AppGridField>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      onChange={(ev) => setProp('confirmed', ev.target.checked)}
-                      checked={construction.confirmed}
-                    />
-                  }
-                  label="Bestätigt"
-                />
-              </FormGroup>
-            </AppGridField>
-          </AppGrid>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch onChange={(ev) => setProp('confirmed', ev.target.checked)} checked={construction.confirmed} />
+              }
+              label="Bestätigt"
+            />
+          </FormGroup>
         </Box>
-
-        <CardActions>
-          <Box mt={6} width={'100%'} display="flex" justifyContent="space-between">
-            <Button variant="contained" disableElevation onClick={handleSaveRequest}>
-              Speichern
-            </Button>
-            {hideDelete ? null : (
-              <Button color="error" onClick={handleDeleteRequest}>
-                Löschen
-              </Button>
-            )}
-          </Box>
-        </CardActions>
       </CardContent>
     </Card>
   );

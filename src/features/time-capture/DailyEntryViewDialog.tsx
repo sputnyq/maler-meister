@@ -8,12 +8,12 @@ import { genericConverter } from '../../utilities';
 import ConstructionView from './ConstructionView';
 
 interface Props {
-  dailyEntryId: string | number;
+  dailyEntryId: string | number | undefined;
   dialogOpen: boolean;
   closeDialog(): void;
 }
 
-export function DailyEntryView({ closeDialog, dailyEntryId, dialogOpen }: Props) {
+export function DailyEntryViewDialog({ closeDialog, dailyEntryId, dialogOpen }: Props) {
   const dailyEntryView = useMemo(
     () => <DailyEntryViewCard dailyEntryId={dailyEntryId} closeDialog={closeDialog} />,
     [dailyEntryId, closeDialog],
@@ -30,6 +30,9 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
   const [dailyEntry, setDailyEntry] = useState<DailyEntry | null>(null);
 
   useEffect(() => {
+    if (!id) {
+      return;
+    }
     appRequest('get')(`daily-entries/${id}?populate=*`).then((res) => {
       const next = genericConverter<DailyEntry>(res.data);
 

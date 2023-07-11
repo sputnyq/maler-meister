@@ -10,7 +10,7 @@ import { DEFAULT_HOURS } from '../../constants';
 import { appRequest } from '../../fetch/fetch-client';
 import { AppState } from '../../store';
 import { buildQuery, genericConverter, getMonthStart } from '../../utilities';
-import { DailyEntryView } from './DailyEntryView';
+import { DailyEntryViewDialog } from './DailyEntryViewDialog';
 
 interface Props {
   update: number;
@@ -136,7 +136,11 @@ export function UserTimes({ update, requestUpdate }: Props) {
         <AppDataGrid loading={loading} data={data} columns={columns} disablePagination />
       </Box>
 
-      <DailyEntryView closeDialog={handleCloseRequest} dailyEntryId={dailyEntryId.current} dialogOpen={dialogOpen} />
+      <DailyEntryViewDialog
+        closeDialog={handleCloseRequest}
+        dailyEntryId={dailyEntryId.current}
+        dialogOpen={dialogOpen}
+      />
     </>
   );
 }

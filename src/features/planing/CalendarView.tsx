@@ -9,8 +9,9 @@ import { useHolidays } from '../../hooks/useHolidays';
 import { useIsSmall } from '../../hooks/useIsSmall';
 import { useLoadUsers } from '../../hooks/useLoadUsers';
 import EditConstructionDialog from '../constructions/EditConstructionDialog';
+import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';
 
-import { DateSelectArg, EventInput } from '@fullcalendar/core';
+import { DateSelectArg, EventClickArg, EventInput } from '@fullcalendar/core';
 import deLocale from '@fullcalendar/core/locales/de';
 import interactionPlugin from '@fullcalendar/interaction';
 import multiMonthPlugin from '@fullcalendar/multimonth';
@@ -24,8 +25,20 @@ type EventDateRange = {
 
 const COLOR_CODES = ['#5856d6', '#71e2fa', '#0c6378', '#808994', '#ae2c1c', '#0e738a'];
 
+type ConstructionProps = {
+  type: 'CONSTRUCTION';
+  id: number | string;
+};
+type DailyEntryProps = {
+  type: 'DAILY_ENTRY';
+  id: number | string;
+};
+
+type ExtendedProps = ConstructionProps | DailyEntryProps;
+
 export default function CalendarView() {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [constructionDialog, setConstructionDialog] = useState(false);
+  const [dailyEntryDialog, setDailyEntryDialog] = useState(false);
   const [weekends, setWeekends] = useState(false);
   const [curYear, setCurYear] = useState(new Date().getFullYear());
   const [multiMonthMaxColumns, setMultiMonthMaxColumns] = useState(1);
@@ -34,7 +47,7 @@ export default function CalendarView() {
   const [constructions, setConstructions] = useState<Construction[]>([]);
   const [update, setUpdate] = useState(0);
 
-  const constructionIdRef = useRef(undefined);
+  const idRef = useRef<undefined | string | number>(undefined);
   const dateSelectArg = useRef<DateSelectArg | null>(null);
 
   const small = useIsSmall();
@@ -120,24 +133,45 @@ export default function CalendarView() {
   }, [small]);
 
   const handleDateSelect = useCallback((arg: DateSelectArg) => {
-    console.log(arg);
-    constructionIdRef.current = undefined;
+    idRef.current = undefined;
     dateSelectArg.current = arg;
-    setDialogOpen(true);
+    setConstructionDialog(true);
+  }, []);
+
+  const handleEventClick = useCallback((arg: EventClickArg) => {
+    const ext = arg.event.extendedProps as ExtendedProps;
+
+    idRef.current = ext.id;
+    switch (ext.type) {
+      case 'CONSTRUCTION':
+        setConstructionDialog(true);
+        break;
+
+      case 'DAILY_ENTRY':
+        setDailyEntryDialog(true);
+        break;
+      default:
+        return;
+    }
   }, []);
 
   const onClose = useCallback(() => {
-    setDialogOpen(false);
+    setConstructionDialog(false);
     setUpdate((u) => u + 1);
   }, []);
 
   return (
     <>
+      <DailyEntryViewDialog
+        closeDialog={() => setDailyEntryDialog(false)}
+        dialogOpen={dailyEntryDialog}
+        dailyEntryId={idRef.current}
+      />
       <EditConstructionDialog
         initStart={dateSelectArg.current?.startStr}
         initEnd={dateSelectArg.current?.endStr && addDays(new Date(dateSelectArg.current?.endStr), -1)}
-        dialogOpen={dialogOpen}
-        constructionId={constructionIdRef.current}
+        dialogOpen={constructionDialog}
+        constructionId={idRef.current}
         onClose={onClose}
       />
       <Card>
@@ -151,6 +185,7 @@ export default function CalendarView() {
             }}
             selectable
             select={handleDateSelect}
+            eventClick={handleEventClick}
             weekNumbers
             headerToolbar={headerToolbar}
             customButtons={customButtons}
@@ -178,7 +213,10 @@ function constructions2Events(constructions: Construction[]): EventInput[] {
       borderColor: curColor,
       backgroundColor: 'white',
 
-      extendedProps: { constructionId: cstr.id },
+      extendedProps: {
+        type: 'CONSTRUCTION',
+        id: cstr.id,
+      },
     };
 
     if (cstr.confirmed) {
@@ -202,6 +240,10 @@ function dailyEntries2Event(dailyEntries: DailyEntry[], users: User[]): EventInp
       color: de.type === 'Urlaub' ? 'red' : '#f29999',
       textColor: 'white',
       allDay: true,
+      extendedProps: {
+        type: 'DAILY_ENTRY',
+        id: de.id,
+      },
     } as EventInput;
   });
 }

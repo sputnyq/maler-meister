@@ -9,7 +9,7 @@ import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGri
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { DailyEntryView } from '../time-capture/DailyEntryView';
+import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';
 import { PastDateRange } from '../time-capture/PastDateRange';
 import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
 import { downloadAsCsv } from './csv/csv-export-utils';
@@ -192,7 +192,7 @@ export default function DailyTimesView() {
         </Card>
       </Box>
 
-      <DailyEntryView closeDialog={closeDialog} dailyEntryId={dailyEntryId.current} dialogOpen={dialogOpen} />
+      <DailyEntryViewDialog closeDialog={closeDialog} dailyEntryId={dailyEntryId.current} dialogOpen={dialogOpen} />
     </>
   );
 }

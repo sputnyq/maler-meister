@@ -1,19 +1,21 @@
 import BeachAccessIcon from '@mui/icons-material/BeachAccessOutlined';
 import DeleteIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import MasksIcon from '@mui/icons-material/MasksOutlined';
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import {
   Card,
   CardContent,
   Grid,
   IconButton,
   MenuItem,
+  SvgIconProps,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 import { AddButton } from '../../components/AddButton';
@@ -31,12 +33,54 @@ interface Props {
 }
 
 export default function DailyEntryEditor({ dailyEntry, workEntries, setWorkEntries, setDailyEntry }: Props) {
+  const iconProps: SvgIconProps = useMemo(() => {
+    return {
+      sx: {
+        fontSize: 80,
+      },
+      color: 'disabled',
+    };
+  }, []);
+
   const onPropChange = (prop: keyof DailyEntry) => {
     return function (value: any) {
       const next = { ...dailyEntry, [prop]: value };
       setDailyEntry(next);
     };
   };
+
+  let nonWorkEntry = null;
+
+  if (dailyEntry.type === 'Urlaub') {
+    nonWorkEntry = (
+      <>
+        <BeachAccessIcon {...iconProps} />
+        <Typography variant="subtitle2">Genieße die Zeit!</Typography>
+      </>
+    );
+  }
+
+  if (dailyEntry.type === 'Krank') {
+    nonWorkEntry = (
+      <>
+        <MasksIcon {...iconProps} />
+        <Typography align="center" variant="subtitle2">
+          Gute Besserung!
+        </Typography>
+      </>
+    );
+  }
+
+  if (dailyEntry.type === 'Schule') {
+    nonWorkEntry = (
+      <>
+        <SchoolOutlinedIcon {...iconProps} />
+        <Typography align="center" variant="subtitle2">
+          Weiter so!
+        </Typography>
+      </>
+    );
+  }
 
   return (
     <Box p={2} display="flex" flexDirection={'column'} gap={2}>
@@ -70,6 +114,9 @@ export default function DailyEntryEditor({ dailyEntry, workEntries, setWorkEntri
               <ToggleButton size="small" value="Krank">
                 Krank
               </ToggleButton>
+              <ToggleButton size="small" value="Schule">
+                Schule
+              </ToggleButton>
             </ToggleButtonGroup>
           </Box>
         </GridItem>
@@ -80,19 +127,7 @@ export default function DailyEntryEditor({ dailyEntry, workEntries, setWorkEntri
           <WorkEntriesEditor workEntries={workEntries} setWorkEntries={setWorkEntries} />
         ) : (
           <Box mt={5} display="flex" alignItems="center" flexDirection="column" gap={2}>
-            {dailyEntry.type === 'Urlaub' ? (
-              <>
-                <BeachAccessIcon sx={{ fontSize: 80 }} color="disabled" />
-                <Typography variant="subtitle2">Genieße die Zeit!</Typography>
-              </>
-            ) : (
-              <>
-                <MasksIcon sx={{ fontSize: 80 }} color="disabled" />
-                <Typography align="center" variant="subtitle2">
-                  Gute Besserung!
-                </Typography>
-              </>
-            )}
+            {nonWorkEntry}
           </Box>
         )}
       </Box>

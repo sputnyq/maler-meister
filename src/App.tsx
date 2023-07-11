@@ -3,6 +3,7 @@ import { Box, CssBaseline, ThemeProvider } from '@mui/material';
 import { Suspense, lazy } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
 
+import skylineUrl from './assets/skyline.svg';
 import { RootBox } from './components/aa-shared/RootBox';
 import AppLoader from './features/app-structure/AppLoader';
 import MainNavigation from './features/app-structure/AppMainNavigation';
@@ -146,7 +147,7 @@ export default function App() {
             </Routes>
           </Box>
         </RootBox>
-        <img width={'100%'} style={{ position: 'fixed', bottom: '0', zIndex: '-1' }} src="skyline.svg"></img>
+        <img width={'100%'} style={{ position: 'fixed', bottom: '0', zIndex: '-1' }} src={skylineUrl}></img>
       </CssBaseline>
     </ThemeProvider>
   );

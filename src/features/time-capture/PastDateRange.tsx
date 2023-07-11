@@ -1,4 +1,4 @@
-import FilterGridItem from '../../components/filters/FilterGridItem';
+import { AppGridField } from '../../components/AppGridField';
 import { DateRangeWidget } from '../../components/widgets/DateRangeWidget';
 
 import { addMonths, addYears, endOfMonth, endOfYear, startOfMonth, startOfYear } from 'date-fns';
@@ -13,9 +13,9 @@ export function PastDateRange({ dateRange, setDateRange }: Props) {
   const definedRanges = getDateRanges();
 
   return (
-    <FilterGridItem>
+    <AppGridField>
       <DateRangeWidget definedRanges={definedRanges} dateRange={dateRange} setDateRange={setDateRange} />
-    </FilterGridItem>
+    </AppGridField>
   );
 }
 

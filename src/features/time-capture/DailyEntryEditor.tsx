@@ -16,7 +16,7 @@ import { Box } from '@mui/system';
 import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
-import AppGrid from '../../components/aa-shared/AppGrid';
+import AppGrid from '../../components/AppGrid';
 import { AppTextField } from '../../components/aa-shared/AppTextField';
 import { AddButtonWidget } from '../../components/widgets/AddButtonWidget';
 import { AppState } from '../../store';

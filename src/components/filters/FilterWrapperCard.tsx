@@ -5,8 +5,8 @@ import { Box } from '@mui/system';
 
 import React from 'react';
 
-import AppGrid from '../aa-shared/AppGrid';
-import FilterGridItem from './FilterGridItem';
+import AppGrid from '../AppGrid';
+import { AppGridField } from '../AppGridField';
 
 interface Props {
   onSearch(): void;
@@ -19,18 +19,19 @@ export function FilterWrapperCard({ onReset, onSearch, children }: React.PropsWi
       <CardContent>
         <AppGrid>
           {children}
-          <FilterGridItem>
-            <Box display={'flex'} justifyContent="flex-end" gap={2}>
+          <AppGridField>
+            <Box display={'flex'} gap={2}>
+              <Button startIcon={<SearchOutlinedIcon />} variant="contained" disableElevation onClick={onSearch}>
+                Suchen
+              </Button>
+
               <Tooltip title="Alle Filter zurücksetzen">
                 <IconButton onClick={onReset}>
                   <RestartAltOutlinedIcon />
                 </IconButton>
               </Tooltip>
-              <Button startIcon={<SearchOutlinedIcon />} variant="contained" disableElevation onClick={onSearch}>
-                Suchen
-              </Button>
             </Box>
-          </FilterGridItem>
+          </AppGridField>
         </AppGrid>
       </CardContent>
     </Card>

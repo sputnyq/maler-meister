@@ -3,9 +3,9 @@ import { GridColDef } from '@mui/x-data-grid';
 
 import { useCallback, useMemo, useState } from 'react';
 
+import { AppGridField } from '../../components/AppGridField';
 import { AppTextField } from '../../components/aa-shared/AppTextField';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
-import FilterGridItem from '../../components/filters/FilterGridItem';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
@@ -126,7 +126,7 @@ export default function WorkEntriesTimesView() {
         <FilterWrapperCard onReset={reset} onSearch={handleSearchRequest}>
           <PastDateRange dateRange={dateRange} setDateRange={setDateRange} />
           <WorkerNameFilter curUsername={curUsername} setUsername={setCurUsername} />
-          <FilterGridItem>
+          <AppGridField>
             <AppTextField
               value={constructionId}
               onChange={(ev) => {
@@ -135,7 +135,7 @@ export default function WorkEntriesTimesView() {
               label="Baustelle"
               type="number"
             />
-          </FilterGridItem>
+          </AppGridField>
         </FilterWrapperCard>
 
         <HoursOverviewCard hours={hours} />

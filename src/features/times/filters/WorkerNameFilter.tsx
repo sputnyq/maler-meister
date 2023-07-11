@@ -1,7 +1,7 @@
 import { MenuItem } from '@mui/material';
 
+import { AppGridField } from '../../../components/AppGridField';
 import { AppTextField } from '../../../components/aa-shared/AppTextField';
-import FilterGridItem from '../../../components/filters/FilterGridItem';
 import { useLoadUsers } from '../../../hooks/useLoadUsers';
 
 interface Props {
@@ -14,7 +14,7 @@ export default function WorkerNameFilter({ curUsername, setUsername }: Props) {
 
   const allWorker = allUsers.filter((user) => user.userRole === 'worker');
   return (
-    <FilterGridItem>
+    <AppGridField>
       <AppTextField
         value={curUsername}
         onChange={(ev) => {
@@ -32,6 +32,6 @@ export default function WorkerNameFilter({ curUsername, setUsername }: Props) {
           );
         })}
       </AppTextField>
-    </FilterGridItem>
+    </AppGridField>
   );
 }

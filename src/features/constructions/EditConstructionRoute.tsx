@@ -1,13 +1,26 @@
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import EditConstructionWidget from '../../components/EditConstructionWidget';
+import { loadConstructionById } from '../../fetch/api';
+import EditConstructionWidget from './EditConstructionWidget';
 
 export default function EditConstructionRoute() {
-  const params = useParams();
-  const id = params.id;
+  const [construction, setConstruction] = useState<Construction | null>(null);
 
-  if (id) {
-    return <EditConstructionWidget id={id} />;
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      loadConstructionById(id).then((res) => {
+        if (res) {
+          setConstruction(res);
+        }
+      });
+    }
+  }, [id]);
+
+  if (construction) {
+    return <EditConstructionWidget construction={construction} />;
   }
   return null;
 }

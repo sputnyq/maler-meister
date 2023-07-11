@@ -4,8 +4,8 @@ import { GridColDef } from '@mui/x-data-grid';
 import { useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { AppGridField } from '../../components/AppGridField';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
-import FilterGridItem from '../../components/filters/FilterGridItem';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { GenericBooleanFilter } from '../../components/filters/GenericBooleanFilter';
 import { loadConstructions } from '../../fetch/api';
@@ -90,12 +90,12 @@ export default function Constructions() {
       <Box display="flex" flexDirection="column" gap={2}>
         <FilterWrapperCard onSearch={handleSearchRequest} onReset={onReset}>
           <ConstructionsDateRangeFilter dateRange={dateRange} setDateRange={setDateRange} />
-          <FilterGridItem>
+          <AppGridField>
             <GenericBooleanFilter label="Aktiv" value={active} setValue={setActive} />
-          </FilterGridItem>
-          <FilterGridItem>
+          </AppGridField>
+          <AppGridField>
             <GenericBooleanFilter label="Bestätigt" value={confirmed} setValue={setConfirmed} />
-          </FilterGridItem>
+          </AppGridField>
         </FilterWrapperCard>
         <Card>
           <CardHeader title="Ergebnisse" />

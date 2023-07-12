@@ -5,13 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { AppDataGrid } from '../components/aa-shared/app-data-grid/AppDataGrid';
 import { AddButtonWidget } from '../components/widgets/AddButtonWidget';
-import { useLoadJobs } from '../hooks/useLoadJobs';
 import { AppDispatch, AppState } from '../store';
 import { createJob, updateJob } from '../store/jobsReducer';
 
 export default function Jobs() {
-  useLoadJobs();
-
   const dispatch = useDispatch<AppDispatch>();
 
   const appJobs = useSelector<AppState, AppJob[] | undefined>((s) => s.jobs.jobs) || [];

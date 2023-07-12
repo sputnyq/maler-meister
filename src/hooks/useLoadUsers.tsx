@@ -6,18 +6,19 @@ import { useCurrentUser } from './useCurrentUser';
 
 export function useLoadUsers() {
   const user = useCurrentUser();
-  const [userNames, setUserNames] = useState<User[]>([]);
+  const [usersByTenant, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     const query = buildQuery({
       filters: {
         tenant: user?.tenant,
       },
+      sort: { '0': 'lasName:asc' },
     });
     appRequest('get')(`users?${query}`).then((res) => {
-      setUserNames(res);
+      setUsers(res);
     });
   }, [user]);
 
-  return userNames;
+  return usersByTenant;
 }

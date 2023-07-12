@@ -126,7 +126,15 @@ export default function DailyEntryEditor({ dailyEntry, workEntries, setWorkEntri
         {dailyEntry.type === 'Arbeit' ? (
           <WorkEntriesEditor workEntries={workEntries} setWorkEntries={setWorkEntries} />
         ) : (
-          <Box mt={5} display="flex" alignItems="center" flexDirection="column" gap={2}>
+          <Box display="flex" alignItems="center" flexDirection="column" gap={2}>
+            <AppTextField
+              label="Stunden"
+              type={'number'}
+              value={dailyEntry.sum}
+              onChange={(ev) => {
+                onPropChange('sum')(ev.target.value);
+              }}
+            />
             {nonWorkEntry}
           </Box>
         )}

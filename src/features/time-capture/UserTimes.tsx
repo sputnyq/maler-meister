@@ -1,15 +1,29 @@
-import { Box, Chip, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
-import { GridColDef } from '@mui/x-data-grid';
+import BeachAccessIcon from '@mui/icons-material/BeachAccessOutlined';
+import FormatPaintOutlinedIcon from '@mui/icons-material/FormatPaintOutlined';
+import MasksIcon from '@mui/icons-material/MasksOutlined';
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import {
+  Box,
+  Chip,
+  Divider,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ToggleButton,
+  ToggleButtonGroup,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import RequestDailyViewButton from '../../components/RequestDailyViewButton';
-import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
+import { RequestDailyViewButton } from '../../components/RequestDailyViewButton';
 import { DEFAULT_HOURS } from '../../constants';
 import { appRequest } from '../../fetch/fetch-client';
 import { AppState } from '../../store';
-import { buildQuery, genericConverter, getMonthStart } from '../../utilities';
+import { buildQuery, genericConverter, getColor, getMonthStart } from '../../utilities';
 import { DailyEntryViewDialog } from './DailyEntryViewDialog';
 
 interface Props {
@@ -23,44 +37,8 @@ export function UserTimes({ update, requestUpdate }: Props) {
   const [monthValue, setMonthValue] = useState<'current' | 'last'>('current');
   const [data, setData] = useState<DailyEntry[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const dailyEntryId = useRef('');
-
-  const columns: GridColDef[] = useMemo(() => {
-    const cols: GridColDef[] = [
-      {
-        field: 'date',
-        flex: 1,
-        headerName: 'Datum',
-        align: 'left',
-        renderCell({ value, id }) {
-          return <RequestDailyViewButton value={value} onClick={() => handleDialogRequest(id)} />;
-        },
-      },
-      {
-        field: 'type',
-        headerName: 'Tätigkeit',
-      },
-      {
-        field: 'sum',
-        headerName: 'Std.',
-        width: 80,
-        renderCell({ value }) {
-          const diff = Number(value) - DEFAULT_HOURS;
-          if (diff < 0) {
-            return <Chip size="small" label={value} color={'warning'} />;
-          } else if (diff > 0) {
-            return <Chip size="small" label={value} color={'primary'} />;
-          } else {
-            return <Chip size="small" label={value} color={'success'} />;
-          }
-        },
-      },
-    ];
-
-    return cols;
-  }, []);
 
   useEffect(() => {
     const buildSearchQuery = () =>
@@ -77,8 +55,6 @@ export function UserTimes({ update, requestUpdate }: Props) {
         sort: { '0': 'date:desc' },
       });
 
-    setLoading(true);
-
     appRequest('get')(`daily-entries?${buildSearchQuery()}`)
       .then((res) => {
         const data = res.data.map((e: any) => genericConverter<DailyEntry[]>(e));
@@ -87,9 +63,6 @@ export function UserTimes({ update, requestUpdate }: Props) {
       .catch((e) => {
         console.log(e);
         alert('Fehler beim Laden');
-      })
-      .finally(() => {
-        setLoading(false);
       });
   }, [username, monthValue, update]);
 
@@ -133,7 +106,7 @@ export function UserTimes({ update, requestUpdate }: Props) {
           </Typography>
           <Typography color={'GrayText'} variant="h6">{`${allHours} Stunden`}</Typography>
         </Box>
-        <AppDataGrid loading={loading} data={data} columns={columns} disablePagination />
+        <UserTimesGrid handleDialogRequest={handleDialogRequest} dailyEntries={data} />
       </Box>
 
       <DailyEntryViewDialog
@@ -142,5 +115,65 @@ export function UserTimes({ update, requestUpdate }: Props) {
         dialogOpen={dialogOpen}
       />
     </>
+  );
+}
+
+interface UserTimesGridProps {
+  dailyEntries: DailyEntry[];
+  handleDialogRequest(id: string | number | undefined): void;
+}
+function UserTimesGrid({ dailyEntries, handleDialogRequest }: UserTimesGridProps) {
+  const getIcon = (de: DailyEntry) => {
+    const color = getColor(de.type);
+    switch (de.type) {
+      case 'Krank':
+        return <MasksIcon color={color} />;
+      case 'Schule':
+        return <SchoolOutlinedIcon color={color} />;
+      case 'Urlaub':
+        return <BeachAccessIcon color={color} />;
+      default:
+        return <FormatPaintOutlinedIcon color={color} />;
+    }
+  };
+
+  const showDivider = (idx: number) => {
+    if (idx === dailyEntries.length - 1) {
+      return false;
+    }
+    if (dailyEntries[idx].date === dailyEntries[idx + 1].date) {
+      return false;
+    }
+    return true;
+  };
+
+  const renderHours = (value: string | number) => {
+    const diff = Number(value) - DEFAULT_HOURS;
+    if (diff < 0) {
+      return <Chip size="small" label={value} color={'warning'} />;
+    } else if (diff > 0) {
+      return <Chip size="small" label={value} color={'primary'} />;
+    } else {
+      return <Chip size="small" label={value} color={'success'} />;
+    }
+  };
+  return (
+    <List>
+      {dailyEntries.map((de, idx) => {
+        return (
+          <>
+            <ListItem secondaryAction={<Typography>{renderHours(de.sum)}</Typography>} dense>
+              <Tooltip title={de.type}>
+                <ListItemIcon>{getIcon(de)}</ListItemIcon>
+              </Tooltip>
+              <ListItemText>
+                <RequestDailyViewButton value={de.date} onClick={() => handleDialogRequest(de.id)} />
+              </ListItemText>
+            </ListItem>
+            {showDivider(idx) ? <Divider /> : null}
+          </>
+        );
+      })}
+    </List>
   );
 }

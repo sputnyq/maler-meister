@@ -27,7 +27,7 @@ export default function WorkerNameFilter({ curUsername, setUsername }: Props) {
         {allWorker.map((worker, index) => {
           return (
             <MenuItem key={index} value={worker.username}>
-              {`${worker.firstName} ${worker.lastName}`}
+              {`${worker.lastName}, ${worker.firstName}`}
             </MenuItem>
           );
         })}

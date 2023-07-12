@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { AppDialog } from '../../components/AppDialog';
 import { appRequest } from '../../fetch/fetch-client';
-import { genericConverter } from '../../utilities';
+import { genericConverter, getColor } from '../../utilities';
 import ConstructionView from './ConstructionView';
 
 interface Props {
@@ -56,9 +56,10 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
       closeDialog?.();
     }
   };
+
   return (
     <Box display="flex" flexDirection={'column'} gap={2}>
-      {dailyEntry !== null && (
+      {dailyEntry !== null ? (
         <Card elevation={0}>
           <CardHeader
             title={
@@ -73,8 +74,8 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
           <CardContent>
             <Box display="flex" flexDirection={'column'} gap={2}>
               <Box display="flex" gap={2}>
-                <Chip label={dailyEntry.type} color="primary" />
-                <Chip color="success" label={`${dailyEntry.sum} Stunden`}></Chip>
+                <Chip label={dailyEntry.type} color={getColor(dailyEntry.type)} />
+                <Chip color="info" label={`${dailyEntry.sum} Stunden`}></Chip>
               </Box>
 
               <Stack spacing={2}>
@@ -102,6 +103,12 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
             </Button>
           </CardActions>
         </Card>
+      ) : (
+        <Box mt={2}>
+          <Typography variant="h5" align="center">
+            Kein Eintrag gefunden
+          </Typography>
+        </Box>
       )}
     </Box>
   );

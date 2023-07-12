@@ -4,7 +4,7 @@ import { GridColDef } from '@mui/x-data-grid';
 
 import { useCallback, useMemo, useRef, useState } from 'react';
 
-import RequestDailyViewButton from '../../components/RequestDailyViewButton';
+import { RequestDailyViewButton } from '../../components/RequestDailyViewButton';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadDailyEntries } from '../../fetch/api';
@@ -64,11 +64,6 @@ export default function DailyTimesView() {
         field: 'overload',
         headerName: 'Überstunden',
       },
-      {
-        width: 250,
-        field: 'underload',
-        headerName: 'Unterstunden',
-      },
     ];
 
     return cols;
@@ -86,6 +81,7 @@ export default function DailyTimesView() {
     let overload = 0;
     let vacations = 0;
     let illness = 0;
+    let school = 0;
 
     data.forEach((dailyEntry) => {
       sum += dailyEntry.sum;
@@ -96,6 +92,9 @@ export default function DailyTimesView() {
       }
       if (dailyEntry.type === 'Krank') {
         illness += 1;
+      }
+      if (dailyEntry.type === 'Schule') {
+        school += 1;
       }
     });
 
@@ -119,6 +118,10 @@ export default function DailyTimesView() {
       {
         amount: illness,
         title: 'Krankheit (Tag)',
+      },
+      {
+        amount: school,
+        title: 'Schule (Tag)',
       },
     ] as HoursType[];
   }, [data]);

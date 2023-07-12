@@ -4,17 +4,16 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { AppDialog } from '../../components/AppDialog';
 import { appRequest } from '../../fetch/fetch-client';
-import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { genericConverter } from '../../utils';
+import { genericConverter, getColor } from '../../utilities';
 import ConstructionView from './ConstructionView';
 
 interface Props {
-  dailyEntryId: string | number;
+  dailyEntryId: string | number | undefined;
   dialogOpen: boolean;
   closeDialog(): void;
 }
 
-export function DailyEntryView({ closeDialog, dailyEntryId, dialogOpen }: Props) {
+export function DailyEntryViewDialog({ closeDialog, dailyEntryId, dialogOpen }: Props) {
   const dailyEntryView = useMemo(
     () => <DailyEntryViewCard dailyEntryId={dailyEntryId} closeDialog={closeDialog} />,
     [dailyEntryId, closeDialog],
@@ -31,6 +30,9 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
   const [dailyEntry, setDailyEntry] = useState<DailyEntry | null>(null);
 
   useEffect(() => {
+    if (!id) {
+      return;
+    }
     appRequest('get')(`daily-entries/${id}?populate=*`).then((res) => {
       const next = genericConverter<DailyEntry>(res.data);
 
@@ -54,9 +56,10 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
       closeDialog?.();
     }
   };
+
   return (
     <Box display="flex" flexDirection={'column'} gap={2}>
-      {dailyEntry !== null && (
+      {dailyEntry !== null ? (
         <Card elevation={0}>
           <CardHeader
             title={
@@ -71,8 +74,8 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
           <CardContent>
             <Box display="flex" flexDirection={'column'} gap={2}>
               <Box display="flex" gap={2}>
-                <Chip label={dailyEntry.type} color="primary" />
-                <Chip color="success" label={`${dailyEntry.sum} Stunden`}></Chip>
+                <Chip label={dailyEntry.type} color={getColor(dailyEntry.type)} />
+                <Chip color="info" label={`${dailyEntry.sum} Stunden`}></Chip>
               </Box>
 
               <Stack spacing={2}>
@@ -100,6 +103,12 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
             </Button>
           </CardActions>
         </Card>
+      ) : (
+        <Box mt={2}>
+          <Typography variant="h5" align="center">
+            Kein Eintrag gefunden
+          </Typography>
+        </Box>
       )}
     </Box>
   );

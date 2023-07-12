@@ -6,7 +6,7 @@ interface Props {
   onClick(): void;
 }
 
-export default function RequestDailyViewButton({ value, onClick }: Props) {
+export function RequestDailyViewButton({ value, onClick }: Props) {
   return (
     <Button color="info" startIcon={<OpenInNewOutlinedIcon />} onClick={onClick}>
       {new Intl.DateTimeFormat('de-DE', {

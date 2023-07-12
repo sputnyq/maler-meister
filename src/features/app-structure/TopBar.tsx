@@ -4,8 +4,8 @@ import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import Logout from '../features/log-in-out/Logout';
-import OfferActions from './OfferActions';
+import Logout from '../log-in-out/Logout';
+import OfferActions from '../offers/OfferActions';
 
 export default function TopBar() {
   const location = useLocation();
@@ -50,7 +50,7 @@ export default function TopBar() {
   return (
     <Box flexGrow={1}>
       <AppBar position="fixed" elevation={1} color="primary">
-        <Toolbar variant="regular">
+        <Toolbar variant="dense">
           {homeButton}
           <Typography variant="h6" flex={1} align="center">
             {pageName}

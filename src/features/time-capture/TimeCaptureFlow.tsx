@@ -1,20 +1,15 @@
 import { Alert, AlertColor, Box, Snackbar } from '@mui/material';
 
 import { useCallback, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import { AppDialog } from '../../components/AppDialog';
 import AddFab from '../../components/aa-shared/AddFab';
 import { DEFAULT_HOURS } from '../../constants';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { useLoadActiveConstructions } from '../../hooks/useLoadActiveConstructions';
-import { useLoadJobs } from '../../hooks/useLoadJobs';
-import { AppState } from '../../store';
-import { getCurrentDBDate } from '../../utils';
+import { getCurrentDBDate } from '../../utilities';
 import DailyEntryEditor from './DailyEntryEditor';
 
-import { current } from '@reduxjs/toolkit';
 import { cloneDeep } from 'lodash';
 
 interface Props {
@@ -22,15 +17,13 @@ interface Props {
 }
 
 export function TimeCaptureFlow({ requestUpdate }: Props) {
-  useLoadActiveConstructions();
-  useLoadJobs();
-
   const user = useCurrentUser();
 
   const [open, setOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const initialDailyEntry = {
+    sum: 8,
     date: getCurrentDBDate(),
     type: 'Arbeit',
     username: user?.username,
@@ -92,17 +85,15 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
         ? workEntries.reduce((acc, next) => {
             return acc + Number(next.hours);
           }, 0) || 0
-        : DEFAULT_HOURS;
+        : dailyEntry.sum;
 
     toPersist.username = user.username;
     toPersist.tenant = user.tenant;
     toPersist.sum = sum;
-    if (sum > DEFAULT_HOURS) {
+    if (sum > DEFAULT_HOURS && dailyEntry.type === 'Arbeit') {
       toPersist.overload = sum - DEFAULT_HOURS;
     }
-    if (sum < DEFAULT_HOURS) {
-      toPersist.underload = sum - DEFAULT_HOURS;
-    }
+
     if (workEntriesIds.current.length > 0) {
       toPersist.work_entries = workEntriesIds.current;
     }

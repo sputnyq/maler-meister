@@ -4,17 +4,16 @@ import { GridColDef } from '@mui/x-data-grid';
 
 import { useCallback, useMemo, useRef, useState } from 'react';
 
-import RequestDailyViewButton from '../../components/RequestDailyViewButton';
+import { RequestDailyViewButton } from '../../components/RequestDailyViewButton';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
-import { appRequest } from '../../fetch/fetch-client';
+import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
+import { loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { buildQuery, genericConverter } from '../../utils';
-import { DailyEntryView } from '../time-capture/DailyEntryView';
+import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';
+import { PastDateRange } from '../time-capture/PastDateRange';
 import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
 import { downloadAsCsv } from './csv/csv-export-utils';
 import DailyEntryTypeFilter from './filters/DailyEntryTypeFilter';
-import { DateRangeWidget } from './filters/DateRangeWidget';
-import { FilterTile } from './filters/FilterTile';
 import WorkerNameFilter from './filters/WorkerNameFilter';
 
 import { DateRange } from 'mui-daterange-picker-orient';
@@ -50,6 +49,7 @@ export default function DailyTimesView() {
       {
         field: 'type',
         headerName: 'Tätigkeit',
+        flex: 1,
       },
       {
         field: 'username',
@@ -63,11 +63,6 @@ export default function DailyTimesView() {
         width: 250,
         field: 'overload',
         headerName: 'Überstunden',
-      },
-      {
-        width: 250,
-        field: 'underload',
-        headerName: 'Unterstunden',
       },
     ];
 
@@ -86,6 +81,7 @@ export default function DailyTimesView() {
     let overload = 0;
     let vacations = 0;
     let illness = 0;
+    let school = 0;
 
     data.forEach((dailyEntry) => {
       sum += dailyEntry.sum;
@@ -96,6 +92,9 @@ export default function DailyTimesView() {
       }
       if (dailyEntry.type === 'Krank') {
         illness += 1;
+      }
+      if (dailyEntry.type === 'Schule') {
+        school += 1;
       }
     });
 
@@ -120,6 +119,10 @@ export default function DailyTimesView() {
         amount: illness,
         title: 'Krankheit (Tag)',
       },
+      {
+        amount: school,
+        title: 'Schule (Tag)',
+      },
     ] as HoursType[];
   }, [data]);
 
@@ -134,8 +137,8 @@ export default function DailyTimesView() {
     downloadAsCsv(data, fileName);
   }, [data, curUsername, dateRange]);
 
-  const buildSearchQuery = () => {
-    const query = buildQuery({
+  const handleSearchRequest = () => {
+    const queryObj = {
       filters: {
         tenant: user?.tenant,
         type: dailyEntryType,
@@ -146,22 +149,12 @@ export default function DailyTimesView() {
         },
       },
       sort: { '0': 'date:desc' },
-    });
-    return query;
-  };
+    };
 
-  const handleSearchRequest = () => {
     setLoading(true);
 
-    appRequest('get')(`daily-entries?${buildSearchQuery()}`)
-      .then((res) => {
-        const data = res.data.map((e: any) => genericConverter<DailyEntry[]>(e));
-        setData(data);
-      })
-      .catch((e) => {
-        console.log(e);
-        alert('Fehler beim Laden');
-      })
+    loadDailyEntries(queryObj)
+      .then(setData)
       .finally(() => {
         setLoading(false);
       });
@@ -172,11 +165,11 @@ export default function DailyTimesView() {
   return (
     <>
       <Box display="flex" flexDirection="column" gap={2}>
-        <FilterTile onReset={reset} onSearch={handleSearchRequest}>
-          <DateRangeWidget dateRange={dateRange} setDateRange={setDateRange} />
+        <FilterWrapperCard onReset={reset} onSearch={handleSearchRequest}>
+          <PastDateRange dateRange={dateRange} setDateRange={setDateRange} />
           <WorkerNameFilter curUsername={curUsername} setUsername={setCurUsername} />
           <DailyEntryTypeFilter setType={setDailyEntryType} type={dailyEntryType} />
-        </FilterTile>
+        </FilterWrapperCard>
 
         <HoursOverviewCard hours={hours} />
 
@@ -202,7 +195,7 @@ export default function DailyTimesView() {
         </Card>
       </Box>
 
-      <DailyEntryView closeDialog={closeDialog} dailyEntryId={dailyEntryId.current} dialogOpen={dialogOpen} />
+      <DailyEntryViewDialog closeDialog={closeDialog} dailyEntryId={dailyEntryId.current} dialogOpen={dialogOpen} />
     </>
   );
 }

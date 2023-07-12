@@ -3,16 +3,16 @@ import { GridColDef } from '@mui/x-data-grid';
 
 import { useCallback, useMemo, useState } from 'react';
 
+import { AppGridField } from '../../components/AppGridField';
 import { AppTextField } from '../../components/aa-shared/AppTextField';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
+import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { buildQuery, genericConverter } from '../../utils';
+import { buildQuery, genericConverter } from '../../utilities';
 import ConstructionView from '../time-capture/ConstructionView';
+import { PastDateRange } from '../time-capture/PastDateRange';
 import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
-import { DateRangeWidget } from './filters/DateRangeWidget';
-import FilterGridItem from './filters/FilterGridItem';
-import { FilterTile } from './filters/FilterTile';
 import WorkerNameFilter from './filters/WorkerNameFilter';
 
 import { DateRange } from 'mui-daterange-picker-orient';
@@ -51,6 +51,7 @@ export default function WorkEntriesTimesView() {
       {
         field: 'job',
         headerName: 'Tätigkeit',
+        flex: 1,
       },
       {
         field: 'constructionId',
@@ -122,10 +123,10 @@ export default function WorkEntriesTimesView() {
   return (
     <>
       <Box display="flex" flexDirection="column" gap={2}>
-        <FilterTile onReset={reset} onSearch={handleSearchRequest}>
-          <DateRangeWidget dateRange={dateRange} setDateRange={setDateRange} />
+        <FilterWrapperCard onReset={reset} onSearch={handleSearchRequest}>
+          <PastDateRange dateRange={dateRange} setDateRange={setDateRange} />
           <WorkerNameFilter curUsername={curUsername} setUsername={setCurUsername} />
-          <FilterGridItem>
+          <AppGridField>
             <AppTextField
               value={constructionId}
               onChange={(ev) => {
@@ -134,8 +135,8 @@ export default function WorkEntriesTimesView() {
               label="Baustelle"
               type="number"
             />
-          </FilterGridItem>
-        </FilterTile>
+          </AppGridField>
+        </FilterWrapperCard>
 
         <HoursOverviewCard hours={hours} />
 

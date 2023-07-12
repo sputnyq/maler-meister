@@ -48,10 +48,14 @@ interface User {
 type DailyEntryType = 'Arbeit' | 'Urlaub' | 'Krank' | 'Schule';
 
 interface Construction {
-  tenant: string;
   id: number;
   name: string;
   active: boolean;
+  tenant: string;
+  confirmed: boolean;
+  start: any;
+  end: any;
+  allocatedPersons: number;
 }
 interface WorkEntry {
   id?: number;
@@ -78,4 +82,10 @@ interface AppJob {
   tenant: string;
   name: string;
   id: number;
+}
+
+interface Feiertag {
+  date: string;
+  fname: string;
+  comment: string;
 }

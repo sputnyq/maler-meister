@@ -18,9 +18,9 @@ import { Box } from '@mui/system';
 import React, { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { AddButton } from '../../components/AddButton';
-import AppGrid from '../../components/aa-shared/AppGrid';
+import AppGrid from '../../components/AppGrid';
 import { AppTextField } from '../../components/aa-shared/AppTextField';
+import { AddButtonWidget } from '../../components/widgets/AddButtonWidget';
 import { AppState } from '../../store';
 
 import { cloneDeep } from 'lodash';
@@ -126,7 +126,15 @@ export default function DailyEntryEditor({ dailyEntry, workEntries, setWorkEntri
         {dailyEntry.type === 'Arbeit' ? (
           <WorkEntriesEditor workEntries={workEntries} setWorkEntries={setWorkEntries} />
         ) : (
-          <Box mt={5} display="flex" alignItems="center" flexDirection="column" gap={2}>
+          <Box display="flex" alignItems="center" flexDirection="column" gap={2}>
+            <AppTextField
+              label="Stunden"
+              type={'number'}
+              value={dailyEntry.sum}
+              onChange={(ev) => {
+                onPropChange('sum')(ev.target.value);
+              }}
+            />
             {nonWorkEntry}
           </Box>
         )}
@@ -183,7 +191,7 @@ function WorkEntriesEditor({ setWorkEntries, workEntries }: WorkEntryEditorProps
           />
         ))}
         <Box>
-          <AddButton onAdd={handleAdd} />
+          <AddButtonWidget onAdd={handleAdd} />
         </Box>
       </Box>
     </>

@@ -1,6 +1,6 @@
 import { AppState } from '.';
 import { appRequest } from '../fetch/fetch-client';
-import { buildQuery, genericConverter } from '../utils';
+import { buildQuery, genericConverter } from '../utilities';
 
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
@@ -21,10 +21,9 @@ export const loadAllJobs = createAsyncThunk<AppJob[], void, { state: AppState }>
         tenant: state.login.user?.tenant,
       },
     });
-    return appRequest('get')(`${BASE}?${query}`).then((res: any) => {
-      const converted = (res.data as any[]).map((e) => genericConverter<AppJob>(e));
-      return converted;
-    });
+    const response = await appRequest('get')(`${BASE}?${query}`);
+
+    return (response.data as any[]).map((e) => genericConverter<AppJob>(e));
   },
 );
 

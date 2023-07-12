@@ -1,6 +1,7 @@
 import { AppState } from '.';
+import { loadConstructions } from '../fetch/api';
 import { appRequest } from '../fetch/fetch-client';
-import { buildQuery, genericConverter } from '../utils';
+import { genericConverter } from '../utilities';
 
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
@@ -16,15 +17,13 @@ export const loadActiveConstructions = createAsyncThunk<Construction[], void, { 
   'constructions/load-active',
   async (_, thunkApi) => {
     const appState = thunkApi.getState();
-    const query = buildQuery({
+    const queryObj = {
       filters: {
         tenant: appState.login.user?.tenant,
         active: true,
       },
-    });
-    return appRequest('get')(`${BASE}?${query}`).then((res: any) => {
-      return (res.data as any[]).map((e) => genericConverter<Construction>(e));
-    });
+    };
+    return loadConstructions(queryObj);
   },
 );
 

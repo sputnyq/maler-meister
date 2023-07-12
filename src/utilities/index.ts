@@ -43,3 +43,16 @@ export function getMonthStart(offset = 0) {
 export function buildQuery(queryObj: object) {
   return qs.stringify(queryObj);
 }
+
+export function getColor(type: DailyEntryType) {
+  switch (type) {
+    case 'Krank':
+      return 'error';
+    case 'Urlaub':
+      return 'warning';
+    case 'Schule':
+      return 'primary';
+    default:
+      return 'inherit';
+  }
+}

@@ -22,6 +22,7 @@ export const loadActiveConstructions = createAsyncThunk<Construction[], void, { 
         tenant: appState.login.user?.tenant,
         active: true,
       },
+      sort: { '0': 'name:asc' },
     };
     return loadConstructions(queryObj);
   },

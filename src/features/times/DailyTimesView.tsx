@@ -91,7 +91,7 @@ export default function DailyTimesView() {
         vacations += 1;
       }
       if (dailyEntry.type === 'Krank') {
-        illness += 1;
+        illness += dailyEntry.sum;
       }
       if (dailyEntry.type === 'Schule') {
         school += 1;
@@ -117,7 +117,7 @@ export default function DailyTimesView() {
       },
       {
         amount: illness,
-        title: 'Krankheit (Tag)',
+        title: 'Krankheit (Std)',
       },
       {
         amount: school,

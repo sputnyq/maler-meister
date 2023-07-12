@@ -13,7 +13,7 @@ export function useLoadUsers() {
       filters: {
         tenant: user?.tenant,
       },
-      sort: { '0': 'lasName:asc' },
+      sort: { '0': 'firstName:asc' },
     });
     appRequest('get')(`users?${query}`).then((res) => {
       setUsers(res);

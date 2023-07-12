@@ -20,6 +20,7 @@ export const loadAllJobs = createAsyncThunk<AppJob[], void, { state: AppState }>
       filters: {
         tenant: state.login.user?.tenant,
       },
+      sort: { '0': 'name:asc' },
     });
     const response = await appRequest('get')(`${BASE}?${query}`);
 

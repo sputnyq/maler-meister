@@ -52,6 +52,7 @@ export function DateRangeWidget({ dateRange, setDateRange, definedRanges }: Prop
           }}
         >
           <DateRangePicker
+            initialDateRange={dateRange}
             verticalOrientation={isSmall}
             definedRanges={definedRanges}
             locale={de}

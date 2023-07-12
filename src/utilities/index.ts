@@ -44,7 +44,7 @@ export function buildQuery(queryObj: object) {
   return qs.stringify(queryObj);
 }
 
-export function getColor(type: DailyEntryType) {
+export function getColor(type: DailyEntryType): any {
   switch (type) {
     case 'Krank':
       return 'error';
@@ -53,6 +53,6 @@ export function getColor(type: DailyEntryType) {
     case 'Schule':
       return 'primary';
     default:
-      return 'inherit';
+      return 'default';
   }
 }

@@ -128,6 +128,7 @@ export default function DailyEntryEditor({ dailyEntry, workEntries, setWorkEntri
         ) : (
           <Box display="flex" alignItems="center" flexDirection="column" gap={2}>
             <AppTextField
+              disabled={dailyEntry.type === 'Urlaub'}
               label="Stunden"
               type={'number'}
               value={dailyEntry.sum}

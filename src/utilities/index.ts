@@ -44,7 +44,7 @@ export function buildQuery(queryObj: object) {
   return qs.stringify(queryObj);
 }
 
-export function getColor(type: DailyEntryType): any {
+export function getJobColor(type: DailyEntryType): any {
   switch (type) {
     case 'Krank':
       return 'error';

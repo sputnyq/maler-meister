@@ -1,5 +1,5 @@
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
-import { Box, Button, Card, CardContent, CardHeader, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, CardHeader, Chip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
 import { useCallback, useMemo, useRef, useState } from 'react';
@@ -9,6 +9,7 @@ import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGri
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { getJobColor } from '../../utilities';
 import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';
 import { PastDateRange } from '../time-capture/PastDateRange';
 import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
@@ -50,6 +51,9 @@ export default function DailyTimesView() {
         field: 'type',
         headerName: 'Tätigkeit',
         flex: 1,
+        renderCell({ value, row }) {
+          return <Chip size="small" label={value} color={getJobColor(row.type)} />;
+        },
       },
       {
         field: 'username',

@@ -24,7 +24,7 @@ export default function EditConstructionWidget({ setConstruction, construction }
 
       <CardContent>
         <Box display={'flex'} flexDirection="column" gap={2} maxWidth={'400px'}>
-          <AppTextField label="NAme" value={construction.name} onChange={(ev) => setProp('name', ev.target.value)} />
+          <AppTextField label="Name" value={construction.name} onChange={(ev) => setProp('name', ev.target.value)} />
 
           <AppTextField
             label="Arbeiter"

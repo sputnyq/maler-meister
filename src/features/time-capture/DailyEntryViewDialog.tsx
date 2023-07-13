@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { AppDialog } from '../../components/AppDialog';
 import { appRequest } from '../../fetch/fetch-client';
-import { genericConverter, getColor } from '../../utilities';
+import { genericConverter, getJobColor } from '../../utilities';
 import ConstructionView from './ConstructionView';
 
 interface Props {
@@ -74,7 +74,7 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
           <CardContent>
             <Box display="flex" flexDirection={'column'} gap={2}>
               <Box display="flex" gap={2}>
-                <Chip label={dailyEntry.type} color={getColor(dailyEntry.type)} />
+                <Chip label={dailyEntry.type} color={getJobColor(dailyEntry.type)} />
                 <Chip color="info" label={`${dailyEntry.sum} Stunden`}></Chip>
               </Box>
 

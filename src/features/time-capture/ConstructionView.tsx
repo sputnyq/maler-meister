@@ -12,12 +12,16 @@ export default function ConstructionView({ constructionId }: Props) {
   const [name, setName] = useState('');
 
   useEffect(() => {
-    loadConstructionById(constructionId).then((construction) => {
-      if (construction) {
-        setName(construction.name);
-      }
-    });
+    if (constructionId !== null) {
+      loadConstructionById(constructionId).then((construction) => {
+        if (construction) {
+          setName(construction.name);
+        }
+      });
+    }
   }, [constructionId]);
-
-  return <Typography>{`${constructionId} - ${name}`}</Typography>;
+  if (constructionId) {
+    return <Typography>{`${constructionId} - ${name}`}</Typography>;
+  }
+  return <Typography>Unbekannt</Typography>;
 }

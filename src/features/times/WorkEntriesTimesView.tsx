@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardHeader } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, Chip } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
 import { useCallback, useMemo, useState } from 'react';
@@ -9,7 +9,7 @@ import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGri
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { buildQuery, genericConverter } from '../../utilities';
+import { buildQuery, genericConverter, getJobColor } from '../../utilities';
 import ConstructionView from '../time-capture/ConstructionView';
 import { PastDateRange } from '../time-capture/PastDateRange';
 import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
@@ -50,7 +50,7 @@ export default function WorkEntriesTimesView() {
       },
       {
         field: 'job',
-        headerName: 'Tätigkeit',
+        headerName: 'Aufgabe',
         flex: 1,
       },
       {

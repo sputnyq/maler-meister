@@ -237,7 +237,7 @@ function dailyEntries2Event(dailyEntries: DailyEntry[], users: User[]): EventInp
     return {
       date: de.date,
       title: `${de.type === 'Urlaub' ? '🏝️' : '🎓'} ${name}`,
-      color: de.type === 'Urlaub' ? 'red' : '#f29999',
+      color: de.type === 'Urlaub' ? '#ed6c02' : '#19BEC3',
       textColor: 'white',
       allDay: true,
       extendedProps: {

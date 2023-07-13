@@ -23,7 +23,7 @@ import { RequestDailyViewButton } from '../../components/RequestDailyViewButton'
 import { DEFAULT_HOURS } from '../../constants';
 import { appRequest } from '../../fetch/fetch-client';
 import { AppState } from '../../store';
-import { buildQuery, genericConverter, getColor, getMonthStart } from '../../utilities';
+import { buildQuery, genericConverter, getJobColor, getMonthStart } from '../../utilities';
 import { DailyEntryViewDialog } from './DailyEntryViewDialog';
 
 interface Props {
@@ -124,7 +124,7 @@ interface UserTimesGridProps {
 }
 function UserTimesGrid({ dailyEntries, handleDialogRequest }: UserTimesGridProps) {
   const getIcon = (de: DailyEntry) => {
-    const color = getColor(de.type);
+    const color = getJobColor(de.type);
     switch (de.type) {
       case 'Krank':
         return <MasksIcon color={color} />;

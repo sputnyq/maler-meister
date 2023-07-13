@@ -1,6 +1,6 @@
 import { Alert, AlertColor, Box, Snackbar } from '@mui/material';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { AppDialog } from '../../components/AppDialog';
 import AddFab from '../../components/aa-shared/AddFab';
@@ -49,6 +49,14 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
     setOpenSnackbar(true);
     return;
   }, []);
+
+  const invalidEntry = useMemo(() => {
+    if (dailyEntry.type !== 'Arbeit') {
+      return false;
+    }
+
+    return workEntries.some((we) => !we.constructionId || !we.job || !we.hours);
+  }, [dailyEntry, workEntries]);
 
   const handleSave = async () => {
     if (!user) {
@@ -116,7 +124,13 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
 
   return (
     <>
-      <AppDialog title="Zeit eintragen" open={open} onClose={() => setOpen(false)} onConfirm={handleSave}>
+      <AppDialog
+        title="Zeit eintragen"
+        open={open}
+        onClose={() => setOpen(false)}
+        onConfirm={handleSave}
+        confirmDisabled={invalidEntry}
+      >
         <Box width={'inherit'} maxWidth={1000} marginX="auto" height={'100%'}>
           <DailyEntryEditor
             workEntries={workEntries}

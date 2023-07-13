@@ -12,6 +12,8 @@ import { AppDispatch } from '../../store';
 import { addActiveConstruction } from '../../store/constructionReducer';
 import { genericConverter } from '../../utilities';
 
+import { addDays } from 'date-fns';
+
 export default function CreateConstruction() {
   const user = useCurrentUser();
   const [open, setOpen] = useState(false);
@@ -29,7 +31,11 @@ export default function CreateConstruction() {
   };
 
   const handleCreateRequest = () => {
-    appRequest('post')('constructions', { data: { name, active: true, tenant: user?.tenant } as Construction })
+    const start = new Date();
+    const end = addDays(start, 2);
+    appRequest('post')('constructions', {
+      data: { name, active: true, tenant: user?.tenant, start, end } as Construction,
+    })
       .then((data: any) => {
         const newConstruction = genericConverter<Construction>(data.data);
         dispatch(addActiveConstruction(newConstruction));

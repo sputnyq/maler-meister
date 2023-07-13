@@ -49,6 +49,15 @@ export default function DailyTimesView() {
         },
       },
       {
+        field: 'sum',
+        headerName: 'Stunden',
+      },
+      {
+        width: 250,
+        field: 'overload',
+        headerName: 'Überstunden',
+      },
+      {
         field: 'type',
         headerName: 'Tätigkeit',
         flex: 1,
@@ -59,15 +68,6 @@ export default function DailyTimesView() {
       {
         field: 'username',
         headerName: 'Mitarbeiter',
-      },
-      {
-        field: 'sum',
-        headerName: 'Stunden',
-      },
-      {
-        width: 250,
-        field: 'overload',
-        headerName: 'Überstunden',
       },
     ];
 

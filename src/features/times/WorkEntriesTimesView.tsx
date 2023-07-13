@@ -41,10 +41,6 @@ export default function WorkEntriesTimesView() {
       },
 
       {
-        field: 'username',
-        headerName: 'Mitarbeiter',
-      },
-      {
         field: 'hours',
         headerName: 'Stunden',
       },
@@ -60,6 +56,10 @@ export default function WorkEntriesTimesView() {
         renderCell({ value }) {
           return <ConstructionView constructionId={value} />;
         },
+      },
+      {
+        field: 'username',
+        headerName: 'Mitarbeiter',
       },
     ];
 

@@ -7,6 +7,7 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import { RequestDailyViewButton } from '../../components/RequestDailyViewButton';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
+import { DEFAULT_HOURS } from '../../constants';
 import { loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { getJobColor } from '../../utilities';
@@ -81,21 +82,19 @@ export default function DailyTimesView() {
 
   const hours = useMemo(() => {
     let sum = 0;
-    let underload = 0;
     let overload = 0;
     let vacations = 0;
-    let illness = 0;
+    let illnessHours = 0;
     let school = 0;
 
     data.forEach((dailyEntry) => {
       sum += dailyEntry.sum;
-      underload += dailyEntry.underload;
       overload += dailyEntry.overload;
       if (dailyEntry.type === 'Urlaub') {
         vacations += 1;
       }
       if (dailyEntry.type === 'Krank') {
-        illness += dailyEntry.sum;
+        illnessHours += dailyEntry.sum;
       }
       if (dailyEntry.type === 'Schule') {
         school += 1;
@@ -111,17 +110,18 @@ export default function DailyTimesView() {
         amount: overload,
         title: 'Überstunden (Std.)',
       },
-      {
-        amount: underload,
-        title: 'Unterstunden (Std.)',
-      },
+
       {
         amount: vacations,
         title: 'Urlaub (Tag)',
       },
       {
-        amount: illness,
+        amount: illnessHours,
         title: 'Krankheit (Std)',
+      },
+      {
+        amount: (illnessHours / DEFAULT_HOURS).toFixed(1),
+        title: 'Krankheit (Tag)',
       },
       {
         amount: school,

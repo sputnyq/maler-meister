@@ -7,8 +7,6 @@ interface Props {
 }
 
 export function RequestDailyViewButton({ value, onClick }: Props) {
-  const = useInt
-  
   return (
     <Button color="info" startIcon={<OpenInNewOutlinedIcon />} onClick={onClick}>
       {new Intl.DateTimeFormat('de-DE', {

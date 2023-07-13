@@ -20,6 +20,7 @@ interface Props {
   title?: string;
   showConfirm?: boolean;
   onConfirm?: () => void;
+  confirmDisabled?: boolean;
 }
 
 export function AppDialog(props: React.PropsWithChildren<Props>) {
@@ -43,6 +44,7 @@ function MobileDialog({
   showConfirm = true,
   onClose,
   onConfirm,
+  confirmDisabled,
 }: React.PropsWithChildren<Props>) {
   return (
     <div>
@@ -56,7 +58,7 @@ function MobileDialog({
               {title}
             </Typography>
             {showConfirm && (
-              <IconButton onClick={onConfirm} color="inherit">
+              <IconButton disabled={confirmDisabled} onClick={onConfirm} color="inherit">
                 <CheckIcon />
               </IconButton>
             )}
@@ -75,6 +77,7 @@ function DesktopDialog({
   showConfirm = true,
   onClose,
   onConfirm,
+  confirmDisabled,
 }: React.PropsWithChildren<Props>) {
   const theme = useTheme();
   return (
@@ -92,7 +95,7 @@ function DesktopDialog({
       <DialogContent>{children}</DialogContent>
       {showConfirm && (
         <DialogActions>
-          <Button variant="contained" disableElevation onClick={onConfirm}>
+          <Button disabled={confirmDisabled} variant="contained" disableElevation onClick={onConfirm}>
             OK
           </Button>
         </DialogActions>

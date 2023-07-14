@@ -25,6 +25,8 @@ type EventDateRange = {
 
 const COLOR_CODES = ['#71e2fa', '#5856d6', '#0c6378', '#808994', '#0e738a', '#ae2c1c'];
 
+const MAX_PAST_DAYS = -14;
+
 type ConstructionProps = {
   type: 'CONSTRUCTION';
   id: number | string;
@@ -61,12 +63,16 @@ export default function CalendarView() {
   }, [eventRange]);
 
   useEffect(() => {
+    const possibleStart = addDays(new Date(), MAX_PAST_DAYS);
     const queryObj = {
       filters: {
         tenant: user?.tenant,
         date: {
-          $gte: eventRange.start,
-          $lte: eventRange.end,
+          $gte:
+            eventRange.start && eventRange.start < possibleStart
+              ? formatISO(possibleStart, { representation: 'date' })
+              : formatISO(eventRange.start || new Date(), { representation: 'date' }),
+          $lte: formatISO(eventRange.end || new Date(), { representation: 'date' }),
         },
         pagination: {
           pageSize: 100,
@@ -81,6 +87,7 @@ export default function CalendarView() {
   }, [eventRange, user, update]);
 
   useEffect(() => {
+    const possibleStart = addDays(new Date(), MAX_PAST_DAYS);
     const queryObj = {
       filters: {
         type: {
@@ -88,8 +95,11 @@ export default function CalendarView() {
         },
         tenant: user?.tenant,
         date: {
-          $gte: eventRange.start,
-          $lte: eventRange.end,
+          $gte:
+            eventRange.start && eventRange.start < possibleStart
+              ? formatISO(possibleStart, { representation: 'date' })
+              : formatISO(eventRange.start || new Date(), { representation: 'date' }),
+          $lte: formatISO(eventRange.end || new Date(), { representation: 'date' }),
         },
         pagination: {
           pageSize: 100,

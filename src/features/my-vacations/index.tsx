@@ -14,19 +14,27 @@ import {
   Typography,
 } from '@mui/material';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import { RequestDailyViewButton } from '../../components/RequestDailyViewButton';
 import AddFab from '../../components/aa-shared/AddFab';
 import { loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';
+import RequestVacationsDialog from './RequestVacationsDialog';
 
 import { addYears, endOfYear, startOfYear } from 'date-fns';
 
 export default function MyVacations() {
-  const [yearSwitchValue, setYearSwitchValue] = useState<'last' | 'current' | 'next'>('current');
   const user = useCurrentUser();
-  const [open, setOpen] = useState(false);
+
+  const [yearSwitchValue, setYearSwitchValue] = useState<'last' | 'current' | 'next'>('current');
+  const [update, setUpdate] = useState(0);
+  const [requestDialog, setRequestDialog] = useState(false);
+  const [viewDialog, setViewDialog] = useState(false);
   const [data, setData] = useState<DailyEntry[]>([]);
+
+  const dailyEntryId = useRef('');
 
   useEffect(() => {
     let dateObj = undefined;
@@ -37,7 +45,7 @@ export default function MyVacations() {
       case 'current':
         dateObj = {
           $gte: startOfYear(now),
-          $lt: now,
+          $lte: now,
         };
         break;
 
@@ -66,11 +74,31 @@ export default function MyVacations() {
         setData(res.dailyEntries);
       }
     });
-  }, [yearSwitchValue, user]);
+  }, [yearSwitchValue, user, update]);
+
+  const handleDialogRequest = (id: any) => {
+    dailyEntryId.current = id;
+    setViewDialog(true);
+  };
+
+  const handleCloseRequest = useCallback(() => {
+    setUpdate((u) => u + 1);
+    setViewDialog(false);
+    setRequestDialog(false);
+  }, []);
 
   return (
     <>
-      <AddFab onClick={() => setOpen(true)} />
+      <DailyEntryViewDialog
+        dailyEntryId={dailyEntryId.current}
+        dialogOpen={viewDialog}
+        closeDialog={handleCloseRequest}
+      />
+
+      <RequestVacationsDialog open={requestDialog} onClose={handleCloseRequest} />
+
+      <AddFab onClick={() => setRequestDialog(true)} />
+
       <Card>
         <CardHeader title="Mein Urlaub" />
         <CardContent>
@@ -114,12 +142,7 @@ export default function MyVacations() {
                           <BeachAccessIcon color="warning" />
                         </ListItemIcon>
                         <ListItemText>
-                          {new Intl.DateTimeFormat('de-DE', {
-                            month: 'long',
-                            weekday: 'long',
-                            day: 'numeric',
-                            year: 'numeric',
-                          }).format(new Date(de.date))}
+                          <RequestDailyViewButton value={de.date} onClick={() => handleDialogRequest(de.id)} />
                         </ListItemText>
                       </ListItem>
                       <Divider />

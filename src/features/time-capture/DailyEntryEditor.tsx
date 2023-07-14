@@ -1,4 +1,3 @@
-import BeachAccessIcon from '@mui/icons-material/BeachAccessOutlined';
 import DeleteIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import MasksIcon from '@mui/icons-material/MasksOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
@@ -51,15 +50,6 @@ export default function DailyEntryEditor({ dailyEntry, workEntries, setWorkEntri
 
   let nonWorkEntry = null;
 
-  if (dailyEntry.type === 'Urlaub') {
-    nonWorkEntry = (
-      <>
-        <BeachAccessIcon {...iconProps} />
-        <Typography variant="subtitle2">Genieße die Zeit!</Typography>
-      </>
-    );
-  }
-
   if (dailyEntry.type === 'Krank') {
     nonWorkEntry = (
       <>
@@ -108,9 +98,7 @@ export default function DailyEntryEditor({ dailyEntry, workEntries, setWorkEntri
               <ToggleButton size="small" value="Arbeit">
                 Arbeit
               </ToggleButton>
-              <ToggleButton size="small" value="Urlaub">
-                Urlaub
-              </ToggleButton>
+
               <ToggleButton size="small" value="Krank">
                 Krank
               </ToggleButton>

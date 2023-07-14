@@ -16,7 +16,7 @@ import theme from './style/theme';
 
 const Offers = lazy(() => import('./routes/Offers'));
 const Invoices = lazy(() => import('./routes/Invoices'));
-const TimeCapture = lazy(() => import('./features/time-capture/TimeCapture'));
+const TimeCapture = lazy(() => import('./features/time-capture'));
 const OfferEdit = lazy(() => import('./routes/OfferEdit'));
 const Options = lazy(() => import('./routes/Options'));
 const Constructions = lazy(() => import('./features/constructions/Constructions'));

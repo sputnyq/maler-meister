@@ -32,7 +32,7 @@ interface Props {
   requestUpdate(): void;
 }
 
-export function UserTimes({ update, requestUpdate }: Props) {
+export function MyTimes({ update, requestUpdate }: Props) {
   const user = useCurrentUser();
   const [monthValue, setMonthValue] = useState<'current' | 'last'>('current');
   const [data, setData] = useState<DailyEntry[]>([]);

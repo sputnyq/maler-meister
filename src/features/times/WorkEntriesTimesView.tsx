@@ -15,14 +15,12 @@ import { PastDateRange } from '../time-capture/PastDateRange';
 import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
 import WorkerNameFilter from './filters/WorkerNameFilter';
 
-import { DateRange } from 'mui-daterange-picker-orient';
-
 export default function WorkEntriesTimesView() {
   const user = useCurrentUser();
 
   const [curUsername, setCurUsername] = useState('');
   const [constructionId, setConstructionId] = useState('');
-  const [dateRange, setDateRange] = useState<DateRange>({});
+  const [dateRange, setDateRange] = useState<AppDateTange>({});
 
   const [data, setData] = useState<WorkEntry[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -93,8 +91,8 @@ export default function WorkEntriesTimesView() {
         tenant: user?.tenant,
         username: curUsername === '' ? undefined : curUsername,
         date: {
-          $gte: dateRange.startDate,
-          $lte: dateRange.endDate,
+          $gte: dateRange.start,
+          $lte: dateRange.end,
         },
         constructionId: constructionId === '' ? undefined : constructionId,
       },

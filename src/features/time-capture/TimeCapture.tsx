@@ -2,8 +2,8 @@ import { Card, CardContent, CardHeader } from '@mui/material';
 
 import { useState } from 'react';
 
+import { UserTimes } from './MyTimes';
 import { TimeCaptureFlow } from './TimeCaptureFlow';
-import { UserTimes } from './UserTimes';
 
 export default function TimeCapture() {
   const [update, setUpdate] = useState(0);

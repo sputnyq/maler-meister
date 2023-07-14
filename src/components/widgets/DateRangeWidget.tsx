@@ -5,12 +5,13 @@ import { useMemo, useState } from 'react';
 import { useIsSmall } from '../../hooks/useIsSmall';
 import { AppDialog } from '../AppDialog';
 
+import { formatISO } from 'date-fns';
 import { de } from 'date-fns/locale';
-import { DateRange, DateRangePicker, DefinedRange } from 'mui-daterange-picker-orient';
+import { DateRangePicker, DefinedRange } from 'mui-daterange-picker-orient';
 
 interface Props {
-  dateRange: DateRange;
-  setDateRange(dateRange: DateRange): void;
+  dateRange: AppDateTange;
+  setDateRange(dateRange: AppDateTange): void;
   definedRanges: DefinedRange[];
 }
 
@@ -23,11 +24,13 @@ export function DateRangeWidget({ dateRange, setDateRange, definedRanges }: Prop
 
   const handleClose = () => setOpen(false);
 
+  const formatDate = (asString: string) => {
+    return new Date(asString).toLocaleDateString('ru');
+  };
+
   const title = useMemo(() => {
-    if (dateRange.endDate && dateRange.startDate) {
-      return `${dateRange.startDate?.toLocaleDateString('ru') || ''} - ${
-        dateRange.endDate?.toLocaleDateString('ru') || ''
-      }`;
+    if (dateRange.end && dateRange.start) {
+      return `${formatDate(dateRange.start)} - ${formatDate(dateRange.end)}`;
     }
     return 'Zeitraum auswählen';
   }, [dateRange]);
@@ -52,13 +55,23 @@ export function DateRangeWidget({ dateRange, setDateRange, definedRanges }: Prop
           }}
         >
           <DateRangePicker
-            initialDateRange={dateRange}
+            initialDateRange={{
+              startDate: new Date(dateRange.start || new Date()),
+              endDate: new Date(dateRange.end || new Date()),
+            }}
             verticalOrientation={isSmall}
             definedRanges={definedRanges}
             locale={de}
             open={open}
             toggle={toggle}
-            onChange={setDateRange}
+            onChange={({ endDate, startDate }) => {
+              if (startDate && endDate) {
+                setDateRange({
+                  start: formatISO(startDate, { representation: 'date' }),
+                  end: formatISO(endDate, { representation: 'date' }),
+                });
+              }
+            }}
           />
         </Box>
       </AppDialog>

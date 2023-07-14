@@ -14,12 +14,10 @@ import { ConstructionsDateRangeFilter } from './ConstructionsDateRangeFilter';
 import CreateConstruction from './CreateConstruction';
 import EditConstructionDialog from './EditConstructionDialog';
 
-import { DateRange } from 'mui-daterange-picker-orient';
-
 export default function Constructions() {
   const user = useCurrentUser();
   const [constructions, setConstructions] = useState<Construction[]>([]);
-  const [dateRange, setDateRange] = useState<DateRange>({});
+  const [dateRange, setDateRange] = useState<AppDateTange>({});
   const [active, setActive] = useState<boolean | undefined>(true);
   const [confirmed, setConfirmed] = useState<boolean | undefined>(undefined);
 
@@ -88,8 +86,8 @@ export default function Constructions() {
     const queryObj = {
       filters: {
         start: {
-          $gte: dateRange.startDate,
-          $lte: dateRange.endDate,
+          $gte: dateRange.start,
+          $lte: dateRange.end,
         },
         tenant: user?.tenant,
         active,

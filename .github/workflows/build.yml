@@ -5,7 +5,7 @@ on:
     branches:
       - '**' # matches every branch
       - '!main' # excludes master
-      - '!dev' # excludes master
+      - '!dev' # excludes dev
 
 jobs:
   build:

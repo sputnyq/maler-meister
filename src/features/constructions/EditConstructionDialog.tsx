@@ -28,6 +28,7 @@ export default function EditConstructionDialog({ constructionId, dialogOpen, onC
         confirmed: false,
       } as Construction);
     } else {
+      console.log(constructionId);
       loadConstructionById(constructionId)
         .then((con) => {
           if (con) {

@@ -45,8 +45,6 @@ interface User {
   tenant: string;
 }
 
-type ISOString = string;
-
 type DailyEntryType = 'Arbeit' | 'Urlaub' | 'Krank' | 'Schule';
 
 interface Construction {
@@ -95,4 +93,15 @@ interface Feiertag {
 interface AppDateTange {
   start?: string;
   end?: string;
+}
+
+interface ApiMeta {
+  pagination: Pagination;
+}
+
+interface Pagination {
+  page: number;
+  pageSize: number;
+  pageCount: number;
+  total: number;
 }

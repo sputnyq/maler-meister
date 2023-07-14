@@ -2,7 +2,7 @@ import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 import { Box, Button, Card, CardContent, CardHeader } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { AppGridField } from '../../components/AppGridField';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
@@ -19,10 +19,10 @@ export default function Constructions() {
   const [constructions, setConstructions] = useState<Construction[]>([]);
   const [dateRange, setDateRange] = useState<AppDateTange>({});
   const [active, setActive] = useState<boolean | undefined>(true);
-  const [confirmed, setConfirmed] = useState<boolean | undefined>(undefined);
+  const [confirmed, setConfirmed] = useState<boolean | undefined>(true);
 
   const [constructionDialogOpen, setConstructionDialogOpen] = useState(false);
-  const curConstructionId = useRef(-1);
+  const curConstructionId = useRef<undefined | number>(undefined);
 
   const columns: GridColDef[] = useMemo(() => {
     const arr: GridColDef[] = [
@@ -76,13 +76,16 @@ export default function Constructions() {
     return arr;
   }, []);
 
-  const onReset = useCallback(() => {
-    setActive(undefined);
-    setConfirmed(undefined);
-    setDateRange({});
-  }, []);
+  // grid
+  const [rowCount, setRowCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 5,
+  });
 
-  const handleSearchRequest = () => {
+  useEffect(() => {
+    setLoading(true);
     const queryObj = {
       filters: {
         start: {
@@ -94,10 +97,20 @@ export default function Constructions() {
         confirmed,
       },
       sort: { '0': 'start:asc' },
+      pagination: {
+        page: paginationModel.page + 1,
+        pageSize: paginationModel.pageSize,
+      },
     };
 
-    loadConstructions(queryObj).then(setConstructions).catch(console.log);
-  };
+    loadConstructions(queryObj)
+      .then((res) => {
+        setConstructions(res.constructions);
+        setRowCount(res.meta.pagination.total);
+      })
+      .catch(console.log)
+      .finally(() => setLoading(false));
+  }, [active, confirmed, dateRange.end, dateRange.start, paginationModel, user?.tenant]);
 
   return (
     <>
@@ -107,7 +120,7 @@ export default function Constructions() {
         dialogOpen={constructionDialogOpen}
       />
       <Box display="flex" flexDirection="column" gap={2}>
-        <FilterWrapperCard onSearch={handleSearchRequest} onReset={onReset}>
+        <FilterWrapperCard>
           <ConstructionsDateRangeFilter dateRange={dateRange} setDateRange={setDateRange} />
           <AppGridField>
             <GenericBooleanFilter label="Aktiv" value={active} setValue={setActive} />
@@ -119,7 +132,15 @@ export default function Constructions() {
         <Card>
           <CardHeader title="Ergebnisse" />
           <CardContent>
-            <AppDataGrid disablePagination data={constructions} columns={columns} />
+            <AppDataGrid
+              rows={constructions}
+              columns={columns}
+              rowCount={rowCount}
+              paginationModel={paginationModel}
+              paginationMode="server"
+              onPaginationModelChange={setPaginationModel}
+              loading={loading}
+            />
           </CardContent>
         </Card>
         <CreateConstruction />

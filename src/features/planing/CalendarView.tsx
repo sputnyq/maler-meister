@@ -68,9 +68,16 @@ export default function CalendarView() {
           $gte: eventRange.start,
           $lte: eventRange.end,
         },
+        pagination: {
+          pageSize: 100,
+        },
       },
     };
-    loadConstructions(queryObj).then(setConstructions);
+    loadConstructions(queryObj).then((res) => {
+      if (res) {
+        setConstructions(res.constructions);
+      }
+    });
   }, [eventRange, user, update]);
 
   useEffect(() => {
@@ -84,10 +91,17 @@ export default function CalendarView() {
           $gte: eventRange.start,
           $lte: eventRange.end,
         },
+        pagination: {
+          pageSize: 100,
+        },
         sort: { '0': 'start:desc' },
       },
     };
-    loadDailyEntries(queryObj).then((data) => setDailyEntries(data));
+    loadDailyEntries(queryObj).then((res) => {
+      if (res) {
+        setDailyEntries(res.dailyEntries);
+      }
+    });
   }, [eventRange, user]);
 
   const events = useMemo(() => {

@@ -7,6 +7,8 @@ import { appRequest } from '../../fetch/fetch-client';
 import { genericConverter, getJobColor } from '../../utilities';
 import ConstructionView from './ConstructionView';
 
+import { addDays } from 'date-fns';
+
 interface Props {
   dailyEntryId: string | number | undefined;
   dialogOpen: boolean;
@@ -41,6 +43,18 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
       setDailyEntry(next);
     });
   }, [id]);
+
+  const disabled = useMemo(() => {
+    const date = dailyEntry?.date;
+    if (!date) {
+      //never happens
+      return false;
+    }
+
+    const deDate = new Date(date);
+    const limit = addDays(new Date(), -7);
+    return deDate < limit;
+  }, [dailyEntry]);
 
   const handleDeleteRequest = async () => {
     const deleteRequest = appRequest('delete');
@@ -98,7 +112,7 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
             </Box>
           </CardContent>
           <CardActions>
-            <Button onClick={handleDeleteRequest} color="error">
+            <Button disabled={disabled} onClick={handleDeleteRequest} color="error">
               Eintrag löschen
             </Button>
           </CardActions>

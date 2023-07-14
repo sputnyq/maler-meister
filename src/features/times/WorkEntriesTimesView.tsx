@@ -14,13 +14,18 @@ import { PastDateRange } from '../time-capture/PastDateRange';
 import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
 import WorkerNameFilter from './filters/WorkerNameFilter';
 
+import { endOfMonth, formatISO, startOfMonth } from 'date-fns';
+
 export default function WorkEntriesTimesView() {
   const user = useCurrentUser();
 
   const [curUsername, setCurUsername] = useState('');
   const [constructionId, setConstructionId] = useState('');
   const [idSearch, setIdSearch] = useState('');
-  const [dateRange, setDateRange] = useState<AppDateTange>({});
+  const [dateRange, setDateRange] = useState<AppDateTange>({
+    start: formatISO(startOfMonth(new Date()), { representation: 'date' }),
+    end: formatISO(endOfMonth(new Date()), { representation: 'date' }),
+  });
 
   const [data, setData] = useState<WorkEntry[]>([]);
   const [loading, setLoading] = useState<boolean>(false);

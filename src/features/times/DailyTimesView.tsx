@@ -178,9 +178,8 @@ export default function DailyTimesView() {
     user?.tenant,
   ]);
 
-  const exportDisabled = !(dateRange.end && dateRange.start && curUsername && data.length > 0);
+  const exportDisabled = rowCount > paginationModel.pageSize;
 
-  console.log(data[0]?.id);
   return (
     <>
       <Box display="flex" flexDirection="column" gap={2}>

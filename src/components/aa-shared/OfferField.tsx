@@ -19,7 +19,7 @@ export interface OfferFieldProps {
   capitalize?: true;
 }
 
-export default function OfferField<T>({ select, multiline, type, label, selectOptions, path }: OfferFieldProps) {
+export default function OfferField({ select, multiline, type, label, selectOptions, path }: OfferFieldProps) {
   const dispatch = useDispatch<AppDispatch>();
   const initValue = useOfferValue(path);
 

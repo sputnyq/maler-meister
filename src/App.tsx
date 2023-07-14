@@ -25,6 +25,7 @@ const Upload = lazy(() => import('./routes/Upload'));
 const Jobs = lazy(() => import('./routes/Jobs'));
 const Planing = lazy(() => import('./features/planing'));
 const MyVacations = lazy(() => import('./features/my-vacations'));
+const Info = lazy(() => import('./features/info'));
 
 function LazyLoad({ children }: React.PropsWithChildren) {
   return <Suspense fallback={<LoadingScreen />}>{children}</Suspense>;
@@ -51,6 +52,14 @@ export default function App() {
                 }
               >
                 <Route index element={<MainNavigation />} />
+                <Route
+                  path="info"
+                  element={
+                    <LazyLoad>
+                      <Info />
+                    </LazyLoad>
+                  }
+                />
                 <Route
                   path="invoices"
                   element={

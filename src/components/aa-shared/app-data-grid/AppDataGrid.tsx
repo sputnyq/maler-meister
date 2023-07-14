@@ -33,7 +33,6 @@ export function AppDataGrid({
   columns,
   data,
   paginationMode = 'server',
-  disablePagination,
   allowDeletion,
   loading,
   onDelete,

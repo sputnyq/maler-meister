@@ -3,6 +3,7 @@ import ArticleIcon from '@mui/icons-material/ArticleOutlined';
 import BeachAccessIcon from '@mui/icons-material/BeachAccessOutlined';
 import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
 import HandymanIcon from '@mui/icons-material/HandymanOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import MoreTimeIcon from '@mui/icons-material/MoreTimeOutlined';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLongOutlined';
 import TuneIcon from '@mui/icons-material/TuneOutlined';
@@ -54,6 +55,9 @@ export default function MainNavigation() {
 
         <Tile requiredRoles={['admin']} to="options" title="Optionen">
           <TuneIcon {...iconProps} />
+        </Tile>
+        <Tile requiredRoles={['worker', 'admin', 'accountant']} to="info" title="Info">
+          <InfoOutlinedIcon {...iconProps} />
         </Tile>
       </Grid>
     </>

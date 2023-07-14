@@ -11,7 +11,7 @@ import { GenericBooleanFilter } from '../../components/filters/GenericBooleanFil
 import { loadConstructions } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { ConstructionsDateRangeFilter } from './ConstructionsDateRangeFilter';
-import CreateConstruction from './CreateConstruction';
+import { CreateConstruction } from './CreateConstruction';
 import EditConstructionDialog from './EditConstructionDialog';
 
 export default function Constructions() {
@@ -20,6 +20,7 @@ export default function Constructions() {
   const [dateRange, setDateRange] = useState<AppDateTange>({});
   const [active, setActive] = useState<boolean | undefined>(true);
   const [confirmed, setConfirmed] = useState<boolean | undefined>(true);
+  const [update, setUpdate] = useState<number>(0);
 
   const [constructionDialogOpen, setConstructionDialogOpen] = useState(false);
   const curConstructionId = useRef<undefined | number>(undefined);
@@ -110,7 +111,7 @@ export default function Constructions() {
       })
       .catch(console.log)
       .finally(() => setLoading(false));
-  }, [active, confirmed, dateRange.end, dateRange.start, paginationModel, user?.tenant]);
+  }, [active, confirmed, dateRange.end, dateRange.start, paginationModel, user?.tenant, update]);
 
   return (
     <>
@@ -143,7 +144,11 @@ export default function Constructions() {
             />
           </CardContent>
         </Card>
-        <CreateConstruction />
+        <CreateConstruction
+          onCreateSuccess={() => {
+            setUpdate((u) => u + 1);
+          }}
+        />
       </Box>
     </>
   );

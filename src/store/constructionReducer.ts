@@ -24,7 +24,7 @@ export const loadActiveConstructions = createAsyncThunk<Construction[], void, { 
       },
       sort: { '0': 'name:asc' },
     };
-    return loadConstructions(queryObj);
+    return loadConstructions(queryObj).then((res) => res.constructions);
   },
 );
 

@@ -2,11 +2,11 @@ import { AppGridField } from '../../components/AppGridField';
 import { DateRangeWidget } from '../../components/widgets/DateRangeWidget';
 
 import { addMonths, addYears, endOfMonth, endOfYear, startOfMonth, startOfYear } from 'date-fns';
-import { DateRange, DefinedRange } from 'mui-daterange-picker-orient';
+import { DefinedRange } from 'mui-daterange-picker-orient';
 
 interface Props {
-  dateRange: DateRange;
-  setDateRange(dateRange: DateRange): void;
+  dateRange: AppDateTange;
+  setDateRange(dateRange: AppDateTange): void;
 }
 
 export function ConstructionsDateRangeFilter({ dateRange, setDateRange }: Props) {

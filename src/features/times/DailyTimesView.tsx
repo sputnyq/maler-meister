@@ -2,7 +2,7 @@ import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import { Box, Button, Card, CardContent, CardHeader, Chip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { RequestDailyViewButton } from '../../components/RequestDailyViewButton';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
@@ -18,16 +18,14 @@ import { downloadAsCsv } from './csv/csv-export-utils';
 import DailyEntryTypeFilter from './filters/DailyEntryTypeFilter';
 import WorkerNameFilter from './filters/WorkerNameFilter';
 
-import { DateRange } from 'mui-daterange-picker-orient';
-
 export default function DailyTimesView() {
   const user = useCurrentUser();
 
   const [data, setData] = useState<DailyEntry[]>([]);
 
   const [curUsername, setCurUsername] = useState('');
-  const [dateRange, setDateRange] = useState<DateRange>({});
-  const [dailyEntryType, setDailyEntryType] = useState<DailyEntryType | undefined>(undefined);
+  const [dateRange, setDateRange] = useState<AppDateTange>({});
+  const [dailyEntryType, setDailyEntryType] = useState<DailyEntryType | undefined>('Arbeit');
   const [loading, setLoading] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -73,12 +71,6 @@ export default function DailyTimesView() {
 
     return cols;
   }, [handleDialogRequest]);
-
-  const reset = () => {
-    setCurUsername('');
-    setDateRange({});
-    setDailyEntryType(undefined);
-  };
 
   const hours = useMemo(() => {
     let sum = 0;
@@ -135,41 +127,63 @@ export default function DailyTimesView() {
   }, []);
 
   const handleExportRequest = useCallback(() => {
-    const { startDate, endDate } = dateRange;
-    const fileName = `${curUsername} ${startDate?.toLocaleDateString('ru')}-${endDate?.toLocaleDateString('ru')}`;
+    const { start, end } = dateRange;
+    const fileName = `${curUsername} ${start || ''}-${end || ''}`;
 
     downloadAsCsv(data, fileName);
   }, [data, curUsername, dateRange]);
 
-  const handleSearchRequest = () => {
+  // grid
+  const [rowCount, setRowCount] = useState(0);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
+
+  useEffect(() => {
     const queryObj = {
       filters: {
         tenant: user?.tenant,
         type: dailyEntryType,
         username: curUsername === '' ? undefined : curUsername,
         date: {
-          $gte: dateRange.startDate,
-          $lte: dateRange.endDate,
+          $gte: dateRange.start,
+          $lte: dateRange.end,
         },
       },
       sort: { '0': 'date:desc' },
+      pagination: {
+        page: paginationModel.page + 1,
+        pageSize: paginationModel.pageSize,
+      },
     };
 
     setLoading(true);
-
     loadDailyEntries(queryObj)
-      .then(setData)
+      .then((res) => {
+        setData(res.dailyEntries);
+        setRowCount(res.meta.pagination.total);
+      })
+      .catch(console.log)
       .finally(() => {
         setLoading(false);
       });
-  };
+  }, [
+    curUsername,
+    dailyEntryType,
+    dateRange.end,
+    dateRange.start,
+    paginationModel.page,
+    paginationModel.pageSize,
+    user?.tenant,
+  ]);
 
-  const exportDisabled = !(dateRange.endDate && dateRange.startDate && curUsername && data.length > 0);
+  const exportDisabled = rowCount > paginationModel.pageSize;
 
   return (
     <>
       <Box display="flex" flexDirection="column" gap={2}>
-        <FilterWrapperCard onReset={reset} onSearch={handleSearchRequest}>
+        <FilterWrapperCard>
           <PastDateRange dateRange={dateRange} setDateRange={setDateRange} />
           <WorkerNameFilter curUsername={curUsername} setUsername={setCurUsername} />
           <DailyEntryTypeFilter setType={setDailyEntryType} type={dailyEntryType} />
@@ -194,7 +208,15 @@ export default function DailyTimesView() {
           />
 
           <CardContent>
-            <AppDataGrid loading={loading} disablePagination data={data} columns={columns} />
+            <AppDataGrid
+              rows={data}
+              columns={columns}
+              rowCount={rowCount}
+              paginationModel={paginationModel}
+              paginationMode="server"
+              onPaginationModelChange={setPaginationModel}
+              loading={loading}
+            />
           </CardContent>
         </Card>
       </Box>

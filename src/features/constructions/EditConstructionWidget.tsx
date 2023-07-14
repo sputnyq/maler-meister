@@ -36,9 +36,9 @@ export default function EditConstructionWidget({ setConstruction, construction }
           <DateRangeWidget
             definedRanges={[]}
             setDateRange={(dr) => {
-              setConstruction({ ...construction, start: dr.startDate, end: dr.endDate } as Construction);
+              setConstruction({ ...construction, start: dr.start, end: dr.end } as Construction);
             }}
-            dateRange={{ startDate: new Date(construction.start), endDate: new Date(construction.end) }}
+            dateRange={{ start: construction.start, end: construction.end }}
           />
 
           <FormGroup>

@@ -1,31 +1,34 @@
 import { Box, Card, CardContent, CardHeader } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { AppGridField } from '../../components/AppGridField';
 import { AppTextField } from '../../components/aa-shared/AppTextField';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
-import { appRequest } from '../../fetch/fetch-client';
+import { loadWorkEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { buildQuery, genericConverter } from '../../utilities';
 import ConstructionView from '../time-capture/ConstructionView';
 import { PastDateRange } from '../time-capture/PastDateRange';
 import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
 import WorkerNameFilter from './filters/WorkerNameFilter';
-
-import { DateRange } from 'mui-daterange-picker-orient';
 
 export default function WorkEntriesTimesView() {
   const user = useCurrentUser();
 
   const [curUsername, setCurUsername] = useState('');
   const [constructionId, setConstructionId] = useState('');
-  const [dateRange, setDateRange] = useState<DateRange>({});
+  const [idSearch, setIdSearch] = useState('');
+  const [dateRange, setDateRange] = useState<AppDateTange>({});
 
   const [data, setData] = useState<WorkEntry[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [rowCount, setRowCount] = useState(0);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
 
   const columns = useMemo(() => {
     const cols: GridColDef[] = [
@@ -81,49 +84,55 @@ export default function WorkEntriesTimesView() {
     ] as HoursType[];
   }, [data]);
 
-  const reset = useCallback(() => {
-    setCurUsername('');
-    setDateRange({});
-    setConstructionId('');
-  }, []);
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      setIdSearch(constructionId);
+    }, 1000);
 
-  const buildSearchQuery = () => {
-    return buildQuery({
+    return () => clearTimeout(delayDebounceFn);
+  }, [constructionId]);
+
+  useEffect(() => {
+    setLoading(true);
+
+    const queryObj = {
       filters: {
         tenant: user?.tenant,
         username: curUsername === '' ? undefined : curUsername,
         date: {
-          $gte: dateRange.startDate,
-          $lte: dateRange.endDate,
+          $gte: dateRange.start,
+          $lte: dateRange.end,
         },
-        constructionId: constructionId === '' ? undefined : constructionId,
+        constructionId: idSearch === '' ? undefined : idSearch,
       },
       sort: { '0': 'date:desc' },
-    });
-  };
+      pagination: {
+        page: paginationModel.page + 1,
+        pageSize: paginationModel.pageSize,
+      },
+    };
 
-  const handleSearchRequest = () => {
-    setLoading(true);
-
-    appRequest('get')(`work-entries?${buildSearchQuery()}`)
+    loadWorkEntries(queryObj)
       .then((res) => {
-        const data = res.data.map((e: any) => genericConverter<WorkEntry[]>(e));
-
-        setData(data);
+        setData(res.dailyEntries);
+        setRowCount(res.meta.pagination.total);
       })
-      .catch((e) => {
-        console.log(e);
-        alert('Fehler beim Laden');
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+      .catch(console.log)
+      .finally(() => setLoading(false));
+  }, [
+    idSearch,
+    curUsername,
+    dateRange.end,
+    dateRange.start,
+    paginationModel.page,
+    paginationModel.pageSize,
+    user?.tenant,
+  ]);
 
   return (
     <>
       <Box display="flex" flexDirection="column" gap={2}>
-        <FilterWrapperCard onReset={reset} onSearch={handleSearchRequest}>
+        <FilterWrapperCard>
           <PastDateRange dateRange={dateRange} setDateRange={setDateRange} />
           <WorkerNameFilter curUsername={curUsername} setUsername={setCurUsername} />
           <AppGridField>
@@ -143,7 +152,15 @@ export default function WorkEntriesTimesView() {
         <Card>
           <CardHeader title="Ergebnisse" />
           <CardContent>
-            <AppDataGrid loading={loading} disablePagination data={data} columns={columns}></AppDataGrid>
+            <AppDataGrid
+              rows={data}
+              columns={columns}
+              rowCount={rowCount}
+              paginationModel={paginationModel}
+              paginationMode="server"
+              onPaginationModelChange={setPaginationModel}
+              loading={loading}
+            />
           </CardContent>
         </Card>
       </Box>

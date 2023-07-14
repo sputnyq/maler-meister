@@ -10,14 +10,15 @@ import { LoadingScreen } from './LoadingScreen';
 type LoadingState = 'loading' | 'ready';
 
 export default function AppLoader({ children }: React.PropsWithChildren) {
-  const [loadingState, setLoadingState] = useState<LoadingState>('loading');
+  const [loadingState, setLoadingState] = useState<LoadingState>('ready');
 
   const user = useCurrentUser();
 
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    if (user !== null) {
+    if (user !== null && user.userRole === 'worker') {
+      setLoadingState('loading');
       Promise.allSettled([dispatch(loadAllJobs()), dispatch(loadActiveConstructions())])
         .then(() => {
           console.log('OK');

@@ -59,7 +59,7 @@ interface Construction {
 }
 interface WorkEntry {
   id?: number;
-  date: any;
+  date: string;
   constructionId: number;
   username: string;
   hours: string;
@@ -68,7 +68,7 @@ interface WorkEntry {
 }
 interface DailyEntry {
   id?: number;
-  date: any;
+  date: string;
   sum: number;
   overload: number;
   underload: number;
@@ -88,4 +88,20 @@ interface Feiertag {
   date: string;
   fname: string;
   comment: string;
+}
+
+interface AppDateTange {
+  start?: string;
+  end?: string;
+}
+
+interface ApiMeta {
+  pagination: Pagination;
+}
+
+interface Pagination {
+  page: number;
+  pageSize: number;
+  pageCount: number;
+  total: number;
 }

@@ -14,18 +14,51 @@ export async function loadConstructions(queryObj: object) {
 
   const response = await appRequest('get')(`constructions?${query}`);
 
-  return (response.data as any[]).map((e) => genericConverter<Construction>(e));
+  const constructions = (response.data as any[]).map((e) => genericConverter<Construction>(e));
+
+  const meta = response.meta as ApiMeta;
+
+  return {
+    constructions,
+    meta,
+  };
+}
+
+export async function loadWorkEntries(queryObj: object) {
+  const query = buildQuery(queryObj);
+  const response = await appRequest('get')(`work-entries?${query}`);
+
+  const workEntries = response.data.map((e: any) => genericConverter<WorkEntry[]>(e));
+
+  const meta = response.meta as ApiMeta;
+  return {
+    dailyEntries: workEntries,
+    meta,
+  };
 }
 
 export async function loadDailyEntries(queryObj: object) {
   const query = buildQuery(queryObj);
-  return appRequest('get')(`daily-entries?${query}`)
-    .then((res) => {
-      const data = res.data.map((e: any) => genericConverter<DailyEntry[]>(e));
-      return data;
-    })
-    .catch((e) => {
-      console.log(e);
-      return new Array<DailyEntry>();
-    });
+  const response = await appRequest('get')(`daily-entries?${query}`);
+
+  const dailyEntries = response.data.map((e: any) => genericConverter<DailyEntry[]>(e));
+
+  const meta = response.meta as ApiMeta;
+  return {
+    dailyEntries,
+    meta,
+  };
+}
+
+export async function loadJobs(queryObj: object) {
+  const query = buildQuery(queryObj);
+  const response = await appRequest('get')(`jobs?${query}`);
+
+  const jobs = response.data.map((e: any) => genericConverter<AppJob[]>(e));
+
+  const meta = response.meta as ApiMeta;
+  return {
+    jobs,
+    meta,
+  };
 }

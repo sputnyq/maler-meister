@@ -12,9 +12,17 @@ interface Props {
   onClose(): void;
   initStart?: any;
   initEnd?: any;
+  onCreateSuccess?: () => void;
 }
 
-export default function EditConstructionDialog({ constructionId, dialogOpen, onClose, initEnd, initStart }: Props) {
+export default function EditConstructionDialog({
+  constructionId,
+  dialogOpen,
+  initEnd,
+  initStart,
+  onClose,
+  onCreateSuccess,
+}: Props) {
   const user = useCurrentUser();
   const [construction, setConstruction] = useState<Construction | null>(null);
 
@@ -28,6 +36,7 @@ export default function EditConstructionDialog({ constructionId, dialogOpen, onC
         confirmed: false,
       } as Construction);
     } else {
+      console.log(constructionId);
       loadConstructionById(constructionId)
         .then((con) => {
           if (con) {
@@ -42,11 +51,14 @@ export default function EditConstructionDialog({ constructionId, dialogOpen, onC
     appRequest(constructionId ? 'put' : 'post')(`constructions/${constructionId || ''}`, {
       data: construction,
     })
-      .then(onClose)
+      .then(() => {
+        onCreateSuccess?.();
+      })
       .catch((e) => {
         console.log(e);
         alert('Fehler beim speichern!');
-      });
+      })
+      .finally(onClose);
   };
 
   if (construction) {

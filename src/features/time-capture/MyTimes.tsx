@@ -16,24 +16,24 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { RequestDailyViewButton } from '../../components/RequestDailyViewButton';
 import { DEFAULT_HOURS } from '../../constants';
-import { appRequest } from '../../fetch/fetch-client';
-import { AppState } from '../../store';
-import { buildQuery, genericConverter, getJobColor, getMonthStart } from '../../utilities';
+import { loadDailyEntries } from '../../fetch/api';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { getJobColor } from '../../utilities';
 import { DailyEntryViewDialog } from './DailyEntryViewDialog';
+
+import { addMonths, startOfMonth } from 'date-fns';
 
 interface Props {
   update: number;
   requestUpdate(): void;
 }
 
-export function UserTimes({ update, requestUpdate }: Props) {
-  const username = useSelector<AppState, string | undefined>((s) => s.login.user?.username);
-
+export function MyTimes({ update, requestUpdate }: Props) {
+  const user = useCurrentUser();
   const [monthValue, setMonthValue] = useState<'current' | 'last'>('current');
   const [data, setData] = useState<DailyEntry[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -41,30 +41,45 @@ export function UserTimes({ update, requestUpdate }: Props) {
   const dailyEntryId = useRef('');
 
   useEffect(() => {
-    const buildSearchQuery = () =>
-      buildQuery({
-        filters: {
-          username: {
-            $eq: username,
-          },
-          date: {
-            $gte: monthValue === 'current' ? getMonthStart() : getMonthStart(-1),
-            $lt: monthValue === 'current' ? undefined : getMonthStart(),
-          },
-        },
-        sort: { '0': 'date:desc' },
-      });
+    let dateObj = undefined;
 
-    appRequest('get')(`daily-entries?${buildSearchQuery()}`)
+    const now = new Date();
+
+    switch (monthValue) {
+      case 'current':
+        dateObj = {
+          $gte: startOfMonth(now),
+        };
+        break;
+      case 'last':
+        dateObj = {
+          $gte: startOfMonth(addMonths(now, -1)),
+          $lt: startOfMonth(now),
+        };
+        break;
+    }
+
+    const queryObj = {
+      filters: {
+        username: {
+          $eq: user?.username,
+        },
+        date: dateObj,
+      },
+      sort: { '0': 'date:desc' },
+    };
+
+    loadDailyEntries(queryObj)
       .then((res) => {
-        const data = res.data.map((e: any) => genericConverter<DailyEntry[]>(e));
-        setData(data);
+        if (res) {
+          setData(res.dailyEntries);
+        }
       })
       .catch((e) => {
         console.log(e);
         alert('Fehler beim Laden');
       });
-  }, [username, monthValue, update]);
+  }, [user, monthValue, update]);
 
   const allHours = useMemo(() => data.reduce((acc, cur) => acc + cur.sum, 0), [data]);
 
@@ -161,8 +176,8 @@ function UserTimesGrid({ dailyEntries, handleDialogRequest }: UserTimesGridProps
     <List>
       {dailyEntries.map((de, idx) => {
         return (
-          <>
-            <ListItem secondaryAction={<Typography>{renderHours(de.sum)}</Typography>} dense>
+          <React.Fragment key={de.id}>
+            <ListItem secondaryAction={renderHours(de.sum)} dense>
               <Tooltip title={de.type}>
                 <ListItemIcon>{getIcon(de)}</ListItemIcon>
               </Tooltip>
@@ -171,7 +186,7 @@ function UserTimesGrid({ dailyEntries, handleDialogRequest }: UserTimesGridProps
               </ListItemText>
             </ListItem>
             {showDivider(idx) ? <Divider /> : null}
-          </>
+          </React.Fragment>
         );
       })}
     </List>

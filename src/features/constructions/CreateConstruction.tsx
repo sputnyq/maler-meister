@@ -5,7 +5,11 @@ import EditConstructionDialog from './EditConstructionDialog';
 
 import { addDays } from 'date-fns';
 
-export default function CreateConstruction() {
+interface Props {
+  onCreateSuccess?: () => void;
+}
+
+export function CreateConstruction({ onCreateSuccess }: Props) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -22,6 +26,7 @@ export default function CreateConstruction() {
   return (
     <>
       <EditConstructionDialog
+        onCreateSuccess={onCreateSuccess}
         constructionId={undefined}
         dialogOpen={open}
         onClose={handleClose}

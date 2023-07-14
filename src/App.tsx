@@ -16,7 +16,7 @@ import theme from './style/theme';
 
 const Offers = lazy(() => import('./routes/Offers'));
 const Invoices = lazy(() => import('./routes/Invoices'));
-const TimeCapture = lazy(() => import('./features/time-capture/TimeCapture'));
+const TimeCapture = lazy(() => import('./features/time-capture'));
 const OfferEdit = lazy(() => import('./routes/OfferEdit'));
 const Options = lazy(() => import('./routes/Options'));
 const Constructions = lazy(() => import('./features/constructions/Constructions'));
@@ -24,6 +24,8 @@ const Times = lazy(() => import('./features/times/Times'));
 const Upload = lazy(() => import('./routes/Upload'));
 const Jobs = lazy(() => import('./routes/Jobs'));
 const Planing = lazy(() => import('./features/planing'));
+const MyVacations = lazy(() => import('./features/my-vacations'));
+const Info = lazy(() => import('./features/info'));
 
 function LazyLoad({ children }: React.PropsWithChildren) {
   return <Suspense fallback={<LoadingScreen />}>{children}</Suspense>;
@@ -36,7 +38,7 @@ export default function App() {
       <CssBaseline>
         <RootBox>
           <TopBar />
-          <Box mt={isSmall ? 5 : 6}>
+          <Box mt={isSmall ? 6 : 7}>
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route
@@ -50,6 +52,14 @@ export default function App() {
                 }
               >
                 <Route index element={<MainNavigation />} />
+                <Route
+                  path="info"
+                  element={
+                    <LazyLoad>
+                      <Info />
+                    </LazyLoad>
+                  }
+                />
                 <Route
                   path="invoices"
                   element={
@@ -106,6 +116,14 @@ export default function App() {
                   element={
                     <LazyLoad>
                       <TimeCapture />
+                    </LazyLoad>
+                  }
+                />
+                <Route
+                  path="my-vacations"
+                  element={
+                    <LazyLoad>
+                      <MyVacations />
                     </LazyLoad>
                   }
                 />

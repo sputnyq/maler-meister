@@ -16,14 +16,16 @@ import deLocale from '@fullcalendar/core/locales/de';
 import interactionPlugin from '@fullcalendar/interaction';
 import multiMonthPlugin from '@fullcalendar/multimonth';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { addDays } from 'date-fns';
+import { addDays, formatISO } from 'date-fns';
 
 type EventDateRange = {
   start?: Date;
   end?: Date;
 };
 
-const COLOR_CODES = ['#5856d6', '#71e2fa', '#0c6378', '#808994', '#ae2c1c', '#0e738a'];
+const COLOR_CODES = ['#71e2fa', '#5856d6', '#0c6378', '#808994', '#0e738a', '#ae2c1c'];
+
+const MAX_PAST_DAYS = -14;
 
 type ConstructionProps = {
   type: 'CONSTRUCTION';
@@ -61,19 +63,31 @@ export default function CalendarView() {
   }, [eventRange]);
 
   useEffect(() => {
+    const possibleStart = addDays(new Date(), MAX_PAST_DAYS);
     const queryObj = {
       filters: {
         tenant: user?.tenant,
         date: {
-          $gte: eventRange.start,
-          $lte: eventRange.end,
+          $gte:
+            eventRange.start && eventRange.start < possibleStart
+              ? formatISO(possibleStart, { representation: 'date' })
+              : formatISO(eventRange.start || new Date(), { representation: 'date' }),
+          $lte: formatISO(eventRange.end || new Date(), { representation: 'date' }),
+        },
+        pagination: {
+          pageSize: 100,
         },
       },
     };
-    loadConstructions(queryObj).then(setConstructions);
+    loadConstructions(queryObj).then((res) => {
+      if (res) {
+        setConstructions(res.constructions);
+      }
+    });
   }, [eventRange, user, update]);
 
   useEffect(() => {
+    const possibleStart = addDays(new Date(), MAX_PAST_DAYS);
     const queryObj = {
       filters: {
         type: {
@@ -81,13 +95,23 @@ export default function CalendarView() {
         },
         tenant: user?.tenant,
         date: {
-          $gte: eventRange.start,
-          $lte: eventRange.end,
+          $gte:
+            eventRange.start && eventRange.start < possibleStart
+              ? formatISO(possibleStart, { representation: 'date' })
+              : formatISO(eventRange.start || new Date(), { representation: 'date' }),
+          $lte: formatISO(eventRange.end || new Date(), { representation: 'date' }),
+        },
+        pagination: {
+          pageSize: 100,
         },
         sort: { '0': 'start:desc' },
       },
     };
-    loadDailyEntries(queryObj).then((data) => setDailyEntries(data));
+    loadDailyEntries(queryObj).then((res) => {
+      if (res) {
+        setDailyEntries(res.dailyEntries);
+      }
+    });
   }, [eventRange, user]);
 
   const events = useMemo(() => {
@@ -168,8 +192,14 @@ export default function CalendarView() {
         dailyEntryId={idRef.current}
       />
       <EditConstructionDialog
-        initStart={dateSelectArg.current?.startStr}
-        initEnd={dateSelectArg.current?.endStr && addDays(new Date(dateSelectArg.current?.endStr), -1)}
+        initStart={
+          dateSelectArg.current?.startStr &&
+          formatISO(new Date(dateSelectArg.current.startStr), { representation: 'date' })
+        }
+        initEnd={
+          dateSelectArg.current?.endStr &&
+          formatISO(addDays(new Date(dateSelectArg.current?.endStr), -1), { representation: 'date' })
+        }
         dialogOpen={constructionDialog}
         constructionId={idRef.current}
         onClose={onClose}

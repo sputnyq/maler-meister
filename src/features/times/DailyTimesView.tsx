@@ -18,13 +18,19 @@ import { downloadAsCsv } from './csv/csv-export-utils';
 import DailyEntryTypeFilter from './filters/DailyEntryTypeFilter';
 import WorkerNameFilter from './filters/WorkerNameFilter';
 
+import { endOfMonth, formatISO, startOfMonth } from 'date-fns';
+
 export default function DailyTimesView() {
   const user = useCurrentUser();
 
   const [data, setData] = useState<DailyEntry[]>([]);
 
   const [curUsername, setCurUsername] = useState('');
-  const [dateRange, setDateRange] = useState<AppDateTange>({});
+
+  const [dateRange, setDateRange] = useState<AppDateTange>({
+    start: formatISO(startOfMonth(new Date()), { representation: 'date' }),
+    end: formatISO(endOfMonth(new Date()), { representation: 'date' }),
+  });
   const [dailyEntryType, setDailyEntryType] = useState<DailyEntryType | undefined>('Arbeit');
   const [loading, setLoading] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState(false);

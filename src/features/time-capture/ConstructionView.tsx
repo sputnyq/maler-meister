@@ -12,7 +12,7 @@ export default function ConstructionView({ constructionId }: Props) {
   const [name, setName] = useState('');
 
   useEffect(() => {
-    if (constructionId !== null) {
+    if (constructionId) {
       loadConstructionById(constructionId).then((construction) => {
         if (construction) {
           setName(construction.name);

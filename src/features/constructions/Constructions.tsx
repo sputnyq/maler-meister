@@ -22,7 +22,7 @@ export default function Constructions() {
   const [confirmed, setConfirmed] = useState<boolean | undefined>(true);
 
   const [constructionDialogOpen, setConstructionDialogOpen] = useState(false);
-  const curConstructionId = useRef(-1);
+  const curConstructionId = useRef<undefined | number>(undefined);
 
   const columns: GridColDef[] = useMemo(() => {
     const arr: GridColDef[] = [

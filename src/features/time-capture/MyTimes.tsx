@@ -70,9 +70,9 @@ export function UserTimes({ update, requestUpdate }: Props) {
     };
 
     loadDailyEntries(queryObj)
-      .then((data) => {
-        if (data) {
-          setData(data);
+      .then((res) => {
+        if (res) {
+          setData(res.dailyEntries);
         }
       })
       .catch((e) => {

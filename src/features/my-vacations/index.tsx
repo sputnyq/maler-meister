@@ -61,9 +61,9 @@ export default function MyVacations() {
       sort: { '0': 'date:desc' },
     };
 
-    loadDailyEntries(queryObj).then((data) => {
-      if (data) {
-        setData(data);
+    loadDailyEntries(queryObj).then((res) => {
+      if (res) {
+        setData(res.dailyEntries);
       }
     });
   }, [yearSwitchValue, user]);

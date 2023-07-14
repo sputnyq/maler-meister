@@ -2,7 +2,7 @@ import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import { Box, Button, Card, CardContent, CardHeader, Chip, Typography } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { RequestDailyViewButton } from '../../components/RequestDailyViewButton';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
@@ -25,7 +25,7 @@ export default function DailyTimesView() {
 
   const [curUsername, setCurUsername] = useState('');
   const [dateRange, setDateRange] = useState<AppDateTange>({});
-  const [dailyEntryType, setDailyEntryType] = useState<DailyEntryType | undefined>(undefined);
+  const [dailyEntryType, setDailyEntryType] = useState<DailyEntryType | undefined>('Arbeit');
   const [loading, setLoading] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -71,12 +71,6 @@ export default function DailyTimesView() {
 
     return cols;
   }, [handleDialogRequest]);
-
-  const reset = () => {
-    setCurUsername('');
-    setDateRange({});
-    setDailyEntryType(undefined);
-  };
 
   const hours = useMemo(() => {
     let sum = 0;
@@ -139,7 +133,14 @@ export default function DailyTimesView() {
     downloadAsCsv(data, fileName);
   }, [data, curUsername, dateRange]);
 
-  const handleSearchRequest = () => {
+  // grid
+  const [rowCount, setRowCount] = useState(0);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
+
+  useEffect(() => {
     const queryObj = {
       filters: {
         tenant: user?.tenant,
@@ -151,23 +152,39 @@ export default function DailyTimesView() {
         },
       },
       sort: { '0': 'date:desc' },
+      pagination: {
+        page: paginationModel.page + 1,
+        pageSize: paginationModel.pageSize,
+      },
     };
 
     setLoading(true);
-
     loadDailyEntries(queryObj)
-      .then(setData)
+      .then((res) => {
+        setData(res.dailyEntries);
+        setRowCount(res.meta.pagination.total);
+      })
+      .catch(console.log)
       .finally(() => {
         setLoading(false);
       });
-  };
+  }, [
+    curUsername,
+    dailyEntryType,
+    dateRange.end,
+    dateRange.start,
+    paginationModel.page,
+    paginationModel.pageSize,
+    user?.tenant,
+  ]);
 
   const exportDisabled = !(dateRange.end && dateRange.start && curUsername && data.length > 0);
 
+  console.log(data[0]?.id);
   return (
     <>
       <Box display="flex" flexDirection="column" gap={2}>
-        <FilterWrapperCard onReset={reset} onSearch={handleSearchRequest}>
+        <FilterWrapperCard>
           <PastDateRange dateRange={dateRange} setDateRange={setDateRange} />
           <WorkerNameFilter curUsername={curUsername} setUsername={setCurUsername} />
           <DailyEntryTypeFilter setType={setDailyEntryType} type={dailyEntryType} />
@@ -192,7 +209,15 @@ export default function DailyTimesView() {
           />
 
           <CardContent>
-            <AppDataGrid paginationMode="client" loading={loading} data={data} columns={columns} />
+            <AppDataGrid
+              rows={data}
+              columns={columns}
+              rowCount={rowCount}
+              paginationModel={paginationModel}
+              paginationMode="server"
+              onPaginationModelChange={setPaginationModel}
+              loading={loading}
+            />
           </CardContent>
         </Card>
       </Box>

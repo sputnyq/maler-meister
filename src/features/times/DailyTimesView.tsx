@@ -18,15 +18,13 @@ import { downloadAsCsv } from './csv/csv-export-utils';
 import DailyEntryTypeFilter from './filters/DailyEntryTypeFilter';
 import WorkerNameFilter from './filters/WorkerNameFilter';
 
-import { DateRange } from 'mui-daterange-picker-orient';
-
 export default function DailyTimesView() {
   const user = useCurrentUser();
 
   const [data, setData] = useState<DailyEntry[]>([]);
 
   const [curUsername, setCurUsername] = useState('');
-  const [dateRange, setDateRange] = useState<DateRange>({});
+  const [dateRange, setDateRange] = useState<AppDateTange>({});
   const [dailyEntryType, setDailyEntryType] = useState<DailyEntryType | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -135,8 +133,8 @@ export default function DailyTimesView() {
   }, []);
 
   const handleExportRequest = useCallback(() => {
-    const { startDate, endDate } = dateRange;
-    const fileName = `${curUsername} ${startDate?.toLocaleDateString('ru')}-${endDate?.toLocaleDateString('ru')}`;
+    const { start, end } = dateRange;
+    const fileName = `${curUsername} ${start || ''}-${end || ''}`;
 
     downloadAsCsv(data, fileName);
   }, [data, curUsername, dateRange]);
@@ -148,8 +146,8 @@ export default function DailyTimesView() {
         type: dailyEntryType,
         username: curUsername === '' ? undefined : curUsername,
         date: {
-          $gte: dateRange.startDate,
-          $lte: dateRange.endDate,
+          $gte: dateRange.start,
+          $lte: dateRange.end,
         },
       },
       sort: { '0': 'date:desc' },
@@ -164,7 +162,7 @@ export default function DailyTimesView() {
       });
   };
 
-  const exportDisabled = !(dateRange.endDate && dateRange.startDate && curUsername && data.length > 0);
+  const exportDisabled = !(dateRange.end && dateRange.start && curUsername && data.length > 0);
 
   return (
     <>
@@ -194,7 +192,7 @@ export default function DailyTimesView() {
           />
 
           <CardContent>
-            <AppDataGrid loading={loading} disablePagination data={data} columns={columns} />
+            <AppDataGrid paginationMode="client" loading={loading} data={data} columns={columns} />
           </CardContent>
         </Card>
       </Box>

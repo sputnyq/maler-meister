@@ -1,5 +1,6 @@
 import AccessTimeIcon from '@mui/icons-material/AccessTimeOutlined';
 import ArticleIcon from '@mui/icons-material/ArticleOutlined';
+import BeachAccessIcon from '@mui/icons-material/BeachAccessOutlined';
 import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
 import HandymanIcon from '@mui/icons-material/HandymanOutlined';
 import MoreTimeIcon from '@mui/icons-material/MoreTimeOutlined';
@@ -39,6 +40,9 @@ export default function MainNavigation() {
         </Tile>
         <Tile requiredRoles={['worker']} to="time-capture" title="Zeiterfassung">
           <MoreTimeIcon {...iconProps} />
+        </Tile>
+        <Tile requiredRoles={['worker']} to="my-vacations" title="Mein Urlaub">
+          <BeachAccessIcon {...iconProps} />
         </Tile>
 
         <Tile requiredRoles={['admin']} to="constructions" title="Baustellen">

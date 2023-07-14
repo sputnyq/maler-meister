@@ -74,12 +74,13 @@ export function AppDataGrid({
         position={'relative'}
         sx={{
           '& .MuiDataGrid-footerContainer': {
-            display: `${disablePagination ? 'none' : 'block'}`,
+            // display: `${disablePagination ? 'none' : 'block'}`,
             borderTop: 'none',
           },
           '& .MuiTablePagination-displayedRows, & .MuiTablePagination-selectLabel, & .MuiTablePagination-selectLabel + .MuiInputBase-root':
             {
-              display: 'none !important',
+              // display: 'none !important',
+              // display: 'none !important',
             },
           '& .MuiDataGrid-root': {
             border: 'none',
@@ -98,7 +99,7 @@ export function AppDataGrid({
         </Backdrop>
 
         <StyledDataGrid
-          rowHeight={45}
+          rowHeight={35}
           localeText={{
             noResultsOverlayLabel: 'Keine Ergebnisse',
           }}

@@ -1,11 +1,16 @@
 export function downloadAsCsv(data: DailyEntry[], fileName: string) {
   let csvContent = 'data:text/csv;charset=utf-8,';
 
-  const header = 'Datum,Name,Tätigkeit,Stunden\r\n';
+  const header = 'Wochentag,Datum,Name,Tätigkeit,Stunden\r\n';
   csvContent += header;
 
   data.forEach((de) => {
-    const row = [new Date(de.date).toLocaleDateString('ru'), de.username.toUpperCase(), de.type, de.sum].join(',');
+    const row = [
+      new Intl.DateTimeFormat('de-DE', { dateStyle: 'full' }).format(new Date(de.date)),
+      de.username.toUpperCase(),
+      de.type,
+      de.sum,
+    ].join(',');
     csvContent += row + '\r\n';
   });
 

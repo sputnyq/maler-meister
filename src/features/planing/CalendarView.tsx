@@ -300,9 +300,7 @@ function holidays2Events(holidays: Feiertag[]): EventInput[] {
     }
 
     eventInputs.push({
-      borderColor: 'transparent',
-      backgroundColor: 'green',
-      textColor: 'white',
+      display: 'background',
       date: h.date,
       allDay: true,
       title: `🎉 ${h.fname}`,

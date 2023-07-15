@@ -1,15 +1,16 @@
 import { Alert, AlertColor, Box, Snackbar } from '@mui/material';
 
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AppDialog } from '../../components/AppDialog';
 import AddFab from '../../components/aa-shared/AddFab';
 import { DEFAULT_HOURS } from '../../constants';
+import { loadDailyEntries } from '../../fetch/api';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { getCurrentDBDate } from '../../utilities';
 import DailyEntryEditor from './DailyEntryEditor';
 
+import { formatISO } from 'date-fns';
 import { cloneDeep } from 'lodash';
 
 interface Props {
@@ -20,11 +21,12 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
   const user = useCurrentUser();
 
   const [open, setOpen] = useState(false);
+  const [hasEntries, setHasEntries] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const initialDailyEntry = {
     sum: 8,
-    date: getCurrentDBDate(),
+    date: formatISO(new Date(), { representation: 'date' }),
     type: 'Arbeit',
     username: user?.username,
     tenant: user?.tenant,
@@ -57,6 +59,28 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
 
     return workEntries.some((we) => !we.constructionId || !we.job || !we.hours);
   }, [dailyEntry, workEntries]);
+
+  useEffect(() => {
+    if (user?.username && dailyEntry.date) {
+      const queryObject = {
+        filters: {
+          username: {
+            $eq: user?.username,
+          },
+          date: {
+            $eq: dailyEntry.date,
+          },
+        },
+      };
+      loadDailyEntries(queryObject).then((res) => {
+        if (res.meta.pagination.total > 0) {
+          setHasEntries(true);
+        } else {
+          setHasEntries(false);
+        }
+      });
+    }
+  }, [dailyEntry.date, user?.username]);
 
   const handleSave = async () => {
     if (!user) {
@@ -133,6 +157,7 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
       >
         <Box width={'inherit'} maxWidth={1000} marginX="auto" height={'100%'}>
           <DailyEntryEditor
+            hasEntries={hasEntries}
             workEntries={workEntries}
             dailyEntry={dailyEntry}
             setWorkEntries={setWorkEntries}

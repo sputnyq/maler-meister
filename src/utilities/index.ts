@@ -23,10 +23,6 @@ export const genericConverter = <T>(entry: any) => {
   } as T;
 };
 
-export function getCurrentDBDate() {
-  return new Date().toISOString().split('T')[0];
-}
-
 export function buildQuery(queryObj: object) {
   return qs.stringify(queryObj);
 }

@@ -25,13 +25,20 @@ import { AppState } from '../../store';
 import { cloneDeep } from 'lodash';
 
 interface Props {
+  hasEntries: boolean;
   dailyEntry: DailyEntry;
   workEntries: WorkEntry[];
   setDailyEntry(dailyEntries: DailyEntry): void;
   setWorkEntries(workEntries: WorkEntry[]): void;
 }
 
-export default function DailyEntryEditor({ dailyEntry, workEntries, setWorkEntries, setDailyEntry }: Props) {
+export default function DailyEntryEditor({
+  dailyEntry,
+  workEntries,
+  setWorkEntries,
+  setDailyEntry,
+  hasEntries,
+}: Props) {
   const iconProps: SvgIconProps = useMemo(() => {
     return {
       sx: {
@@ -77,6 +84,8 @@ export default function DailyEntryEditor({ dailyEntry, workEntries, setWorkEntri
       <AppGrid>
         <GridItem>
           <AppTextField
+            helperText={hasEntries ? 'Für diesen Tag gibt es bereits einen Eintrag.' : undefined}
+            error={hasEntries}
             label="Datum"
             type={'date'}
             value={dailyEntry.date}

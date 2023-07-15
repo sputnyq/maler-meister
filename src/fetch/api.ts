@@ -1,8 +1,9 @@
 import { buildQuery, genericConverter } from '../utilities';
+import { constructionById } from './endpoints';
 import { appRequest } from './fetch-client';
 
 export async function loadConstructionById(constructionId: string | number) {
-  return appRequest('get')(`constructions/${constructionId}`)
+  return appRequest('get')(constructionById(constructionId))
     .then((res) => {
       return genericConverter<Construction>(res.data);
     })

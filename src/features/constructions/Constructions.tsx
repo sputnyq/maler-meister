@@ -1,14 +1,18 @@
+import DeleteIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
-import { Box, Button, Card, CardContent, CardHeader } from '@mui/material';
+import { Box, Button, Card, CardContent, CardHeader, IconButton } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AppGridField } from '../../components/AppGridField';
+import { DeleteIconButton } from '../../components/DeleteIconButton';
 import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { GenericBooleanFilter } from '../../components/filters/GenericBooleanFilter';
 import { loadConstructions } from '../../fetch/api';
+import { constructionById } from '../../fetch/endpoints';
+import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { ConstructionsDateRangeFilter } from './ConstructionsDateRangeFilter';
 import { CreateConstruction } from './CreateConstruction';
@@ -25,8 +29,26 @@ export default function Constructions() {
   const [constructionDialogOpen, setConstructionDialogOpen] = useState(false);
   const curConstructionId = useRef<undefined | number>(undefined);
 
+  const handleDeleteRequest = useCallback((id: string | number, name: string) => {
+    const text = `Baustelle "${id} - ${name} wirklich löschen?`;
+    if (confirm(text)) {
+      appRequest('delete')(constructionById(id)).then(() => {
+        setUpdate((u) => u + 1);
+      });
+    }
+  }, []);
+
   const columns: GridColDef[] = useMemo(() => {
     const arr: GridColDef[] = [
+      {
+        field: '_ignore',
+        headerName: '',
+        renderCell({ row }) {
+          const { id, name } = row as Construction;
+
+          return <DeleteIconButton onClick={() => handleDeleteRequest(id, name)} />;
+        },
+      },
       {
         field: 'id',
         headerName: 'ID',
@@ -50,6 +72,7 @@ export default function Constructions() {
         headerName: 'Name',
         flex: 1,
         align: 'left',
+        minWidth: 150,
       },
       {
         field: 'start',

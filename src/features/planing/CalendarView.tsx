@@ -23,7 +23,19 @@ type EventDateRange = {
   end?: Date;
 };
 
-const COLOR_CODES = ['#71e2fa', '#5856d6', '#0c6378', '#808994', '#0e738a', '#ae2c1c'];
+const COLOR_CODES = [
+  '#213363',
+  '#71e2fa',
+  '#884A39',
+  '#5856d6',
+  '#B5C99A',
+  '#0c6378',
+  '#ECCCB2',
+  '#FF52A2',
+  '#808994',
+  '#0e738a',
+  '#ae2c1c',
+];
 
 const MAX_PAST_DAYS = -14;
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { AppDialog } from '../../components/AppDialog';
 import { loadConstructionById } from '../../fetch/api';
+import { constructionById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import EditConstructionWidget from './EditConstructionWidget';
@@ -48,7 +49,7 @@ export default function EditConstructionDialog({
   }, [constructionId, initEnd, initStart, user]);
 
   const handleSaveRequest = () => {
-    appRequest(constructionId ? 'put' : 'post')(`constructions/${constructionId || ''}`, {
+    appRequest(constructionId ? 'put' : 'post')(constructionById(constructionId || ''), {
       data: construction,
     })
       .then(() => {

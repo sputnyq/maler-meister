@@ -1,3 +1,4 @@
+import DeleteIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { Box, Button, Card, CardActions, CardContent, CardHeader, Chip, Stack, Typography } from '@mui/material';
 
 import { useEffect, useMemo, useState } from 'react';
@@ -112,7 +113,7 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
             </Box>
           </CardContent>
           <CardActions>
-            <Button disabled={disabled} onClick={handleDeleteRequest} color="error">
+            <Button startIcon={<DeleteIcon />} disabled={disabled} onClick={handleDeleteRequest} color="error">
               Eintrag löschen
             </Button>
           </CardActions>

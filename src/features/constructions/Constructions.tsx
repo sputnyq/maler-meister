@@ -72,6 +72,7 @@ export default function Constructions() {
         headerName: 'Name',
         flex: 1,
         align: 'left',
+        minWidth: 150,
       },
       {
         field: 'start',

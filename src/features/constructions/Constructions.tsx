@@ -28,6 +28,7 @@ export default function Constructions() {
 
   const [constructionDialogOpen, setConstructionDialogOpen] = useState(false);
   const curConstructionId = useRef<undefined | number>(undefined);
+
   const handleDeleteRequest = useCallback((id: string | number, name: string) => {
     const text = `Baustelle "${id} - ${name} wirklich löschen?`;
     if (confirm(text)) {

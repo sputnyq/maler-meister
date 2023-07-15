@@ -42,7 +42,7 @@ export default function MainNavigation() {
         <Tile requiredRoles={['worker']} to="time-capture" title="Zeiterfassung">
           <MoreTimeIcon {...iconProps} />
         </Tile>
-        <Tile requiredRoles={['worker']} to="my-vacations" title="Mein Urlaub">
+        <Tile requiredRoles={['worker', 'admin']} to="my-vacations" title="Mein Urlaub">
           <BeachAccessIcon {...iconProps} />
         </Tile>
 

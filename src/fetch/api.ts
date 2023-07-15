@@ -42,7 +42,7 @@ export async function loadDailyEntries(queryObj: object) {
   const query = buildQuery(queryObj);
   const response = await appRequest('get')(`daily-entries?${query}`);
 
-  const dailyEntries = response.data.map((e: any) => genericConverter<DailyEntry[]>(e));
+  const dailyEntries = response.data.map((e: any) => genericConverter<DailyEntry[]>(e)) as DailyEntry[];
 
   const meta = response.meta as ApiMeta;
   return {

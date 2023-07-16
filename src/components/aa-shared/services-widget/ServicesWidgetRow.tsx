@@ -57,7 +57,7 @@ export function ServicesWidgetRow({ offerService, disableDown, disableUp, update
       <CardContent>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} sm={4} lg={5}>
-            {ServiceField('description', 'Leistung')}
+            {ServiceField('name', 'Leistung')}
           </Grid>
           <Grid item xs={4} sm={2} lg={1}>
             {ServiceField('quantity', 'Menge', 'number')}

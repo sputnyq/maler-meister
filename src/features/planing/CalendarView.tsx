@@ -23,8 +23,6 @@ type EventDateRange = {
   end?: Date;
 };
 
-const ACTIVE_CONSTRUCTIONS = ['#02315E', '#00457E', '#2F70AF', '#B9848C'];
-
 const COLOR_CODES = [
   '#213363',
   '#71e2fa',

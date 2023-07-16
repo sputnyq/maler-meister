@@ -9,8 +9,8 @@ import TaxSelector from '../TaxSelector';
 import { cloneDeep } from 'lodash';
 
 interface Props {
-  offerService: OfferService;
-  update: (next: OfferService) => void;
+  offerService: BgbOfferService;
+  update: (next: BgbOfferService) => void;
   disableUp: boolean;
   disableDown: boolean;
   onDelete: () => void;
@@ -18,7 +18,7 @@ interface Props {
 }
 
 export function ServicesWidgetRow({ offerService, disableDown, disableUp, update, moveEntry, onDelete }: Props) {
-  const handleChange = (prop: keyof OfferService) => {
+  const handleChange = (prop: keyof BgbOfferService) => {
     return function (ev: React.ChangeEvent) {
       const next = cloneDeep(offerService);
       //@ts-ignore
@@ -35,7 +35,12 @@ export function ServicesWidgetRow({ offerService, disableDown, disableUp, update
     };
   };
 
-  const ServiceField = (prop: keyof OfferService, label: string, type?: 'number' | 'text', endAdornment?: string) => {
+  const ServiceField = (
+    prop: keyof BgbOfferService,
+    label: string,
+    type?: 'number' | 'text',
+    endAdornment?: string,
+  ) => {
     return (
       <AppTextField
         label={label}

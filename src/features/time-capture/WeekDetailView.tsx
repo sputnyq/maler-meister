@@ -31,9 +31,9 @@ export function WeekDetailView({ data }: Props) {
 
   return (
     <Box display="flex" justifyContent="space-between">
-      {allDays.map((date) => {
+      {allDays.map((date, index) => {
         return (
-          <Box display="flex" flexDirection="column" alignItems="center">
+          <Box key={index} display="flex" flexDirection="column" alignItems="center">
             <Typography variant="caption">
               {new Intl.DateTimeFormat('de-DE', {
                 weekday: 'short',

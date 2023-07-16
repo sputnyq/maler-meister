@@ -2,7 +2,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTimeOutlined';
 // import ArticleIcon from '@mui/icons-material/ArticleOutlined';
 import BeachAccessIcon from '@mui/icons-material/BeachAccessOutlined';
 import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
-import HandymanIcon from '@mui/icons-material/HandymanOutlined';
+import FormatPaintOutlinedIcon from '@mui/icons-material/FormatPaintOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import MoreTimeIcon from '@mui/icons-material/MoreTimeOutlined';
 // import ReceiptLongIcon from '@mui/icons-material/ReceiptLongOutlined';
@@ -47,7 +47,7 @@ export default function MainNavigation() {
         </Tile>
 
         <Tile requiredRoles={['admin']} to="constructions" title="Baustellen">
-          <HandymanIcon {...iconProps} />
+          <FormatPaintOutlinedIcon {...iconProps} />
         </Tile>
         {/* <Tile requiredRoles={['worker', 'admin', 'accountant']} to="upload" title="Upload">
           <UploadFileIcon {...iconProps} />

@@ -157,7 +157,15 @@ export default function App() {
             </Routes>
           </Box>
         </RootBox>
-        <img width={'100%'} style={{ position: 'fixed', bottom: '0', zIndex: '-1' }} src={skylineUrl}></img>
+        <img
+          style={{
+            zIndex: '-1',
+            position: 'fixed',
+            bottom: '0',
+            width: '100%',
+          }}
+          src={skylineUrl}
+        />
       </CssBaseline>
     </ThemeProvider>
   );

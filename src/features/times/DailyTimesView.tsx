@@ -1,6 +1,6 @@
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import { Box, Button, Card, CardContent, CardHeader, Chip, Typography } from '@mui/material';
-import { GridColDef } from '@mui/x-data-grid';
+import { GridColDef, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -24,16 +24,19 @@ export default function DailyTimesView() {
   const user = useCurrentUser();
 
   const [data, setData] = useState<DailyEntry[]>([]);
-
   const [curUsername, setCurUsername] = useState('');
-
+  const [rowCount, setRowCount] = useState(0);
+  const [dailyEntryType, setDailyEntryType] = useState<DailyEntryType | undefined>('Urlaub');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [dateRange, setDateRange] = useState<AppDateTange>({
     start: formatISO(startOfMonth(new Date()), { representation: 'date' }),
     end: formatISO(endOfMonth(new Date()), { representation: 'date' }),
   });
-  const [dailyEntryType, setDailyEntryType] = useState<DailyEntryType | undefined>('Arbeit');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 50,
+  });
 
   const dailyEntryId = useRef('');
 
@@ -41,6 +44,37 @@ export default function DailyTimesView() {
     dailyEntryId.current = id;
     setDialogOpen(true);
   }, []);
+
+  const closeDialog = useCallback(() => {
+    setDialogOpen(false);
+  }, []);
+
+  const handleExportRequest = useCallback(() => {
+    const { start, end } = dateRange;
+    const fileName = `Export ${curUsername || ''} ${start || ''}-${end || ''}`;
+
+    const queryObj = {
+      filters: {
+        tenant: user?.tenant,
+        type: dailyEntryType,
+        username: curUsername === '' ? undefined : curUsername,
+        date: {
+          $gte: dateRange.start,
+          $lte: dateRange.end,
+        },
+      },
+      sort: { '0': 'date:asc' },
+      pagination: {
+        page: 1,
+        pageSize: 150,
+      },
+    };
+    loadDailyEntries(queryObj).then((res) => {
+      if (res.dailyEntries) {
+        downloadAsCsv(res.dailyEntries, fileName);
+      }
+    });
+  }, [curUsername, dailyEntryType, dateRange, user?.tenant]);
 
   const columns = useMemo(() => {
     const cols: GridColDef[] = [
@@ -128,23 +162,15 @@ export default function DailyTimesView() {
     ] as HoursType[];
   }, [data]);
 
-  const closeDialog = useCallback(() => {
-    setDialogOpen(false);
-  }, []);
-
-  const handleExportRequest = useCallback(() => {
-    const { start, end } = dateRange;
-    const fileName = `${curUsername} ${start || ''}-${end || ''}`;
-
-    downloadAsCsv(data, fileName);
-  }, [data, curUsername, dateRange]);
-
-  // grid
-  const [rowCount, setRowCount] = useState(0);
-  const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize: 10,
-  });
+  const toolbar = useMemo(() => {
+    return () => (
+      <GridToolbarContainer>
+        <Button disabled={rowCount > 150} onClick={handleExportRequest} startIcon={<FileDownloadOutlinedIcon />}>
+          Export
+        </Button>
+      </GridToolbarContainer>
+    );
+  }, [handleExportRequest, rowCount]);
 
   useEffect(() => {
     const queryObj = {
@@ -184,8 +210,6 @@ export default function DailyTimesView() {
     user?.tenant,
   ]);
 
-  const exportDisabled = rowCount > paginationModel.pageSize;
-
   return (
     <>
       <Box display="flex" flexDirection="column" gap={2}>
@@ -198,23 +222,9 @@ export default function DailyTimesView() {
         <HoursOverviewCard hours={hours} />
 
         <Card>
-          <CardHeader
-            title={
-              <Box display="flex" justifyContent="space-between">
-                <Typography variant="h5">Ergebnisse</Typography>
-                <Button
-                  disabled={exportDisabled}
-                  onClick={handleExportRequest}
-                  startIcon={<FileDownloadOutlinedIcon />}
-                >
-                  Export
-                </Button>
-              </Box>
-            }
-          />
-
           <CardContent>
             <AppDataGrid
+              slots={{ toolbar }}
               rows={data}
               columns={columns}
               rowCount={rowCount}

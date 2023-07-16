@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardHeader } from '@mui/material';
+import { Box, Card, CardContent } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
 import { useEffect, useMemo, useState } from 'react';
@@ -146,7 +146,7 @@ export default function WorkEntriesTimesView() {
               onChange={(ev) => {
                 setConstructionId(ev.target.value);
               }}
-              label="Baustelle"
+              label="Baustellen ID"
               type="number"
             />
           </AppGridField>
@@ -155,7 +155,6 @@ export default function WorkEntriesTimesView() {
         <HoursOverviewCard hours={hours} />
 
         <Card>
-          <CardHeader title="Ergebnisse" />
           <CardContent>
             <AppDataGrid
               rows={data}

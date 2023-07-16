@@ -24,8 +24,9 @@ import { loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { getJobColor } from '../../utilities';
 import { DailyEntryViewDialog } from './DailyEntryViewDialog';
+import { WeekDetailView } from './WeekDetailView';
 
-import { addMonths, startOfMonth } from 'date-fns';
+import { addMonths, endOfMonth, endOfWeek, formatISO, startOfMonth, startOfWeek } from 'date-fns';
 
 interface Props {
   update: number;
@@ -34,28 +35,30 @@ interface Props {
 
 export function MyTimes({ update, requestUpdate }: Props) {
   const user = useCurrentUser();
-  const [monthValue, setMonthValue] = useState<'current' | 'last'>('current');
+  const [selectedRange, setSelectedRange] = useState<'current' | 'last' | 'week'>('week');
   const [data, setData] = useState<DailyEntry[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const dailyEntryId = useRef('');
 
   useEffect(() => {
-    let dateObj = undefined;
+    let start = undefined;
+    let end = undefined;
 
     const now = new Date();
 
-    switch (monthValue) {
-      case 'current':
-        dateObj = {
-          $gte: startOfMonth(now),
-        };
+    switch (selectedRange) {
+      case 'week':
+        start = startOfWeek(now, { weekStartsOn: 1 });
+        end = endOfWeek(now, { weekStartsOn: 1 });
         break;
-      case 'last':
-        dateObj = {
-          $gte: startOfMonth(addMonths(now, -1)),
-          $lt: startOfMonth(now),
-        };
+      case 'current':
+        start = startOfMonth(now);
+        end = endOfMonth(now);
+        break;
+      default:
+        start = startOfMonth(addMonths(now, -1));
+        end = endOfMonth(addMonths(now, -1));
         break;
     }
 
@@ -64,9 +67,12 @@ export function MyTimes({ update, requestUpdate }: Props) {
         username: {
           $eq: user?.username,
         },
-        date: dateObj,
+        date: {
+          $gte: formatISO(start, { representation: 'date' }),
+          $lte: formatISO(end, { representation: 'date' }),
+        },
       },
-      sort: { '0': 'date:desc' },
+      sort: { '0': 'date:asc' },
     };
 
     loadDailyEntries(queryObj)
@@ -79,7 +85,7 @@ export function MyTimes({ update, requestUpdate }: Props) {
         console.log(e);
         alert('Fehler beim Laden');
       });
-  }, [user, monthValue, update]);
+  }, [user, selectedRange, update]);
 
   const allHours = useMemo(() => data.reduce((acc, cur) => acc + cur.sum, 0), [data]);
 
@@ -101,16 +107,19 @@ export function MyTimes({ update, requestUpdate }: Props) {
             color="primary"
             fullWidth
             exclusive
-            value={monthValue}
+            value={selectedRange}
             onChange={(_, value) => {
-              value && setMonthValue(value);
+              value && setSelectedRange(value);
             }}
           >
-            <ToggleButton size="small" value="current">
-              Laufender Monat
-            </ToggleButton>
             <ToggleButton size="small" value="last">
               Letzter Monat
+            </ToggleButton>
+            <ToggleButton size="small" value="week">
+              Woche
+            </ToggleButton>
+            <ToggleButton size="small" value="current">
+              Monat
             </ToggleButton>
           </ToggleButtonGroup>
         </Box>
@@ -121,6 +130,8 @@ export function MyTimes({ update, requestUpdate }: Props) {
           </Typography>
           <Typography color={'GrayText'} variant="h6">{`${allHours} Stunden`}</Typography>
         </Box>
+
+        {selectedRange === 'week' && <WeekDetailView data={data} />}
         <UserTimesGrid handleDialogRequest={handleDialogRequest} dailyEntries={data} />
       </Box>
 

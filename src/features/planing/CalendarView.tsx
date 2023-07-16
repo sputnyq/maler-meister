@@ -23,6 +23,8 @@ type EventDateRange = {
   end?: Date;
 };
 
+const ACTIVE_CONSTRUCTIONS = ['#02315E', '#00457E', '#2F70AF', '#B9848C'];
+
 const COLOR_CODES = [
   '#213363',
   '#71e2fa',
@@ -116,7 +118,7 @@ export default function CalendarView() {
         pagination: {
           pageSize: 100,
         },
-        sort: { '0': 'start:desc' },
+        sort: { '0': 'start:asc' },
       },
     };
     loadDailyEntries(queryObj).then((res) => {
@@ -254,6 +256,7 @@ function constructions2Events(constructions: Construction[]): EventInput[] {
       textColor: curColor,
       borderColor: curColor,
       backgroundColor: 'white',
+      className: cstr.active ? '' : ['not-active'],
 
       extendedProps: {
         type: 'CONSTRUCTION',

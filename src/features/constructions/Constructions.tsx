@@ -1,5 +1,5 @@
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
-import { Box, Button, Card, CardContent, CardHeader } from '@mui/material';
+import { Box, Button, Card, CardContent } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -153,7 +153,6 @@ export default function Constructions() {
           </AppGridField>
         </FilterWrapperCard>
         <Card>
-          <CardHeader title="Ergebnisse" />
           <CardContent>
             <AppDataGrid
               rows={constructions}

@@ -20,7 +20,7 @@ export default function EditConstructionWidget({ setConstruction, construction }
 
   return (
     <Card elevation={0}>
-      <CardHeader title={`Baustelle: ${construction.id || ' Neu'}`} />
+      <CardHeader title={`ID: ${construction.id || ' Neu'}`} />
 
       <CardContent>
         <Box display={'flex'} flexDirection="column" gap={2} maxWidth={'400px'}>

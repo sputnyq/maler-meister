@@ -25,3 +25,7 @@ body,
   --fc-button-active-bg-color: var(--sec);
   --fc-button-active-border-color: white;
 }
+
+.not-active .fc-event-title {
+  font-style: italic;
+}

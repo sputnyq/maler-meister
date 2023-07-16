@@ -11,7 +11,7 @@ export default function Info() {
       <Box width={'max-content'}>
         <Card elevation={3}>
           <Box p={1}>
-            <Avatar sx={{ width: 150, height: 150 }} variant="square" src={'icon1024.png'}></Avatar>
+            <Avatar sx={{ width: 150, height: 150 }} variant="square" src={'icon180.png'}></Avatar>
           </Box>
         </Card>
       </Box>

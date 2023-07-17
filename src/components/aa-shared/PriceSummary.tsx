@@ -31,16 +31,16 @@ export function PriceSummary({ offerServices }: Props) {
     return {
       align: 'right',
       color: 'GrayText',
-      variant: 'h6',
+      variant: 'subtitle1',
     } as TypographyProps;
   }, []);
 
   return (
     <Box>
-      <Typography align="right" color="primary" variant="h5">
+      <Typography align="right" color="InfoText" variant="h5">
         Netto: {euroValue(netto)}
       </Typography>
-      {tax > 0 && <Typography {...grayTextProps}>MwSt 19%: {euroValue(tax)}</Typography>}
+      <Typography {...grayTextProps}>MwSt 19%: {euroValue(tax)}</Typography>
       <Typography {...grayTextProps}>Brutto: {euroValue(brutto)}</Typography>
     </Box>
   );

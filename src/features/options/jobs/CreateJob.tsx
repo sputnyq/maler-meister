@@ -3,12 +3,12 @@ import { Card, CardContent, Grid } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { AppDialog } from '../../components/AppDialog';
-import AppGrid from '../../components/AppGrid';
-import AddFab from '../../components/aa-shared/AddFab';
-import { AppTextField } from '../../components/aa-shared/AppTextField';
-import { AppDispatch } from '../../store';
-import { createJob } from '../../store/jobsReducer';
+import { AppDialog } from '../../../components/AppDialog';
+import AppGrid from '../../../components/AppGrid';
+import AddFab from '../../../components/aa-shared/AddFab';
+import { AppTextField } from '../../../components/aa-shared/AppTextField';
+import { AppDispatch } from '../../../store';
+import { createJob } from '../../../store/jobsReducer';
 
 export default function CreateJob() {
   const [open, setOpen] = useState(false);

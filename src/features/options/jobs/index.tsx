@@ -3,7 +3,7 @@ import { Box, Card, CardContent } from '@mui/material';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { AppState } from '../../store';
+import { AppState } from '../../../store';
 import CreateJob from './CreateJob';
 import JobEdit from './JobEdit';
 

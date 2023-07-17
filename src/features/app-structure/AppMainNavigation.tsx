@@ -8,7 +8,7 @@ import MoreTimeIcon from '@mui/icons-material/MoreTimeOutlined';
 // import ReceiptLongIcon from '@mui/icons-material/ReceiptLongOutlined';
 import TuneIcon from '@mui/icons-material/TuneOutlined';
 // import UploadFileIcon from '@mui/icons-material/UploadFileOutlined';
-import { Grid, SvgIconProps, Typography } from '@mui/material';
+import { Box, Grid, SvgIconProps, Typography } from '@mui/material';
 
 import { useMemo } from 'react';
 
@@ -34,9 +34,24 @@ export default function MainNavigation() {
 
   const iconProps = useMemo((): SvgIconProps => ({ fontSize: 'large', sx: { color: 'white' } }), []);
 
+  const text = useMemo(() => {
+    const hours = new Date().getHours();
+    if (hours < 11) {
+      return 'Guten Morgen';
+    }
+    if (hours < 17) {
+      return 'Hallo';
+    }
+    return 'Guten Abend';
+  }, []);
+
   return (
     <>
-      <Typography color="GrayText" p={3} variant="h4" align="center">{`Hallo ${currentUser?.firstName}!`}</Typography>
+      <Box marginTop={9} marginBottom={2}>
+        <Typography color="GrayText" variant="h4" align="center">
+          {`${text} ${currentUser?.firstName}!`}
+        </Typography>
+      </Box>
 
       <Grid container rowSpacing={3} columnSpacing={0} p={2}>
         <Tile color={COLORS[11]} requiredRoles={['accountant', 'admin']} to="offers" title="Angebote">

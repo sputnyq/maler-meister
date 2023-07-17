@@ -7,7 +7,7 @@ import { AppDispatch, AppState } from '../../store';
 import { setOfferProp } from '../../store/offerReducer';
 import { AppTextField } from './AppTextField';
 
-type Path = keyof Offer;
+type Path = keyof BgbOffer;
 
 export interface OfferFieldProps {
   path: Path;
@@ -51,7 +51,7 @@ export default function OfferField({ select, multiline, type, label, selectOptio
 }
 
 function useOfferValue(path: Path) {
-  const offer = useSelector<AppState, Offer | null>((s) => s.offer.current);
+  const offer = useSelector<AppState, BgbOffer | null>((s) => s.offer.current);
 
   return offer?.[path] || '';
 }

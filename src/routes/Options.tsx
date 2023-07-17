@@ -9,6 +9,7 @@ export default function Options() {
         <CardContent>
           <Stack direction="row" divider={<Divider orientation="vertical" flexItem />} spacing={2}>
             <Link to="">Tätigkeiten</Link>
+            <Link to="bgb-services">BGB Leistungen</Link>
           </Stack>
         </CardContent>
       </Card>

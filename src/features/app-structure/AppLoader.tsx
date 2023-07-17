@@ -5,6 +5,7 @@ import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { AppDispatch } from '../../store';
 import { loadActiveConstructions } from '../../store/constructionReducer';
 import { loadAllJobs } from '../../store/jobsReducer';
+import { loadBgbServices } from '../../store/servicesReducer';
 import { LoadingScreen } from './LoadingScreen';
 
 type LoadingState = 'loading' | 'ready';
@@ -17,9 +18,19 @@ export default function AppLoader({ children }: React.PropsWithChildren) {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    if (user !== null && user.userRole === 'worker') {
+    if (user !== null) {
+      const { userRole } = user;
       setLoadingState('loading');
-      Promise.allSettled([dispatch(loadAllJobs()), dispatch(loadActiveConstructions())])
+
+      const actions: any[] = [loadAllJobs];
+      if (userRole === 'worker') {
+        actions.push(loadActiveConstructions);
+      }
+
+      if (userRole === 'admin') {
+        actions.push(loadBgbServices);
+      }
+      Promise.allSettled(actions.map((a) => dispatch(a())))
         .then(() => {
           console.log('OK');
         })

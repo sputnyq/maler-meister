@@ -117,7 +117,7 @@ export default function MyVacations() {
                   Letztes Jahr
                 </ToggleButton>
                 <ToggleButton size="small" value="current">
-                  Laufendes Jahr
+                  Dieses Jahr
                 </ToggleButton>
                 <ToggleButton size="small" value="next">
                   Geplant

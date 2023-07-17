@@ -8,55 +8,83 @@ import MoreTimeIcon from '@mui/icons-material/MoreTimeOutlined';
 // import ReceiptLongIcon from '@mui/icons-material/ReceiptLongOutlined';
 import TuneIcon from '@mui/icons-material/TuneOutlined';
 // import UploadFileIcon from '@mui/icons-material/UploadFileOutlined';
-import { Grid, SvgIconProps, Typography } from '@mui/material';
+import { Box, Grid, SvgIconProps, Typography } from '@mui/material';
 
 import { useMemo } from 'react';
 
 import Tile from '../../components/aa-shared/Tile';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 
+const COLORS = [
+  '#75d8db',
+  '#5ed2d5',
+  '#47cbcf',
+  '#30c5c9',
+  '#19bec3',
+  '#19bec3',
+  '#17abb0',
+  '#14989c',
+  '#128589',
+  '#0f7275',
+  '#0d5f62',
+  '#0a4c4e', //10
+];
 export default function MainNavigation() {
   const currentUser = useCurrentUser();
 
-  const iconProps = useMemo((): SvgIconProps => ({ fontSize: 'large', color: 'primary' }), []);
+  const iconProps = useMemo((): SvgIconProps => ({ fontSize: 'large', sx: { color: 'white' } }), []);
+
+  const text = useMemo(() => {
+    const hours = new Date().getHours();
+    if (hours < 11) {
+      return 'Guten Morgen';
+    }
+    if (hours < 17) {
+      return 'Hallo';
+    }
+    return 'Guten Abend';
+  }, []);
 
   return (
     <>
-      <Typography color={'GrayText'} p={3} variant="h4" align="center">{`Hallo ${currentUser?.firstName}!`}</Typography>
+      <Box marginTop={9} marginBottom={2}>
+        <Typography color="GrayText" variant="h4" align="center">
+          {`${text} ${currentUser?.firstName}!`}
+        </Typography>
+      </Box>
 
-      <Grid container spacing={3} p={2}>
-        <Tile requiredRoles={['accountant', 'admin']} to="offers" title="Angebote">
+      <Grid container rowSpacing={3} columnSpacing={0} p={2}>
+        <Tile color={COLORS[11]} requiredRoles={['accountant', 'admin']} to="offers" title="Angebote">
           <ArticleIcon {...iconProps} />
+        </Tile>
+        <Tile color={COLORS[0]} requiredRoles={['admin']} to="planing" title="Planung">
+          <EventOutlinedIcon {...iconProps} />
         </Tile>
         {/*<Tile requiredRoles={['accountant', 'admin']} to="invoices" title="Rechnungen">
           <ReceiptLongIcon {...iconProps} />
         </Tile> */}
 
-        <Tile requiredRoles={['admin']} to="planing" title="Planung">
-          <EventOutlinedIcon {...iconProps} />
-        </Tile>
-
-        <Tile requiredRoles={['accountant', 'admin']} to="time" title="Alle Stunden">
+        <Tile color={COLORS[6]} requiredRoles={['accountant', 'admin']} to="time" title="Alle Stunden">
           <AccessTimeIcon {...iconProps} />
         </Tile>
-        <Tile requiredRoles={['worker']} to="time-capture" title="Zeiterfassung">
+        <Tile color={COLORS[1]} requiredRoles={['worker']} to="time-capture" title="Zeiterfassung">
           <MoreTimeIcon {...iconProps} />
         </Tile>
-        <Tile requiredRoles={['worker', 'admin']} to="my-vacations" title="Mein Urlaub">
+        <Tile color={COLORS[10]} requiredRoles={['worker', 'admin']} to="my-vacations" title="Mein Urlaub">
           <BeachAccessIcon {...iconProps} />
         </Tile>
 
-        <Tile requiredRoles={['admin']} to="constructions" title="Baustellen">
+        <Tile color={COLORS[3]} requiredRoles={['admin']} to="constructions" title="Baustellen">
           <FormatPaintOutlinedIcon {...iconProps} />
         </Tile>
         {/* <Tile requiredRoles={['worker', 'admin', 'accountant']} to="upload" title="Upload">
           <UploadFileIcon {...iconProps} />
         </Tile> */}
 
-        <Tile requiredRoles={['admin']} to="options" title="Optionen">
+        <Tile color={COLORS[7]} requiredRoles={['admin']} to="options" title="Optionen">
           <TuneIcon {...iconProps} />
         </Tile>
-        <Tile requiredRoles={['worker', 'admin', 'accountant']} to="info" title="Info">
+        <Tile color={COLORS[8]} requiredRoles={['worker', 'admin', 'accountant']} to="info" title="Info">
           <InfoOutlinedIcon {...iconProps} />
         </Tile>
       </Grid>

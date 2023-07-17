@@ -87,6 +87,9 @@ export function ServicesWidgetRow({ offerService, disableDown, disableUp, update
                 <AppTextField
                   {...params}
                   size="small"
+                  multiline
+                  minRows={1}
+                  maxRows={6}
                   inputProps={{
                     'data-hj-allow': '',
                     ...params?.inputProps,

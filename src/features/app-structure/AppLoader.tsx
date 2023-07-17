@@ -5,6 +5,7 @@ import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { AppDispatch } from '../../store';
 import { loadActiveConstructions } from '../../store/constructionReducer';
 import { loadAllJobs } from '../../store/jobsReducer';
+import { loadPrintSettings } from '../../store/printSettingsReducer';
 import { loadBgbServices } from '../../store/servicesReducer';
 import { LoadingScreen } from './LoadingScreen';
 
@@ -28,6 +29,7 @@ export default function AppLoader({ children }: React.PropsWithChildren) {
       }
 
       if (userRole === 'admin') {
+        actions.push(loadPrintSettings);
         actions.push(loadBgbServices);
       }
       Promise.allSettled(actions.map((a) => dispatch(a())))

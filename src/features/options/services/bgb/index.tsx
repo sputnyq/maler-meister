@@ -10,8 +10,6 @@ import { CreateBgbService } from './CreateBgbService';
 export default function BgbServices() {
   const jobs = useSelector<AppState, AppJob[]>((s) => s.jobs.jobs || []);
 
-  console.log(jobs);
-
   return (
     <>
       <Box>

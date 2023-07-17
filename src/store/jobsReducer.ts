@@ -28,7 +28,7 @@ export const loadAllJobs = createAsyncThunk<AppJob[], void, { state: AppState }>
   },
 );
 
-export const createJob = createAsyncThunk<AppJob, void, { state: AppState }>('jobs/create', async (aj, thunkApi) => {
+export const createJob = createAsyncThunk<AppJob, void, { state: AppState }>('jobs/create', async (_, thunkApi) => {
   const state = thunkApi.getState();
   return appRequest('post')(BASE, { data: { name: 'NEU', tenant: state.login.user?.tenant } }).then((res: any) => {
     return genericConverter<AppJob>(res.data);

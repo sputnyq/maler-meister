@@ -1,10 +1,8 @@
-import { Box, Card, CardContent, CircularProgress, Typography } from '@mui/material';
-
-import React from 'react';
+import { Box, CircularProgress, Typography } from '@mui/material';
 
 import { DEFAULT_HOURS } from '../../constants';
 
-import { addMonths, eachDayOfInterval, endOfMonth, endOfWeek, formatISO, startOfMonth, startOfWeek } from 'date-fns';
+import { eachDayOfInterval, endOfWeek, formatISO, startOfWeek } from 'date-fns';
 
 interface Props {
   data: DailyEntry[];

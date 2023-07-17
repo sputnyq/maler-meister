@@ -1,9 +1,10 @@
 interface BgbService {
+  id: number;
   name: string;
   unit: string;
   taxRate: number;
   unitPrice: number;
-  group: string;
+  jobId: number;
 }
 
 interface BgbOfferService extends BgbService {

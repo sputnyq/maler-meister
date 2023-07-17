@@ -26,6 +26,7 @@ const Jobs = lazy(() => import('./routes/Jobs'));
 const Planing = lazy(() => import('./features/planing'));
 const MyVacations = lazy(() => import('./features/my-vacations'));
 const Info = lazy(() => import('./features/info'));
+const BgbServices = lazy(() => import('./features/options/services/bgb'));
 
 function LazyLoad({ children }: React.PropsWithChildren) {
   return <Suspense fallback={<LoadingScreen />}>{children}</Suspense>;
@@ -109,6 +110,15 @@ export default function App() {
                       </LazyLoad>
                     }
                   />
+
+                  <Route
+                    path="bgb-services"
+                    element={
+                      <LazyLoad>
+                        <BgbServices />
+                      </LazyLoad>
+                    }
+                  ></Route>
                 </Route>
 
                 <Route

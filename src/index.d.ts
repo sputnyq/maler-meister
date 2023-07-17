@@ -107,3 +107,31 @@ interface Pagination {
   pageCount: number;
   total: number;
 }
+
+interface PrintSettingsRoot {
+  id: number;
+  tenant: string;
+  name: string;
+  settings: PrintSettings;
+}
+
+interface PrintSettings {
+  ownerName: string;
+  taxNumber: string;
+  companyName: string;
+
+  addressStreet: string;
+  addressNumber: string;
+  addressZip: string;
+  addressCity: string;
+
+  phone: string;
+  mobile: string;
+  fax: string;
+  email: string;
+  web: string;
+
+  bank: string;
+  iban: string;
+  bic: string;
+}

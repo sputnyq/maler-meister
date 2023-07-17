@@ -22,7 +22,7 @@ const Options = lazy(() => import('./routes/Options'));
 const Constructions = lazy(() => import('./features/constructions/Constructions'));
 const Times = lazy(() => import('./features/times/Times'));
 const Upload = lazy(() => import('./routes/Upload'));
-const Jobs = lazy(() => import('./routes/Jobs'));
+const Jobs = lazy(() => import('./features/jobs'));
 const Planing = lazy(() => import('./features/planing'));
 const MyVacations = lazy(() => import('./features/my-vacations'));
 const Info = lazy(() => import('./features/info'));

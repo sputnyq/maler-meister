@@ -1,4 +1,5 @@
 import { AppState } from '.';
+import { appJobById, appJobs } from '../fetch/endpoints';
 import { appRequest } from '../fetch/fetch-client';
 import { buildQuery, genericConverter } from '../utilities';
 
@@ -10,8 +11,6 @@ interface RootState {
 
 const initialState: RootState = {};
 
-const BASE = 'jobs';
-
 export const loadAllJobs = createAsyncThunk<AppJob[], void, { state: AppState }>(
   'jobs/load-all',
   async (_, thunkApi) => {
@@ -22,23 +21,33 @@ export const loadAllJobs = createAsyncThunk<AppJob[], void, { state: AppState }>
       },
       sort: { '0': 'name:asc' },
     });
-    const response = await appRequest('get')(`${BASE}?${query}`);
+    const response = await appRequest('get')(appJobs(query));
 
     return (response.data as any[]).map((e) => genericConverter<AppJob>(e));
   },
 );
 
-export const createJob = createAsyncThunk<AppJob, void, { state: AppState }>('jobs/create', async (_, thunkApi) => {
-  const state = thunkApi.getState();
-  return appRequest('post')(BASE, { data: { name: 'NEU', tenant: state.login.user?.tenant } }).then((res: any) => {
+export const createJob = createAsyncThunk<AppJob, AppJob, { state: AppState }>(
+  'jobs/create',
+  async (payload, thunkApi) => {
+    const state = thunkApi.getState();
+    return appRequest('post')(appJobById(''), { data: { ...payload, tenant: state.login.user?.tenant } }).then(
+      (res: any) => {
+        return genericConverter<AppJob>(res.data);
+      },
+    );
+  },
+);
+
+export const updateJob = createAsyncThunk('jobs/update', (next: AppJob) => {
+  return appRequest('put')(appJobById(next.id), { data: { ...next } }).then((res: any) => {
     return genericConverter<AppJob>(res.data);
   });
 });
 
-export const updateJob = createAsyncThunk('jobs/update', (next: AppJob) => {
-  return appRequest('put')(`${BASE}/${next.id}`, { data: { ...next } }).then((res: any) => {
-    return genericConverter<AppJob>(res.data);
-  });
+export const deleteJob = createAsyncThunk('jobs/delete', async (id: number) => {
+  await appRequest('delete')(appJobById(id));
+  return id;
 });
 
 const jobsSlice = createSlice({
@@ -61,6 +70,9 @@ const jobsSlice = createSlice({
         if (index) {
           state.jobs?.splice(index, 1, action.payload);
         }
+      })
+      .addCase(deleteJob.fulfilled, (state, action) => {
+        state.jobs = state.jobs?.filter((job) => job.id !== action.payload);
       });
   },
 });

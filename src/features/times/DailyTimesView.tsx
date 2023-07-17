@@ -1,6 +1,6 @@
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
-import { Box, Button, Card, CardContent, CardHeader, Chip, Typography } from '@mui/material';
-import { GridColDef, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
+import { Box, Button, Card, CardContent, Chip } from '@mui/material';
+import { GridColDef, GridToolbarContainer } from '@mui/x-data-grid';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 

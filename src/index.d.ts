@@ -1,18 +1,20 @@
-interface AppService {
-  description: string;
+interface BgbService {
+  id: number;
+  name: string;
   unit: string;
   taxRate: number;
   unitPrice: number;
+  jobId: number;
 }
 
-interface OfferService extends AppService {
+interface BgbOfferService extends BgbService {
   netto: number;
   quantity: number;
   taxValue: number;
   brutto: number;
 }
 
-interface Offer {
+interface BgbOffer {
   company: string;
   salutation: string;
   firstName: string;
@@ -23,7 +25,7 @@ interface Offer {
   number: string;
   zip: string;
   city: string;
-  offerServices: OfferService[];
+  offerServices: BgbOfferService[];
   text: string;
 }
 

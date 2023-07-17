@@ -1,5 +1,5 @@
 import { buildQuery, genericConverter } from '../utilities';
-import { constructionById } from './endpoints';
+import { bgbServices, constructionById } from './endpoints';
 import { appRequest } from './fetch-client';
 
 export async function loadConstructionById(constructionId: string | number) {
@@ -8,6 +8,15 @@ export async function loadConstructionById(constructionId: string | number) {
       return genericConverter<Construction>(res.data);
     })
     .catch(console.log);
+}
+
+export async function fetchBgbServices(queryObj: object) {
+  const query = buildQuery(queryObj);
+
+  const response = await appRequest('get')(bgbServices(query));
+  const services = (response.data as any[]).map((e) => genericConverter<BgbService>(e));
+
+  return { services };
 }
 
 export async function loadConstructions(queryObj: object) {

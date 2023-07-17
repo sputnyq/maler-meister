@@ -11,7 +11,7 @@ export default function Offers() {
     <Box>
       <Typography variant="h6">Angebote</Typography>
       <OffersGrid />
-      <AddFab onClick={() => navigate('edit/-1')} />
+      <AddFab onClick={() => navigate('/offers/-1')} />
     </Box>
   );
 }

@@ -18,14 +18,15 @@ const Offers = lazy(() => import('./routes/Offers'));
 const Invoices = lazy(() => import('./routes/Invoices'));
 const TimeCapture = lazy(() => import('./features/time-capture'));
 const OfferEdit = lazy(() => import('./routes/OfferEdit'));
-const Options = lazy(() => import('./routes/Options'));
+const Options = lazy(() => import('./features/options'));
 const Constructions = lazy(() => import('./features/constructions/Constructions'));
 const Times = lazy(() => import('./features/times/Times'));
 const Upload = lazy(() => import('./routes/Upload'));
-const Jobs = lazy(() => import('./routes/Jobs'));
+const Jobs = lazy(() => import('./features/options/jobs'));
 const Planing = lazy(() => import('./features/planing'));
 const MyVacations = lazy(() => import('./features/my-vacations'));
 const Info = lazy(() => import('./features/info'));
+const BgbServices = lazy(() => import('./features/options/services/bgb'));
 
 function LazyLoad({ children }: React.PropsWithChildren) {
   return <Suspense fallback={<LoadingScreen />}>{children}</Suspense>;
@@ -109,6 +110,15 @@ export default function App() {
                       </LazyLoad>
                     }
                   />
+
+                  <Route
+                    path="bgb-services"
+                    element={
+                      <LazyLoad>
+                        <BgbServices />
+                      </LazyLoad>
+                    }
+                  ></Route>
                 </Route>
 
                 <Route
@@ -135,24 +145,23 @@ export default function App() {
                     </LazyLoad>
                   }
                 />
-                <Route path="offers" element={<Outlet />}>
-                  <Route
-                    index
-                    element={
-                      <LazyLoad>
-                        <Offers />
-                      </LazyLoad>
-                    }
-                  />
-                  <Route
-                    path="edit/:id"
-                    element={
-                      <LazyLoad>
-                        <OfferEdit />
-                      </LazyLoad>
-                    }
-                  />
-                </Route>
+
+                <Route
+                  path="offers"
+                  element={
+                    <LazyLoad>
+                      <Offers />
+                    </LazyLoad>
+                  }
+                />
+                <Route
+                  path="offers/:id"
+                  element={
+                    <LazyLoad>
+                      <OfferEdit />
+                    </LazyLoad>
+                  }
+                />
               </Route>
             </Routes>
           </Box>

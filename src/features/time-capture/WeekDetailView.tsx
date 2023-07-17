@@ -38,7 +38,7 @@ export function WeekDetailView({ data }: Props) {
               }).format(date)}
             </Typography>
             <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-              <CircularProgress color="secondary" variant="determinate" value={getValue(date).value} />
+              <CircularProgress color="info" variant="determinate" value={getValue(date).value} />
               <Box
                 sx={{
                   top: 0,

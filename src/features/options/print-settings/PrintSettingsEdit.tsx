@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import AppGrid from '../../../components/AppGrid';
 import { AppDispatch } from '../../../store';
-import { updatePrintSettings } from '../../../store/printSettingsReducer';
+import { deletePrintSettings, updatePrintSettings } from '../../../store/printSettingsReducer';
 import { PSField } from './PSField';
 
 interface Props {
@@ -22,6 +22,13 @@ export function PrintSettingsEdit({ ps }: Props) {
 
   const handleSave = () => {
     dispatch(updatePrintSettings({ ...ps, settings }));
+  };
+
+  const handleDelete = () => {
+    const text = 'Einstellungen löschen?';
+    if (confirm(text)) {
+      dispatch(deletePrintSettings(ps.id));
+    }
   };
 
   return (
@@ -59,7 +66,10 @@ export function PrintSettingsEdit({ ps }: Props) {
         </Box>
       </Grid>
       <Grid item xs={12}>
-        <Box display={'flex'} justifyContent="end">
+        <Box display={'flex'} justifyContent="space-between">
+          <Button color="error" onClick={handleDelete}>
+            Löschen
+          </Button>
           <Button variant="contained" disableElevation onClick={handleSave}>
             Speichern
           </Button>

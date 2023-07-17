@@ -10,8 +10,9 @@ interface Props {
   title: string;
   to: string;
   requiredRoles: UserRole[];
+  color: string;
 }
-export default function Tile({ title, to, requiredRoles, children }: React.PropsWithChildren<Props>) {
+export default function Tile({ title, to, requiredRoles, children, color }: React.PropsWithChildren<Props>) {
   const currentRole = useSelector<AppState, UserRole | undefined>((s) => s.login.user?.userRole);
 
   const hasRight = currentRole && requiredRoles.includes(currentRole);
@@ -19,13 +20,14 @@ export default function Tile({ title, to, requiredRoles, children }: React.Props
   if (!hasRight) {
     return null;
   }
+
   return (
     <Grid item xs={6} sm={4} md={3} lg={2}>
-      <Card elevation={2} sx={{ padding: 0, maxWidth: '140px', margin: 'auto' }}>
+      <Card elevation={0} sx={{ padding: 0, maxWidth: '120px', margin: 'auto', background: color }}>
         <Link style={{ textDecoration: 'none', color: 'inherit' }} to={to}>
           <CardHeader
             title={
-              <Typography whiteSpace={'nowrap'} align="center" variant="h6">
+              <Typography color={'white'} component={'div'} whiteSpace="nowrap" align="center" variant="subtitle1">
                 {title}
               </Typography>
             }

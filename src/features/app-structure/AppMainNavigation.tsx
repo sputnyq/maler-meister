@@ -1,5 +1,5 @@
 import AccessTimeIcon from '@mui/icons-material/AccessTimeOutlined';
-// import ArticleIcon from '@mui/icons-material/ArticleOutlined';
+import ArticleIcon from '@mui/icons-material/ArticleOutlined';
 import BeachAccessIcon from '@mui/icons-material/BeachAccessOutlined';
 import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
 import FormatPaintOutlinedIcon from '@mui/icons-material/FormatPaintOutlined';
@@ -25,10 +25,10 @@ export default function MainNavigation() {
       <Typography color={'GrayText'} p={3} variant="h4" align="center">{`Hallo ${currentUser?.firstName}!`}</Typography>
 
       <Grid container spacing={3} p={2}>
-        {/* <Tile requiredRoles={['accountant', 'admin']} to="offers" title="Angebote">
+        <Tile requiredRoles={['accountant', 'admin']} to="offers" title="Angebote">
           <ArticleIcon {...iconProps} />
         </Tile>
-        <Tile requiredRoles={['accountant', 'admin']} to="invoices" title="Rechnungen">
+        {/*<Tile requiredRoles={['accountant', 'admin']} to="invoices" title="Rechnungen">
           <ReceiptLongIcon {...iconProps} />
         </Tile> */}
 

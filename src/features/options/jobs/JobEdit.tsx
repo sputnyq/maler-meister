@@ -3,11 +3,11 @@ import { Box, Card, CircularProgress, Grid, useTheme } from '@mui/material';
 import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import AppGrid from '../../components/AppGrid';
-import { DeleteIconButton } from '../../components/DeleteIconButton';
-import { AppTextField } from '../../components/aa-shared/AppTextField';
-import { AppDispatch } from '../../store';
-import { deleteJob, updateJob } from '../../store/jobsReducer';
+import AppGrid from '../../../components/AppGrid';
+import { DeleteIconButton } from '../../../components/DeleteIconButton';
+import { AppTextField } from '../../../components/aa-shared/AppTextField';
+import { AppDispatch } from '../../../store';
+import { deleteJob, updateJob } from '../../../store/jobsReducer';
 
 interface Props {
   job: AppJob;

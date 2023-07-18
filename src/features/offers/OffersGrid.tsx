@@ -2,6 +2,7 @@ import { Box, Card, CardContent } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
 import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { AppGridField } from '../../components/AppGridField';
 import { AppTextField } from '../../components/aa-shared/AppTextField';
@@ -27,7 +28,7 @@ export default function OffersGrid() {
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       setOfferIdSearch(offerId);
-    }, 2000);
+    }, 1000);
 
     return () => clearTimeout(delayDebounceFn);
   }, [offerId]);
@@ -35,7 +36,7 @@ export default function OffersGrid() {
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       setLastNameSearch(lastName);
-    }, 2000);
+    }, 1000);
 
     return () => clearTimeout(delayDebounceFn);
   }, [lastName]);
@@ -101,10 +102,58 @@ export default function OffersGrid() {
   ]);
 
   const columns = useMemo(() => {
-    return [{ field: 'id', headerName: 'ID' }] as GridColDef[];
+    return [
+      {
+        field: 'id',
+        headerName: 'ID',
+        renderCell({ id }) {
+          return <Link to={`${id}`}>{id}</Link>;
+        },
+      },
+      {
+        field: 'company',
+        headerName: 'Firma',
+      },
+
+      {
+        field: 'lastName',
+        headerName: 'Kunde',
+        flex: 1,
+        renderCell({ row }) {
+          const { salutation, lastName, firstName } = row as AppOffer;
+          return `${salutation} ${firstName} ${lastName}`;
+        },
+      },
+      {
+        field: 'zip',
+        headerName: 'Adresse',
+        flex: 1,
+        renderCell({ row }) {
+          const { street, number, zip, city } = row as AppOffer;
+          return `${street} ${number}, ${zip} ${city}`;
+        },
+      },
+      {
+        field: 'createdAt',
+        headerName: 'Erstellt',
+        type: 'dateTime',
+        minWidth: 160,
+        renderCell({ value }) {
+          return new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' }).format(new Date(value));
+        },
+      },
+      {
+        field: 'updatedAt',
+        headerName: 'Aktualisiert',
+        type: 'dateTime',
+        minWidth: 160,
+        renderCell({ value }) {
+          return new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' }).format(new Date(value));
+        },
+      },
+    ] as GridColDef[];
   }, []);
 
-  //TODO: implement search by id
   return (
     <Box display="flex" flexDirection="column" gap={2}>
       <FilterWrapperCard>

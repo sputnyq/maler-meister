@@ -19,7 +19,7 @@ interface AppOffer {
   company: string;
   salutation: string;
   firstName: string;
-  lastname: string;
+  lastName: string;
   phone: string;
   email: string;
   street: string;

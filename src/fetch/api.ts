@@ -59,6 +59,7 @@ export async function loadOffers(queryObj: object) {
     meta,
   };
 }
+
 export async function loadDailyEntries(queryObj: object) {
   const query = buildQuery(queryObj);
   const response = await appRequest('get')(`daily-entries?${query}`);

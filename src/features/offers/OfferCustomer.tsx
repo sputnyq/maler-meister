@@ -9,8 +9,8 @@ export default function OfferCustomer() {
       <Wrapper title="Name">
         <Field path="salutation" label="Anrede" select selectOptions={['Herr', 'Frau', ' ']} />
         <Field path="firstName" label="Vorname" />
-        <Field path="lastname" label="Nachname" />
-        <Field path="company" label="Frmenname" />
+        <Field path="lastName" label="Nachname" />
+        <Field path="company" label="Firmenname" />
       </Wrapper>
 
       <Wrapper title="Adresse">

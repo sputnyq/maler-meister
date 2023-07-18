@@ -37,17 +37,6 @@ export default function TopBar() {
     return <Box width={40} />;
   }, [location, isRootLocation]);
 
-  const pageName = useMemo(() => {
-    if (isLoginLocation) {
-      return 'Maler Meister';
-    }
-    if (isRootLocation) {
-      return 'Willkommen';
-    }
-
-    return null;
-  }, [isLoginLocation, isRootLocation]);
-
   return (
     <Box flexGrow={1}>
       <AppBar position="fixed" elevation={1} color="primary">

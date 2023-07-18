@@ -147,7 +147,7 @@ export default function WorkEntriesTimesView() {
                 setConstructionId(ev.target.value);
               }}
               label="Baustellen ID"
-              type="number"
+              type="search"
             />
           </AppGridField>
         </FilterWrapperCard>

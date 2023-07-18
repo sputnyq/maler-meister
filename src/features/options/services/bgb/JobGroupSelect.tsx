@@ -10,8 +10,8 @@ export function JobGroupSelect({ onChange, value }: TextFieldProps) {
 
   return (
     <AppTextField onChange={onChange} label="Tätigkeitsgruppe" value={value} select>
-      {appJobs.map(({ id, name }) => (
-        <MenuItem value={id}>{name}</MenuItem>
+      {appJobs.map(({ id, name, position }) => (
+        <MenuItem value={id}>{`${position === null ? '' : position} ${name}`}</MenuItem>
       ))}
     </AppTextField>
   );

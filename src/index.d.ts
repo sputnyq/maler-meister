@@ -5,6 +5,7 @@ interface BgbService {
   taxRate: number;
   unitPrice: number;
   jobId: number;
+  description: string;
 }
 
 interface BgbOfferService extends BgbService {
@@ -66,6 +67,7 @@ interface WorkEntry {
   username: string;
   hours: string;
   job: string;
+  jobId: number;
   tenant: string;
 }
 interface DailyEntry {
@@ -81,9 +83,10 @@ interface DailyEntry {
 }
 
 interface AppJob {
+  id: number;
   tenant: string;
   name: string;
-  id: number;
+  position: number;
 }
 
 interface Feiertag {

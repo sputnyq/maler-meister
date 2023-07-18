@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { AppTextField } from '../../../components/aa-shared/AppTextField';
 
 interface Props {

@@ -45,15 +45,21 @@ export function CreateBgbService() {
               <Grid item xs={12}>
                 <AppTextField onChange={onPropChange('name')} label="Name" value={service.name} />
               </Grid>
+              <Grid item xs={12}>
+                <AppTextField
+                  label="Beschreibung"
+                  multiline
+                  minRows={1}
+                  maxRows={4}
+                  onChange={onPropChange('description')}
+                  value={service.description}
+                />
+              </Grid>
               <Grid item xs={12} sm={4}>
                 <AppTextField onChange={onPropChange('unit')} label="Einheit" value={service.unit} />
               </Grid>
               <Grid item xs={12} sm={4}>
-                <AppTextField
-                  onChange={onPropChange('unitPrice')}
-                  label="Einzelpreis"
-                  value={service.unitPrice}
-                ></AppTextField>
+                <AppTextField onChange={onPropChange('unitPrice')} label="Einzelpreis" value={service.unitPrice} />
               </Grid>
               <Grid item xs={12} sm={4}>
                 <TaxSelector onChange={onPropChange('taxRate')} value={service.taxRate} />

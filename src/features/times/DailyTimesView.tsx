@@ -26,7 +26,7 @@ export default function DailyTimesView() {
   const [data, setData] = useState<DailyEntry[]>([]);
   const [curUsername, setCurUsername] = useState('');
   const [rowCount, setRowCount] = useState(0);
-  const [dailyEntryType, setDailyEntryType] = useState<DailyEntryType | undefined>('Urlaub');
+  const [dailyEntryType, setDailyEntryType] = useState<DailyEntryType | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dateRange, setDateRange] = useState<AppDateRange>({
@@ -35,7 +35,7 @@ export default function DailyTimesView() {
   });
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 50,
+    pageSize: 25,
   });
 
   const dailyEntryId = useRef('');

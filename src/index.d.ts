@@ -5,6 +5,7 @@ interface BgbService {
   taxRate: number;
   unitPrice: number;
   jobId: number;
+  description: string;
 }
 
 interface BgbOfferService extends BgbService {

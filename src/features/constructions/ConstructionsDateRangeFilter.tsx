@@ -5,8 +5,8 @@ import { addMonths, addYears, endOfMonth, endOfYear, startOfMonth, startOfYear }
 import { DefinedRange } from 'mui-daterange-picker-orient';
 
 interface Props {
-  dateRange: AppDateTange;
-  setDateRange(dateRange: AppDateTange): void;
+  dateRange: AppDateRange;
+  setDateRange(dateRange: AppDateRange): void;
 }
 
 export function ConstructionsDateRangeFilter({ dateRange, setDateRange }: Props) {

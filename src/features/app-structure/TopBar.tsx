@@ -1,5 +1,5 @@
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
 
 import { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';

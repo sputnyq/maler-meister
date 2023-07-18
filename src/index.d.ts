@@ -98,7 +98,7 @@ interface Feiertag {
   comment: string;
 }
 
-interface AppDateTange {
+interface AppDateRange {
   start?: string;
   end?: string;
 }

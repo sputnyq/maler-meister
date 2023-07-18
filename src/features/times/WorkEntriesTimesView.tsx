@@ -22,7 +22,7 @@ export default function WorkEntriesTimesView() {
   const [curUsername, setCurUsername] = useState('');
   const [constructionId, setConstructionId] = useState('');
   const [idSearch, setIdSearch] = useState('');
-  const [dateRange, setDateRange] = useState<AppDateTange>({
+  const [dateRange, setDateRange] = useState<AppDateRange>({
     start: formatISO(startOfMonth(new Date()), { representation: 'date' }),
     end: formatISO(endOfMonth(new Date()), { representation: 'date' }),
   });

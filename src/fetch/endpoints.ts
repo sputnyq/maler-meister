@@ -8,3 +8,6 @@ export const bgbServices = (query: string) => `bgb-services/?${query}`;
 
 export const printSettingById = (id: number | string) => `print-settings/${id}`;
 export const printSettings = (query: string) => `print-settings/?${query}`;
+
+export const offerById = (id: number | string) => `offers/${id}`;
+export const offers = (query: string) => `offers/?${query}`;

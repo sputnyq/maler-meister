@@ -29,7 +29,7 @@ export default function DailyTimesView() {
   const [dailyEntryType, setDailyEntryType] = useState<DailyEntryType | undefined>('Urlaub');
   const [loading, setLoading] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [dateRange, setDateRange] = useState<AppDateTange>({
+  const [dateRange, setDateRange] = useState<AppDateRange>({
     start: formatISO(startOfMonth(new Date()), { representation: 'date' }),
     end: formatISO(endOfMonth(new Date()), { representation: 'date' }),
   });

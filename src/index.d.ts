@@ -67,6 +67,7 @@ interface WorkEntry {
   username: string;
   hours: string;
   job: string;
+  jobId: number;
   tenant: string;
 }
 interface DailyEntry {

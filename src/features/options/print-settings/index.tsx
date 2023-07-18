@@ -16,7 +16,7 @@ export default function PrintSettings() {
       <Box>
         {printSettings.map((ps) => {
           return (
-            <Accordion>
+            <Accordion key={ps.id}>
               <AccordionSummary
                 aria-controls={`${ps.name}-content`}
                 id={`${ps.name}-header`}

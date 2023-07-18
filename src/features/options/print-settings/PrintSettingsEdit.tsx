@@ -17,7 +17,7 @@ export function PrintSettingsEdit({ ps }: Props) {
 
   const dispatch = useDispatch<AppDispatch>();
   const Field = (prop: keyof PrintSettings) => {
-    return <PSField prop={prop} settings={settings} setSettings={setSettings} />;
+    return <PSField key={prop} prop={prop} settings={settings} setSettings={setSettings} />;
   };
 
   const handleSave = () => {

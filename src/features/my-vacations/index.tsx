@@ -100,7 +100,6 @@ export default function MyVacations() {
       <AddFab onClick={() => setRequestDialog(true)} />
 
       <Card>
-        <CardHeader title="Mein Urlaub" />
         <CardContent>
           <Box display={'flex'} flexDirection="column" gap={2}>
             <Box maxWidth={400}>

@@ -81,9 +81,10 @@ interface DailyEntry {
 }
 
 interface AppJob {
+  id: number;
   tenant: string;
   name: string;
-  id: number;
+  position: number;
 }
 
 interface Feiertag {

@@ -42,8 +42,17 @@ export default function JobEdit(props: Props) {
   return (
     <Card sx={{ p: 1, background: theme.palette.background.default }} elevation={0}>
       <AppGrid>
-        <Grid item xs={10}>
+        <Grid item xs={12} sm={8}>
           <AppTextField onBlur={onBlur} onChange={onPropChange('name')} label="Name" value={job.name} />
+        </Grid>
+        <Grid item xs={10} sm={2}>
+          <AppTextField
+            onBlur={onBlur}
+            onChange={onPropChange('position')}
+            label="Position"
+            value={job.position}
+            type="number"
+          />
         </Grid>
         <Grid item xs={2}>
           <Box display="flex" justifyContent="space-between" maxHeight={'40px'}>

@@ -43,13 +43,24 @@ export function BgbServiceEdit(props: Props) {
   return (
     <Card sx={{ p: 1, background: theme.palette.background.default }} elevation={0}>
       <AppGrid>
-        <Grid item xs={12} sm={8} md={4}>
+        <Grid item xs={12}>
           <AppTextField onBlur={onBlur} onChange={onPropChange('name')} label="Name" value={service.name} />
         </Grid>
-        <Grid item xs={6} sm={4} md={2}>
+        <Grid item xs={12}>
+          <AppTextField
+            label="Beschreibung"
+            multiline
+            minRows={1}
+            maxRows={4}
+            onBlur={onBlur}
+            onChange={onPropChange('description')}
+            value={service.description}
+          />
+        </Grid>
+        <Grid item xs={6} sm={3}>
           <AppTextField onBlur={onBlur} onChange={onPropChange('unit')} label="Einheit" value={service.unit} />
         </Grid>
-        <Grid item xs={6} sm={4} md={2}>
+        <Grid item xs={6} sm={3}>
           <AppTextField
             onBlur={onBlur}
             onChange={onPropChange('unitPrice')}
@@ -57,10 +68,11 @@ export function BgbServiceEdit(props: Props) {
             value={service.unitPrice}
           />
         </Grid>
-        <Grid item xs={6} sm={4} md={2}>
+        <Grid item xs={6} sm={3}>
           <TaxSelector onBlur={onBlur} onChange={onPropChange('taxRate')} value={service.taxRate} />
         </Grid>
-        <Grid item xs={6} sm={4} md={2}>
+
+        <Grid item xs={6} sm={3}>
           <Box display="flex" justifyContent="space-between" maxHeight={'40px'}>
             <Box>
               <DeleteIconButton onClick={handleDelete} />

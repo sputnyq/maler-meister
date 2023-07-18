@@ -206,6 +206,10 @@ function WorkEntryLine({ workEntry, update, deleteEntry }: WorkEntryTile) {
   const appJobs = useSelector<AppState, AppJob[]>((s) => s.jobs.jobs || []);
   const constructions = useSelector<AppState, Construction[]>((s) => s.construction.activeConstructions || []);
 
+  const getJobName = (jobId: number) => {
+    return appJobs.find((j) => j.id === jobId)?.name;
+  };
+
   return (
     <Box>
       <Card variant="outlined" sx={{ background: '#fafafa' }}>
@@ -236,15 +240,24 @@ function WorkEntryLine({ workEntry, update, deleteEntry }: WorkEntryTile) {
                 <GridItem>
                   <AppTextField
                     onChange={(ev) => {
-                      update({ ...workEntry, job: ev.target.value });
+                      const jobId = Number(ev.target.value);
+                      console.log(jobId);
+
+                      update({
+                        ...workEntry,
+                        jobId,
+                        //@ts-ignore
+                        job: getJobName(jobId),
+                      });
                     }}
-                    value={workEntry.job}
+                    value={workEntry.jobId}
                     select
+                    type="number"
                     label="Tätigkeit"
                   >
                     {appJobs.map((job) => {
                       return (
-                        <MenuItem key={job.id} value={job.name}>
+                        <MenuItem key={job.id} value={job.id}>
                           {job.name}
                         </MenuItem>
                       );

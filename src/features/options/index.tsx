@@ -16,13 +16,13 @@ export default function Options() {
             spacing={2}
           >
             <Link style={{ textDecoration: 'none' }} to="">
-              <MuiLink>Tätigkeiten</MuiLink>
+              <MuiLink component={'p'}>Tätigkeiten</MuiLink>
             </Link>
             <Link style={{ textDecoration: 'none' }} to="bgb-services">
-              <MuiLink>BGB Leistungen</MuiLink>
+              <MuiLink component={'p'}>BGB Leistungen</MuiLink>
             </Link>
             <Link style={{ textDecoration: 'none' }} to="print-settings">
-              <MuiLink>Druck Einstellungen</MuiLink>
+              <MuiLink component={'p'}>Druck Einstellungen</MuiLink>
             </Link>
           </Stack>
         </CardContent>

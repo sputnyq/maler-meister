@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import Logout from '../log-in-out/Logout';
 import OfferActions from '../offers/OfferActions';
+import PageName from './PageName';
 
 export default function TopBar() {
   const location = useLocation();
@@ -52,9 +53,7 @@ export default function TopBar() {
       <AppBar position="fixed" elevation={1} color="primary">
         <Toolbar variant="dense">
           {homeButton}
-          <Typography variant="h6" flex={1} align="center">
-            {pageName}
-          </Typography>
+          <PageName />
           <Box display="flex" justifyContent={'flex-end'}>
             {actions}
           </Box>

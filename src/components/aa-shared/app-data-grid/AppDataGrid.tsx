@@ -38,7 +38,7 @@ export function AppDataGrid(props: DataGridProps) {
           disableRowSelectionOnClick
           autoHeight
           paginationMode={'server'}
-          pageSizeOptions={[5, 10, 25, 50]}
+          pageSizeOptions={[5, 10, 25, 50, 100]}
           {...props}
           columns={gridColumns}
         />

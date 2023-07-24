@@ -1,7 +1,7 @@
 export function downloadAsCsv(data: DailyEntry[], fileName: string) {
   let csvContent = 'data:text/csv;charset=utf-8,';
 
-  const header = 'Wochentag,Datum,Name,Tätigkeit,Stunden\r\n';
+  const header = 'Datum;Name;Tätigkeit;Stunden\r\n';
   csvContent += header;
 
   data.forEach((de) => {
@@ -10,7 +10,7 @@ export function downloadAsCsv(data: DailyEntry[], fileName: string) {
       de.username.toUpperCase(),
       de.type,
       de.sum,
-    ].join(',');
+    ].join(';');
     csvContent += row + '\r\n';
   });
 

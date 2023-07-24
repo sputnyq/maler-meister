@@ -53,9 +53,9 @@ type ExtendedProps = ConstructionProps | DailyEntryProps;
 export default function CalendarView() {
   const [constructionDialog, setConstructionDialog] = useState(false);
   const [dailyEntryDialog, setDailyEntryDialog] = useState(false);
-  const [weekends, setWeekends] = useState(false);
+  const [weekends, setWeekends] = useState(true);
   const [curYear, setCurYear] = useState(new Date().getFullYear());
-  const [multiMonthMaxColumns, setMultiMonthMaxColumns] = useState(1);
+  const [multiMonthMaxColumns, setMultiMonthMaxColumns] = useState(2);
   const [eventRange, setEventRange] = useState<EventDateRange>({});
   const [dailyEntries, setDailyEntries] = useState<DailyEntry[]>([]);
   const [constructions, setConstructions] = useState<Construction[]>([]);

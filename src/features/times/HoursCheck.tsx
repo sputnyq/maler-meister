@@ -1,5 +1,11 @@
-import React from 'react';
+import { Box, Card, CardContent } from '@mui/material';
 
 export function HoursCheck() {
-  return <div>HoursCheck</div>;
+  return (
+    <Card>
+      <CardContent>
+        <Box display={'flex'} flexDirection="column" gap={2}></Box>
+      </CardContent>
+    </Card>
+  );
 }

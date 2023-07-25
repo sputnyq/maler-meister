@@ -19,7 +19,7 @@ export default function Options() {
               <MuiLink component={'p'}>Tätigkeiten</MuiLink>
             </Link>
             <Link style={{ textDecoration: 'none' }} to="bgb-services">
-              <MuiLink component={'p'}>BGB Leistungen</MuiLink>
+              <MuiLink component={'p'}>Leistungen</MuiLink>
             </Link>
             <Link style={{ textDecoration: 'none' }} to="print-settings">
               <MuiLink component={'p'}>Druck Einstellungen</MuiLink>

@@ -35,7 +35,7 @@ export function CreateBgbService() {
   return (
     <>
       <AddFab onClick={handleOpen} />
-      <AppDialog open={open} onClose={handleClose} onConfirm={onConfirm} title="BGB-Leistung erstellen">
+      <AppDialog open={open} onClose={handleClose} onConfirm={onConfirm} title="Leistung erstellen">
         <Card elevation={0}>
           <CardContent>
             <AppGrid>
@@ -49,8 +49,8 @@ export function CreateBgbService() {
                 <AppTextField
                   label="Beschreibung"
                   multiline
-                  minRows={1}
-                  maxRows={4}
+                  minRows={3}
+                  maxRows={5}
                   onChange={onPropChange('description')}
                   value={service.description}
                 />

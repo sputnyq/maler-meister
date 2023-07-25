@@ -12,7 +12,7 @@ export default function DailyEntryTypeFilter({ setType, type }: Props) {
   return (
     <AppGridField>
       <AppTextField value={type} onChange={(ev) => setType(ev.target.value as DailyEntryType)} label="Tätigkeit" select>
-        <MenuItem value={undefined}>-</MenuItem>
+        <MenuItem>Alle</MenuItem>
         <MenuItem value={'Arbeit'}>Arbeit</MenuItem>
         <MenuItem value={'Urlaub'}>Urlaub</MenuItem>
         <MenuItem value={'Krank'}>Krank</MenuItem>

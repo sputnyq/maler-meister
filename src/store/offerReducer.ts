@@ -1,4 +1,8 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { offerById } from '../fetch/endpoints';
+import { appRequest } from '../fetch/fetch-client';
+import { genericConverter } from '../utilities';
+
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { cloneDeep, set } from 'lodash';
 
 interface RootState {
@@ -19,6 +23,12 @@ const createOffer = () => {
   return offer;
 };
 
+export const loadOffer = createAsyncThunk('Offers/load', async (id: string | number) => {
+  const response = await appRequest('get')(offerById(id));
+
+  return genericConverter<AppOffer>(response.data);
+});
+
 const offerSlice = createSlice({
   name: 'offer',
   initialState,
@@ -35,6 +45,12 @@ const offerSlice = createSlice({
         state.unsavedChanges = true;
       }
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(loadOffer.fulfilled, (state, action) => {
+      state.current = action.payload;
+      state.unsavedChanges = false;
+    });
   },
 });
 

@@ -46,7 +46,11 @@ export default function OfferEdit() {
         <OfferCustomer />
       </TabPanel>
       <TabPanel index={1} value={value}>
-        <ServicesWidget offerServices={offerServices} title={'Im Angebot enthalten'} update={updateOfferServices} />
+        <ServicesWidget
+          offerServices={offerServices !== null ? offerServices : undefined}
+          title={'Im Angebot enthalten'}
+          update={updateOfferServices}
+        />
       </TabPanel>
     </>
   );

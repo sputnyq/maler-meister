@@ -136,7 +136,7 @@ export default function OffersGrid() {
       {
         field: 'createdAt',
         headerName: 'Erstellt',
-        type: 'dateTime',
+
         minWidth: 160,
         renderCell({ value }) {
           return new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' }).format(new Date(value));
@@ -145,7 +145,6 @@ export default function OffersGrid() {
       {
         field: 'updatedAt',
         headerName: 'Aktualisiert',
-        type: 'dateTime',
         minWidth: 160,
         renderCell({ value }) {
           return new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' }).format(new Date(value));

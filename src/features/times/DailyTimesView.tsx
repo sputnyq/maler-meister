@@ -97,7 +97,7 @@ export default function DailyTimesView() {
       },
       {
         field: 'type',
-        headerName: 'Tätigkeit',
+        headerName: 'Art',
         flex: 1,
         renderCell({ value, row }) {
           return <Chip size="small" label={value} color={getJobColor(row.type)} />;

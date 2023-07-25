@@ -28,7 +28,7 @@ export default function TopBar() {
   }, [isRootLocation, isLoginLocation, navigate]);
 
   const actions = useMemo(() => {
-    if (location.pathname.startsWith('/offers/edit')) {
+    if (location.pathname.startsWith('/offers/')) {
       return <OfferActions />;
     }
     if (isRootLocation) {

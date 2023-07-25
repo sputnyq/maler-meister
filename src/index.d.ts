@@ -16,6 +16,7 @@ interface BgbOfferService extends BgbService {
 }
 
 interface AppOffer {
+  id: number;
   company: string;
   salutation: string;
   firstName: string;

@@ -7,10 +7,10 @@ import { Stack } from '@mui/system';
 
 interface Props {
   unsavedChanges: boolean;
-  onSave(): void;
-  onCopy(): void;
-  onDownload(): void;
-  onDelete(): void;
+  onSave?: () => void;
+  onCopy?: () => void;
+  onDownload?: () => void;
+  onDelete?: () => void;
 }
 
 export default function DocumentActions({ onCopy, onDelete, onDownload, onSave, unsavedChanges }: Props) {
@@ -18,7 +18,7 @@ export default function DocumentActions({ onCopy, onDelete, onDownload, onSave, 
 
   const handleDelete = () => {
     if (window.confirm('Möchtest du diese Datei wirklich löschen?')) {
-      onDelete();
+      onDelete?.();
     }
   };
   return (

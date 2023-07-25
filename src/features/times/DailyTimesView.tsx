@@ -35,7 +35,7 @@ export default function DailyTimesView() {
   });
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 25,
+    pageSize: 100,
   });
 
   const dailyEntryId = useRef('');
@@ -97,7 +97,7 @@ export default function DailyTimesView() {
       },
       {
         field: 'type',
-        headerName: 'Tätigkeit',
+        headerName: 'Art',
         flex: 1,
         renderCell({ value, row }) {
           return <Chip size="small" label={value} color={getJobColor(row.type)} />;

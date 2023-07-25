@@ -15,12 +15,12 @@ interface BgbOfferService extends BgbService {
   brutto: number;
 }
 
-interface BgbOffer {
+interface AppOffer {
   company: string;
   salutation: string;
   firstName: string;
-  lastname: string;
-  tel: string;
+  lastName: string;
+  phone: string;
   email: string;
   street: string;
   number: string;
@@ -28,6 +28,9 @@ interface BgbOffer {
   city: string;
   offerServices: BgbOfferService[];
   text: string;
+  constructionId: number;
+  start: string;
+  end: string;
 }
 
 interface LoginResponse {
@@ -95,7 +98,7 @@ interface Feiertag {
   comment: string;
 }
 
-interface AppDateTange {
+interface AppDateRange {
   start?: string;
   end?: string;
 }

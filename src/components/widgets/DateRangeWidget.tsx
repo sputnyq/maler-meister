@@ -10,8 +10,8 @@ import { de } from 'date-fns/locale';
 import { DateRangePicker, DefinedRange } from 'mui-daterange-picker-orient';
 
 interface Props {
-  dateRange: AppDateTange;
-  setDateRange(dateRange: AppDateTange): void;
+  dateRange: AppDateRange;
+  setDateRange(dateRange: AppDateRange): void;
   definedRanges: DefinedRange[];
 }
 

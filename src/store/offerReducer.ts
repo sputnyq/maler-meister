@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { cloneDeep, set } from 'lodash';
 
 interface RootState {
-  current: BgbOffer | null;
+  current: AppOffer | null;
   unsavedChanges: boolean;
 }
 
@@ -15,7 +15,7 @@ const createOffer = () => {
   const offer = {
     offerServices: new Array<BgbOfferService>(),
     text: '',
-  } as BgbOffer;
+  } as AppOffer;
   return offer;
 };
 

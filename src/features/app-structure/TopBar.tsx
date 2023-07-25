@@ -1,5 +1,5 @@
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
 
 import { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -36,17 +36,6 @@ export default function TopBar() {
     }
     return <Box width={40} />;
   }, [location, isRootLocation]);
-
-  const pageName = useMemo(() => {
-    if (isLoginLocation) {
-      return 'Maler Meister';
-    }
-    if (isRootLocation) {
-      return 'Willkommen';
-    }
-
-    return null;
-  }, [isLoginLocation, isRootLocation]);
 
   return (
     <Box flexGrow={1}>

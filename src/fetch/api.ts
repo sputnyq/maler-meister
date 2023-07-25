@@ -1,5 +1,5 @@
 import { buildQuery, genericConverter } from '../utilities';
-import { bgbServices, constructionById } from './endpoints';
+import { appJobs, bgbServices, constructionById, constructions, dailyEntries, offers } from './endpoints';
 import { appRequest } from './fetch-client';
 
 export async function loadConstructionById(constructionId: string | number) {
@@ -22,14 +22,14 @@ export async function fetchBgbServices(queryObj: object) {
 export async function loadConstructions(queryObj: object) {
   const query = buildQuery(queryObj);
 
-  const response = await appRequest('get')(`constructions?${query}`);
+  const response = await appRequest('get')(constructions(query));
 
-  const constructions = (response.data as any[]).map((e) => genericConverter<Construction>(e));
+  const converted = (response.data as any[]).map((e) => genericConverter<Construction>(e));
 
   const meta = response.meta as ApiMeta;
 
   return {
-    constructions,
+    constructions: converted,
     meta,
   };
 }
@@ -47,22 +47,35 @@ export async function loadWorkEntries(queryObj: object) {
   };
 }
 
-export async function loadDailyEntries(queryObj: object) {
+export async function loadOffers(queryObj: object) {
   const query = buildQuery(queryObj);
-  const response = await appRequest('get')(`daily-entries?${query}`);
+  const response = await appRequest('get')(offers(query));
 
-  const dailyEntries = response.data.map((e: any) => genericConverter<DailyEntry[]>(e)) as DailyEntry[];
+  const appOffers = response.data.map((e: any) => genericConverter<AppOffer[]>(e)) as AppOffer[];
 
   const meta = response.meta as ApiMeta;
   return {
-    dailyEntries,
+    appOffers,
+    meta,
+  };
+}
+
+export async function loadDailyEntries(queryObj: object) {
+  const query = buildQuery(queryObj);
+  const response = await appRequest('get')(dailyEntries(query));
+
+  const converted = response.data.map((e: any) => genericConverter<DailyEntry[]>(e)) as DailyEntry[];
+
+  const meta = response.meta as ApiMeta;
+  return {
+    dailyEntries: converted,
     meta,
   };
 }
 
 export async function loadJobs(queryObj: object) {
   const query = buildQuery(queryObj);
-  const response = await appRequest('get')(`jobs?${query}`);
+  const response = await appRequest('get')(appJobs(query));
 
   const jobs = response.data.map((e: any) => genericConverter<AppJob[]>(e));
 

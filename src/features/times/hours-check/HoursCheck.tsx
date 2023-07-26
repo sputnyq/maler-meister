@@ -4,9 +4,11 @@ import {
   Box,
   Card,
   CardContent,
+  Paper,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
   ToggleButton,
@@ -49,9 +51,9 @@ export function HoursCheck() {
   const allDays = eachDayOfInterval({ end: interval.end, start: interval.start });
 
   return (
-    <Card>
-      <CardContent>
-        <Box display={'flex'} flexDirection="column" gap={2}>
+    <Box display={'flex'} flexDirection="column" gap={2}>
+      <Card>
+        <CardContent>
           <Box maxWidth={400} margin="auto">
             <ToggleButtonGroup
               color="primary"
@@ -65,42 +67,40 @@ export function HoursCheck() {
               <ToggleButton size="small" value={'-1'} disabled={value === '-1'}>
                 <KeyboardArrowLeftOutlinedIcon />
               </ToggleButton>
+
               <ToggleButton size="small" value={'0'} disabled={value === '0'}>
                 <KeyboardArrowRightOutlined />
               </ToggleButton>
             </ToggleButtonGroup>
           </Box>
-          <Box overflow={'auto'}>
-            <StyledTable>
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ position: 'sticky', left: '0' }} />
-                  {allDays.map((day, index) => (
-                    <TableCell align="center" key={index}>
-                      {new Intl.DateTimeFormat('de-DE', { weekday: 'short', day: 'numeric', month: 'numeric' }).format(
-                        day,
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {workers.map((user) => (
-                  <HoursCheckRow key={user.username} user={user} start={interval.start} end={interval.end} />
-                ))}
-              </TableBody>
-            </StyledTable>
-          </Box>
-        </Box>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+
+      <TableContainer component={Paper}>
+        <StyledTable>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ position: 'sticky', left: '0' }} />
+              {allDays.map((day, index) => (
+                <TableCell align="center" key={index}>
+                  {new Intl.DateTimeFormat('de-DE', { weekday: 'short', day: 'numeric', month: 'numeric' }).format(day)}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {workers.map((user) => (
+              <HoursCheckRow key={user.username} user={user} start={interval.start} end={interval.end} />
+            ))}
+          </TableBody>
+        </StyledTable>
+      </TableContainer>
+    </Box>
   );
 }
 
 const StyledTable = styled(Table)(({ theme }) => ({
-  '&.MuiTable-root': {
-    border: `1px solid ${theme.palette.grey[300]}`,
-  },
   '& .MuiTableCell-root': {
     borderRight: `1px solid ${theme.palette.grey[300]}`,
   },

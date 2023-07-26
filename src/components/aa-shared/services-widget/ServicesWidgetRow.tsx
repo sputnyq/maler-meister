@@ -1,6 +1,6 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import { Autocomplete, Box, Card, CardContent, Grid, IconButton } from '@mui/material';
+import { Autocomplete, Box, Card, CardContent, Grid, IconButton, Typography } from '@mui/material';
 
 import { useSelector } from 'react-redux';
 
@@ -18,9 +18,10 @@ interface Props {
   disableDown: boolean;
   onDelete: () => void;
   moveEntry: (offset: number) => void;
+  index: number;
 }
 
-export function ServicesWidgetRow({ offerService, disableDown, disableUp, update, moveEntry, onDelete }: Props) {
+export function ServicesWidgetRow({ index, offerService, disableDown, disableUp, update, moveEntry, onDelete }: Props) {
   const bgbServices = useSelector<AppState, BgbService[]>((s) => s.services.bgbServices || []);
 
   const findService = (label: string) => {
@@ -56,12 +57,14 @@ export function ServicesWidgetRow({ offerService, disableDown, disableUp, update
       taxRate: service.taxRate,
       unit: service.unit,
       unitPrice: service.unitPrice,
+      id: service.id,
     });
   };
 
   return (
-    <Card elevation={0}>
+    <Card>
       <CardContent>
+        <Typography variant="h4">{index + 1}</Typography>
         <Grid container columnSpacing={1} rowSpacing={2}>
           <Grid item xs={12} sm={6}>
             <Autocomplete
@@ -136,6 +139,9 @@ export function ServicesWidgetRow({ offerService, disableDown, disableUp, update
 
               <DeleteIconButton onClick={onDelete} />
             </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <AppTextField value={offerService.description} multiline />
           </Grid>
         </Grid>
       </CardContent>

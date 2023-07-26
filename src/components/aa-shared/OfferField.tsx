@@ -22,7 +22,6 @@ export interface OfferFieldProps {
 export default function OfferField({ select, multiline, type, label, selectOptions, path }: OfferFieldProps) {
   const dispatch = useDispatch<AppDispatch>();
   const initValue = useOfferValue(path);
-  console.log(initValue);
 
   const [value, setValue] = useState(initValue);
 

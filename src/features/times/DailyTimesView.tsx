@@ -93,7 +93,7 @@ export default function DailyTimesView() {
       {
         width: 250,
         field: 'overload',
-        headerName: 'Überstunden',
+        headerName: 'Delta',
       },
       {
         field: 'type',
@@ -140,7 +140,7 @@ export default function DailyTimesView() {
       },
       {
         amount: overload,
-        title: 'Überstunden (Std.)',
+        title: 'Delta (Std.)',
       },
 
       {

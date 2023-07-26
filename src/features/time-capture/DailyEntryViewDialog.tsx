@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { AppDialog } from '../../components/AppDialog';
 import { appRequest } from '../../fetch/fetch-client';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { genericConverter, getJobColor } from '../../utilities';
 import ConstructionView from './ConstructionView';
 
@@ -32,6 +33,8 @@ export function DailyEntryViewDialog({ closeDialog, dailyEntryId, dialogOpen }: 
 function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
   const [dailyEntry, setDailyEntry] = useState<DailyEntry | null>(null);
 
+  const user = useCurrentUser();
+
   useEffect(() => {
     if (!id) {
       return;
@@ -46,6 +49,11 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
   }, [id]);
 
   const disabled = useMemo(() => {
+    const adminRoles: UserRole[] = ['accountant', 'admin'];
+
+    if (user?.userRole && adminRoles.includes(user.userRole)) {
+      return false;
+    }
     const date = dailyEntry?.date;
     if (!date) {
       //never happens
@@ -53,9 +61,9 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
     }
 
     const deDate = new Date(date);
-    const limit = addDays(new Date(), -32);
+    const limit = addDays(new Date(), -31);
     return deDate < limit;
-  }, [dailyEntry]);
+  }, [dailyEntry, user]);
 
   const handleDeleteRequest = async () => {
     const deleteRequest = appRequest('delete');

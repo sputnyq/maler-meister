@@ -2,7 +2,7 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
 
 import { useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import Logout from '../log-in-out/Logout';
 import OfferActions from '../offers/OfferActions';

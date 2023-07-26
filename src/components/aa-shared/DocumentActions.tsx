@@ -11,9 +11,10 @@ interface Props {
   onCopy?: () => void;
   onDownload?: () => void;
   onDelete?: () => void;
+  isDraft: boolean;
 }
 
-export default function DocumentActions({ onCopy, onDelete, onDownload, onSave, unsavedChanges }: Props) {
+export default function DocumentActions({ isDraft, onCopy, onDelete, onDownload, onSave, unsavedChanges }: Props) {
   const color = unsavedChanges ? 'error' : 'default';
 
   const handleDelete = () => {
@@ -32,19 +33,19 @@ export default function DocumentActions({ onCopy, onDelete, onDownload, onSave, 
       </Tooltip>
 
       <Tooltip title="Kopieren">
-        <IconButton color="inherit" onClick={onCopy}>
+        <IconButton disabled={isDraft || unsavedChanges} color="inherit" onClick={onCopy}>
           <FileCopyIcon />
         </IconButton>
       </Tooltip>
 
       <Tooltip title="Als PDF speichern">
-        <IconButton color="inherit" onClick={onDownload}>
+        <IconButton disabled={isDraft || unsavedChanges} color="inherit" onClick={onDownload}>
           <FileDownloadIcon />
         </IconButton>
       </Tooltip>
 
       <Tooltip title="Löschen">
-        <IconButton onClick={handleDelete} color="error">
+        <IconButton disabled={isDraft} onClick={handleDelete} color="error">
           <DeleteIcon />
         </IconButton>
       </Tooltip>

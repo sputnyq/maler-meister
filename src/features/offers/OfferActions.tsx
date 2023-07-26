@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -48,6 +48,10 @@ export default function OfferActions() {
     }
   }, [offer, dispatch, navigate]);
 
+  const isDraft = useMemo(() => {
+    return typeof offer?.id === 'undefined';
+  }, [offer?.id]);
+
   return (
     <DocumentActions
       unsavedChanges={unsavedChanges}
@@ -55,6 +59,7 @@ export default function OfferActions() {
       onSave={onSave}
       onDelete={onDelete}
       onDownload={onDownload}
+      isDraft={isDraft}
     />
   );
 }

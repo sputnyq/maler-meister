@@ -35,7 +35,7 @@ export default function DailyTimesView() {
   });
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 100,
+    pageSize: 50,
   });
 
   const dailyEntryId = useRef('');

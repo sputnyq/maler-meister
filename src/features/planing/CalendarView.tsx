@@ -2,12 +2,13 @@ import { Card, CardContent } from '@mui/material';
 
 import FullCalendar from '@fullcalendar/react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { loadConstructions, loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useHolidays } from '../../hooks/useHolidays';
 import { useIsSmall } from '../../hooks/useIsSmall';
-import { useLoadUsers } from '../../hooks/useLoadUsers';
+import { AppState } from '../../store';
 import EditConstructionDialog from '../constructions/EditConstructionDialog';
 import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';
 
@@ -65,7 +66,8 @@ export default function CalendarView() {
   const dateSelectArg = useRef<DateSelectArg | null>(null);
 
   const small = useIsSmall();
-  const users = useLoadUsers();
+  const users = useSelector<AppState, User[]>((s) => s.users.all);
+
   const user = useCurrentUser();
   const holidays = useHolidays(curYear);
 

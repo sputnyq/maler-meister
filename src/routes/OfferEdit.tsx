@@ -19,7 +19,7 @@ export default function OfferEdit() {
   const currentOffer = useCurrentOffer();
 
   const updateOfferServices = useCallback(
-    (offerServices: BgbOfferService[]) => {
+    (offerServices: OfferService[]) => {
       dispatch(setOfferProp({ path: ['offerServices'], value: offerServices }));
     },
     [dispatch],

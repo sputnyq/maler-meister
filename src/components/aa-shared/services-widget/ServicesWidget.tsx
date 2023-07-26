@@ -8,17 +8,17 @@ import { arrayMoveImmutable } from 'array-move';
 
 interface Props {
   title: string;
-  offerServices?: BgbOfferService[];
-  update: (os: BgbOfferService[]) => void;
+  offerServices?: OfferService[];
+  update: (os: OfferService[]) => void;
 }
 
 export default function ServicesWidget({ offerServices = [], update }: Props) {
   const onAdd = () => {
-    update([...offerServices, { taxRate: 19 } as BgbOfferService]);
+    update([...offerServices, { taxRate: 19 } as OfferService]);
   };
 
   const updateOnIndex = (index: number) => {
-    return function (offerService: BgbOfferService) {
+    return function (offerService: OfferService) {
       const next = [...offerServices];
       next[index] = offerService;
       update(next);

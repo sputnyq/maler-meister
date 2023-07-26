@@ -18,7 +18,7 @@ const initialState: RootState = {
 
 const initializeOffer = () => {
   const offer = {
-    offerServices: [{} as BgbOfferService],
+    offerServices: [{} as OfferService],
 
     text: '',
   } as AppOffer;

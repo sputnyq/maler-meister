@@ -122,12 +122,7 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
     toPersist.username = user.username;
     toPersist.tenant = user.tenant;
     toPersist.sum = sum;
-    if (sum > DEFAULT_HOURS && dailyEntry.type === 'Arbeit') {
-      toPersist.overload = sum - DEFAULT_HOURS;
-    }
-    if (sum < DEFAULT_HOURS && dailyEntry.type === 'Arbeit') {
-      toPersist.underload = sum - DEFAULT_HOURS;
-    }
+    toPersist.overload = sum - DEFAULT_HOURS;
 
     if (workEntriesIds.current.length > 0) {
       toPersist.work_entries = workEntriesIds.current;

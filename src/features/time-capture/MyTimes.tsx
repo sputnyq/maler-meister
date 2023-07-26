@@ -148,6 +148,7 @@ interface UserTimesGridProps {
   dailyEntries: DailyEntry[];
   handleDialogRequest(id: string | number | undefined): void;
 }
+
 function UserTimesGrid({ dailyEntries, handleDialogRequest }: UserTimesGridProps) {
   const getIcon = (de: DailyEntry) => {
     const color = getJobColor(de.type);

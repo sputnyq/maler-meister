@@ -23,7 +23,7 @@ export default function Tile({ title, to, requiredRoles, children, color }: Reac
 
   return (
     <Grid item xs={6} sm={4} md={3} lg={2}>
-      <Card elevation={0} sx={{ padding: 0, maxWidth: '120px', margin: 'auto', background: color }}>
+      <Card elevation={1} sx={{ padding: 0, maxWidth: '120px', margin: 'auto', background: color }}>
         <Link style={{ textDecoration: 'none', color: 'inherit' }} to={to}>
           <CardHeader
             title={

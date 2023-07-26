@@ -9,8 +9,8 @@ export default function OfferCustomer() {
       <Wrapper title="Name">
         <Field path="salutation" label="Anrede" select selectOptions={['Herr', 'Frau', ' ']} />
         <Field path="firstName" label="Vorname" />
-        <Field path="lastname" label="Nachname" />
-        <Field path="company" label="Frmenname" />
+        <Field path="lastName" label="Nachname" />
+        <Field path="company" label="Firmenname" />
       </Wrapper>
 
       <Wrapper title="Adresse">
@@ -22,7 +22,7 @@ export default function OfferCustomer() {
 
       <Wrapper title="Kontakt">
         <Field path="email" type="email" label="E-Mail" />
-        <Field path="tel" type="tel" label="Telefon" />
+        <Field path="phone" type="tel" label="Telefon" />
       </Wrapper>
     </Box>
   );

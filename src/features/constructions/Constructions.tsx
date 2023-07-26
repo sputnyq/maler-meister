@@ -20,7 +20,7 @@ import EditConstructionDialog from './EditConstructionDialog';
 export default function Constructions() {
   const user = useCurrentUser();
   const [constructions, setConstructions] = useState<Construction[]>([]);
-  const [dateRange, setDateRange] = useState<AppDateTange>({});
+  const [dateRange, setDateRange] = useState<AppDateRange>({});
   const [active, setActive] = useState<boolean | undefined>(true);
   const [confirmed, setConfirmed] = useState<boolean | undefined>(true);
   const [update, setUpdate] = useState<number>(0);

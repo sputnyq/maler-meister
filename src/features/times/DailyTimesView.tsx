@@ -29,13 +29,13 @@ export default function DailyTimesView() {
   const [dailyEntryType, setDailyEntryType] = useState<DailyEntryType | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [dateRange, setDateRange] = useState<AppDateTange>({
+  const [dateRange, setDateRange] = useState<AppDateRange>({
     start: formatISO(startOfMonth(new Date()), { representation: 'date' }),
     end: formatISO(endOfMonth(new Date()), { representation: 'date' }),
   });
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 50,
+    pageSize: 100,
   });
 
   const dailyEntryId = useRef('');
@@ -97,7 +97,7 @@ export default function DailyTimesView() {
       },
       {
         field: 'type',
-        headerName: 'Tätigkeit',
+        headerName: 'Art',
         flex: 1,
         renderCell({ value, row }) {
           return <Chip size="small" label={value} color={getJobColor(row.type)} />;

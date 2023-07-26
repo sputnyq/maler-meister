@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import DocumentActions from '../../components/aa-shared/DocumentActions';
+import { offerById } from '../../fetch/endpoints';
+import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentOffer } from '../../hooks/useCurrentOffer';
 import { AppDispatch, AppState } from '../../store';
 import { createOffer, updateOffer } from '../../store/offerReducer';
+import { genericConverter } from '../../utilities';
 
 export default function OfferActions() {
   const unsavedChanges = useSelector<AppState, boolean>((s) => s.offer.unsavedChanges);
@@ -14,15 +17,22 @@ export default function OfferActions() {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const onDelete = () => {
-    console.log('');
-  };
+  const onDelete = useCallback(async () => {
+    if (offer) {
+      await appRequest('delete')(offerById(offer.id));
+      navigate('offers');
+    }
+  }, [navigate, offer]);
+
   const onDownload = () => {
     console.log('');
   };
-  const onCopy = () => {
-    console.log('');
-  };
+
+  const onCopy = useCallback(async () => {
+    const res = await appRequest('post')(offerById(''), { data: { ...offer, id: undefined } });
+    const next = genericConverter<AppOffer>(res.data);
+    navigate(`offers/${next.id}`);
+  }, [offer, navigate]);
 
   const onSave = useCallback(async () => {
     if (offer?.id) {

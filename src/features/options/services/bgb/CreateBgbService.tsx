@@ -59,7 +59,12 @@ export function CreateBgbService() {
                 <AppTextField onChange={onPropChange('unit')} label="Einheit" value={service.unit} />
               </Grid>
               <Grid item xs={12} sm={4}>
-                <AppTextField onChange={onPropChange('unitPrice')} label="Einzelpreis" value={service.unitPrice} />
+                <AppTextField
+                  type="number"
+                  onChange={onPropChange('unitPrice')}
+                  label="Einzelpreis"
+                  value={service.unitPrice}
+                />
               </Grid>
               <Grid item xs={12} sm={4}>
                 <TaxSelector onChange={onPropChange('taxRate')} value={service.taxRate} />

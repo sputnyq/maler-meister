@@ -29,7 +29,7 @@ export const deleteBgbService = createAsyncThunk('services/delete', async (id: n
   return id;
 });
 
-export const loadBgbServices = createAsyncThunk<BgbService[], void, { state: AppState }>(
+export const loadServices = createAsyncThunk<BgbService[], void, { state: AppState }>(
   'services/load-bgb',
   async (_, thunkApi) => {
     const appState = thunkApi.getState();
@@ -54,7 +54,7 @@ const servicesSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(loadBgbServices.fulfilled, (state, action) => {
+      .addCase(loadServices.fulfilled, (state, action) => {
         state.bgbServices = action.payload;
       })
       .addCase(createUpdateBgbService.fulfilled, (state, action) => {

@@ -6,7 +6,8 @@ import { AppDispatch } from '../../store';
 import { loadActiveConstructions } from '../../store/constructionReducer';
 import { loadAllJobs } from '../../store/jobsReducer';
 import { loadPrintSettings } from '../../store/printSettingsReducer';
-import { loadBgbServices } from '../../store/servicesReducer';
+import { loadServices } from '../../store/servicesReducer';
+import { loadUsers } from '../../store/usersReducer';
 import { LoadingScreen } from './LoadingScreen';
 
 type LoadingState = 'loading' | 'ready';
@@ -30,11 +31,12 @@ export default function AppLoader({ children }: React.PropsWithChildren) {
 
       if (userRole === 'admin') {
         actions.push(loadPrintSettings);
-        actions.push(loadBgbServices);
+        actions.push(loadServices);
+        actions.push(loadUsers);
       }
       Promise.allSettled(actions.map((a) => dispatch(a())))
         .then(() => {
-          console.log('OK');
+          console.log('all done');
         })
         .catch((e) => {
           console.log(e);

@@ -20,7 +20,7 @@ const TimeCapture = lazy(() => import('./features/time-capture'));
 const OfferEdit = lazy(() => import('./routes/OfferEdit'));
 const Options = lazy(() => import('./features/options'));
 const Constructions = lazy(() => import('./features/constructions/Constructions'));
-const Times = lazy(() => import('./features/times/Times'));
+const Times = lazy(() => import('./features/times'));
 const Upload = lazy(() => import('./routes/Upload'));
 const Planing = lazy(() => import('./features/planing'));
 const MyVacations = lazy(() => import('./features/my-vacations'));

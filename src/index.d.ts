@@ -8,7 +8,7 @@ interface BgbService {
   description: string;
 }
 
-interface BgbOfferService extends BgbService {
+interface OfferService extends BgbService {
   netto: number;
   quantity: number;
   taxValue: number;
@@ -27,7 +27,7 @@ interface AppOffer {
   number: string;
   zip: string;
   city: string;
-  offerServices: BgbOfferService[];
+  offerServices: OfferService[];
   text: string;
   constructionId: number;
   start: string;

@@ -12,8 +12,8 @@ import TaxSelector from '../TaxSelector';
 import { cloneDeep } from 'lodash';
 
 interface Props {
-  offerService: BgbOfferService;
-  update: (next: BgbOfferService) => void;
+  offerService: OfferService;
+  update: (next: OfferService) => void;
   disableUp: boolean;
   disableDown: boolean;
   onDelete: () => void;
@@ -27,7 +27,7 @@ export function ServicesWidgetRow({ offerService, disableDown, disableUp, update
     return bgbServices.find(({ name }) => name === label);
   };
 
-  const onChange = (prop: keyof BgbOfferService, value: any) => {
+  const onChange = (prop: keyof OfferService, value: any) => {
     const next = cloneDeep(offerService);
     //@ts-ignore
     next[prop] = value;
@@ -42,7 +42,7 @@ export function ServicesWidgetRow({ offerService, disableDown, disableUp, update
     update(next);
   };
 
-  const handleChange = (prop: keyof BgbOfferService) => {
+  const handleChange = (prop: keyof OfferService) => {
     return function (ev: React.ChangeEvent) {
       //@ts-ignore
       onChange(prop, ev.target.value);

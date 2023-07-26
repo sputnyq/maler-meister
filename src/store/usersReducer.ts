@@ -19,7 +19,7 @@ export const loadUsers = createAsyncThunk<User[], void, { state: AppState }>('us
     filters: {
       tenant,
     },
-    sort: { '0': 'firstName:asc' },
+    sort: { '0': 'lastName:asc' },
   });
   const response = await appRequest('get')(users(query));
   return response as User[];

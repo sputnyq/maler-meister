@@ -53,7 +53,7 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
     }
 
     const deDate = new Date(date);
-    const limit = addDays(new Date(), -7);
+    const limit = addDays(new Date(), -32);
     return deDate < limit;
   }, [dailyEntry]);
 

@@ -5,10 +5,10 @@ import { useMemo } from 'react';
 import { euroValue } from '../../utilities';
 
 interface Props {
-  offerServices: BgbOfferService[];
+  offerServices: OfferService[];
 }
 
-function calculatePriceSummary(offerServices: BgbOfferService[]) {
+function calculatePriceSummary(offerServices: OfferService[]) {
   const netto = offerServices.reduce((prev, os) => {
     return prev + Number(os.netto || 0);
   }, 0);

@@ -108,7 +108,7 @@ const StyledTable = styled(Table)(({ theme }) => ({
     padding: '5px',
   },
   '& th': {
-    background: theme.palette.primary.main,
+    background: theme.palette.primary.light,
     color: 'white',
     fontWeight: 'bold',
   },

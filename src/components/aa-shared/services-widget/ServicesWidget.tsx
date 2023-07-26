@@ -19,7 +19,6 @@ interface Props {
 }
 
 export default function ServicesWidget({ offerServices = [], update }: Props) {
-  console.log('render');
   const allServices = useSelector<AppState, BgbService[]>((s) => s.services.bgbServices || []);
   const [open, setOpen] = useState(false);
 

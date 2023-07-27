@@ -47,26 +47,24 @@ function MobileDialog({
   confirmDisabled,
 }: React.PropsWithChildren<Props>) {
   return (
-    <div>
-      <Dialog fullScreen open={open} onClose={onClose} TransitionComponent={Transition}>
-        <AppBar sx={{ position: 'relative' }}>
-          <Toolbar>
-            <IconButton edge="start" color="inherit" onClick={onClose} aria-label="close">
-              <CloseIcon />
+    <Dialog fullScreen open={open} onClose={onClose} TransitionComponent={Transition}>
+      <AppBar sx={{ position: 'relative' }}>
+        <Toolbar>
+          <IconButton edge="start" color="inherit" onClick={onClose} aria-label="close">
+            <CloseIcon />
+          </IconButton>
+          <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+            {title}
+          </Typography>
+          {showConfirm && (
+            <IconButton disabled={confirmDisabled} onClick={onConfirm} color="inherit">
+              <CheckIcon />
             </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              {title}
-            </Typography>
-            {showConfirm && (
-              <IconButton disabled={confirmDisabled} onClick={onConfirm} color="inherit">
-                <CheckIcon />
-              </IconButton>
-            )}
-          </Toolbar>
-        </AppBar>
-        {children}
-      </Dialog>
-    </div>
+          )}
+        </Toolbar>
+      </AppBar>
+      {children}
+    </Dialog>
   );
 }
 

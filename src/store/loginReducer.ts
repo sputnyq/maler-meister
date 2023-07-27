@@ -23,6 +23,7 @@ const loginSlice = createSlice({
     logout(state) {
       state.isLoggedIn = false;
       state.user = null;
+      state.appLoaded = false;
     },
     setAppLoaded(state) {
       state.appLoaded = true;

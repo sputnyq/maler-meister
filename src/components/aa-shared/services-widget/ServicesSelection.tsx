@@ -25,7 +25,11 @@ export function ServicesSelection(props: Props) {
     <AppDialog open={open} onClose={onClose} title="Leistungen auswählen" showConfirm={false}>
       <Card elevation={0}>
         <CardContent>
-          <TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
+          <TreeView
+            sx={{ height: '500px', overflowY: 'auto' }}
+            defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpandIcon={<ChevronRightIcon />}
+          >
             {jobs?.map((job) => (
               <JobRender onCheck={onCheck} offerServices={offerServices} job={job} key={job.id} />
             ))}

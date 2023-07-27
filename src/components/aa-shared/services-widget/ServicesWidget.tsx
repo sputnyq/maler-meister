@@ -1,13 +1,11 @@
 import ChecklistRtlOutlinedIcon from '@mui/icons-material/ChecklistRtlOutlined';
 import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
-import { Box, Button, Card, CardActions, CardContent, CardHeader, Grid } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent } from '@mui/material';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { useIsSmall } from '../../../hooks/useIsSmall';
 import { AppState } from '../../../store';
-import AppGrid from '../../AppGrid';
 import { PriceSummary } from '../PriceSummary';
 import { ServicesSelection } from './ServicesSelection';
 import { ServicesWidgetRow } from './ServicesWidgetRow';
@@ -91,7 +89,6 @@ export default function ServicesWidget({ offerServices = [], update }: Props) {
         <Box display="flex" flexDirection="column" gap={1}>
           {offerServices.map((offerService, index) => (
             <ServicesWidgetRow
-              index={index}
               key={index}
               offerService={offerService}
               disableDown={index === offerServices.length - 1}

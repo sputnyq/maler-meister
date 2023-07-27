@@ -1,6 +1,6 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import { Autocomplete, Box, Card, CardContent, Grid, IconButton, Typography } from '@mui/material';
+import { Autocomplete, Box, Card, CardContent, Grid, IconButton } from '@mui/material';
 
 import { useSelector } from 'react-redux';
 
@@ -18,10 +18,9 @@ interface Props {
   disableDown: boolean;
   onDelete: () => void;
   moveEntry: (offset: number) => void;
-  index: number;
 }
 
-export function ServicesWidgetRow({ index, offerService, disableDown, disableUp, update, moveEntry, onDelete }: Props) {
+export function ServicesWidgetRow({ offerService, disableDown, disableUp, update, moveEntry, onDelete }: Props) {
   const bgbServices = useSelector<AppState, BgbService[]>((s) => s.services.bgbServices || []);
 
   const findService = (label: string) => {

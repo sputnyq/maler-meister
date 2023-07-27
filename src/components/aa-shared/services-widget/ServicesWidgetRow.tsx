@@ -1,6 +1,6 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import { Autocomplete, Box, Card, CardContent, Grid, IconButton, Typography } from '@mui/material';
+import { Autocomplete, Box, Card, CardContent, Grid, IconButton } from '@mui/material';
 
 import { useSelector } from 'react-redux';
 
@@ -18,10 +18,9 @@ interface Props {
   disableDown: boolean;
   onDelete: () => void;
   moveEntry: (offset: number) => void;
-  index: number;
 }
 
-export function ServicesWidgetRow({ index, offerService, disableDown, disableUp, update, moveEntry, onDelete }: Props) {
+export function ServicesWidgetRow({ offerService, disableDown, disableUp, update, moveEntry, onDelete }: Props) {
   const bgbServices = useSelector<AppState, BgbService[]>((s) => s.services.bgbServices || []);
 
   const findService = (label: string) => {
@@ -62,9 +61,8 @@ export function ServicesWidgetRow({ index, offerService, disableDown, disableUp,
   };
 
   return (
-    <Card>
+    <Card variant="outlined">
       <CardContent>
-        <Typography variant="h4">{index + 1}</Typography>
         <Grid container columnSpacing={1} rowSpacing={2}>
           <Grid item xs={12} sm={6}>
             <Autocomplete
@@ -78,7 +76,7 @@ export function ServicesWidgetRow({ index, offerService, disableDown, disableUp,
               }}
               value={offerService.name || ''}
               inputValue={offerService.name || ''}
-              onInputChange={(ev, newValue) => {
+              onInputChange={(_, newValue) => {
                 const service = findService(newValue);
                 if (service) {
                   onServiceSelect(service);
@@ -98,6 +96,16 @@ export function ServicesWidgetRow({ index, offerService, disableDown, disableUp,
               )}
             />
           </Grid>
+          <Grid item xs={12} sm={6}>
+            <AppTextField
+              placeholder="Beschreibung"
+              value={offerService.description}
+              multiline
+              minRows={2}
+              maxRows={4}
+            />
+          </Grid>
+
           <Grid item xs={4} sm={3} lg={1}>
             <AppTextField
               label="Menge"
@@ -124,6 +132,7 @@ export function ServicesWidgetRow({ index, offerService, disableDown, disableUp,
               InputProps={{ endAdornment: '€' }}
             />
           </Grid>
+
           <Grid item xs={6} sm={3} lg={1}>
             <TaxSelector value={offerService.taxRate} onChange={handleChange('taxRate')} />
           </Grid>
@@ -139,9 +148,6 @@ export function ServicesWidgetRow({ index, offerService, disableDown, disableUp,
 
               <DeleteIconButton onClick={onDelete} />
             </Box>
-          </Grid>
-          <Grid item xs={12}>
-            <AppTextField value={offerService.description} multiline />
           </Grid>
         </Grid>
       </CardContent>

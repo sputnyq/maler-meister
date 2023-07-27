@@ -1,6 +1,6 @@
 import ChecklistRtlOutlinedIcon from '@mui/icons-material/ChecklistRtlOutlined';
 import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent } from '@mui/material';
 
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -21,10 +21,6 @@ interface Props {
 export default function ServicesWidget({ offerServices = [], update }: Props) {
   const allServices = useSelector<AppState, BgbService[]>((s) => s.services.bgbServices || []);
   const [open, setOpen] = useState(false);
-
-  const onAdd = () => {
-    update([...offerServices, { taxRate: 19 } as OfferService]);
-  };
 
   const updateOnIndex = (index: number) => {
     return function (offerService: OfferService) {
@@ -61,38 +57,51 @@ export default function ServicesWidget({ offerServices = [], update }: Props) {
     }
   };
 
+  const onAdd = () => {
+    update([...offerServices, { taxRate: 19 } as OfferService]);
+  };
+
+  const Summary = (
+    <Card>
+      <CardContent>
+        <PriceSummary offerServices={offerServices} />
+      </CardContent>
+      <CardActions>
+        <Button endIcon={<PlaylistAddOutlinedIcon />} onClick={onAdd}>
+          neue Zeile
+        </Button>
+
+        <Button
+          onClick={() => setOpen(true)}
+          variant="contained"
+          disableElevation
+          endIcon={<ChecklistRtlOutlinedIcon />}
+        >
+          Auswählen
+        </Button>
+      </CardActions>
+    </Card>
+  );
+
   return (
     <>
-      <Box mt={1} display="flex" flexDirection={'column'} gap={2}>
-        {offerServices.map((offerService, index) => (
-          <ServicesWidgetRow
-            index={index}
-            key={index}
-            offerService={offerService}
-            disableDown={index === offerServices.length - 1}
-            disableUp={index === 0}
-            onDelete={onDelete(index)}
-            moveEntry={moveEntry(index)}
-            update={updateOnIndex(index)}
-          />
-        ))}
-
-        <Box display="flex" justifyContent="flex-end" gap={2}>
-          <Button startIcon={<PlaylistAddOutlinedIcon />} onClick={onAdd}>
-            leere Zeile
-          </Button>
-          <Button
-            onClick={() => setOpen(true)}
-            variant="contained"
-            disableElevation
-            endIcon={<ChecklistRtlOutlinedIcon />}
-          >
-            Auswählen
-          </Button>
+      <Box mt={1}>
+        <Box display="flex" flexDirection="column" gap={1}>
+          {offerServices.map((offerService, index) => (
+            <ServicesWidgetRow
+              key={index}
+              offerService={offerService}
+              disableDown={index === offerServices.length - 1}
+              disableUp={index === 0}
+              onDelete={onDelete(index)}
+              moveEntry={moveEntry(index)}
+              update={updateOnIndex(index)}
+            />
+          ))}
+          {Summary}
         </Box>
-
-        <PriceSummary offerServices={offerServices} />
       </Box>
+
       <ServicesSelection onCheck={onCheck} open={open} onClose={() => setOpen(false)} offerServices={offerServices} />
     </>
   );

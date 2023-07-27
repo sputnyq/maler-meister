@@ -1,28 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { AppDispatch } from '../../store';
+import { AppDispatch, AppState } from '../../store';
 import { loadActiveConstructions } from '../../store/constructionReducer';
 import { loadAllJobs } from '../../store/jobsReducer';
+import { setAppLoaded } from '../../store/loginReducer';
 import { loadPrintSettings } from '../../store/printSettingsReducer';
 import { loadServices } from '../../store/servicesReducer';
 import { loadUsers } from '../../store/usersReducer';
 import { LoadingScreen } from './LoadingScreen';
 
-type LoadingState = 'loading' | 'ready';
-
 export default function AppLoader({ children }: React.PropsWithChildren) {
-  const [loadingState, setLoadingState] = useState<LoadingState>('ready');
+  const appLoaded = useSelector<AppState, boolean>((s) => s.login.appLoaded);
 
   const user = useCurrentUser();
 
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    if (user !== null) {
+    if (user !== null && !appLoaded) {
       const { userRole } = user;
-      setLoadingState('loading');
 
       const actions: any[] = [loadAllJobs];
       if (userRole === 'worker') {
@@ -42,19 +40,17 @@ export default function AppLoader({ children }: React.PropsWithChildren) {
           console.log(e);
         })
         .finally(() => {
-          setLoadingState('ready');
+          dispatch(setAppLoaded());
         });
     }
-  }, [dispatch, user]);
+  }, [appLoaded, dispatch, user]);
 
-  switch (loadingState) {
-    case 'loading': {
+  switch (appLoaded) {
+    case false: {
       return <LoadingScreen />;
     }
-    case 'ready': {
-      return <>{children}</>;
-    }
+
     default:
-      return null;
+      return <>{children}</>;
   }
 }

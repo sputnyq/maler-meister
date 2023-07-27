@@ -3,11 +3,13 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 interface RootState {
   user: User | null;
   isLoggedIn: boolean;
+  appLoaded: boolean;
 }
 
 const initialState: RootState = {
   user: null,
   isLoggedIn: false,
+  appLoaded: false,
 };
 
 const loginSlice = createSlice({
@@ -22,11 +24,14 @@ const loginSlice = createSlice({
       state.isLoggedIn = false;
       state.user = null;
     },
+    setAppLoaded(state) {
+      state.appLoaded = true;
+    },
   },
 });
 
 const loginReducer = loginSlice.reducer;
 
-export const { login, logout } = loginSlice.actions;
+export const { login, logout, setAppLoaded } = loginSlice.actions;
 
 export { loginReducer };

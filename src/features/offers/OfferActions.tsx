@@ -20,7 +20,7 @@ export default function OfferActions() {
 
   const unsavedChanges = useSelector<AppState, boolean>((s) => s.offer.unsavedChanges);
   const allPrintSettings = useSelector<AppState, PrintSettingsRoot[] | undefined>((s) => s.prinSettings.all);
-  const [printSettingID, setPrintSettingID] = useState<string | undefined>(allPrintSettings?.[0].id.toString());
+  const [printSettingID, setPrintSettingID] = useState<string | undefined>(allPrintSettings?.[0]?.id.toString());
   const offer = useCurrentOffer();
 
   const navigate = useNavigate();

@@ -1,6 +1,4 @@
-import { Box, Typography, TypographyProps } from '@mui/material';
-
-import { useMemo } from 'react';
+import { Box, Typography, useTheme } from '@mui/material';
 
 import { euroValue } from '../../utilities';
 
@@ -26,22 +24,22 @@ function calculatePriceSummary(offerServices: OfferService[]) {
 
 export function PriceSummary({ offerServices }: Props) {
   const { brutto, netto, tax } = calculatePriceSummary(offerServices);
-
-  const grayTextProps = useMemo(() => {
-    return {
-      align: 'right',
-      color: 'GrayText',
-      variant: 'subtitle1',
-    } as TypographyProps;
-  }, []);
+  const theme = useTheme();
 
   return (
-    <Box>
-      <Typography align="right" color="InfoText" variant="h5">
-        Netto: {euroValue(netto)}
-      </Typography>
-      <Typography {...grayTextProps}>MwSt 19%: {euroValue(tax)}</Typography>
-      <Typography {...grayTextProps}>Brutto: {euroValue(brutto)}</Typography>
+    <Box
+      margin={-1}
+      padding={2}
+      sx={{
+        flex: 1,
+        background: theme.palette.background.default,
+      }}
+    >
+      <Box display={'flex'} gap={2} alignItems="center" justifyContent={'flex-end'} flexWrap={'wrap'}>
+        <Typography color={'primary'}>Netto: {euroValue(netto)}</Typography>
+        <Typography>MwSt: {euroValue(tax)}</Typography>
+        <Typography>Brutto: {euroValue(brutto)}</Typography>
+      </Box>
     </Box>
   );
 }

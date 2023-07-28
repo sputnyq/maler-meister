@@ -6,6 +6,7 @@ import DocumentActions from '../../components/aa-shared/DocumentActions';
 import { offerById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentOffer } from '../../hooks/useCurrentOffer';
+import { usePrintOffer } from '../../hooks/usePrintOffer';
 import { AppDispatch, AppState } from '../../store';
 import { createOffer, updateOffer } from '../../store/offerReducer';
 import { genericConverter } from '../../utilities';
@@ -14,6 +15,8 @@ export default function OfferActions() {
   const unsavedChanges = useSelector<AppState, boolean>((s) => s.offer.unsavedChanges);
   const offer = useCurrentOffer();
   const navigate = useNavigate();
+
+  const printOffer = usePrintOffer();
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -25,7 +28,7 @@ export default function OfferActions() {
   }, [navigate, offer]);
 
   const onDownload = () => {
-    console.log('');
+    printOffer();
   };
 
   const onCopy = useCallback(async () => {

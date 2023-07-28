@@ -1,6 +1,6 @@
 import ChecklistRtlOutlinedIcon from '@mui/icons-material/ChecklistRtlOutlined';
 import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
-import { Box, Button, Card, CardActions, CardContent } from '@mui/material';
+import { Box, Button, Card, CardContent } from '@mui/material';
 
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -62,31 +62,36 @@ export default function ServicesWidget({ offerServices = [], update }: Props) {
   };
 
   const Summary = (
+    <Box sx={{ position: 'sticky', top: '48px', zIndex: 100, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+      <PriceSummary offerServices={offerServices} />
+    </Box>
+  );
+  const Buttons = (
     <Card>
       <CardContent>
-        <PriceSummary offerServices={offerServices} />
-      </CardContent>
-      <CardActions>
-        <Button endIcon={<PlaylistAddOutlinedIcon />} onClick={onAdd}>
-          neue Zeile
-        </Button>
+        <Box display={'flex'} justifyContent="flex-end" gap={2}>
+          <Button endIcon={<PlaylistAddOutlinedIcon />} onClick={onAdd}>
+            neue Zeile
+          </Button>
 
-        <Button
-          onClick={() => setOpen(true)}
-          variant="contained"
-          disableElevation
-          endIcon={<ChecklistRtlOutlinedIcon />}
-        >
-          Auswählen
-        </Button>
-      </CardActions>
+          <Button
+            onClick={() => setOpen(true)}
+            variant="contained"
+            disableElevation
+            endIcon={<ChecklistRtlOutlinedIcon />}
+          >
+            Auswählen
+          </Button>
+        </Box>
+      </CardContent>
     </Card>
   );
 
   return (
     <>
       <Box mt={1}>
-        <Box display="flex" flexDirection="column" gap={1}>
+        <Box display="flex" flexDirection="column" gap={3}>
+          {Summary}
           {offerServices.map((offerService, index) => (
             <ServicesWidgetRow
               key={index}
@@ -98,7 +103,7 @@ export default function ServicesWidget({ offerServices = [], update }: Props) {
               update={updateOnIndex(index)}
             />
           ))}
-          {Summary}
+          {Buttons}
         </Box>
       </Box>
 

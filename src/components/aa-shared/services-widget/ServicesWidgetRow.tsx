@@ -122,7 +122,14 @@ export function ServicesWidgetRow({ offerService, disableDown, disableUp, update
           <TaxSelector value={offerService.taxRate} onChange={handleChange('taxRate')} />
         </Grid>
         <Grid item xs={12} lg={6}>
-          <AppTextField placeholder="Beschreibung" value={offerService.description} multiline minRows={2} maxRows={4} />
+          <AppTextField
+            onChange={handleChange('description')}
+            placeholder="Beschreibung"
+            value={offerService.description}
+            multiline
+            minRows={2}
+            maxRows={4}
+          />
         </Grid>
         <Grid item xs={12}>
           <Box display={'flex'} justifyContent="flex-end" gap={1}>

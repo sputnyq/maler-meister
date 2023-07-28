@@ -2,9 +2,8 @@ import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import { autoTable } from 'jspdf-autotable';
 
-export const PRIMARY = [25, 120, 186];
-export const PRIMARY_LIGHT = '#3086c1';
-export const WHITE = [255, 255, 255];
+const HEADER_COLOR = '#4e4e4e';
+const TEXT_COLOR = '#828282';
 
 interface Margin {
   top: number;
@@ -37,6 +36,7 @@ export default class PdfBuilder {
     this.doc = new jsPDF('portrait', 'pt', 'a4');
 
     this.doc.setFontSize(this.default_fontsize);
+    this.doc.setTextColor(TEXT_COLOR);
 
     this.x = PdfBuilder.mm2pt(margin.left);
     this.y = PdfBuilder.mm2pt(margin.top);
@@ -109,15 +109,16 @@ export default class PdfBuilder {
     this.doc.setTextColor(r, g, b);
   }
 
-  public addHeader(text: string, fontSize?: number, align?: 'left' | 'center' | 'right' | 'justify'): void {
-    const _fontSize = fontSize ? fontSize : 16;
+  public header1(text: string, align?: 'left' | 'center' | 'right' | 'justify'): void {
     this.setBold();
-    this.doc.setTextColor(216, 63, 3);
-    this.addText(text, _fontSize, undefined, align);
+    this.doc.setTextColor(HEADER_COLOR);
+    this.addText(text, 16, undefined, align);
     this.resetText();
   }
 
-  public addBlackHeader(text: string): void {
+  public header2(text: string): void {
+    this.setBold();
+    this.doc.setTextColor(HEADER_COLOR);
     this.addText(text, 12);
     this.resetText();
   }
@@ -160,22 +161,21 @@ export default class PdfBuilder {
     this.resetText();
   }
 
-  public addTable(head: [string[]], body: any, columnStyles?: any, headStyles = {} as any, margin = 20): void {
-    const bottom = PdfBuilder.mm2pt(10);
+  public addTable(head: any, body: any, columnStyles?: any, headStyles = {} as any): void {
     ((this.doc as any).autoTable as autoTable)({
       head: head,
       body: body,
       theme: 'plain',
       columnStyles,
-      headStyles: { ...headStyles },
-      bodyStyles: { halign: 'left', textColor: [0, 0, 0], lineColor: PRIMARY_LIGHT },
-      styles: { fontSize: 9, cellPadding: 2 },
+      headStyles: { ...headStyles, textColor: HEADER_COLOR },
+      bodyStyles: { halign: 'left', textColor: TEXT_COLOR },
+      styles: { fontSize: 9, cellPadding: 3 },
       startY: this.y,
       margin: {
-        top: PdfBuilder.mm2pt(10),
-        right: PdfBuilder.mm2pt(12),
-        bottom,
-        left: PdfBuilder.mm2pt(margin),
+        top: PdfBuilder.mm2pt(this.margin.top),
+        right: PdfBuilder.mm2pt(this.margin.right),
+        bottom: PdfBuilder.mm2pt(this.margin.bottom),
+        left: PdfBuilder.mm2pt(this.margin.left),
       },
     });
     this.y = (this.doc as any).lastAutoTable.finalY;
@@ -292,7 +292,7 @@ export default class PdfBuilder {
 
   public resetText(): void {
     this.doc.setFontSize(this.default_fontsize);
-    this.doc.setTextColor(0, 0, 0);
+    this.doc.setTextColor(TEXT_COLOR);
     this.setNormal();
   }
 

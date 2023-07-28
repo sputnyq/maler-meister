@@ -1,7 +1,11 @@
-import { useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { FormControl } from '@mui/base';
+import { Card, CardContent, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@mui/material';
 
+import { useCallback, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { AppDialog } from '../../components/AppDialog';
 import DocumentActions from '../../components/aa-shared/DocumentActions';
 import { offerById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
@@ -12,8 +16,13 @@ import { createOffer, updateOffer } from '../../store/offerReducer';
 import { genericConverter } from '../../utilities';
 
 export default function OfferActions() {
+  const [prindDialogOpen, setPrindDialogOpen] = useState(false);
+
   const unsavedChanges = useSelector<AppState, boolean>((s) => s.offer.unsavedChanges);
+  const allPrintSettings = useSelector<AppState, PrintSettingsRoot[] | undefined>((s) => s.prinSettings.all);
+  const [printSettingID, setPrintSettingID] = useState<string | undefined>(allPrintSettings?.[0].id.toString());
   const offer = useCurrentOffer();
+
   const navigate = useNavigate();
 
   const printOffer = usePrintOffer();
@@ -26,10 +35,6 @@ export default function OfferActions() {
       navigate('offers');
     }
   }, [navigate, offer]);
-
-  const onDownload = () => {
-    printOffer();
-  };
 
   const onCopy = useCallback(async () => {
     const res = await appRequest('post')(offerById(''), { data: { ...offer, id: undefined } });
@@ -55,14 +60,62 @@ export default function OfferActions() {
     return typeof offer?.id === 'undefined';
   }, [offer?.id]);
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPrintSettingID((event.target as HTMLInputElement).value);
+  };
+
+  const dialogChildren = useMemo(() => {
+    if (typeof allPrintSettings === 'undefined' || allPrintSettings.length < 1) {
+      return (
+        <>
+          <Typography>PDF Erzeugung ist nicht möglich.</Typography>
+          <Typography>
+            {`Erstelle und bearbeite min 1 `}
+            <Link to="/options/print-settings">Druck-Einstellung</Link>
+          </Typography>
+        </>
+      );
+    } else {
+      return (
+        <FormControl>
+          <FormLabel id="print-settings-label">PDF erzeugen für:</FormLabel>
+          <RadioGroup aria-labelledby="print-settings-label" value={printSettingID} onChange={handleChange}>
+            {allPrintSettings.map((ps) => (
+              <FormControlLabel key={ps.name} value={ps.id} control={<Radio />} label={ps.name} />
+            ))}
+          </RadioGroup>
+        </FormControl>
+      );
+    }
+  }, [allPrintSettings, printSettingID]);
+
+  const handlePrintRequest = useCallback(() => {
+    if (printSettingID) {
+      printOffer(Number(printSettingID));
+    }
+  }, [printOffer, printSettingID]);
+
   return (
-    <DocumentActions
-      unsavedChanges={unsavedChanges}
-      onCopy={onCopy}
-      onSave={onSave}
-      onDelete={onDelete}
-      onDownload={onDownload}
-      isDraft={isDraft}
-    />
+    <>
+      <AppDialog
+        title="Angebot als PDF"
+        open={prindDialogOpen}
+        onClose={() => setPrindDialogOpen(false)}
+        onConfirm={handlePrintRequest}
+        confirmDisabled={!(allPrintSettings && allPrintSettings?.length > 0)}
+      >
+        <Card elevation={0}>
+          <CardContent>{dialogChildren}</CardContent>
+        </Card>
+      </AppDialog>
+      <DocumentActions
+        unsavedChanges={unsavedChanges}
+        onCopy={onCopy}
+        onSave={onSave}
+        onDelete={onDelete}
+        onDownload={() => setPrindDialogOpen(true)}
+        isDraft={isDraft}
+      />
+    </>
   );
 }

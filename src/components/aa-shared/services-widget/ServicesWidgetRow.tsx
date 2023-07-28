@@ -1,6 +1,6 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import { Autocomplete, Box, Card, CardContent, Grid, IconButton } from '@mui/material';
+import { Autocomplete, Box, Card, Grid, IconButton } from '@mui/material';
 
 import { useSelector } from 'react-redux';
 
@@ -61,96 +61,83 @@ export function ServicesWidgetRow({ offerService, disableDown, disableUp, update
   };
 
   return (
-    <Card variant="outlined">
-      <CardContent>
-        <Grid container columnSpacing={1} rowSpacing={2}>
-          <Grid item xs={12} sm={6}>
-            <Autocomplete
-              freeSolo
-              options={bgbServices}
-              getOptionLabel={(opt) => {
-                if (typeof opt === 'string') {
-                  return opt;
-                }
-                return opt.name;
-              }}
-              value={offerService.name || ''}
-              inputValue={offerService.name || ''}
-              onInputChange={(_, newValue) => {
-                const service = findService(newValue);
-                if (service) {
-                  onServiceSelect(service);
-                } else {
-                  onChange('name', newValue);
-                }
-              }}
-              renderInput={(params) => (
-                <AppTextField
-                  {...params}
-                  size="small"
-                  inputProps={{
-                    'data-hj-allow': '',
-                    ...params?.inputProps,
-                  }}
-                />
-              )}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <AppTextField
-              placeholder="Beschreibung"
-              value={offerService.description}
-              multiline
-              minRows={2}
-              maxRows={4}
-            />
-          </Grid>
-
-          <Grid item xs={4} sm={3} lg={1}>
-            <AppTextField
-              label="Menge"
-              type="number"
-              value={offerService.quantity}
-              onChange={handleChange('quantity')}
-            />
-          </Grid>
-          <Grid item xs={4} sm={3} lg={1}>
-            <AppTextField
-              label="EPR"
-              type="number"
-              value={offerService.unitPrice}
-              onChange={handleChange('unitPrice')}
-              InputProps={{ endAdornment: '€' }}
-            />
-          </Grid>
-          <Grid item xs={4} sm={3} lg={1}>
-            <AppTextField
-              label="Netto"
-              type="number"
-              value={offerService.netto}
-              onChange={handleChange('netto')}
-              InputProps={{ endAdornment: '€' }}
-            />
-          </Grid>
-
-          <Grid item xs={6} sm={3} lg={1}>
-            <TaxSelector value={offerService.taxRate} onChange={handleChange('taxRate')} />
-          </Grid>
-          <Grid item xs={6} sm={3} lg={2}>
-            <Box>
-              <IconButton onClick={() => moveEntry(1)} disabled={disableDown}>
-                <KeyboardArrowDownIcon />
-              </IconButton>
-
-              <IconButton onClick={() => moveEntry(-1)} disabled={disableUp}>
-                <KeyboardArrowUpIcon />
-              </IconButton>
-
-              <DeleteIconButton onClick={onDelete} />
-            </Box>
-          </Grid>
+    <Card sx={{ padding: 1 }}>
+      <Grid container spacing={1.5}>
+        <Grid item xs={12} sm={9} lg={4}>
+          <Autocomplete
+            freeSolo
+            options={bgbServices}
+            getOptionLabel={(opt) => {
+              if (typeof opt === 'string') {
+                return opt;
+              }
+              return opt.name;
+            }}
+            value={offerService.name || ''}
+            inputValue={offerService.name || ''}
+            onInputChange={(_, newValue) => {
+              const service = findService(newValue);
+              if (service) {
+                onServiceSelect(service);
+              } else {
+                onChange('name', newValue);
+              }
+            }}
+            renderInput={(params) => (
+              <AppTextField
+                {...params}
+                size="small"
+                inputProps={{
+                  'data-hj-allow': '',
+                  ...params?.inputProps,
+                }}
+              />
+            )}
+          />
         </Grid>
-      </CardContent>
+
+        <Grid item xs={6} sm={3} lg={2}>
+          <AppTextField label="Menge" type="number" value={offerService.quantity} onChange={handleChange('quantity')} />
+        </Grid>
+        <Grid item xs={6} sm={4} lg={2}>
+          <AppTextField
+            label="EPR"
+            type="number"
+            value={offerService.unitPrice}
+            onChange={handleChange('unitPrice')}
+            InputProps={{ endAdornment: '€' }}
+          />
+        </Grid>
+        <Grid item xs={6} sm={4} lg={2}>
+          <AppTextField
+            label="Netto"
+            type="number"
+            value={offerService.netto}
+            onChange={handleChange('netto')}
+            InputProps={{ endAdornment: '€' }}
+          />
+        </Grid>
+
+        <Grid item xs={6} sm={4} lg={2}>
+          <TaxSelector value={offerService.taxRate} onChange={handleChange('taxRate')} />
+        </Grid>
+        <Grid item xs={12} lg={6}>
+          <AppTextField placeholder="Beschreibung" value={offerService.description} multiline minRows={2} maxRows={4} />
+        </Grid>
+        <Grid item xs={12}>
+          <Box display={'flex'} justifyContent="flex-end" gap={1}>
+            <IconButton onClick={() => moveEntry(1)} disabled={disableDown}>
+              <KeyboardArrowDownIcon />
+            </IconButton>
+
+            <IconButton onClick={() => moveEntry(-1)} disabled={disableUp}>
+              <KeyboardArrowUpIcon />
+            </IconButton>
+
+            <DeleteIconButton onClick={onDelete} />
+          </Box>
+        </Grid>
+      </Grid>
     </Card>
   );
 }

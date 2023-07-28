@@ -32,6 +32,8 @@ interface AppOffer {
   constructionId: number;
   start: string;
   end: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface LoginResponse {

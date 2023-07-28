@@ -39,3 +39,19 @@ export function getJobColor(type: DailyEntryType): any {
       return 'default';
   }
 }
+
+export function calculatePriceSummary(offerServices: OfferService[]) {
+  const netto = offerServices.reduce((prev, os) => {
+    return prev + Number(os.netto || 0);
+  }, 0);
+
+  const tax = offerServices
+    .filter((os) => os.taxRate > 0)
+    .reduce((prev, os) => {
+      return prev + Number(os.taxValue || 0);
+    }, 0);
+
+  const brutto = netto + tax;
+
+  return { brutto, tax, netto };
+}

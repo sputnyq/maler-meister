@@ -68,7 +68,7 @@ const slice = createSlice({
       })
       .addCase(updatePrintSettings.fulfilled, (state, action) => {
         const index = state.all?.findIndex((ps) => ps.id === action.payload.id);
-        if (index && index > -1) {
+        if (typeof index !== 'undefined' && index > -1) {
           state.all?.splice(index, 1, action.payload);
         }
       })

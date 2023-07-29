@@ -34,7 +34,7 @@ export function createOfferPdf(payload: CreateOfferParams) {
 
   addConstruction(builder, construction);
   addServices(builder, offer);
-  addPrice(builder, offer);
+  // addPrice(builder, offer);
 
   builder.enumeratePages([offerId(offer)]);
 
@@ -115,6 +115,8 @@ function offerId(offer: AppOffer) {
 function addServices(builder: PdfBuilder, offer: AppOffer) {
   const head = [{ a: 'Pos', b: 'Bezeichnung Leistung', c: 'Menge', d: '', e: 'E-Preis', f: 'Gesamt' }];
 
+  const emptyLine = ['', '', '', '', '', ''];
+
   const body = [];
   for (let i = 0; i < offer.offerServices.length; i++) {
     const serv = offer.offerServices[i];
@@ -131,16 +133,35 @@ function addServices(builder: PdfBuilder, offer: AppOffer) {
       body.push(['', serv.description, '', '', '', '']);
     }
   }
+  body.push(emptyLine);
+
+  const prices = calculatePriceSummary(offer.offerServices);
+
+  body.push(['', 'Angebotssumme Netto', '', '', '', euroValue(prices.netto)]);
+  body.push(['', 'Zzgl MwSt 19%', '', '', '', euroValue(prices.tax)]);
+  body.push(['', 'Angebotssumme Brutto', '', '', '', euroValue(prices.brutto)]);
 
   builder.addSpace();
+
   builder.addTable(head, body, {
-    b: { cellWidth: 300 },
+    b: { cellWidth: 280 },
     c: { cellWidth: 40, halign: 'right' },
     d: { cellWidth: 40 },
     e: { halign: 'right' },
     f: { halign: 'right' },
   });
 }
+
+// function addPrice(builder: PdfBuilder, offer: AppOffer) {
+//   builder.addLine();
+//   builder.addSpace();
+//   const prices = calculatePriceSummary(offer.offerServices);
+
+//   builder.addLeftRight(
+//     ['Angebotssumme Netto', 'Zzgl MwSt 19%', 'Angebotssumme Brutto'],
+//     [euroValue(prices.netto), euroValue(prices.tax), euroValue(prices.brutto)],
+//   );
+// }
 
 function addOfferNumber(builder: PdfBuilder, offer: AppOffer) {
   builder.addSpace(15);
@@ -170,15 +191,4 @@ function generateFileName(offer: AppOffer): string {
   }
 
   return name.concat('.pdf');
-}
-
-function addPrice(builder: PdfBuilder, offer: AppOffer) {
-  builder.addLine();
-  builder.addSpace();
-  const prices = calculatePriceSummary(offer.offerServices);
-
-  builder.addLeftRight(
-    ['Angebotssumme Netto', 'Zzgl MwSt 19%', 'Angebotssumme Brutto'],
-    [euroValue(prices.netto), euroValue(prices.tax), euroValue(prices.brutto)],
-  );
 }

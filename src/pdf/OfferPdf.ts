@@ -50,11 +50,18 @@ function addCustomer(builder: PdfBuilder, offer: AppOffer) {
     ...[
       `${offer.salutation} ${offer.firstName} ${offer.lastName}`,
       `${offer.street} ${offer.number}, ${offer.zip} ${offer.city}`,
-      `${offer.phone} | ${offer.email}`,
+      `${offer.phone || ''}${offer.email ? ' | '.concat(offer.email) : ''}`,
     ],
   );
-  builder.addSpace();
-  builder.addLeftRight(left, ['', '', '', ''], 9);
+
+  const right = [];
+
+  while (right.length < left.length) {
+    right.push('');
+  }
+
+  builder.addSpace(25);
+  builder.addLeftRight(left, right, 9);
 }
 function addHeader(builder: PdfBuilder, printSettings: PrintSettings) {
   builder.header2(printSettings.companyName);
@@ -71,7 +78,12 @@ function addHeader(builder: PdfBuilder, printSettings: PrintSettings) {
   printSettings.phone && right.push(`Tel: ${printSettings.phone}`);
   printSettings.mobile && right.push(`Mobil: ${printSettings.mobile}`);
   printSettings.fax && right.push(`Fax: ${printSettings.fax}`);
-  printSettings.email && right.push(`E-Mail: ${printSettings.fax}`);
+  printSettings.email && right.push(`E-Mail: ${printSettings.email}`);
+
+  while (right.length < left.length) {
+    right.push('');
+  }
+
   builder.addLeftRight(left, right, 9);
 }
 

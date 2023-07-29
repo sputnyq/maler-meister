@@ -37,7 +37,6 @@ export default function EditConstructionDialog({
         confirmed: false,
       } as Construction);
     } else {
-      console.log(constructionId);
       loadConstructionById(constructionId)
         .then((con) => {
           if (con) {

@@ -88,10 +88,12 @@ export default function OfferActions() {
       );
     }
   }, [allPrintSettings, printSettingID]);
+  const closeDialog = () => setPrindDialogOpen(false);
 
   const handlePrintRequest = useCallback(() => {
     if (printSettingID) {
       printOffer(Number(printSettingID));
+      closeDialog();
     }
   }, [printOffer, printSettingID]);
 
@@ -100,7 +102,7 @@ export default function OfferActions() {
       <AppDialog
         title="Angebot als PDF"
         open={prindDialogOpen}
-        onClose={() => setPrindDialogOpen(false)}
+        onClose={closeDialog}
         onConfirm={handlePrintRequest}
         confirmDisabled={!(allPrintSettings && allPrintSettings?.length > 0)}
       >

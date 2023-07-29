@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { createOfferPdf } from '../pdf/OfferPdf';
 import { AppState } from '../store';
+import { loadConstructionById } from './../fetch/api';
 import { useCurrentOffer } from './useCurrentOffer';
 
 export function usePrintOffer() {
@@ -10,10 +11,14 @@ export function usePrintOffer() {
 
   const allPrintSettings = useSelector<AppState, PrintSettingsRoot[] | undefined>((s) => s.prinSettings.all);
   const printOffer = useCallback(
-    (printSettingId: number) => {
+    async (printSettingId: number) => {
       const selectedPS = allPrintSettings?.find((ps) => ps.id === printSettingId);
       if (offer !== null && selectedPS) {
-        createOfferPdf({ offer: offer, printSettings: selectedPS.settings });
+        let construction = undefined;
+        if (offer.constructionId) {
+          construction = await loadConstructionById(offer.constructionId);
+        }
+        createOfferPdf({ offer: offer, printSettings: selectedPS.settings, construction });
       }
     },
     [allPrintSettings, offer],

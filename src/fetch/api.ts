@@ -7,7 +7,10 @@ export async function loadConstructionById(constructionId: string | number) {
     .then((res) => {
       return genericConverter<Construction>(res.data);
     })
-    .catch(console.log);
+    .catch((e) => {
+      console.log(e);
+      return undefined;
+    });
 }
 
 export async function fetchBgbServices(queryObj: object) {

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { loadConstructionById } from '../../fetch/api';
 
 interface Props {
-  constructionId: string | number;
+  constructionId: string | number | undefined;
 }
 
 export default function ConstructionView({ constructionId }: Props) {
@@ -21,7 +21,11 @@ export default function ConstructionView({ constructionId }: Props) {
     }
   }, [constructionId]);
   if (constructionId) {
-    return <Typography>{`${constructionId} - ${name}`}</Typography>;
+    return (
+      <Typography p={1} color={'primary'} variant="body2">{`${constructionId}${
+        name ? ' | '.concat(name) : ''
+      }`}</Typography>
+    );
   }
-  return <Typography>Unbekannt</Typography>;
+  return null;
 }

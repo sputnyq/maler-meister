@@ -2,9 +2,6 @@ import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import { autoTable } from 'jspdf-autotable';
 
-const HEADER_COLOR = '#4e4e4e';
-const TEXT_COLOR = '#828282';
-
 interface Margin {
   top: number;
   right: number;
@@ -29,14 +26,18 @@ export default class PdfBuilder {
   private maxWidth: number;
   private maxHeight: number;
   private margin: Margin;
+  private textColor: string;
+  private headerColor: string;
 
-  constructor(filename: string, margin: Margin) {
+  constructor(filename: string, margin: Margin, textColor: string, headerColor: string) {
     this.filename = filename;
     this.margin = margin;
+    this.textColor = textColor;
+    this.headerColor = headerColor;
     this.doc = new jsPDF('portrait', 'pt', 'a4');
 
     this.doc.setFontSize(this.default_fontsize);
-    this.doc.setTextColor(TEXT_COLOR);
+    this.doc.setTextColor(this.textColor);
 
     this.x = PdfBuilder.mm2pt(margin.left);
     this.y = PdfBuilder.mm2pt(margin.top);
@@ -111,14 +112,14 @@ export default class PdfBuilder {
 
   public header1(text: string, align?: 'left' | 'center' | 'right' | 'justify'): void {
     this.setBold();
-    this.doc.setTextColor(HEADER_COLOR);
+    this.doc.setTextColor(this.headerColor);
     this.addText(text, 16, undefined, align);
     this.resetText();
   }
 
   public header2(text: string): void {
     this.setBold();
-    this.doc.setTextColor(HEADER_COLOR);
+    this.doc.setTextColor(this.headerColor);
     this.addText(text, 12);
     this.resetText();
   }
@@ -167,8 +168,8 @@ export default class PdfBuilder {
       body: body,
       theme: 'plain',
       columnStyles,
-      headStyles: { ...headStyles, textColor: HEADER_COLOR },
-      bodyStyles: { halign: 'left', textColor: TEXT_COLOR },
+      headStyles: { ...headStyles, textColor: this.headerColor },
+      bodyStyles: { halign: 'left', textColor: this.textColor },
       styles: { fontSize: 9, cellPadding: 3 },
       startY: this.y,
       margin: {
@@ -292,7 +293,7 @@ export default class PdfBuilder {
 
   public resetText(): void {
     this.doc.setFontSize(this.default_fontsize);
-    this.doc.setTextColor(TEXT_COLOR);
+    this.doc.setTextColor(this.textColor);
     this.setNormal();
   }
 

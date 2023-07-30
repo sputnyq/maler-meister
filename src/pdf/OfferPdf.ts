@@ -82,7 +82,7 @@ function addLogo(builder: PdfBuilder, printSettings: PrintSettings, margin: Marg
 function addHeader(builder: PdfBuilder, printSettings: PrintSettings) {
   const right = [
     printSettings.ownerName,
-    `${printSettings.addressStreet} ${printSettings.addressNumber},${printSettings.addressZip} ${printSettings.addressCity}`,
+    `${printSettings.addressStreet} ${printSettings.addressNumber}, ${printSettings.addressZip} ${printSettings.addressCity}`,
   ];
 
   printSettings.phone && right.push(`Tel: ${printSettings.phone}`);

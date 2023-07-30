@@ -34,4 +34,7 @@ const LABELS = {
   bank: 'Bank',
   iban: 'IBAN',
   bic: 'BIC',
+  logoHeight: 'Höhe',
+  logoWidth: 'Breite',
+  logoUrl: 'Logo Url',
 };

@@ -143,4 +143,8 @@ interface PrintSettings {
   bank: string;
   iban: string;
   bic: string;
+
+  logoUrl: string;
+  logoHeight: number;
+  logoWidth: number;
 }

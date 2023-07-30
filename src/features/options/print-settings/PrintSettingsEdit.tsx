@@ -65,6 +65,14 @@ export function PrintSettingsEdit({ ps }: Props) {
           {[Field('addressStreet'), Field('addressNumber'), Field('addressZip'), Field('addressCity')]}
         </Box>
       </Grid>
+      <Grid item xs={12} sm={6} md={3}>
+        <Box display={'flex'} flexDirection="column" gap={1}>
+          <Typography variant="h5" align="right">
+            Logo
+          </Typography>
+          {[Field('logoUrl'), Field('logoWidth'), Field('logoHeight')]}
+        </Box>
+      </Grid>
       <Grid item xs={12}>
         <Box display={'flex'} justifyContent="space-between">
           <Button color="error" onClick={handleDelete}>

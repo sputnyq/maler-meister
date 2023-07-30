@@ -53,17 +53,29 @@ export default class PdfBuilder {
     return this.doc.getCurrentPageInfo().pageNumber;
   }
 
+  public addFooterText(text: string): void {
+    const pageCount = this.doc.getNumberOfPages();
+
+    for (let i = 1; i <= pageCount; i++) {
+      this.doc.setPage(i);
+
+      this.doc.setFontSize(8);
+
+      this.doc.text(text, PdfBuilder.mm2pt(this.margin.left), PdfBuilder.mm2pt(290), { align: 'left' });
+    }
+    this.resetText();
+  }
+
   public enumeratePages(text: string[]): void {
     const pageCount = this.doc.getNumberOfPages();
 
-    for (let i = 0; i < pageCount; i++) {
+    for (let i = 1; i <= pageCount; i++) {
       this.doc.setPage(i);
       this.doc.setFontSize(7);
-      this.doc.setTextColor(85, 85, 85);
       const toPrint = [...text];
       toPrint.push(`Seite ${this.doc.getCurrentPageInfo().pageNumber}/${pageCount}`);
 
-      this.doc.text(toPrint.join(' | '), PdfBuilder.mm2pt(205), PdfBuilder.mm2pt(292), { align: 'right' });
+      this.doc.text(toPrint.join(' | '), PdfBuilder.mm2pt(205), PdfBuilder.mm2pt(290), { align: 'right' });
     }
     this.resetText();
   }

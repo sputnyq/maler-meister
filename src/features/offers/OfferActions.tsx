@@ -1,5 +1,5 @@
 import { FormControl } from '@mui/base';
-import { Card, CardContent, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@mui/material';
+import { Box, Card, CardContent, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@mui/material';
 
 import { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +21,8 @@ export default function OfferActions() {
   const unsavedChanges = useSelector<AppState, boolean>((s) => s.offer.unsavedChanges);
   const allPrintSettings = useSelector<AppState, PrintSettingsRoot[] | undefined>((s) => s.prinSettings.all);
   const [printSettingID, setPrintSettingID] = useState<string | undefined>(allPrintSettings?.[0]?.id.toString());
+
+  const [type, setType] = useState('Angebot');
   const offer = useCurrentOffer();
 
   const navigate = useNavigate();
@@ -60,8 +62,12 @@ export default function OfferActions() {
     return typeof offer?.id === 'undefined';
   }, [offer?.id]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePSChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPrintSettingID((event.target as HTMLInputElement).value);
+  };
+
+  const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setType((event.target as HTMLInputElement).value);
   };
 
   const dialogChildren = useMemo(() => {
@@ -77,25 +83,34 @@ export default function OfferActions() {
       );
     } else {
       return (
-        <FormControl>
-          <FormLabel id="print-settings-label">PDF erzeugen für:</FormLabel>
-          <RadioGroup aria-labelledby="print-settings-label" value={printSettingID} onChange={handleChange}>
-            {allPrintSettings.map((ps) => (
-              <FormControlLabel key={ps.name} value={ps.id} control={<Radio />} label={ps.name} />
-            ))}
-          </RadioGroup>
-        </FormControl>
+        <Box display="flex" flexDirection="column" gap={2}>
+          <FormControl>
+            <FormLabel id="print-settings-label">PDF erzeugen für:</FormLabel>
+            <RadioGroup aria-labelledby="print-settings-label" value={printSettingID} onChange={handlePSChange}>
+              {allPrintSettings.map((ps) => (
+                <FormControlLabel key={ps.name} value={ps.id} control={<Radio />} label={ps.name} />
+              ))}
+            </RadioGroup>
+          </FormControl>
+          <FormControl>
+            <FormLabel id="art-label">Erzeugen als:</FormLabel>
+            <RadioGroup aria-labelledby="art-label" value={type} onChange={handleTypeChange}>
+              <FormControlLabel value={'Angebot'} control={<Radio />} label={'Angebot'} />
+              <FormControlLabel value={'Kostenvoranschlag'} control={<Radio />} label={'Kostenvoranschlag'} />
+            </RadioGroup>
+          </FormControl>
+        </Box>
       );
     }
-  }, [allPrintSettings, printSettingID]);
+  }, [allPrintSettings, type, printSettingID]);
   const closeDialog = () => setPrindDialogOpen(false);
 
   const handlePrintRequest = useCallback(() => {
     if (printSettingID) {
-      printOffer(Number(printSettingID));
+      printOffer(Number(printSettingID), type);
       closeDialog();
     }
-  }, [printOffer, printSettingID]);
+  }, [printOffer, printSettingID, type]);
 
   return (
     <>

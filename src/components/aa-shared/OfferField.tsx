@@ -1,4 +1,4 @@
-import { MenuItem } from '@mui/material';
+import { InputProps, MenuItem } from '@mui/material';
 
 import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,14 +12,25 @@ type Path = keyof AppOffer;
 export interface OfferFieldProps {
   path: Path;
   label?: string;
+  placeholder?: string;
   type?: 'text' | 'number' | 'email' | 'tel';
   multiline?: true;
   select?: true;
   selectOptions?: string[];
   capitalize?: true;
+  InputProps?: Partial<InputProps>;
 }
 
-export default function OfferField({ select, multiline, type, label, selectOptions, path }: OfferFieldProps) {
+export default function OfferField({
+  select,
+  multiline,
+  type,
+  label,
+  selectOptions,
+  path,
+  InputProps,
+  placeholder,
+}: OfferFieldProps) {
   const dispatch = useDispatch<AppDispatch>();
   const initValue = useOfferValue(path);
 
@@ -33,6 +44,8 @@ export default function OfferField({ select, multiline, type, label, selectOptio
 
   return (
     <AppTextField
+      placeholder={placeholder}
+      InputProps={InputProps}
       select={select}
       multiline={multiline}
       onChange={(ev) => setValue(ev.target.value)}

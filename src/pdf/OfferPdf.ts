@@ -5,13 +5,14 @@ interface CreateOfferParams {
   offer: AppOffer;
   printSettings: PrintSettings;
   construction?: Construction;
+  type: string;
 }
 
 const HEADER_COLOR = '#4e4e4e';
 const TEXT_COLOR = '#828282';
 
 export function createOfferPdf(payload: CreateOfferParams) {
-  const { offer, printSettings, construction } = payload;
+  const { offer, printSettings, construction, type } = payload;
 
   const filename = generateFileName(offer);
 
@@ -28,13 +29,15 @@ export function createOfferPdf(payload: CreateOfferParams) {
   );
 
   addHeader(builder, printSettings);
-
   addCustomer(builder, offer);
-  addOfferNumber(builder, offer);
-
+  addDate(builder, offer);
+  addOfferNumber(builder, offer, type);
   addConstruction(builder, construction);
   addServices(builder, offer);
-  // addPrice(builder, offer);
+
+  builder.addFooterText(
+    `Konto: ${printSettings.ownerName} | ${printSettings.bank} | ${printSettings.iban} | ${printSettings.bic}`,
+  );
 
   builder.enumeratePages([offerId(offer)]);
 
@@ -50,19 +53,20 @@ function addCustomer(builder: PdfBuilder, offer: AppOffer) {
     ...[
       `${offer.salutation} ${offer.firstName} ${offer.lastName}`,
       `${offer.street} ${offer.number}, ${offer.zip} ${offer.city}`,
-      `${offer.phone || ''}${offer.email ? ' | '.concat(offer.email) : ''}`,
+      `${offer.phone ? '+'.concat(offer.phone) : ''}${offer.email ? ' | '.concat(offer.email) : ''}`,
     ],
   );
 
   const right = [];
 
   while (right.length < left.length) {
-    right.push('');
+    right.push(' ');
   }
 
   builder.addSpace(25);
   builder.addLeftRight(left, right, 9);
 }
+
 function addHeader(builder: PdfBuilder, printSettings: PrintSettings) {
   builder.header2(printSettings.companyName);
 
@@ -81,7 +85,7 @@ function addHeader(builder: PdfBuilder, printSettings: PrintSettings) {
   printSettings.email && right.push(`E-Mail: ${printSettings.email}`);
 
   while (right.length < left.length) {
-    right.push('');
+    right.push(' ');
   }
 
   builder.addLeftRight(left, right, 9);
@@ -152,24 +156,15 @@ function addServices(builder: PdfBuilder, offer: AppOffer) {
   });
 }
 
-// function addPrice(builder: PdfBuilder, offer: AppOffer) {
-//   builder.addLine();
-//   builder.addSpace();
-//   const prices = calculatePriceSummary(offer.offerServices);
-
-//   builder.addLeftRight(
-//     ['Angebotssumme Netto', 'Zzgl MwSt 19%', 'Angebotssumme Brutto'],
-//     [euroValue(prices.netto), euroValue(prices.tax), euroValue(prices.brutto)],
-//   );
-// }
-
-function addOfferNumber(builder: PdfBuilder, offer: AppOffer) {
-  builder.addSpace(15);
-
+function addDate(builder: PdfBuilder, offer: AppOffer) {
   const date = new Date(offer.updatedAt);
   builder.addText(`Datum: ${new Intl.DateTimeFormat('de-DE', { dateStyle: 'long' }).format(date)}`, 9, 9, 'right');
+}
 
-  const text = `Angebot # ${offerId(offer)}`;
+function addOfferNumber(builder: PdfBuilder, offer: AppOffer, type: string) {
+  builder.addSpace(25);
+
+  const text = `${type} # ${offerId(offer)}`;
 
   builder.header1(text);
 }

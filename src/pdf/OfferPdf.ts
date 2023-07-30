@@ -1,5 +1,5 @@
 import { calculatePriceSummary, euroValue } from '../utilities';
-import PdfBuilder from './PdfBuilder';
+import PdfBuilder, { Margin } from './PdfBuilder';
 
 interface CreateOfferParams {
   offer: AppOffer;
@@ -16,17 +16,16 @@ export function createOfferPdf(payload: CreateOfferParams) {
 
   const filename = generateFileName(offer);
 
-  const builder = new PdfBuilder(
-    filename,
-    {
-      left: 20,
-      right: 15,
-      top: 10,
-      bottom: 15,
-    },
-    TEXT_COLOR,
-    HEADER_COLOR,
-  );
+  const margin: Margin = {
+    left: 20,
+    right: 15,
+    top: 10,
+    bottom: 15,
+  };
+
+  const builder = new PdfBuilder(filename, margin, TEXT_COLOR, HEADER_COLOR);
+
+  addLogo(builder, printSettings, margin);
 
   addHeader(builder, printSettings);
   addCustomer(builder, offer);
@@ -67,28 +66,34 @@ function addCustomer(builder: PdfBuilder, offer: AppOffer) {
   builder.addLeftRight(left, right, 9);
 }
 
+function addLogo(builder: PdfBuilder, printSettings: PrintSettings, margin: Margin) {
+  if (!printSettings.logoUrl) {
+    return;
+  }
+  builder.addPngImage(
+    printSettings.logoUrl,
+    margin.left,
+    margin.top,
+    printSettings.logoWidth,
+    printSettings.logoHeight,
+  );
+}
+
 function addHeader(builder: PdfBuilder, printSettings: PrintSettings) {
-  builder.header2(printSettings.companyName);
-
-  const left = [
+  const right = [
     printSettings.ownerName,
-    `${printSettings.addressStreet} ${printSettings.addressNumber}`,
-    `${printSettings.addressZip} ${printSettings.addressCity}`,
-    printSettings.web,
+    `${printSettings.addressStreet} ${printSettings.addressNumber},${printSettings.addressZip} ${printSettings.addressCity}`,
   ];
-
-  const right = [];
 
   printSettings.phone && right.push(`Tel: ${printSettings.phone}`);
   printSettings.mobile && right.push(`Mobil: ${printSettings.mobile}`);
   printSettings.fax && right.push(`Fax: ${printSettings.fax}`);
   printSettings.email && right.push(`E-Mail: ${printSettings.email}`);
+  printSettings.web && right.push(`${printSettings.web}`);
 
-  while (right.length < left.length) {
-    right.push(' ');
-  }
+  right.push(`Steuernummer: ${printSettings.taxNumber}`);
 
-  builder.addLeftRight(left, right, 9);
+  builder.addLeftRight([], right, 9);
 }
 
 function addConstruction(builder: PdfBuilder, construction?: Construction) {

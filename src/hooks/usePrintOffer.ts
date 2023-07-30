@@ -10,15 +10,16 @@ export function usePrintOffer() {
   const offer = useCurrentOffer();
 
   const allPrintSettings = useSelector<AppState, PrintSettingsRoot[] | undefined>((s) => s.prinSettings.all);
+
   const printOffer = useCallback(
-    async (printSettingId: number) => {
+    async (printSettingId: number, type: string) => {
       const selectedPS = allPrintSettings?.find((ps) => ps.id === printSettingId);
       if (offer !== null && selectedPS) {
         let construction = undefined;
         if (offer.constructionId) {
           construction = await loadConstructionById(offer.constructionId);
         }
-        createOfferPdf({ offer: offer, printSettings: selectedPS.settings, construction });
+        createOfferPdf({ offer: offer, printSettings: selectedPS.settings, construction, type });
       }
     },
     [allPrintSettings, offer],

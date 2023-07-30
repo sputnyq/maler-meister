@@ -1,6 +1,6 @@
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import { Box, Grid, Icon, IconButton, Link } from '@mui/material';
+import { Box, Grid, IconButton, Link } from '@mui/material';
 
 import { useMemo } from 'react';
 

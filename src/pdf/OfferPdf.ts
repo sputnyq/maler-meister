@@ -50,7 +50,7 @@ function addCustomer(builder: PdfBuilder, offer: AppOffer) {
     ...[
       `${offer.salutation} ${offer.firstName} ${offer.lastName}`,
       `${offer.street} ${offer.number}, ${offer.zip} ${offer.city}`,
-      `${offer.phone || ''}${offer.email ? ' | '.concat(offer.email) : ''}`,
+      `${offer.phone ? '+'.concat(offer.phone) : ''}${offer.email ? ' | '.concat(offer.email) : ''}`,
     ],
   );
 
@@ -151,17 +151,6 @@ function addServices(builder: PdfBuilder, offer: AppOffer) {
     f: { halign: 'right' },
   });
 }
-
-// function addPrice(builder: PdfBuilder, offer: AppOffer) {
-//   builder.addLine();
-//   builder.addSpace();
-//   const prices = calculatePriceSummary(offer.offerServices);
-
-//   builder.addLeftRight(
-//     ['Angebotssumme Netto', 'Zzgl MwSt 19%', 'Angebotssumme Brutto'],
-//     [euroValue(prices.netto), euroValue(prices.tax), euroValue(prices.brutto)],
-//   );
-// }
 
 function addOfferNumber(builder: PdfBuilder, offer: AppOffer) {
   builder.addSpace(15);

@@ -2,7 +2,7 @@ import AddIcon from '@mui/icons-material/AddOutlined';
 import { Box, Fab, useTheme } from '@mui/material';
 
 interface Props {
-  onClick(): void;
+  onClick?(): void;
 }
 export default function AddFab({ onClick }: Props) {
   const theme = useTheme();

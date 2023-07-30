@@ -10,6 +10,7 @@ import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGri
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadOffers } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import ConstructionView from '../time-capture/ConstructionView';
 import { PastDateRange } from '../time-capture/PastDateRange';
 
 export default function OffersGrid() {
@@ -21,9 +22,11 @@ export default function OffersGrid() {
 
   const [lastName, setLastName] = useState<string>('');
   const [offerId, setOfferId] = useState<string>('');
+  const [constrId, setConstrId] = useState<string>('');
 
   const [lastNameSearch, setLastNameSearch] = useState<string>('');
   const [offerIdSearch, setOfferIdSearch] = useState<string>('');
+  const [constrIdSearch, setConstrIdSearch] = useState<string>('');
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -32,6 +35,14 @@ export default function OffersGrid() {
 
     return () => clearTimeout(delayDebounceFn);
   }, [offerId]);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      setConstrIdSearch(constrId);
+    }, 1000);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [constrId]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -68,6 +79,7 @@ export default function OffersGrid() {
           lastName: {
             $containsi: lastNameSearch === '' ? undefined : lastNameSearch,
           },
+          constructionId: constrIdSearch === '' ? undefined : constrIdSearch,
           createdAt: {
             $gte: dateRange.start,
             $lte: dateRange.end,
@@ -99,6 +111,7 @@ export default function OffersGrid() {
     user?.tenant,
     lastNameSearch,
     offerIdSearch,
+    constrIdSearch,
   ]);
 
   const columns = useMemo(() => {
@@ -125,18 +138,16 @@ export default function OffersGrid() {
         },
       },
       {
-        field: 'zip',
-        headerName: 'Adresse',
+        field: 'constructionId',
+        headerName: 'Baustelle',
         flex: 1,
-        renderCell({ row }) {
-          const { street, number, zip, city } = row as AppOffer;
-          return `${street} ${number}, ${zip} ${city}`;
+        renderCell({ value }) {
+          return <ConstructionView constructionId={value} />;
         },
       },
       {
         field: 'createdAt',
         headerName: 'Erstellt',
-
         minWidth: 160,
         renderCell({ value }) {
           return new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' }).format(new Date(value));
@@ -157,7 +168,20 @@ export default function OffersGrid() {
     <Box display="flex" flexDirection="column" gap={2}>
       <FilterWrapperCard>
         <AppGridField>
-          <AppTextField type="search" label="ID" value={offerId} onChange={(ev) => setOfferId(ev.target.value)} />
+          <AppTextField
+            type="search"
+            label="ID"
+            value={offerId}
+            onChange={(ev) => setOfferId(ev.target.value?.trim())}
+          />
+        </AppGridField>
+        <AppGridField>
+          <AppTextField
+            type="search"
+            label="Baustellen-ID"
+            value={constrId}
+            onChange={(ev) => setConstrId(ev.target.value?.trim())}
+          />
         </AppGridField>
         <AppGridField>
           <AppTextField

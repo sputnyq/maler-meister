@@ -41,7 +41,7 @@ export default function OfferCustomer() {
       </Wrapper>
       <Wrapper title="Baustelle">
         <AppGrid>
-          <Field path="constructionId" type="number" label="Baustelle ID" />
+          <Field path="constructionId" type="number" label="Baustellen-ID" />
         </AppGrid>
         <ConstructionView constructionId={offer?.constructionId} />
       </Wrapper>

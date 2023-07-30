@@ -34,7 +34,7 @@ export function setLoginData(param: { jwt: string; user: User }) {
   localStorage.setItem(TOKEN, jwt);
   localStorage.setItem(USER, JSON.stringify(user));
 
-  const expiresIn = Date.now() + Math.pow(10, 9); // ca 10 days
+  const expiresIn = Date.now() + 20 * 24 * 60 * 60 * 1000; // 20 days
 
   localStorage.setItem(EXPIRES_IN, String(expiresIn));
 }

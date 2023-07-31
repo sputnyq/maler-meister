@@ -16,8 +16,8 @@ export function PrintSettingsEdit({ ps }: Props) {
   const [settings, setSettings] = useState(ps.settings || {});
 
   const dispatch = useDispatch<AppDispatch>();
-  const Field = (prop: keyof PrintSettings) => {
-    return <PSField key={prop} prop={prop} settings={settings} setSettings={setSettings} />;
+  const Field = (prop: keyof PrintSettings, multiline?: boolean) => {
+    return <PSField multiline={multiline} key={prop} prop={prop} settings={settings} setSettings={setSettings} />;
   };
 
   const handleSave = () => {
@@ -40,7 +40,9 @@ export function PrintSettingsEdit({ ps }: Props) {
         {[Field('addressStreet'), Field('addressNumber'), Field('addressZip'), Field('addressCity')]}
       </Wrapper>
       <Wrapper title="Logo">{[Field('logoUrl'), Field('logoWidth'), Field('logoHeight')]}</Wrapper>
-      <Box display={'flex'} justifyContent="space-between">
+
+      <Wrapper title="Texte">{[Field('textBefore', true), Field('textAfter', true)]}</Wrapper>
+      <Box display="flex" justifyContent="space-between">
         <Button color="error" onClick={handleDelete}>
           Löschen
         </Button>

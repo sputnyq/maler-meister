@@ -1,5 +1,6 @@
 import { Grid } from '@mui/material';
 
+import { AppGridField } from '../../../components/AppGridField';
 import { AppTextField } from '../../../components/AppTextField';
 
 interface Props {
@@ -10,18 +11,32 @@ interface Props {
 }
 
 export function PSField({ settings, prop, setSettings, multiline }: Props) {
+  if (multiline) {
+    return (
+      <Grid item xs={12}>
+        <AppTextField
+          multiline={multiline}
+          minRows={10}
+          label={LABELS[prop]}
+          value={settings[prop]}
+          onChange={(ev) => {
+            setSettings({ ...settings, [prop]: ev.target.value });
+          }}
+        />
+      </Grid>
+    );
+  }
+
   return (
-    <Grid item xs={12} sm={6} md={3}>
+    <AppGridField>
       <AppTextField
-        multiline={multiline}
-        minRows={10}
         label={LABELS[prop]}
         value={settings[prop]}
         onChange={(ev) => {
           setSettings({ ...settings, [prop]: ev.target.value });
         }}
       />
-    </Grid>
+    </AppGridField>
   );
 }
 
@@ -44,4 +59,6 @@ const LABELS = {
   logoHeight: 'Höhe',
   logoWidth: 'Breite',
   logoUrl: 'Logo Url',
+  textBefore: 'Anfangstext',
+  textAfter: 'Schlußtext',
 };

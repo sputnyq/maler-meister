@@ -32,7 +32,10 @@ export function createOfferPdf(payload: CreateOfferParams) {
   addDate(builder, offer);
   addOfferNumber(builder, offer, type);
   addConstruction(builder, construction);
+  addText(builder, printSettings.textBefore);
   addServices(builder, offer);
+  builder.addSpace(10);
+  addText(builder, printSettings.textAfter);
 
   builder.addFooterText(
     `Konto: ${printSettings.ownerName} | ${printSettings.bank} | ${printSettings.iban} | ${printSettings.bic}`,
@@ -41,6 +44,13 @@ export function createOfferPdf(payload: CreateOfferParams) {
   builder.enumeratePages([offerId(offer)]);
 
   builder.save();
+}
+
+function addText(builder: PdfBuilder, text?: string) {
+  if (!text) {
+    return;
+  }
+  builder.addTable(null, [[text]]);
 }
 
 function addCustomer(builder: PdfBuilder, offer: AppOffer) {

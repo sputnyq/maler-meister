@@ -22,7 +22,7 @@ export default function Options() {
               <MuiLink component={'p'}>Leistungen</MuiLink>
             </Link>
             <Link style={{ textDecoration: 'none' }} to="print-settings">
-              <MuiLink component={'p'}>Druck Einstellungen</MuiLink>
+              <MuiLink component={'p'}>PDF Einstellungen</MuiLink>
             </Link>
           </Stack>
         </CardContent>

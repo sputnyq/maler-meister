@@ -27,7 +27,7 @@ export function CreatePrintSetting() {
   return (
     <>
       <AppDialog
-        title="Druck Einstellung anlegen"
+        title="PDF Einstellung anlegen"
         open={open}
         onClose={handleClose}
         onConfirm={onConfirm}

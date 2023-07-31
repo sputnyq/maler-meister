@@ -77,7 +77,7 @@ export default function OfferActions() {
           <Typography>PDF Erzeugung ist nicht möglich.</Typography>
           <Typography>
             {`Erstelle und bearbeite min 1 `}
-            <Link to="/options/print-settings">Druck-Einstellung</Link>
+            <Link to="/options/print-settings">PDF-Einstellung</Link>
           </Typography>
         </>
       );

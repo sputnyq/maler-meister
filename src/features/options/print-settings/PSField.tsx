@@ -1,3 +1,5 @@
+import { Grid } from '@mui/material';
+
 import { AppTextField } from '../../../components/aa-shared/AppTextField';
 
 interface Props {
@@ -8,13 +10,15 @@ interface Props {
 
 export function PSField({ settings, prop, setSettings }: Props) {
   return (
-    <AppTextField
-      label={LABELS[prop]}
-      value={settings[prop]}
-      onChange={(ev) => {
-        setSettings({ ...settings, [prop]: ev.target.value });
-      }}
-    />
+    <Grid item xs={12} sm={6} md={3}>
+      <AppTextField
+        label={LABELS[prop]}
+        value={settings[prop]}
+        onChange={(ev) => {
+          setSettings({ ...settings, [prop]: ev.target.value });
+        }}
+      />
+    </Grid>
   );
 }
 

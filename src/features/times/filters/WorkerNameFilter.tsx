@@ -3,7 +3,7 @@ import { MenuItem } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import { AppGridField } from '../../../components/AppGridField';
-import { AppTextField } from '../../../components/aa-shared/AppTextField';
+import { AppTextField } from '../../../components/AppTextField';
 import { AppState } from '../../../store';
 
 interface Props {

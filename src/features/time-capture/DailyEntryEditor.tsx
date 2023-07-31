@@ -18,7 +18,7 @@ import React, { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 import AppGrid from '../../components/AppGrid';
-import { AppTextField } from '../../components/aa-shared/AppTextField';
+import { AppTextField } from '../../components/AppTextField';
 import { AddButtonWidget } from '../../components/widgets/AddButtonWidget';
 import { AppState } from '../../store';
 

@@ -1,7 +1,7 @@
 import { MenuItem } from '@mui/material';
 
 import { AppGridField } from '../../../components/AppGridField';
-import { AppTextField } from '../../../components/aa-shared/AppTextField';
+import { AppTextField } from '../../../components/AppTextField';
 
 interface Props {
   type: DailyEntryType | undefined;

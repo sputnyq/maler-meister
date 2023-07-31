@@ -2,8 +2,8 @@ import { Alert, AlertColor, Box, Snackbar } from '@mui/material';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import AddFab from '../../components/AddFab';
 import { AppDialog } from '../../components/AppDialog';
-import AddFab from '../../components/aa-shared/AddFab';
 import { DEFAULT_HOURS } from '../../constants';
 import { loadDailyEntries } from '../../fetch/api';
 import { appRequest } from '../../fetch/fetch-client';

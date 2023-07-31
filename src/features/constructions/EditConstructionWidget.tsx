@@ -2,7 +2,7 @@ import { Box, Card, CardContent, CardHeader, FormControlLabel, FormGroup, Switch
 
 import { useCallback } from 'react';
 
-import { AppTextField } from '../../components/aa-shared/AppTextField';
+import { AppTextField } from '../../components/AppTextField';
 import { DateRangeWidget } from '../../components/widgets/DateRangeWidget';
 
 interface Props {

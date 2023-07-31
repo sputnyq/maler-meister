@@ -5,8 +5,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AppGridField } from '../../components/AppGridField';
-import { AppTextField } from '../../components/aa-shared/AppTextField';
-import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
+import { AppTextField } from '../../components/AppTextField';
+import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadOffers } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';

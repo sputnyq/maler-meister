@@ -28,7 +28,7 @@ export default function PageName() {
       case '/options/bgb-services':
         return 'Leistungen';
       case '/options/print-settings':
-        return 'Druck Einstellungen';
+        return 'PDF Einstellungen';
       case '/time-capture':
         return 'Zeiterfassung';
       case '/info':

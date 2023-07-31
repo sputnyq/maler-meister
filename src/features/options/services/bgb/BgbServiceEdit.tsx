@@ -4,9 +4,9 @@ import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import AppGrid from '../../../../components/AppGrid';
+import { AppTextField } from '../../../../components/AppTextField';
 import { DeleteIconButton } from '../../../../components/DeleteIconButton';
-import { AppTextField } from '../../../../components/aa-shared/AppTextField';
-import TaxSelector from '../../../../components/aa-shared/TaxSelector';
+import TaxSelector from '../../../../components/TaxSelector';
 import { AppDispatch } from '../../../../store';
 import { createUpdateBgbService, deleteBgbService } from '../../../../store/servicesReducer';
 

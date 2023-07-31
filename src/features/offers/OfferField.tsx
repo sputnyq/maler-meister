@@ -3,9 +3,9 @@ import { InputProps, MenuItem } from '@mui/material';
 import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { AppTextField } from '../../components/AppTextField';
 import { AppDispatch, AppState } from '../../store';
 import { setOfferProp } from '../../store/offerReducer';
-import { AppTextField } from './AppTextField';
 
 type Path = keyof AppOffer;
 

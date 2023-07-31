@@ -1,6 +1,6 @@
 import { Box, Typography, useTheme } from '@mui/material';
 
-import { calculatePriceSummary, euroValue } from '../../utilities';
+import { calculatePriceSummary, euroValue } from '../utilities';
 
 interface Props {
   offerServices: OfferService[];

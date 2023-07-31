@@ -147,4 +147,7 @@ interface PrintSettings {
   logoUrl: string;
   logoHeight: number;
   logoWidth: number;
+
+  textBefore: string;
+  textAfter: string;
 }

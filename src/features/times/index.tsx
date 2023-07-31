@@ -2,7 +2,7 @@ import { Box, Tab, Tabs } from '@mui/material';
 
 import { useState } from 'react';
 
-import { TabPanel } from '../../components/aa-shared/TabPanel';
+import { TabPanel } from '../../components/TabPanel';
 import DailyTimesView from './DailyTimesView';
 import WorkEntriesTimesView from './WorkEntriesTimesView';
 import { HoursCheck } from './hours-check/HoursCheck';

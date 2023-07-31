@@ -5,7 +5,7 @@ import { Box, Button, Card, CardContent, CardHeader, IconButton, Link } from '@m
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { AppTextField } from '../../components/aa-shared/AppTextField';
+import { AppTextField } from '../../components/AppTextField';
 import { appRequest, setFetchClientToken } from '../../fetch/fetch-client';
 import { useCheckLogin } from '../../hooks/useCheckLogin';
 import { setLoginData } from './login-utils';

@@ -2,7 +2,7 @@ import { MenuItem, TextFieldProps } from '@mui/material';
 
 import { useSelector } from 'react-redux';
 
-import { AppTextField } from '../../../../components/aa-shared/AppTextField';
+import { AppTextField } from '../../../../components/AppTextField';
 import { AppState } from '../../../../store';
 
 export function JobGroupSelect({ onChange, value }: TextFieldProps) {

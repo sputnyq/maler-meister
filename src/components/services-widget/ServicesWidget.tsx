@@ -5,7 +5,7 @@ import { Box, Button, Card, CardContent } from '@mui/material';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { AppState } from '../../../store';
+import { AppState } from '../../store';
 import { PriceSummary } from '../PriceSummary';
 import { ServicesSelection } from './ServicesSelection';
 import { ServicesWidgetRow } from './ServicesWidgetRow';

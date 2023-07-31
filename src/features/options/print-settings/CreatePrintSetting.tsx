@@ -3,10 +3,10 @@ import { Card, CardContent, Grid } from '@mui/material';
 import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import AddFab from '../../../components/AddFab';
 import { AppDialog } from '../../../components/AppDialog';
 import AppGrid from '../../../components/AppGrid';
-import AddFab from '../../../components/aa-shared/AddFab';
-import { AppTextField } from '../../../components/aa-shared/AppTextField';
+import { AppTextField } from '../../../components/AppTextField';
 import { AppDispatch } from '../../../store';
 import { createPrintSettings } from '../../../store/printSettingsReducer';
 

@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AppGridField } from '../../components/AppGridField';
 import { DeleteIconButton } from '../../components/DeleteIconButton';
-import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
+import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { GenericBooleanFilter } from '../../components/filters/GenericBooleanFilter';
 import { loadConstructions } from '../../fetch/api';

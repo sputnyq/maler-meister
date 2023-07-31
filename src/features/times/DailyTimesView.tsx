@@ -5,7 +5,7 @@ import { GridColDef, GridToolbarContainer } from '@mui/x-data-grid';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { RequestDailyViewButton } from '../../components/RequestDailyViewButton';
-import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
+import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { DEFAULT_HOURS } from '../../constants';
 import { loadDailyEntries } from '../../fetch/api';

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import AddFab from '../../components/aa-shared/AddFab';
+import AddFab from '../../components/AddFab';
 import EditConstructionDialog from './EditConstructionDialog';
 
 import { addDays } from 'date-fns';

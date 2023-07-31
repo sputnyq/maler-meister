@@ -4,9 +4,9 @@ import { Autocomplete, Box, Card, Grid, IconButton } from '@mui/material';
 
 import { useSelector } from 'react-redux';
 
-import { AppState } from '../../../store';
-import { DeleteIconButton } from '../../DeleteIconButton';
+import { AppState } from '../../store';
 import { AppTextField } from '../AppTextField';
+import { DeleteIconButton } from '../DeleteIconButton';
 import TaxSelector from '../TaxSelector';
 
 import { cloneDeep } from 'lodash';

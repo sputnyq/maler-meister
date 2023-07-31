@@ -1,6 +1,6 @@
 import { MenuItem } from '@mui/material';
 
-import { AppTextField } from '../aa-shared/AppTextField';
+import { AppTextField } from '../AppTextField';
 
 interface Props {
   label: string;

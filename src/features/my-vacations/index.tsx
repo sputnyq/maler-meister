@@ -15,8 +15,8 @@ import {
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import AddFab from '../../components/AddFab';
 import { RequestDailyViewButton } from '../../components/RequestDailyViewButton';
-import AddFab from '../../components/aa-shared/AddFab';
 import { loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';

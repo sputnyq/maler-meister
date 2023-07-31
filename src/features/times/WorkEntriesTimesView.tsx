@@ -4,8 +4,8 @@ import { GridColDef } from '@mui/x-data-grid';
 import { useEffect, useMemo, useState } from 'react';
 
 import { AppGridField } from '../../components/AppGridField';
-import { AppTextField } from '../../components/aa-shared/AppTextField';
-import { AppDataGrid } from '../../components/aa-shared/app-data-grid/AppDataGrid';
+import { AppTextField } from '../../components/AppTextField';
+import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadWorkEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';

@@ -6,8 +6,8 @@ import { Box, Card, CardContent, Checkbox, Typography, useTheme } from '@mui/mat
 
 import { useSelector } from 'react-redux';
 
-import { AppState } from '../../../store';
-import { AppDialog } from '../../AppDialog';
+import { AppState } from '../../store';
+import { AppDialog } from '../AppDialog';
 
 interface Props {
   open: boolean;

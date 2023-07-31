@@ -3,8 +3,8 @@ import { Tab, Tabs } from '@mui/material';
 import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { TabPanel } from '../components/aa-shared/TabPanel';
-import ServicesWidget from '../components/aa-shared/services-widget/ServicesWidget';
+import { TabPanel } from '../components/TabPanel';
+import ServicesWidget from '../components/services-widget/ServicesWidget';
 import OfferCustomer from '../features/offers/OfferCustomer';
 import { useCurrentOffer } from '../hooks/useCurrentOffer';
 import { useLoadOffer } from '../hooks/useLoadOffer';

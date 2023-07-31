@@ -4,8 +4,8 @@ import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import AppGrid from '../../../components/AppGrid';
+import { AppTextField } from '../../../components/AppTextField';
 import { DeleteIconButton } from '../../../components/DeleteIconButton';
-import { AppTextField } from '../../../components/aa-shared/AppTextField';
 import { AppDispatch } from '../../../store';
 import { deleteJob, updateJob } from '../../../store/jobsReducer';
 

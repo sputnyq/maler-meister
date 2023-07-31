@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { AppDialog } from '../../components/AppDialog';
 import AppGrid from '../../components/AppGrid';
-import { AppTextField } from '../../components/aa-shared/AppTextField';
+import { AppTextField } from '../../components/AppTextField';
 import { DEFAULT_HOURS } from '../../constants';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';

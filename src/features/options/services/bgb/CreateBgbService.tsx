@@ -3,11 +3,11 @@ import { Card, CardContent, Grid } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import AddFab from '../../../../components/AddFab';
 import { AppDialog } from '../../../../components/AppDialog';
 import AppGrid from '../../../../components/AppGrid';
-import AddFab from '../../../../components/aa-shared/AddFab';
-import { AppTextField } from '../../../../components/aa-shared/AppTextField';
-import TaxSelector from '../../../../components/aa-shared/TaxSelector';
+import { AppTextField } from '../../../../components/AppTextField';
+import TaxSelector from '../../../../components/TaxSelector';
 import { AppDispatch } from '../../../../store';
 import { createUpdateBgbService } from '../../../../store/servicesReducer';
 import { JobGroupSelect } from './JobGroupSelect';

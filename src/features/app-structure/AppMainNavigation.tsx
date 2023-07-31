@@ -12,8 +12,8 @@ import { Box, Grid, SvgIconProps, Typography } from '@mui/material';
 
 import { useMemo } from 'react';
 
-import Tile from '../../components/aa-shared/Tile';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import Tile from './Tile';
 
 const COLORS = [
   '#75d8db',

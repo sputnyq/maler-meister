@@ -1,6 +1,6 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, CardHeader } from '@mui/material';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import AppGrid from '../../../components/AppGrid';
@@ -16,8 +16,8 @@ export function PrintSettingsEdit({ ps }: Props) {
   const [settings, setSettings] = useState(ps.settings || {});
 
   const dispatch = useDispatch<AppDispatch>();
-  const Field = (prop: keyof PrintSettings) => {
-    return <PSField key={prop} prop={prop} settings={settings} setSettings={setSettings} />;
+  const Field = (prop: keyof PrintSettings, multiline?: boolean) => {
+    return <PSField multiline={multiline} key={prop} prop={prop} settings={settings} setSettings={setSettings} />;
   };
 
   const handleSave = () => {
@@ -32,57 +32,39 @@ export function PrintSettingsEdit({ ps }: Props) {
   };
 
   return (
-    <AppGrid>
-      <Grid item xs={12} sm={6} md={3}>
-        <Box display={'flex'} flexDirection="column" gap={1}>
-          <Typography variant="h5" align="right">
-            Über
-          </Typography>
-          {[Field('companyName'), Field('ownerName'), Field('taxNumber')]}
-        </Box>
-      </Grid>
-      <Grid item xs={12} sm={6} md={3}>
-        <Box display={'flex'} flexDirection="column" gap={1}>
-          <Typography variant="h5" align="right">
-            Bank
-          </Typography>
-          {[Field('bank'), Field('iban'), Field('bic')]}
-        </Box>
-      </Grid>
-      <Grid item xs={12} sm={6} md={3}>
-        <Box display={'flex'} flexDirection="column" gap={1}>
-          <Typography variant="h5" align="right">
-            Kontakt
-          </Typography>
-          {[Field('phone'), Field('mobile'), Field('fax'), Field('email'), Field('web')]}
-        </Box>
-      </Grid>
-      <Grid item xs={12} sm={6} md={3}>
-        <Box display={'flex'} flexDirection="column" gap={1}>
-          <Typography variant="h5" align="right">
-            Adresse
-          </Typography>
-          {[Field('addressStreet'), Field('addressNumber'), Field('addressZip'), Field('addressCity')]}
-        </Box>
-      </Grid>
-      <Grid item xs={12} sm={6} md={3}>
-        <Box display={'flex'} flexDirection="column" gap={1}>
-          <Typography variant="h5" align="right">
-            Logo
-          </Typography>
-          {[Field('logoUrl'), Field('logoWidth'), Field('logoHeight')]}
-        </Box>
-      </Grid>
-      <Grid item xs={12}>
-        <Box display={'flex'} justifyContent="space-between">
-          <Button color="error" onClick={handleDelete}>
-            Löschen
-          </Button>
-          <Button variant="contained" disableElevation onClick={handleSave}>
-            Speichern
-          </Button>
-        </Box>
-      </Grid>
-    </AppGrid>
+    <Box display={'flex'} flexDirection="column" gap={2}>
+      <Wrapper title="Über">{[Field('companyName'), Field('ownerName'), Field('taxNumber'), Field('web')]}</Wrapper>
+      <Wrapper title="Bankverbindung">{[Field('bank'), Field('iban'), Field('bic')]}</Wrapper>
+      <Wrapper title="Kontakt">{[Field('phone'), Field('mobile'), Field('fax'), Field('email')]}</Wrapper>
+      <Wrapper title="Adresse">
+        {[Field('addressStreet'), Field('addressNumber'), Field('addressZip'), Field('addressCity')]}
+      </Wrapper>
+      <Wrapper title="Logo">{[Field('logoUrl'), Field('logoWidth'), Field('logoHeight')]}</Wrapper>
+
+      <Wrapper title="Texte">{[Field('textBefore', true), Field('textAfter', true)]}</Wrapper>
+      <Box display="flex" justifyContent="space-between">
+        <Button color="error" onClick={handleDelete}>
+          Löschen
+        </Button>
+
+        <Button variant="contained" disableElevation onClick={handleSave}>
+          Speichern
+        </Button>
+      </Box>
+    </Box>
   );
 }
+
+interface WrapperProps {
+  title?: string;
+}
+const Wrapper = ({ children, title }: React.PropsWithChildren<WrapperProps>) => {
+  return (
+    <Card elevation={0}>
+      <CardHeader title={title} />
+      <CardContent>
+        <AppGrid>{children}</AppGrid>
+      </CardContent>
+    </Card>
+  );
+};

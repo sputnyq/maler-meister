@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { AppDialog } from '../../components/AppDialog';
-import DocumentActions from '../../components/aa-shared/DocumentActions';
+import DocumentActions from '../../components/DocumentActions';
 import { offerById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentOffer } from '../../hooks/useCurrentOffer';
@@ -77,7 +77,7 @@ export default function OfferActions() {
           <Typography>PDF Erzeugung ist nicht möglich.</Typography>
           <Typography>
             {`Erstelle und bearbeite min 1 `}
-            <Link to="/options/print-settings">Druck-Einstellung</Link>
+            <Link to="/options/print-settings">PDF-Einstellung</Link>
           </Typography>
         </>
       );

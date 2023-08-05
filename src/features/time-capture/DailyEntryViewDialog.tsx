@@ -1,9 +1,21 @@
 import DeleteIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import { Box, Button, Card, CardActions, CardContent, CardHeader, Chip, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Chip,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material';
 
 import { useEffect, useMemo, useState } from 'react';
 
 import { AppDialog } from '../../components/AppDialog';
+import { dailyEntryById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { genericConverter, getJobColor } from '../../utilities';
@@ -32,6 +44,7 @@ export function DailyEntryViewDialog({ closeDialog, dailyEntryId, dialogOpen }: 
 
 function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
   const [dailyEntry, setDailyEntry] = useState<DailyEntry | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const user = useCurrentUser();
 
@@ -39,13 +52,20 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
     if (!id) {
       return;
     }
-    appRequest('get')(`daily-entries/${id}?populate=*`).then((res) => {
-      const next = genericConverter<DailyEntry>(res.data);
-
-      next.work_entries = (next.work_entries as any).data.map((e: any) => genericConverter<WorkEntry>(e));
-
-      setDailyEntry(next);
-    });
+    setLoading(true);
+    appRequest('get')(`daily-entries/${id}?populate=*`)
+      .then((res) => {
+        const next = genericConverter<DailyEntry>(res.data);
+        next.work_entries = (next.work_entries as any).data.map((e: any) => genericConverter<WorkEntry>(e));
+        setDailyEntry(next);
+      })
+      .catch((e) => {
+        console.log(e);
+        setDailyEntry(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [id]);
 
   const disabled = useMemo(() => {
@@ -75,11 +95,29 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
           }
         }
       }
-      await deleteRequest(`daily-entries/${dailyEntry?.id}`);
+      await deleteRequest(dailyEntryById(dailyEntry?.id));
       closeDialog?.();
     }
   };
 
+  const LoadingSkeleton = useMemo(() => {
+    return (
+      <Card elevation={0}>
+        <CardContent>
+          <Box display="flex" flexDirection="column" gap={1}>
+            <Skeleton variant="text" sx={{ fontSize: '1.25rem' }} />
+            <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+            <Skeleton variant="rounded" width="100%" height={60} />
+            <Skeleton variant="rounded" width="100%" height={40} />
+          </Box>
+        </CardContent>
+      </Card>
+    );
+  }, []);
+
+  if (loading) {
+    return LoadingSkeleton;
+  }
   return (
     <Box display="flex" flexDirection={'column'} gap={2}>
       {dailyEntry !== null ? (

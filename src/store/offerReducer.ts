@@ -48,8 +48,9 @@ export const createOffer = createAsyncThunk<AppOffer, { cb: (id: string | number
   async (payload, thunkApi) => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const offer = thunkApi.getState().offer.current!; // never happens
+    const tenant = thunkApi.getState().login.user?.tenant;
 
-    const response = await appRequest('post')(offerById(''), { data: offer });
+    const response = await appRequest('post')(offerById(''), { data: { ...offer, tenant } });
     const converted = genericConverter<AppOffer>(response.data);
     payload.cb(converted.id);
     return converted;

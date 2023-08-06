@@ -9,8 +9,8 @@ import { useCurrentOffer } from '../../hooks/useCurrentOffer';
 import { useLoadOffer } from '../../hooks/useLoadOffer';
 import { AppDispatch } from '../../store';
 import { setOfferProp } from '../../store/offerReducer';
-import OfferAccounting from './OfferAccounting';
 import OfferCustomer from './OfferCustomer';
+import { OfferAccounting } from './offer-accounting';
 
 export default function OfferEdit() {
   useLoadOffer();

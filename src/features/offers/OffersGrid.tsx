@@ -115,6 +115,7 @@ export default function OffersGrid() {
   ]);
 
   const columns = useMemo(() => {
+    const dtFormat = new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' });
     return [
       {
         field: 'id',
@@ -154,7 +155,7 @@ export default function OffersGrid() {
         headerName: 'Erstellt',
         minWidth: 160,
         renderCell({ value }) {
-          return new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' }).format(new Date(value));
+          return dtFormat.format(new Date(value));
         },
       },
       {
@@ -162,7 +163,7 @@ export default function OffersGrid() {
         headerName: 'Aktualisiert',
         minWidth: 160,
         renderCell({ value }) {
-          return new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' }).format(new Date(value));
+          return dtFormat.format(new Date(value));
         },
       },
     ] as GridColDef[];

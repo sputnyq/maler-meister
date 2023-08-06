@@ -1,13 +1,13 @@
-import { Box, Button, Card, CardContent, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { invoiceById } from '../../fetch/endpoints';
-import { appRequest } from '../../fetch/fetch-client';
-import { useCurrentOffer } from '../../hooks/useCurrentOffer';
+import { invoiceById } from '../../../fetch/endpoints';
+import { appRequest } from '../../../fetch/fetch-client';
+import { useCurrentOffer } from '../../../hooks/useCurrentOffer';
 
-export default function OfferAccounting() {
+export default function CreateInvoiceForOfferButton() {
   const offer = useCurrentOffer();
   const navigate = useNavigate();
 
@@ -34,17 +34,8 @@ export default function OfferAccounting() {
   }
 
   return (
-    <Card>
-      <CardContent>
-        <Box display={'flex'} flexDirection="column" gap={2}>
-          <Box>
-            <Button onClick={() => onCreateRequest(offer)} disableElevation variant="contained">
-              Neue Rechnung erstellen
-            </Button>
-          </Box>
-          <Typography variant="h6">Rechnungen zum Angebot</Typography>
-        </Box>
-      </CardContent>
-    </Card>
+    <Button onClick={() => onCreateRequest(offer)} disableElevation variant="contained">
+      Neue Rechnung erstellen
+    </Button>
   );
 }

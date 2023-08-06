@@ -13,7 +13,6 @@ import { ServicesWidgetRow } from './ServicesWidgetRow';
 import { arrayMoveImmutable } from 'array-move';
 
 interface Props {
-  title: string;
   offerServices?: OfferService[];
   update: (os: OfferService[]) => void;
 }
@@ -89,22 +88,20 @@ export default function ServicesWidget({ offerServices = [], update }: Props) {
 
   return (
     <>
-      <Box mt={1}>
-        <Box display="flex" flexDirection="column" gap={3}>
-          {Summary}
-          {offerServices.map((offerService, index) => (
-            <ServicesWidgetRow
-              key={index}
-              offerService={offerService}
-              disableDown={index === offerServices.length - 1}
-              disableUp={index === 0}
-              onDelete={onDelete(index)}
-              moveEntry={moveEntry(index)}
-              update={updateOnIndex(index)}
-            />
-          ))}
-          {Buttons}
-        </Box>
+      <Box display="flex" flexDirection="column" gap={3}>
+        {Summary}
+        {offerServices.map((offerService, index) => (
+          <ServicesWidgetRow
+            key={index}
+            offerService={offerService}
+            disableDown={index === offerServices.length - 1}
+            disableUp={index === 0}
+            onDelete={onDelete(index)}
+            moveEntry={moveEntry(index)}
+            update={updateOnIndex(index)}
+          />
+        ))}
+        {Buttons}
       </Box>
 
       <ServicesSelection onCheck={onCheck} open={open} onClose={() => setOpen(false)} offerServices={offerServices} />

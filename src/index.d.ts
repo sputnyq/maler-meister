@@ -30,10 +30,12 @@ interface AppOffer {
   offerServices: OfferService[];
   text: string;
   constructionId: number;
-  start: string;
-  end: string;
   createdAt: string;
   updatedAt: string;
+}
+
+interface AppInvoice extends AppOffer {
+  offerId: number;
 }
 
 interface LoginResponse {

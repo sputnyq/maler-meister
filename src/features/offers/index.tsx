@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
-import AddFab from '../components/AddFab';
-import OffersGrid from '../features/offers/OffersGrid';
+import AddFab from '../../components/AddFab';
+import OffersGrid from './OffersGrid';
 
 export default function Offers() {
   return (

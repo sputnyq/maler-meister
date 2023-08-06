@@ -14,10 +14,10 @@ import LoginProvider from './features/log-in-out/LoginProvider';
 import { useIsSmall } from './hooks/useIsSmall';
 import theme from './style/theme';
 
-const Offers = lazy(() => import('./routes/Offers'));
-const Invoices = lazy(() => import('./routes/Invoices'));
+const Offers = lazy(() => import('./features/offers'));
+const Invoices = lazy(() => import('./features/invoices'));
 const TimeCapture = lazy(() => import('./features/time-capture'));
-const OfferEdit = lazy(() => import('./routes/OfferEdit'));
+const OfferEdit = lazy(() => import('./features/offers/OfferEdit'));
 const Options = lazy(() => import('./features/options'));
 const Constructions = lazy(() => import('./features/constructions/Constructions'));
 const Times = lazy(() => import('./features/times'));

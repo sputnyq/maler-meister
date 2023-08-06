@@ -1,6 +1,17 @@
 import { buildQuery, genericConverter } from '../utilities';
-import { appJobs, bgbServices, constructionById, constructions, dailyEntries, offers } from './endpoints';
+import {
+  appJobs,
+  bgbServices,
+  constructionById,
+  constructions,
+  dailyEntries,
+  invoiceById,
+  invoices,
+  offers,
+} from './endpoints';
 import { appRequest } from './fetch-client';
+
+import { cloneDeep } from 'lodash';
 
 export async function loadConstructionById(constructionId: string | number) {
   return appRequest('get')(constructionById(constructionId))
@@ -50,6 +61,18 @@ export async function loadWorkEntries(queryObj: object) {
   };
 }
 
+export async function loadInvoices(queryObj: object) {
+  const query = buildQuery(queryObj);
+  const response = await appRequest('get')(invoices(query));
+
+  const appInvoices = response.data.map((e: any) => genericConverter<AppInvoice[]>(e)) as AppInvoice[];
+
+  const meta = response.meta as ApiMeta;
+  return {
+    appInvoices,
+    meta,
+  };
+}
 export async function loadOffers(queryObj: object) {
   const query = buildQuery(queryObj);
   const response = await appRequest('get')(offers(query));
@@ -87,4 +110,17 @@ export async function loadJobs(queryObj: object) {
     jobs,
     meta,
   };
+}
+
+export async function createInvoiceForOffer(offer: AppOffer) {
+  try {
+    // const toPost = cloneDeep(offer);
+    // delete toPost.id;
+    const nextInvoice: AppInvoice = { ...offer, offerId: offer.id };
+    const response = await appRequest('post')(invoiceById(''), { data: nextInvoice });
+    console.log(response);
+  } catch (e) {
+    console.log(e);
+    alert('Rechnung konnte nicht erstellt werden.\n Bitte versiche später erneut!');
+  }
 }

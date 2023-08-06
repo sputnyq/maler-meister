@@ -1,4 +1,4 @@
-import { Box, Card, CardContent } from '@mui/material';
+import { Box, Button, Card, CardContent } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
 import { useEffect, useMemo, useState } from 'react';
@@ -132,8 +132,16 @@ export function InvoicesGrid() {
         field: 'id',
         headerName: 'ID',
         renderCell({ id }) {
-          return <Link to={`${id}`}>{id}</Link>;
+          return (
+            <Link to={`${id}`}>
+              <Button>{id}</Button>
+            </Link>
+          );
         },
+      },
+      {
+        field: 'offerId',
+        headerName: 'Angebots-ID',
       },
       {
         field: 'company',
@@ -151,7 +159,7 @@ export function InvoicesGrid() {
       },
       {
         field: 'constructionId',
-        headerName: 'Baustelle',
+        headerName: 'Baustellen-ID',
         flex: 1,
         renderCell({ value }) {
           return <ConstructionView constructionId={value} />;
@@ -185,7 +193,7 @@ export function InvoicesGrid() {
         <AppGridField>
           <AppTextField
             type="search"
-            label="Angebot-ID"
+            label="Angebots-ID"
             value={offerId}
             onChange={(ev) => setOfferId(ev.target.value?.trim())}
           />

@@ -16,6 +16,7 @@ import theme from './style/theme';
 
 const Offers = lazy(() => import('./features/offers'));
 const Invoices = lazy(() => import('./features/invoices'));
+const InvoiceEdit = lazy(() => import('./features/invoices/InvoiceEdit'));
 const TimeCapture = lazy(() => import('./features/time-capture'));
 const OfferEdit = lazy(() => import('./features/offers/OfferEdit'));
 const Options = lazy(() => import('./features/options'));
@@ -82,6 +83,14 @@ function AppRoutes() {
           element={
             <LazyLoad>
               <Invoices />
+            </LazyLoad>
+          }
+        />
+        <Route
+          path="invoices/:id"
+          element={
+            <LazyLoad>
+              <InvoiceEdit />
             </LazyLoad>
           }
         />

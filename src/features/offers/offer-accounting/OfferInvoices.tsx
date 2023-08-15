@@ -1,6 +1,6 @@
 import { Box, Button, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { loadInvoices } from '../../../fetch/api';
@@ -18,6 +18,8 @@ export default function OfferInvoices() {
     });
   }, [offer?.id, user?.tenant]);
 
+  const dtFormat = useMemo(() => new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' }), []);
+
   if (!offer?.id) {
     return null;
   }
@@ -28,7 +30,6 @@ export default function OfferInvoices() {
       </Box>
     );
   }
-  const dtFormat = new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' });
 
   return (
     <>

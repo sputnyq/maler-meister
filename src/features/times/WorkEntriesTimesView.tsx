@@ -146,7 +146,7 @@ export default function WorkEntriesTimesView() {
               onChange={(ev) => {
                 setConstructionId(ev.target.value);
               }}
-              label="Baustellen ID"
+              label="Baustellen-ID"
               type="search"
             />
           </AppGridField>

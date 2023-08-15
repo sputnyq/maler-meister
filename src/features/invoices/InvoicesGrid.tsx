@@ -8,25 +8,45 @@ import { AppGridField } from '../../components/AppGridField';
 import { AppTextField } from '../../components/AppTextField';
 import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
-import { loadOffers } from '../../fetch/api';
+import { loadInvoices } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import ConstructionView from '../time-capture/ConstructionView';
 import { PastDateRange } from '../time-capture/PastDateRange';
 
-export default function OffersGrid() {
+export function InvoicesGrid() {
   const user = useCurrentUser();
 
-  const [rows, setRows] = useState<AppOffer[]>([]);
+  const [rows, setRows] = useState<AppInvoice[]>([]);
   const [rowCount, setRowCount] = useState(0);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [lastName, setLastName] = useState<string>('');
+  const [id, setId] = useState<string>('');
   const [offerId, setOfferId] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
   const [constrId, setConstrId] = useState<string>('');
 
-  const [lastNameSearch, setLastNameSearch] = useState<string>('');
+  const [idSearch, setIdSearch] = useState<string>('');
   const [offerIdSearch, setOfferIdSearch] = useState<string>('');
+  const [lastNameSearch, setLastNameSearch] = useState<string>('');
   const [constrIdSearch, setConstrIdSearch] = useState<string>('');
+
+  const [dateRange, setDateRange] = useState<AppDateRange>({
+    start: undefined,
+    end: undefined,
+  });
+
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      setIdSearch(id);
+    }, 1000);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [id]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -52,24 +72,14 @@ export default function OffersGrid() {
     return () => clearTimeout(delayDebounceFn);
   }, [lastName]);
 
-  const [dateRange, setDateRange] = useState<AppDateRange>({
-    start: undefined,
-    end: undefined,
-  });
-
-  const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize: 10,
-  });
-
   useEffect(() => {
     let queryObj;
 
-    if (offerIdSearch) {
+    if (idSearch) {
       queryObj = {
         filters: {
           tenant: user?.tenant,
-          id: offerIdSearch,
+          id: idSearch,
         },
       };
     } else {
@@ -79,6 +89,7 @@ export default function OffersGrid() {
           lastName: {
             $containsi: lastNameSearch === '' ? undefined : lastNameSearch,
           },
+          offerId: offerIdSearch === '' ? undefined : offerIdSearch,
           constructionId: constrIdSearch === '' ? undefined : constrIdSearch,
           createdAt: {
             $gte: dateRange.start,
@@ -94,9 +105,9 @@ export default function OffersGrid() {
     }
 
     setLoading(true);
-    loadOffers(queryObj)
+    loadInvoices(queryObj)
       .then((res) => {
-        setRows(res.appOffers);
+        setRows(res.appInvoices);
         setRowCount(res.meta.pagination.total);
       })
       .catch(console.log)
@@ -112,10 +123,10 @@ export default function OffersGrid() {
     lastNameSearch,
     offerIdSearch,
     constrIdSearch,
+    idSearch,
   ]);
 
   const columns = useMemo(() => {
-    const dtFormat = new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' });
     return [
       {
         field: 'id',
@@ -127,6 +138,10 @@ export default function OffersGrid() {
             </Link>
           );
         },
+      },
+      {
+        field: 'offerId',
+        headerName: 'Angebots-ID',
       },
       {
         field: 'company',
@@ -144,7 +159,7 @@ export default function OffersGrid() {
       },
       {
         field: 'constructionId',
-        headerName: 'Baustelle',
+        headerName: 'Baustellen-ID',
         flex: 1,
         renderCell({ value }) {
           return <ConstructionView constructionId={value} />;
@@ -155,7 +170,7 @@ export default function OffersGrid() {
         headerName: 'Erstellt',
         minWidth: 160,
         renderCell({ value }) {
-          return dtFormat.format(new Date(value));
+          return new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' }).format(new Date(value));
         },
       },
       {
@@ -163,7 +178,7 @@ export default function OffersGrid() {
         headerName: 'Aktualisiert',
         minWidth: 160,
         renderCell({ value }) {
-          return dtFormat.format(new Date(value));
+          return new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' }).format(new Date(value));
         },
       },
     ] as GridColDef[];
@@ -173,9 +188,12 @@ export default function OffersGrid() {
     <Box display="flex" flexDirection="column" gap={2}>
       <FilterWrapperCard>
         <AppGridField>
+          <AppTextField type="search" label="ID" value={id} onChange={(ev) => setId(ev.target.value?.trim())} />
+        </AppGridField>
+        <AppGridField>
           <AppTextField
             type="search"
-            label="ID"
+            label="Angebots-ID"
             value={offerId}
             onChange={(ev) => setOfferId(ev.target.value?.trim())}
           />

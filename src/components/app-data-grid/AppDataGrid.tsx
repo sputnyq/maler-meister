@@ -31,7 +31,7 @@ export function AppDataGrid(props: DataGridProps) {
               },
             },
           }}
-          rowHeight={35}
+          rowHeight={40}
           localeText={{
             noRowsLabel: 'Keine Ergebnisse',
           }}

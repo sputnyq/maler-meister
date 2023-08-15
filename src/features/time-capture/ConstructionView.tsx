@@ -22,7 +22,7 @@ export default function ConstructionView({ constructionId }: Props) {
   }, [constructionId]);
   if (constructionId) {
     return (
-      <Typography p={1} color={'primary'} variant="body2">{`${constructionId}${
+      <Typography p={1} color="secondary" variant="body2">{`${constructionId}${
         name ? ' | '.concat(name) : ''
       }`}</Typography>
     );

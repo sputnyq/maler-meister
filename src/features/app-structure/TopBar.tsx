@@ -4,6 +4,7 @@ import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
 import { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { InvoiceActions } from '../invoices/InvoiceActions';
 import Logout from '../log-in-out/Logout';
 import OfferActions from '../offers/OfferActions';
 import PageName from './PageName';
@@ -30,6 +31,9 @@ export default function TopBar() {
   const actions = useMemo(() => {
     if (location.pathname.startsWith('/offers/')) {
       return <OfferActions />;
+    }
+    if (location.pathname.startsWith('/invoices/')) {
+      return <InvoiceActions />;
     }
     if (isRootLocation) {
       return <Logout />;

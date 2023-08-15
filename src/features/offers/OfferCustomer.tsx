@@ -28,7 +28,7 @@ export default function OfferCustomer() {
   }, [offer?.phone]);
 
   return (
-    <Box mt={1} display="flex" flexDirection="column" gap={2}>
+    <Box display="flex" flexDirection="column" gap={2}>
       <Wrapper title="Kunde">
         <AppGrid>
           <Field path="company" label="Firmenname" />

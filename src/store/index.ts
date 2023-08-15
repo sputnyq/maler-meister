@@ -1,4 +1,5 @@
 import { constructionReducer } from './constructionReducer';
+import { invoiceReducer } from './invoiceReducer';
 import { jobsReducer } from './jobsReducer';
 import { loginReducer } from './loginReducer';
 import { offerReducer } from './offerReducer';
@@ -10,6 +11,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 const reducer = combineReducers({
   offer: offerReducer,
+  invoice: invoiceReducer,
   login: loginReducer,
   construction: constructionReducer,
   jobs: jobsReducer,

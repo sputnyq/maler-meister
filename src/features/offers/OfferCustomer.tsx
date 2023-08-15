@@ -5,10 +5,10 @@ import { Box, Grid, IconButton, Link } from '@mui/material';
 import { useMemo } from 'react';
 
 import AppGrid from '../../components/AppGrid';
+import { Wrapper } from '../../components/Wrapper';
 import { useCurrentOffer } from '../../hooks/useCurrentOffer';
 import ConstructionView from '../time-capture/ConstructionView';
 import OfferField, { OfferFieldProps } from './OfferField';
-import { Wrapper } from './Wrapper';
 
 export default function OfferCustomer() {
   const offer = useCurrentOffer();

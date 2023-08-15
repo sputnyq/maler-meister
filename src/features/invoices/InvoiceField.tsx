@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { AppTextField } from '../../components/AppTextField';
 import { AppDispatch, AppState } from '../../store';
-import { setOfferProp } from '../../store/offerReducer';
+import { setInvoiceProp } from '../../store/invoiceReducer';
 
 type Path = keyof AppInvoice;
 
@@ -39,7 +39,7 @@ export default function OfferField({
   const onBlur = useCallback(() => {
     const propPath: string[] = [path];
 
-    dispatch(setOfferProp({ path: propPath, value }));
+    dispatch(setInvoiceProp({ path: propPath, value }));
   }, [dispatch, path, value]);
 
   return (

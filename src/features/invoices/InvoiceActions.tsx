@@ -41,7 +41,7 @@ export function InvoiceActions() {
       await dispatch(
         createInvoice({
           cb: (id: string | number) => {
-            navigate(`/offers/${id}`);
+            navigate(`/invoices/${id}`);
           },
         }),
       );

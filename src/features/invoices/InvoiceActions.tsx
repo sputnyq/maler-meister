@@ -1,26 +1,47 @@
-import { useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import {
+  Box,
+  Card,
+  CardContent,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Typography,
+} from '@mui/material';
 
+import { useCallback, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { AppDialog } from '../../components/AppDialog';
 import DocumentActions from '../../components/DocumentActions';
 import { invoiceById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentInvoice } from '../../hooks/useCurrentInvoice';
+import { usePrintInvoice } from '../../hooks/usePrintInvoice';
 import { AppDispatch, AppState } from '../../store';
 import { createInvoice, updateInvoice } from '../../store/invoiceReducer';
 import { genericConverter } from '../../utilities';
 
 export function InvoiceActions() {
+  const allPrintSettings = useSelector<AppState, PrintSettingsRoot[] | undefined>((s) => s.prinSettings.all);
+
+  const [printSettingID, setPrintSettingID] = useState<string | undefined>(allPrintSettings?.[0]?.id.toString());
+  const [prindDialogOpen, setPrindDialogOpen] = useState(false);
+
   const invoice = useCurrentInvoice();
   const navigate = useNavigate();
 
+  const printInvoice = usePrintInvoice();
+
   const dispatch = useDispatch<AppDispatch>();
+
+  const unsavedChanges = useSelector<AppState, boolean>((s) => s.invoice.unsavedChanges);
 
   const isDraft = useMemo(() => {
     return typeof invoice?.id === 'undefined';
   }, [invoice?.id]);
-  const unsavedChanges = useSelector<AppState, boolean>((s) => s.invoice.unsavedChanges);
-
   const onDelete = useCallback(async () => {
     if (invoice) {
       await appRequest('delete')(invoiceById(invoice.id));
@@ -48,13 +69,67 @@ export function InvoiceActions() {
     }
   }, [invoice, dispatch, navigate]);
 
+  const closeDialog = () => setPrindDialogOpen(false);
+
+  const handlePrintRequest = useCallback(() => {
+    if (printSettingID) {
+      printInvoice(Number(printSettingID));
+      closeDialog();
+    }
+  }, [printInvoice, printSettingID]);
+
+  const dialogChildren = useMemo(() => {
+    const handlePSChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setPrintSettingID((event.target as HTMLInputElement).value);
+    };
+
+    if (typeof allPrintSettings === 'undefined' || allPrintSettings.length < 1) {
+      return (
+        <>
+          <Typography>PDF Erzeugung ist nicht möglich.</Typography>
+          <Typography>
+            {`Erstelle und bearbeite min 1 `}
+            <Link to="/options/print-settings">PDF-Einstellung</Link>
+          </Typography>
+        </>
+      );
+    } else {
+      return (
+        <Box display="flex" flexDirection="column" gap={2}>
+          <FormControl>
+            <FormLabel id="print-settings-label">PDF erzeugen für:</FormLabel>
+            <RadioGroup aria-labelledby="print-settings-label" value={printSettingID} onChange={handlePSChange}>
+              {allPrintSettings.map((ps) => (
+                <FormControlLabel key={ps.name} value={ps.id} control={<Radio />} label={ps.name} />
+              ))}
+            </RadioGroup>
+          </FormControl>
+        </Box>
+      );
+    }
+  }, [allPrintSettings, printSettingID]);
+
   return (
-    <DocumentActions
-      isDraft={isDraft}
-      unsavedChanges={unsavedChanges}
-      onDelete={onDelete}
-      onCopy={onCopy}
-      onSave={onSave}
-    />
+    <>
+      <AppDialog
+        title="Angebot als PDF"
+        open={prindDialogOpen}
+        onClose={closeDialog}
+        onConfirm={handlePrintRequest}
+        confirmDisabled={!(allPrintSettings && allPrintSettings?.length > 0)}
+      >
+        <Card elevation={0}>
+          <CardContent>{dialogChildren}</CardContent>
+        </Card>
+      </AppDialog>
+      <DocumentActions
+        isDraft={isDraft}
+        unsavedChanges={unsavedChanges}
+        onDownload={() => setPrindDialogOpen(true)}
+        onDelete={onDelete}
+        onCopy={onCopy}
+        onSave={onSave}
+      />
+    </>
   );
 }

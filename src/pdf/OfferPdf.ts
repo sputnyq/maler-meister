@@ -1,7 +1,7 @@
 import { calculatePriceSummary, euroValue } from '../utilities';
 import PdfBuilder, { Margin } from './PdfBuilder';
 
-interface CreateOfferParams {
+interface CreateOfferPdfParams {
   offer: AppOffer;
   printSettings: PrintSettings;
   construction?: Construction;
@@ -11,10 +11,10 @@ interface CreateOfferParams {
 const HEADER_COLOR = '#4e4e4e';
 const TEXT_COLOR = '#828282';
 
-export function createOfferPdf(payload: CreateOfferParams) {
+export function createOfferPdf(payload: CreateOfferPdfParams) {
   const { offer, printSettings, construction, type } = payload;
 
-  const filename = generateFileName(offer);
+  const filename = generateOfferFileName(offer);
 
   const margin: Margin = {
     left: 20,
@@ -188,7 +188,7 @@ function monthToPrint(date: Date) {
   return String(date.getMonth() + 1).padStart(2, '0');
 }
 
-function generateFileName(offer: AppOffer): string {
+function generateOfferFileName(offer: AppOffer): string {
   let name = offerId(offer);
 
   const { company, lastName } = offer;

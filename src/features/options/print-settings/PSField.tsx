@@ -61,4 +61,6 @@ const LABELS = {
   logoUrl: 'Logo Url',
   textBefore: 'Anfangstext',
   textAfter: 'Schlußtext',
+  invoiceTextBefore: 'Anfangstext',
+  invoiceTextAfter: 'Schlußtext',
 };

@@ -41,7 +41,10 @@ export function PrintSettingsEdit({ ps }: Props) {
       </Wrapper>
       <Wrapper title="Logo">{[Field('logoUrl'), Field('logoWidth'), Field('logoHeight')]}</Wrapper>
 
-      <Wrapper title="Texte">{[Field('textBefore', true), Field('textAfter', true)]}</Wrapper>
+      <Wrapper title="Angebot | Textblöcke">{[Field('textBefore', true), Field('textAfter', true)]}</Wrapper>
+      <Wrapper title="Rechnung | Textblöcke">
+        {[Field('invoiceTextBefore', true), Field('invoiceTextAfter', true)]}
+      </Wrapper>
       <Box display="flex" justifyContent="space-between">
         <Button color="error" onClick={handleDelete}>
           Löschen

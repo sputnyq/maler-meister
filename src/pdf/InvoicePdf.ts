@@ -1,5 +1,15 @@
 import PdfBuilder, { Margin } from './PdfBuilder';
-import { HEADER_COLOR, TEXT_COLOR, addCustomer, addDate, addHeader, addLogo, addServices, addText } from './shared';
+import {
+  HEADER_COLOR,
+  TEXT_COLOR,
+  addBancAccount,
+  addCustomer,
+  addDate,
+  addHeader,
+  addLogo,
+  addServices,
+  addText,
+} from './shared';
 
 interface CreateInvoicePdfParams {
   invoice: AppInvoice;
@@ -31,6 +41,10 @@ export function createInvoicePdf(payload: CreateInvoicePdfParams) {
   addText(builder, invoice.text);
 
   addText(builder, printSettings.invoiceTextAfter);
+
+  addBancAccount(builder, printSettings);
+
+  builder.enumeratePages([`${invoice.id}`]);
   builder.save();
 }
 

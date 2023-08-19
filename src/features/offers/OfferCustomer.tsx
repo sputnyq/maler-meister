@@ -91,6 +91,14 @@ export default function OfferCustomer() {
         </AppGrid>
         <ConstructionView constructionId={offer?.constructionId} />
       </Wrapper>
+
+      <Wrapper title="Text">
+        <AppGrid>
+          <Grid item xs={12}>
+            <OfferField path="text" multiline />
+          </Grid>
+        </AppGrid>
+      </Wrapper>
     </Box>
   );
 }

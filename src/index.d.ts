@@ -152,4 +152,7 @@ interface PrintSettings {
 
   textBefore: string;
   textAfter: string;
+
+  invoiceTextBefore: string;
+  invoiceTextAfter: string;
 }

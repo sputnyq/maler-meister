@@ -46,16 +46,17 @@ export default function OfferEdit() {
       </Tabs>
       <Box mt={1}>
         <TabPanel index={0} value={value}>
-          <OfferCustomer />
+          <OfferCustomer key={currentOffer.id} />
         </TabPanel>
         <TabPanel index={1} value={value}>
           <ServicesWidget
+            key={currentOffer.id}
             offerServices={offerServices !== null ? offerServices : undefined}
             update={updateOfferServices}
           />
         </TabPanel>
         <TabPanel index={2} value={value}>
-          <OfferAccounting />
+          <OfferAccounting key={currentOffer.id} />
         </TabPanel>
       </Box>
     </>

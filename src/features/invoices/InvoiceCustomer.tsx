@@ -85,11 +85,20 @@ export function InvoiceCustomer() {
           />
         </AppGrid>
       </Wrapper>
+
       <Wrapper title="Baustelle">
         <AppGrid>
           <Field path="constructionId" type="number" label="Baustellen-ID" />
         </AppGrid>
         <ConstructionView constructionId={invoice?.constructionId} />
+      </Wrapper>
+
+      <Wrapper title="Text">
+        <AppGrid>
+          <Grid item xs={12}>
+            <InvoiceField path="text" multiline />
+          </Grid>
+        </AppGrid>
       </Wrapper>
     </Box>
   );

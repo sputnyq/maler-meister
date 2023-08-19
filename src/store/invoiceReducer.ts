@@ -37,7 +37,12 @@ export const updateInvoice = createAsyncThunk<AppInvoice, void, { state: AppStat
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const invoice = thunkApi.getState().invoice.current!; // never happens
 
-    const response = await appRequest('put')(invoiceById(invoice.id), { data: invoice });
+    const response = await appRequest('put')(invoiceById(invoice.id), {
+      data: {
+        ...invoice,
+        constructionId: String(invoice.constructionId) === '' ? undefined : invoice.constructionId,
+      },
+    });
 
     return genericConverter<AppInvoice>(response.data);
   },
@@ -50,7 +55,13 @@ export const createInvoice = createAsyncThunk<AppInvoice, { cb: (id: string | nu
     const invoice = thunkApi.getState().invoice.current!; // never happens
     const tenant = thunkApi.getState().login.user?.tenant;
 
-    const response = await appRequest('post')(invoiceById(''), { data: { ...invoice, tenant } });
+    const response = await appRequest('post')(invoiceById(''), {
+      data: {
+        ...invoice,
+        tenant,
+        constructionId: String(invoice.constructionId) === '' ? undefined : invoice.constructionId,
+      },
+    });
     const converted = genericConverter<AppInvoice>(response.data);
     payload.cb(converted.id);
     return converted;

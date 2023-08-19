@@ -37,7 +37,12 @@ export const updateOffer = createAsyncThunk<AppOffer, void, { state: AppState }>
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const offer = thunkApi.getState().offer.current!; // never happens
 
-    const response = await appRequest('put')(offerById(offer.id), { data: offer });
+    const response = await appRequest('put')(offerById(offer.id), {
+      data: {
+        ...offer,
+        constructionId: String(offer.constructionId) === '' ? undefined : offer.constructionId,
+      },
+    });
 
     return genericConverter<AppOffer>(response.data);
   },
@@ -50,7 +55,13 @@ export const createOffer = createAsyncThunk<AppOffer, { cb: (id: string | number
     const offer = thunkApi.getState().offer.current!; // never happens
     const tenant = thunkApi.getState().login.user?.tenant;
 
-    const response = await appRequest('post')(offerById(''), { data: { ...offer, tenant } });
+    const response = await appRequest('post')(offerById(''), {
+      data: {
+        ...offer,
+        tenant,
+        constructionId: String(offer.constructionId) === '' ? undefined : offer.constructionId,
+      },
+    });
     const converted = genericConverter<AppOffer>(response.data);
     payload.cb(converted.id);
     return converted;

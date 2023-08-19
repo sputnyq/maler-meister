@@ -5,7 +5,7 @@ import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
 import FormatPaintOutlinedIcon from '@mui/icons-material/FormatPaintOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import MoreTimeIcon from '@mui/icons-material/MoreTimeOutlined';
-// import ReceiptLongIcon from '@mui/icons-material/ReceiptLongOutlined';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLongOutlined';
 import TuneIcon from '@mui/icons-material/TuneOutlined';
 // import UploadFileIcon from '@mui/icons-material/UploadFileOutlined';
 import { Box, Grid, SvgIconProps, Typography } from '@mui/material';
@@ -27,7 +27,7 @@ const COLORS = [
   '#128589',
   '#0f7275',
   '#0d5f62',
-  '#0a4c4e', //10
+  '#0a4c4e', //12
 ];
 export default function MainNavigation() {
   const currentUser = useCurrentUser();
@@ -57,12 +57,14 @@ export default function MainNavigation() {
         <Tile color={COLORS[11]} requiredRoles={['accountant', 'admin']} to="offers" title="Angebote">
           <ArticleIcon {...iconProps} />
         </Tile>
+
+        <Tile color={COLORS[5]} requiredRoles={['accountant', 'admin']} to="invoices" title="Rechnungen">
+          <ReceiptLongIcon {...iconProps} />
+        </Tile>
+
         <Tile color={COLORS[0]} requiredRoles={['admin']} to="planing" title="Planung">
           <EventOutlinedIcon {...iconProps} />
         </Tile>
-        {/*<Tile requiredRoles={['accountant', 'admin']} to="invoices" title="Rechnungen">
-          <ReceiptLongIcon {...iconProps} />
-        </Tile> */}
 
         <Tile color={COLORS[6]} requiredRoles={['accountant', 'admin']} to="time" title="Alle Stunden">
           <AccessTimeIcon {...iconProps} />

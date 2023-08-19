@@ -13,6 +13,9 @@ export const printSettings = (query: string) => `print-settings/?${query}`;
 export const offerById = (id: number | string) => `offers/${id}`;
 export const offers = (query: string) => `offers/?${query}`;
 
+export const invoiceById = (id: number | string) => `invoices/${id}`;
+export const invoices = (query: string) => `invoices/?${query}`;
+
 export const dailyEntries = (query: string) => `daily-entries/?${query}`;
 export const dailyEntryById = (id: number | string | undefined = '') => `daily-entries/${id}`;
 export const users = (query: string) => `users/?${query}`;

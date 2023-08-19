@@ -34,7 +34,7 @@ export default class PdfBuilder {
     this.margin = margin;
     this.textColor = textColor;
     this.headerColor = headerColor;
-    this.doc = new jsPDF('portrait', 'pt', 'a4');
+    this.doc = new jsPDF('portrait', 'pt', 'a4', true);
 
     this.doc.setFontSize(this.default_fontsize);
     this.doc.setTextColor(this.textColor);

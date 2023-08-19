@@ -15,6 +15,8 @@ export default function PageName() {
         return 'Maler Meister';
       case '/offers':
         return 'Angebote';
+      case '/invoices':
+        return 'Rechnungen';
       case '/planing':
         return 'Planung';
       case '/time':

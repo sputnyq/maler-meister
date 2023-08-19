@@ -1,5 +1,5 @@
 import { buildQuery, genericConverter } from '../utilities';
-import { appJobs, bgbServices, constructionById, constructions, dailyEntries, offers } from './endpoints';
+import { appJobs, bgbServices, constructionById, constructions, dailyEntries, invoices, offers } from './endpoints';
 import { appRequest } from './fetch-client';
 
 export async function loadConstructionById(constructionId: string | number) {
@@ -50,6 +50,18 @@ export async function loadWorkEntries(queryObj: object) {
   };
 }
 
+export async function loadInvoices(queryObj: object) {
+  const query = buildQuery(queryObj);
+  const response = await appRequest('get')(invoices(query));
+
+  const appInvoices = response.data.map((e: any) => genericConverter<AppInvoice[]>(e)) as AppInvoice[];
+
+  const meta = response.meta as ApiMeta;
+  return {
+    appInvoices,
+    meta,
+  };
+}
 export async function loadOffers(queryObj: object) {
   const query = buildQuery(queryObj);
   const response = await appRequest('get')(offers(query));

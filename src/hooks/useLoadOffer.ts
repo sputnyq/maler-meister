@@ -7,7 +7,6 @@ import { initOffer, loadOffer } from '../store/offerReducer';
 
 export function useLoadOffer() {
   const { id } = useParams();
-  console.log(id);
 
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {

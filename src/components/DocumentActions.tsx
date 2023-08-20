@@ -22,6 +22,26 @@ export default function DocumentActions({ isDraft, onCopy, onDelete, onDownload,
       onDelete?.();
     }
   };
+
+  const disabled = isDraft || unsavedChanges;
+
+  const DownloadButton = () => (
+    <IconButton disabled={disabled} color="inherit" onClick={onDownload}>
+      <FileDownloadIcon />
+    </IconButton>
+  );
+
+  const DeleteButton = () => (
+    <IconButton disabled={isDraft} onClick={handleDelete} color="error">
+      <DeleteIcon />
+    </IconButton>
+  );
+
+  const CopyButton = () => (
+    <IconButton disabled={disabled} color="inherit" onClick={onCopy}>
+      <FileCopyIcon />
+    </IconButton>
+  );
   return (
     <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
       <Tooltip title="Speichern">
@@ -32,23 +52,11 @@ export default function DocumentActions({ isDraft, onCopy, onDelete, onDownload,
         </IconButton>
       </Tooltip>
 
-      <Tooltip title="Kopieren">
-        <IconButton disabled={isDraft || unsavedChanges} color="inherit" onClick={onCopy}>
-          <FileCopyIcon />
-        </IconButton>
-      </Tooltip>
+      {disabled ? CopyButton() : <Tooltip title="Kopieren">{CopyButton()}</Tooltip>}
 
-      <Tooltip title="Als PDF speichern">
-        <IconButton disabled={isDraft || unsavedChanges} color="inherit" onClick={onDownload}>
-          <FileDownloadIcon />
-        </IconButton>
-      </Tooltip>
+      {disabled ? DownloadButton() : <Tooltip title="Als PDF speichern">{DownloadButton()}</Tooltip>}
 
-      <Tooltip title="Löschen">
-        <IconButton disabled={isDraft} onClick={handleDelete} color="error">
-          <DeleteIcon />
-        </IconButton>
-      </Tooltip>
+      {isDraft ? DeleteButton() : <Tooltip title="Löschen">{DeleteButton()}</Tooltip>}
     </Stack>
   );
 }

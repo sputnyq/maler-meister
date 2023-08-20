@@ -112,7 +112,7 @@ export function InvoiceActions() {
   return (
     <>
       <AppDialog
-        title="Angebot als PDF"
+        title="Rechnung als PDF speichern"
         open={prindDialogOpen}
         onClose={closeDialog}
         onConfirm={handlePrintRequest}

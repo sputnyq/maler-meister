@@ -4,6 +4,8 @@ import PdfBuilder, { Margin } from './PdfBuilder';
 export const HEADER_COLOR = '#4e4e4e';
 export const TEXT_COLOR = '#828282';
 
+const NON_REGULAR_SPACES = /[\u00A0\u1680\u180e\u2000-\u2009\u200a\u200b\u202f\u205f\u3000]/g;
+
 export function addLogo(builder: PdfBuilder, printSettings: PrintSettings, margin: Margin) {
   if (!printSettings.logoUrl) {
     return;
@@ -71,7 +73,7 @@ export function addServices(builder: PdfBuilder, offerServices: OfferService[]) 
   for (let i = 0; i < offerServices.length; i++) {
     const serv = offerServices[i];
     const line = [
-      i + 1,
+      serv.name ? i + 1 : '',
       serv.name,
       serv.quantity || '',
       serv.unit || '',
@@ -83,7 +85,7 @@ export function addServices(builder: PdfBuilder, offerServices: OfferService[]) 
       body.push(['', serv.description, '', '', '', '']);
     }
   }
-  body.push(emptyLine);
+  body.push(...[emptyLine, emptyLine]);
 
   const prices = calculatePriceSummary(offerServices);
 
@@ -113,5 +115,44 @@ export function addText(builder: PdfBuilder, text?: string) {
   if (!text) {
     return;
   }
-  builder.addTable(null, [[text]]);
+  builder.addTable(null, [[text.replaceAll(NON_REGULAR_SPACES, ' ')]]);
+}
+
+export function addDocumentNumber(builder: PdfBuilder, doc: AppOffer | AppInvoice, type: string) {
+  builder.addSpace(25);
+
+  const text = `${type} Nr. ${buildDocId(doc)}`;
+
+  builder.header1(text);
+}
+
+export function buildDocId(doc: AppOffer | AppInvoice) {
+  const { id, createdAt } = doc;
+  const date = new Date(createdAt);
+  return `${date.getFullYear()}-${monthToPrint(date)}.${id}`;
+}
+
+export function addConstruction(builder: PdfBuilder, construction?: Construction) {
+  if (construction?.start && construction?.end) {
+    const dateFormatter = new Intl.DateTimeFormat('de-DE', { dateStyle: 'long' });
+    const range = dateFormatter
+      .formatRange(new Date(construction.start), new Date(construction.end))
+      .replaceAll(NON_REGULAR_SPACES, ' ');
+    builder.addTable(
+      [{ a: '', b: '' }],
+      [
+        ['B.V.', construction.name],
+        ['Ausführungszeitraum', range],
+      ],
+      {
+        a: { fontStyle: 'bold', textColor: HEADER_COLOR, cellWidth: 130 },
+        b: { halign: 'left' },
+      },
+    );
+  }
+  return;
+}
+
+function monthToPrint(date: Date) {
+  return String(date.getMonth() + 1).padStart(2, '0');
 }

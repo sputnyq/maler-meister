@@ -3,12 +3,15 @@ import {
   HEADER_COLOR,
   TEXT_COLOR,
   addBancAccount,
+  addConstruction,
   addCustomer,
   addDate,
+  addDocumentNumber,
   addHeader,
   addLogo,
   addServices,
   addText,
+  buildDocId,
 } from './shared';
 
 interface CreateInvoicePdfParams {
@@ -17,7 +20,7 @@ interface CreateInvoicePdfParams {
   construction?: Construction;
 }
 export function createInvoicePdf(payload: CreateInvoicePdfParams) {
-  const { invoice, printSettings } = payload;
+  const { invoice, printSettings, construction } = payload;
 
   const filename = generateInvoiceFileName(invoice);
 
@@ -34,7 +37,9 @@ export function createInvoicePdf(payload: CreateInvoicePdfParams) {
   addHeader(builder, printSettings);
   addCustomer(builder, invoice);
   addDate(builder, invoice);
-  addInvoiceNumber(builder, invoice);
+  addDocumentNumber(builder, invoice, 'Rechnung');
+
+  addConstruction(builder, construction);
   addText(builder, printSettings.invoiceTextBefore);
   addServices(builder, invoice.offerServices);
 
@@ -49,7 +54,7 @@ export function createInvoicePdf(payload: CreateInvoicePdfParams) {
 }
 
 function generateInvoiceFileName(invoice: AppInvoice): string {
-  let name = String(invoice.id);
+  let name = buildDocId(invoice);
 
   const { company, lastName } = invoice;
 
@@ -61,12 +66,4 @@ function generateInvoiceFileName(invoice: AppInvoice): string {
   }
 
   return name.concat('.pdf');
-}
-
-function addInvoiceNumber(builder: PdfBuilder, invoice: AppInvoice) {
-  builder.addSpace(25);
-
-  const text = `Rechnung Nr. ${invoice.id}`;
-
-  builder.header1(text);
 }

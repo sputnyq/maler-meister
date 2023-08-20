@@ -3,12 +3,15 @@ import {
   HEADER_COLOR,
   TEXT_COLOR,
   addBancAccount,
+  addConstruction,
   addCustomer,
   addDate,
+  addDocumentNumber,
   addHeader,
   addLogo,
   addServices,
   addText,
+  buildDocId,
 } from './shared';
 
 interface CreateOfferPdfParams {
@@ -37,7 +40,7 @@ export function createOfferPdf(payload: CreateOfferPdfParams) {
   addHeader(builder, printSettings);
   addCustomer(builder, offer);
   addDate(builder, offer);
-  addOfferNumber(builder, offer, type);
+  addDocumentNumber(builder, offer, type);
   addConstruction(builder, construction);
   addText(builder, printSettings.textBefore);
   addServices(builder, offer.offerServices);
@@ -48,50 +51,13 @@ export function createOfferPdf(payload: CreateOfferPdfParams) {
 
   addBancAccount(builder, printSettings);
 
-  builder.enumeratePages([offerId(offer)]);
+  builder.enumeratePages([buildDocId(offer)]);
 
   builder.save();
 }
 
-function addConstruction(builder: PdfBuilder, construction?: Construction) {
-  if (!construction) {
-    return;
-  }
-  const dateFormatter = new Intl.DateTimeFormat('de-DE', { dateStyle: 'long' });
-  const range = dateFormatter.formatRange(new Date(construction.start), new Date(construction.end));
-  builder.addTable(
-    [{ a: '', b: '' }],
-    [
-      ['B.V.', construction.name],
-      ['Ausführungszeitraum', range],
-    ],
-    {
-      a: { fontStyle: 'bold', textColor: HEADER_COLOR, cellWidth: 130 },
-      b: { halign: 'left' },
-    },
-  );
-}
-
-function offerId(offer: AppOffer) {
-  const { id, createdAt } = offer;
-  const date = new Date(createdAt);
-  return `${date.getFullYear()}-${monthToPrint(date)}.${id}`;
-}
-
-function addOfferNumber(builder: PdfBuilder, offer: AppOffer, type: string) {
-  builder.addSpace(25);
-
-  const text = `${type} # ${offerId(offer)}`;
-
-  builder.header1(text);
-}
-
-function monthToPrint(date: Date) {
-  return String(date.getMonth() + 1).padStart(2, '0');
-}
-
 function generateOfferFileName(offer: AppOffer): string {
-  let name = offerId(offer);
+  let name = buildDocId(offer);
 
   const { company, lastName } = offer;
 

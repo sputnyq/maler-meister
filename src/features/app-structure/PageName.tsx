@@ -1,13 +1,31 @@
 import { Typography } from '@mui/material';
 
 import { useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 export default function PageName() {
-  const location = useLocation();
-  const { pathname } = location;
+  const { pathname } = useLocation();
+
+  const retrieveId = (p: string) => {
+    return p.split('/').reverse()[0];
+  };
 
   const pageName = useMemo(() => {
+    if (pathname == '/offers/-1') {
+      return 'Angebot: Neu';
+    }
+
+    if (pathname == '/invoices/-1') {
+      return 'Rechnung: Neu';
+    }
+
+    if (/\/offers\/\d/.test(pathname)) {
+      return `Angebot: ${retrieveId(pathname)}`;
+    }
+
+    if (/\/invoices\/\d/.test(pathname)) {
+      return `Rechnung: ${retrieveId(pathname)}`;
+    }
     switch (pathname) {
       case '/':
         return 'Willkommen';

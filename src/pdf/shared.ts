@@ -4,7 +4,7 @@ import PdfBuilder, { Margin } from './PdfBuilder';
 export const HEADER_COLOR = '#4e4e4e';
 export const TEXT_COLOR = '#828282';
 
-const NON_REGULAR_SPACES = /[\u00A0\u1680\u180e\u2000-\u2009\u200a\u200b\u202f\u205f\u3000]/g;
+const NON_REGULAR_SPACES = /[\u00A0\u1680\u180e\u2000\u2009\u200a\u200b\u202f\u205f\u3000]/g;
 
 export function addLogo(builder: PdfBuilder, printSettings: PrintSettings, margin: Margin) {
   if (!printSettings.logoUrl) {

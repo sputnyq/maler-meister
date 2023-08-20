@@ -115,7 +115,7 @@ export default function OfferActions() {
   return (
     <>
       <AppDialog
-        title="Angebot als PDF"
+        title="Angebot als PDF speichen"
         open={prindDialogOpen}
         onClose={closeDialog}
         onConfirm={handlePrintRequest}

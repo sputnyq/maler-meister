@@ -80,7 +80,7 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
         }
       });
     }
-  }, [dailyEntry.date, user?.username]);
+  }, [dailyEntry, user?.username]);
 
   const handleSave = async () => {
     if (!user) {
@@ -151,7 +151,7 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
         open={open}
         onClose={() => setOpen(false)}
         onConfirm={handleSave}
-        confirmDisabled={invalidEntry}
+        confirmDisabled={invalidEntry || hasEntries}
       >
         <Box width={'inherit'} maxWidth={1000} marginX="auto" height={'100%'}>
           <DailyEntryEditor

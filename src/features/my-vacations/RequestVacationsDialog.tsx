@@ -10,6 +10,7 @@ import { DEFAULT_HOURS } from '../../constants';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useHolidays } from '../../hooks/useHolidays';
+import { isHoliday, isWeekend } from '../../utilities';
 
 import { eachDayOfInterval, formatISO } from 'date-fns';
 
@@ -32,17 +33,6 @@ export default function RequestVacationsDialog({ open, onClose }: Props) {
   const [holidayDays, setHolidayDays] = useState(0);
 
   const invalid = start > end;
-
-  const isHoliday = (date: Date, feiertage: Feiertag[]) => {
-    const asString = formatISO(date, { representation: 'date' });
-    return feiertage.some((h) => h.date === asString);
-  };
-
-  const isWeekend = (date: Date) => {
-    const result = date.getDay() === 0 || date.getDay() === 6;
-
-    return result;
-  };
 
   const iconProps: SvgIconProps = useMemo(() => {
     return {

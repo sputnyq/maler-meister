@@ -1,3 +1,4 @@
+import { formatISO } from 'date-fns';
 import qs from 'qs';
 
 export function euroValue(value: string | number | undefined) {
@@ -55,3 +56,14 @@ export function calculatePriceSummary(offerServices: OfferService[]) {
 
   return { brutto, tax, netto };
 }
+
+export const isHoliday = (date: Date, feiertage: Feiertag[]) => {
+  const asString = formatISO(date, { representation: 'date' });
+  return feiertage.some((h) => h.date === asString);
+};
+
+export const isWeekend = (date: Date) => {
+  const result = date.getDay() === 0 || date.getDay() === 6;
+
+  return result;
+};

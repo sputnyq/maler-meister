@@ -1,13 +1,15 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
 
 import { DEFAULT_HOURS } from '../../constants';
+import { isHoliday } from '../../utilities';
 
 import { eachDayOfInterval, endOfWeek, formatISO, startOfWeek } from 'date-fns';
 
 interface Props {
   data: DailyEntry[];
+  holidays: Feiertag[];
 }
-export function WeekDetailView({ data }: Props) {
+export function WeekDetailView({ data, holidays }: Props) {
   const now = new Date();
   const start = startOfWeek(now, { weekStartsOn: 1 });
   const end = endOfWeek(now, { weekStartsOn: 1 });
@@ -30,11 +32,13 @@ export function WeekDetailView({ data }: Props) {
   return (
     <Box display="flex" justifyContent="space-between">
       {allDays.map((date, index) => {
+        const holiday = isHoliday(date, holidays);
         return (
           <Box key={index} display="flex" flexDirection="column" alignItems="center">
-            <Typography variant="caption">
+            <Typography color={holiday ? 'red' : undefined} variant="caption">
               {new Intl.DateTimeFormat('de-DE', {
                 weekday: 'short',
+                day: 'numeric',
               }).format(date)}
             </Typography>
             <Box sx={{ position: 'relative', display: 'inline-flex' }}>

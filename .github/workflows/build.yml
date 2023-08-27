@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - '**' # matches every branch
-      - '!main' # excludes master
-      - '!dev' # excludes dev
 
 jobs:
   build:

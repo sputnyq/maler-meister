@@ -2,7 +2,8 @@ import { Typography } from '@mui/material';
 
 import { useEffect, useState } from 'react';
 
-import { loadConstructionById } from '../../fetch/api';
+import { loadConstructions } from '../../fetch/api';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 
 interface Props {
   constructionId: string | number | undefined;
@@ -10,16 +11,18 @@ interface Props {
 
 export default function ConstructionView({ constructionId }: Props) {
   const [name, setName] = useState('');
+  const user = useCurrentUser();
 
   useEffect(() => {
-    if (constructionId) {
-      loadConstructionById(constructionId).then((construction) => {
-        if (construction) {
-          setName(construction.name);
+    if (constructionId && user?.tenant) {
+      loadConstructions({ filters: { id: constructionId, tenant: user?.tenant } }).then((res) => {
+        if (res?.constructions.length === 1) {
+          setName(res.constructions[0].name);
         }
       });
     }
-  }, [constructionId]);
+  }, [constructionId, user]);
+
   if (constructionId) {
     return (
       <Typography p={1} color="secondary" variant="body2">{`${constructionId}${

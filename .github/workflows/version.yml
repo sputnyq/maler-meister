@@ -3,7 +3,8 @@ name: 🆙 Bump version
 on:
   push:
     branches:
-      - main
+      - '**' # matches every branch
+      - '!main' # excludes main
 
 jobs:
   bump-version:

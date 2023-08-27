@@ -1,4 +1,4 @@
-import { Box, Chip, TableCell, TableRow, Tooltip, styled } from '@mui/material';
+import { Box, Chip, TableCell, TableRow, Tooltip, Typography, styled } from '@mui/material';
 
 import { useEffect, useState } from 'react';
 
@@ -60,7 +60,8 @@ export function HoursCheckRow({ user, end, start }: Props) {
   return (
     <StyledTableRow>
       <TableCell align="left" sx={{ position: 'sticky', left: '0', background: 'white' }}>
-        {user.lastName}
+        <Typography variant="body2">{user.lastName}</Typography>
+        <Typography variant="caption">{user.firstName}</Typography>
       </TableCell>
       {allDays.map((date, index) => (
         <TableCell key={index} align="center">

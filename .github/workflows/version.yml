@@ -1,4 +1,4 @@
-name: 🆙 Bump Increment
+name: 🆙 Bump version
 
 on:
   push:
@@ -7,8 +7,10 @@ on:
 
 jobs:
   bump-version:
-    name: 'Bump Version on master'
+    name: 'Bump Version on main'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: 'Checkout source code'

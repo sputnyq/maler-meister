@@ -1,4 +1,5 @@
-import { Typography } from '@mui/material';
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import { Box, Typography } from '@mui/material';
 
 import { useEffect, useState } from 'react';
 
@@ -10,24 +11,36 @@ interface Props {
 }
 
 export default function ConstructionView({ constructionId }: Props) {
-  const [name, setName] = useState('');
   const user = useCurrentUser();
+
+  const [name, setName] = useState('');
+  const [known, setKnown] = useState(false);
 
   useEffect(() => {
     if (constructionId && user?.tenant) {
       loadConstructions({ filters: { id: constructionId, tenant: user?.tenant } }).then((res) => {
         if (res?.constructions.length === 1) {
           setName(res.constructions[0].name);
+          setKnown(true);
+          return;
         }
       });
     }
+    setKnown(false);
   }, [constructionId, user]);
 
-  if (constructionId) {
+  if (constructionId && known) {
     return (
-      <Typography p={1} color="secondary" variant="body2">{`${constructionId}${
-        name ? ' | '.concat(name) : ''
-      }`}</Typography>
+      <Typography color="secondary" variant="body2">{`${constructionId}${name ? ' | '.concat(name) : ''}`}</Typography>
+    );
+  } else {
+    return (
+      <Box display="flex" gap={1} alignItems="center">
+        <ErrorOutlineOutlinedIcon color="error" />
+        <Typography color="error" variant="body2">
+          Ungültige Baustellen-ID
+        </Typography>
+      </Box>
     );
   }
   return null;

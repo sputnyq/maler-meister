@@ -29,6 +29,10 @@ export default function ConstructionView({ constructionId }: Props) {
     setKnown(false);
   }, [constructionId, user]);
 
+  if (!constructionId) {
+    return null;
+  }
+
   if (constructionId && known) {
     return (
       <Typography color="secondary" variant="body2">{`${constructionId}${name ? ' | '.concat(name) : ''}`}</Typography>
@@ -38,7 +42,7 @@ export default function ConstructionView({ constructionId }: Props) {
       <Box display="flex" gap={1} alignItems="center">
         <ErrorOutlineOutlinedIcon color="error" />
         <Typography color="error" variant="body2">
-          Ungültige Baustellen-ID
+          ungültige Baustellen-ID
         </Typography>
       </Box>
     );

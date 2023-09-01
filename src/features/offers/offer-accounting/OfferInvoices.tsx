@@ -13,7 +13,7 @@ export default function OfferInvoices() {
   const user = useCurrentUser();
 
   useEffect(() => {
-    loadInvoices({ tenant: user?.tenant, offerId: offer?.id }).then((res) => {
+    loadInvoices({ filters: { tenant: user?.tenant, offerId: offer?.id } }).then((res) => {
       setInvoices(res.appInvoices);
     });
   }, [offer?.id, user?.tenant]);

@@ -24,7 +24,17 @@ export const genericConverter = <T>(entry: any) => {
   } as T;
 };
 
-export function buildQuery(queryObj: object) {
+type Filters = {
+  tenant: string | undefined;
+  [key: string]: any;
+};
+
+export type StrapiQueryObject = {
+  filters: Filters;
+  sort?: object;
+  pagination?: object;
+};
+export function buildQuery(queryObj: StrapiQueryObject) {
   return qs.stringify(queryObj);
 }
 

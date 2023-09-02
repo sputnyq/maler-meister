@@ -23,7 +23,7 @@ import { DEFAULT_HOURS } from '../../constants';
 import { loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useHolidays } from '../../hooks/useHolidays';
-import { getJobColor } from '../../utilities';
+import { StrapiQueryObject, getJobColor } from '../../utilities';
 import { DailyEntryViewDialog } from './DailyEntryViewDialog';
 import { WeekDetailView } from './WeekDetailView';
 
@@ -70,8 +70,9 @@ export function MyTimes({ update, requestUpdate }: Props) {
 
   useEffect(() => {
     if (start !== null && end !== null) {
-      const queryObj = {
+      const queryObj: StrapiQueryObject = {
         filters: {
+          tenant: user?.tenant,
           username: {
             $eq: user?.username,
           },

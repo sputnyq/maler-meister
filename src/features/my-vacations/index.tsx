@@ -19,6 +19,7 @@ import AddFab from '../../components/AddFab';
 import { RequestDailyViewButton } from '../../components/RequestDailyViewButton';
 import { loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { StrapiQueryObject } from '../../utilities';
 import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';
 import RequestVacationsDialog from './RequestVacationsDialog';
 
@@ -59,8 +60,9 @@ export default function MyVacations() {
           $gt: now,
         };
     }
-    const queryObj = {
+    const queryObj: StrapiQueryObject = {
       filters: {
+        tenant: user?.tenant,
         username: user?.username,
         type: 'Urlaub',
         date: dateObj,

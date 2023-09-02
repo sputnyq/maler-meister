@@ -1,4 +1,4 @@
-import { buildQuery, genericConverter } from '../utilities';
+import { StrapiQueryObject, buildQuery, genericConverter } from '../utilities';
 import { appJobs, bgbServices, constructionById, constructions, dailyEntries, invoices, offers } from './endpoints';
 import { appRequest } from './fetch-client';
 
@@ -13,7 +13,7 @@ export async function loadConstructionById(constructionId: string | number) {
     });
 }
 
-export async function fetchBgbServices(queryObj: object) {
+export async function fetchBgbServices(queryObj: StrapiQueryObject) {
   const query = buildQuery(queryObj);
 
   const response = await appRequest('get')(bgbServices(query));
@@ -22,7 +22,7 @@ export async function fetchBgbServices(queryObj: object) {
   return { services };
 }
 
-export async function loadConstructions(queryObj: object) {
+export async function loadConstructions(queryObj: StrapiQueryObject) {
   const query = buildQuery(queryObj);
 
   const response = await appRequest('get')(constructions(query));
@@ -37,7 +37,7 @@ export async function loadConstructions(queryObj: object) {
   };
 }
 
-export async function loadWorkEntries(queryObj: object) {
+export async function loadWorkEntries(queryObj: StrapiQueryObject) {
   const query = buildQuery(queryObj);
   const response = await appRequest('get')(`work-entries?${query}`);
 
@@ -50,7 +50,7 @@ export async function loadWorkEntries(queryObj: object) {
   };
 }
 
-export async function loadInvoices(queryObj: object) {
+export async function loadInvoices(queryObj: StrapiQueryObject) {
   const query = buildQuery(queryObj);
   const response = await appRequest('get')(invoices(query));
 
@@ -62,7 +62,7 @@ export async function loadInvoices(queryObj: object) {
     meta,
   };
 }
-export async function loadOffers(queryObj: object) {
+export async function loadOffers(queryObj: StrapiQueryObject) {
   const query = buildQuery(queryObj);
   const response = await appRequest('get')(offers(query));
 
@@ -75,7 +75,7 @@ export async function loadOffers(queryObj: object) {
   };
 }
 
-export async function loadDailyEntries(queryObj: object) {
+export async function loadDailyEntries(queryObj: StrapiQueryObject) {
   const query = buildQuery(queryObj);
   const response = await appRequest('get')(dailyEntries(query));
 
@@ -88,7 +88,7 @@ export async function loadDailyEntries(queryObj: object) {
   };
 }
 
-export async function loadJobs(queryObj: object) {
+export async function loadJobs(queryObj: StrapiQueryObject) {
   const query = buildQuery(queryObj);
   const response = await appRequest('get')(appJobs(query));
 

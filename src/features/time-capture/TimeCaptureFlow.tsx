@@ -8,6 +8,7 @@ import { DEFAULT_HOURS } from '../../constants';
 import { loadDailyEntries } from '../../fetch/api';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { StrapiQueryObject } from '../../utilities';
 import DailyEntryEditor from './DailyEntryEditor';
 
 import { formatISO } from 'date-fns';
@@ -62,8 +63,9 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
 
   useEffect(() => {
     if (user?.username && dailyEntry.date) {
-      const queryObject = {
+      const queryObject: StrapiQueryObject = {
         filters: {
+          tenant: user?.tenant,
           username: {
             $eq: user?.username,
           },
@@ -80,7 +82,7 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
         }
       });
     }
-  }, [dailyEntry.date, user?.username]);
+  }, [dailyEntry.date, user]);
 
   const handleSave = async () => {
     if (!user) {

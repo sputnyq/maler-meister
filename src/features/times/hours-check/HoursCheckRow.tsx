@@ -3,7 +3,8 @@ import { Box, Chip, TableCell, TableRow, Tooltip, Typography, styled } from '@mu
 import { useEffect, useState } from 'react';
 
 import { loadDailyEntries } from '../../../fetch/api';
-import { getJobColor } from '../../../utilities';
+import { useCurrentUser } from '../../../hooks/useCurrentUser';
+import { StrapiQueryObject, getJobColor } from '../../../utilities';
 
 import { eachDayOfInterval, formatISO } from 'date-fns';
 
@@ -15,12 +16,14 @@ interface Props {
 
 export function HoursCheckRow({ user, end, start }: Props) {
   const [data, setData] = useState<DailyEntry[]>([]);
+  const currentUser = useCurrentUser();
 
   const allDays = eachDayOfInterval({ end, start });
 
   useEffect(() => {
-    const queryObj = {
+    const queryObj: StrapiQueryObject = {
       filters: {
+        tenant: currentUser?.tenant,
         username: user.username,
         date: {
           $gte: formatISO(start, { representation: 'date' }),
@@ -39,7 +42,7 @@ export function HoursCheckRow({ user, end, start }: Props) {
         console.log(e);
         alert('Fehler beim Laden');
       });
-  }, [end, start, user]);
+  }, [currentUser, end, start, user]);
 
   const getValues = (date: Date) => {
     return data.filter((de) => de.date === formatISO(date, { representation: 'date' }));

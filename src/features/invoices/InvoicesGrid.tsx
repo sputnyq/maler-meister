@@ -96,7 +96,7 @@ export function InvoicesGrid() {
             $lte: dateRange.end,
           },
         },
-        sort: { '0': 'date:desc' },
+        sort: { '0': 'createdAt:desc' },
         pagination: {
           page: paginationModel.page + 1,
           pageSize: paginationModel.pageSize,
@@ -127,6 +127,7 @@ export function InvoicesGrid() {
   ]);
 
   const columns = useMemo(() => {
+    const dtFormat = new Intl.DateTimeFormat('de-DE', { timeStyle: 'short', dateStyle: 'short' });
     return [
       {
         field: 'id',
@@ -170,7 +171,7 @@ export function InvoicesGrid() {
         headerName: 'Erstellt',
         minWidth: 160,
         renderCell({ value }) {
-          return new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' }).format(new Date(value));
+          return dtFormat.format(new Date(value));
         },
       },
       {
@@ -178,7 +179,7 @@ export function InvoicesGrid() {
         headerName: 'Aktualisiert',
         minWidth: 160,
         renderCell({ value }) {
-          return new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' }).format(new Date(value));
+          return dtFormat.format(new Date(value));
         },
       },
     ] as GridColDef[];

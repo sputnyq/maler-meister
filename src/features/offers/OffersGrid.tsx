@@ -85,7 +85,7 @@ export default function OffersGrid() {
             $lte: dateRange.end,
           },
         },
-        sort: { '0': 'date:desc' },
+        sort: { '0': 'createdAt:desc' },
         pagination: {
           page: paginationModel.page + 1,
           pageSize: paginationModel.pageSize,
@@ -115,7 +115,7 @@ export default function OffersGrid() {
   ]);
 
   const columns = useMemo(() => {
-    const dtFormat = new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' });
+    const dtFormat = new Intl.DateTimeFormat('de-DE', { timeStyle: 'short', dateStyle: 'short' });
     return [
       {
         field: 'id',

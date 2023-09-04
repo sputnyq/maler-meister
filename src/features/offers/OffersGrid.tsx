@@ -116,6 +116,7 @@ export default function OffersGrid() {
 
   const columns = useMemo(() => {
     const dtFormat = new Intl.DateTimeFormat('de-DE', { timeStyle: 'short', dateStyle: 'short' });
+
     return [
       {
         field: 'id',

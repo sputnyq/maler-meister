@@ -70,7 +70,12 @@ export function addServices(builder: PdfBuilder, offerServices: OfferService[]) 
       pos: 'Pos',
       desc: 'Bezeichnung Leistung',
       quantity: 'Menge',
-      price: 'E-Preis',
+      price: {
+        content: 'E-Preis',
+        styles: {
+          halign: 'right',
+        },
+      },
       sum: {
         content: 'Gesamt',
         styles: {
@@ -113,6 +118,7 @@ export function addServices(builder: PdfBuilder, offerServices: OfferService[]) 
 
   builder.addTable(head, body, {
     desc: { cellWidth: 280 },
+    price: { halign: 'right' },
 
     sum: { halign: 'right' },
   });

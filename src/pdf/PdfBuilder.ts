@@ -59,8 +59,6 @@ export default class PdfBuilder {
     for (let i = 1; i <= pageCount; i++) {
       this.doc.setPage(i);
 
-      this.doc.setFontSize(8);
-
       this.doc.text(text, PdfBuilder.mm2pt(this.margin.left), PdfBuilder.mm2pt(290), { align: 'left' });
     }
     this.resetText();

@@ -65,42 +65,53 @@ export function addDate(builder: PdfBuilder, doc: AppOffer | AppInvoice) {
 }
 
 export function addServices(builder: PdfBuilder, offerServices: OfferService[]) {
-  const head = [{ a: 'Pos', b: 'Bezeichnung Leistung', c: 'Menge', d: '', e: 'E-Preis', f: 'Gesamt' }];
+  const head = [
+    {
+      pos: 'Pos',
+      desc: 'Bezeichnung Leistung',
+      quantity: 'Menge',
+      price: 'E-Preis',
+      sum: {
+        content: 'Gesamt',
+        styles: {
+          halign: 'right',
+        },
+      },
+    },
+  ];
 
-  const emptyLine = ['', '', '', '', '', ''];
+  const emptyLine = ['', '', '', '', ''];
 
   const body = [];
   for (let i = 0; i < offerServices.length; i++) {
     const serv = offerServices[i];
-    const line = [
-      serv.name ? i + 1 : '',
-      serv.name,
-      serv.quantity || '',
-      serv.unit || '',
-      euroValue(serv.unitPrice),
-      euroValue(serv.netto),
-    ];
-    body.push(line);
+    const serviceLine = {
+      pos: serv.name ? i + 1 : '',
+      desc: serv.name,
+      quantity: String(serv.quantity || '').concat(` ${serv.unit || ''}`),
+      price: euroValue(serv.unitPrice),
+      sum: euroValue(serv.netto),
+    };
+
+    body.push(serviceLine);
     if (serv.description) {
-      body.push(['', serv.description, '', '', '', '']);
+      body.push(['', serv.description, '', '', '']);
     }
   }
   body.push(...[emptyLine, emptyLine]);
 
   const prices = calculatePriceSummary(offerServices);
 
-  body.push(['', 'Angebotssumme Netto', '', '', '', euroValue(prices.netto)]);
-  body.push(['', 'Zzgl MwSt 19%', '', '', '', euroValue(prices.tax)]);
-  body.push(['', 'Angebotssumme Brutto', '', '', '', euroValue(prices.brutto)]);
+  body.push(['', 'Angebotssumme Netto', '', '', euroValue(prices.netto)]);
+  body.push(['', 'Zzgl MwSt 19%', '', '', euroValue(prices.tax)]);
+  body.push(['', 'Angebotssumme Brutto', '', '', euroValue(prices.brutto)]);
 
   builder.addSpace();
 
   builder.addTable(head, body, {
-    b: { cellWidth: 280 },
-    c: { cellWidth: 40, halign: 'right' },
-    d: { cellWidth: 40 },
-    e: { halign: 'right' },
-    f: { halign: 'right' },
+    desc: { cellWidth: 280 },
+
+    sum: { halign: 'right' },
   });
 }
 

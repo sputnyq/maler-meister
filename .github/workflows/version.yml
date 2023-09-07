@@ -22,8 +22,8 @@ jobs:
         uses: 'phips28/gh-action-bump-version@master'
         with:
           skip-tag: 'true'
-          patch-wording: 'patch,fixes'
-          minor-wording: 'add,Adds,new,feat'
-          major-wording: 'MAJOR,cut-major,major'
+          patch-wording: 'patch,fix'
+          minor-wording: 'new,feat,minor'
+          major-wording: 'major'
         env:
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}

@@ -97,6 +97,9 @@ export function addServices(builder: PdfBuilder, offerServices: OfferService[]) 
     if (serv.description) {
       body.push(['', serv.description, '', '', '']);
     }
+
+    //space between
+    body.push(emptyLine);
   }
   body.push(...[emptyLine, emptyLine]);
 

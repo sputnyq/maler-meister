@@ -24,6 +24,6 @@ jobs:
           skip-tag: 'true'
           patch-wording: 'patch,fixes'
           minor-wording: 'add,Adds,new,feat'
-          major-wording: 'MAJOR,cut-major'
+          major-wording: 'MAJOR,cut-major,major'
         env:
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}

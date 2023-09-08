@@ -55,7 +55,7 @@ export default class PdfBuilder {
 
   public addFooterText(text: string): void {
     const pageCount = this.doc.getNumberOfPages();
-
+    this.doc.setFontSize(9);
     for (let i = 1; i <= pageCount; i++) {
       this.doc.setPage(i);
 

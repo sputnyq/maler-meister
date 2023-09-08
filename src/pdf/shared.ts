@@ -125,9 +125,7 @@ export function addServices(builder: PdfBuilder, offerServices: OfferService[]) 
 }
 
 export function addBancAccount(builder: PdfBuilder, printSettings: PrintSettings) {
-  builder.addFooterText(
-    `Konto: ${printSettings.ownerName} | ${printSettings.bank} | ${printSettings.iban} | ${printSettings.bic}`,
-  );
+  builder.addFooterText(`Bankverbindung: ${printSettings.ownerName} | ${printSettings.bank} | ${printSettings.iban}`);
 }
 
 export function addText(builder: PdfBuilder, text?: string) {

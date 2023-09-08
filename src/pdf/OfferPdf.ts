@@ -1,7 +1,5 @@
 import PdfBuilder, { Margin } from './PdfBuilder';
 import {
-  HEADER_COLOR,
-  TEXT_COLOR,
   addBancAccount,
   addConstruction,
   addCustomer,
@@ -33,7 +31,13 @@ export function createOfferPdf(payload: CreateOfferPdfParams) {
     bottom: 15,
   };
 
-  const builder = new PdfBuilder(filename, margin, TEXT_COLOR, HEADER_COLOR);
+  const builder = new PdfBuilder(
+    filename,
+    margin,
+    printSettings.primaryColor || '#000',
+    printSettings.highlightColor || '#000',
+    printSettings.font,
+  );
 
   addLogo(builder, printSettings, margin);
 
@@ -41,7 +45,7 @@ export function createOfferPdf(payload: CreateOfferPdfParams) {
   addCustomer(builder, offer);
   addDate(builder, offer);
   addDocumentNumber(builder, offer, type);
-  addConstruction(builder, construction);
+  addConstruction(builder, printSettings.highlightColor, construction);
   addText(builder, printSettings.textBefore);
   addServices(builder, offer.offerServices);
 

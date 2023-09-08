@@ -1,6 +1,5 @@
-import { jsPDF } from 'jspdf';
-import 'jspdf-autotable';
-import { autoTable } from 'jspdf-autotable';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 export interface Margin {
   top: number;
@@ -28,15 +27,18 @@ export default class PdfBuilder {
   private margin: Margin;
   private textColor: string;
   private headerColor: string;
+  private font: SupportedFonts;
 
-  constructor(filename: string, margin: Margin, textColor: string, headerColor: string) {
+  constructor(filename: string, margin: Margin, textColor: string, headerColor: string, font: SupportedFonts) {
     this.filename = filename;
     this.margin = margin;
     this.textColor = textColor;
     this.headerColor = headerColor;
+    this.font = font || 'Courier';
     this.doc = new jsPDF('portrait', 'pt', 'a4', true);
 
     this.doc.setFontSize(this.default_fontsize);
+    this.doc.setFont(this.font);
     this.doc.setTextColor(this.textColor);
 
     this.x = PdfBuilder.mm2pt(margin.left);
@@ -82,11 +84,11 @@ export default class PdfBuilder {
     return PdfBuilder.pt2mm(this.y);
   }
   public setBold(): void {
-    this.doc.setFont('Helvetica', 'normal', '700');
+    this.doc.setFont(this.font, 'normal', '700');
   }
 
   public setNormal(): void {
-    this.doc.setFont('Helvetica', 'normal', 'normal');
+    this.doc.setFont(this.font, 'normal', 'normal');
   }
 
   public setMarginLeft(margin: number): void {
@@ -172,15 +174,14 @@ export default class PdfBuilder {
     this.resetText();
   }
 
-  public addTable(head: any, body: any, columnStyles?: any, headStyles = {} as any): void {
-    ((this.doc as any).autoTable as autoTable)({
+  public addTable(head: any, body: any, columnStyles?: any): void {
+    autoTable(this.doc, {
       head: head,
       body: body,
       theme: 'plain',
       columnStyles,
-      headStyles: { ...headStyles, textColor: this.headerColor },
-      bodyStyles: { halign: 'left', textColor: this.textColor },
-      styles: { fontSize: 9, cellPadding: 3 },
+      headStyles: { font: this.font.toLocaleLowerCase(), fontStyle: 'bold' },
+      bodyStyles: { halign: 'left', textColor: this.textColor, font: this.font },
       startY: this.y,
       margin: {
         top: PdfBuilder.mm2pt(this.margin.top),
@@ -189,6 +190,7 @@ export default class PdfBuilder {
         left: PdfBuilder.mm2pt(this.margin.left),
       },
     });
+
     this.y = (this.doc as any).lastAutoTable.finalY;
   }
 

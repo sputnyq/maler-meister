@@ -32,8 +32,8 @@ export function createInvoicePdf(payload: CreateInvoicePdfParams) {
   const builder = new PdfBuilder(
     filename,
     margin,
-    printSettings.primaryColor,
-    printSettings.highlightColor,
+    printSettings.primaryColor || '#000',
+    printSettings.highlightColor || '#000',
     printSettings.font,
   );
 

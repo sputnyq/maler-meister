@@ -1,35 +1,39 @@
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Accordion, AccordionDetails, AccordionSummary, Box } from '@mui/material';
+import { Box, Tab, Tabs } from '@mui/material';
 
-import React from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import { TabPanel } from '../../../components/TabPanel';
 import { AppState } from '../../../store';
 import { CreatePrintSetting } from './CreatePrintSetting';
 import { PrintSettingsEdit } from './PrintSettingsEdit';
 
 export default function PrintSettings() {
+  const [value, setValue] = useState(0);
   const printSettings = useSelector<AppState, PrintSettingsRoot[]>((s) => s.prinSettings.all || []);
 
   return (
     <>
       <Box>
-        {printSettings.map((ps) => {
-          return (
-            <Accordion key={ps.id}>
-              <AccordionSummary
-                aria-controls={`${ps.name}-content`}
-                id={`${ps.name}-header`}
-                expandIcon={<ExpandMoreIcon />}
-              >
-                {ps.name}
-              </AccordionSummary>
-              <AccordionDetails>
+        <Tabs
+          value={value}
+          onChange={(_, newValue) => {
+            setValue(newValue);
+          }}
+        >
+          {printSettings.map((ps, index) => {
+            return <Tab label={ps.name} key={index}></Tab>;
+          })}
+        </Tabs>
+        <Box mt={1}>
+          {printSettings.map((ps, index) => {
+            return (
+              <TabPanel index={index} value={value}>
                 <PrintSettingsEdit ps={ps} />
-              </AccordionDetails>
-            </Accordion>
-          );
-        })}
+              </TabPanel>
+            );
+          })}
+        </Box>
       </Box>
       <CreatePrintSetting />
     </>

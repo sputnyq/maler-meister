@@ -1,9 +1,6 @@
 import { calculatePriceSummary, euroValue } from '../utilities';
 import PdfBuilder, { Margin } from './PdfBuilder';
 
-export const HEADER_COLOR = '#4e4e4e';
-export const TEXT_COLOR = '#828282';
-
 const NON_REGULAR_SPACES = /[\u00A0\u1680\u180e\u2000\u2009\u200a\u200b\u202f\u205f\u3000]/g;
 
 export function addLogo(builder: PdfBuilder, printSettings: PrintSettings, margin: Margin) {
@@ -150,7 +147,7 @@ export function buildDocId(doc: AppOffer | AppInvoice) {
   return `${date.getFullYear()}-${monthToPrint(date)}.${id}`;
 }
 
-export function addConstruction(builder: PdfBuilder, construction?: Construction) {
+export function addConstruction(builder: PdfBuilder, textColor: string, construction?: Construction) {
   if (construction?.start && construction?.end) {
     const dateFormatter = new Intl.DateTimeFormat('de-DE', { dateStyle: 'long' });
     const range = dateFormatter
@@ -163,7 +160,7 @@ export function addConstruction(builder: PdfBuilder, construction?: Construction
         ['Ausführungszeitraum', range],
       ],
       {
-        a: { fontStyle: 'bold', textColor: HEADER_COLOR, cellWidth: 130 },
+        a: { fontStyle: 'bold', textColor: textColor, cellWidth: 130 },
         b: { halign: 'left' },
       },
     );

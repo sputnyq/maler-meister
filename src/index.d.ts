@@ -155,4 +155,10 @@ interface PrintSettings {
 
   invoiceTextBefore: string;
   invoiceTextAfter: string;
+
+  primaryColor: string;
+  highlightColor: string;
+  font: SupportedFonts;
 }
+
+type SupportedFonts = 'Courier' | 'Helvetica' | 'Times';

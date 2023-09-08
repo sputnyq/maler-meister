@@ -16,8 +16,28 @@ export function PrintSettingsEdit({ ps }: Props) {
   const [settings, setSettings] = useState(ps.settings || {});
 
   const dispatch = useDispatch<AppDispatch>();
-  const Field = (prop: keyof PrintSettings, multiline?: boolean) => {
-    return <PSField multiline={multiline} key={prop} prop={prop} settings={settings} setSettings={setSettings} />;
+
+  const Field = (params: {
+    prop: keyof PrintSettings;
+    multiline?: boolean;
+    type?: React.InputHTMLAttributes<unknown>['type'];
+    select?: true;
+    selectOptions?: string[];
+  }) => {
+    const { multiline, prop, type, select, selectOptions } = params;
+    console.log(select);
+    return (
+      <PSField
+        multiline={multiline}
+        key={prop}
+        prop={prop}
+        settings={settings}
+        setSettings={setSettings}
+        type={type}
+        select={select}
+        selectOptions={selectOptions}
+      />
+    );
   };
 
   const handleSave = () => {
@@ -30,21 +50,50 @@ export function PrintSettingsEdit({ ps }: Props) {
       dispatch(deletePrintSettings(ps.id));
     }
   };
+  const multiline = true;
 
   return (
     <Box display={'flex'} flexDirection="column" gap={2}>
-      <Wrapper title="Über">{[Field('companyName'), Field('ownerName'), Field('taxNumber'), Field('web')]}</Wrapper>
-      <Wrapper title="Bankverbindung">{[Field('bank'), Field('iban'), Field('bic')]}</Wrapper>
-      <Wrapper title="Kontakt">{[Field('phone'), Field('mobile'), Field('fax'), Field('email')]}</Wrapper>
+      <Wrapper title="Aussehen">
+        {[
+          Field({ prop: 'primaryColor', type: 'color' }),
+          Field({ prop: 'highlightColor', type: 'color' }),
+          Field({ prop: 'font', select: true, selectOptions: ['Helvetica', 'Courier', 'Times'] }),
+        ]}
+      </Wrapper>
+      <Wrapper title="Über">
+        {[
+          Field({ prop: 'companyName' }),
+          Field({ prop: 'ownerName' }),
+          Field({ prop: 'taxNumber' }),
+          Field({ prop: 'web' }),
+        ]}
+      </Wrapper>
+      <Wrapper title="Bankverbindung">
+        {[Field({ prop: 'bank' }), Field({ prop: 'iban' }), Field({ prop: 'bic' })]}
+      </Wrapper>
+      <Wrapper title="Kontakt">
+        {[Field({ prop: 'phone' }), Field({ prop: 'mobile' }), Field({ prop: 'fax' }), Field({ prop: 'email' })]}
+      </Wrapper>
       <Wrapper title="Adresse">
-        {[Field('addressStreet'), Field('addressNumber'), Field('addressZip'), Field('addressCity')]}
+        {[
+          Field({ prop: 'addressStreet' }),
+          Field({ prop: 'addressNumber' }),
+          Field({ prop: 'addressZip' }),
+          Field({ prop: 'addressCity' }),
+        ]}
       </Wrapper>
-      <Wrapper title="Logo">{[Field('logoUrl'), Field('logoWidth'), Field('logoHeight')]}</Wrapper>
+      <Wrapper title="Logo">
+        {[Field({ prop: 'logoUrl' }), Field({ prop: 'logoWidth' }), Field({ prop: 'logoHeight' })]}
+      </Wrapper>
 
-      <Wrapper title="Angebot | Textblöcke">{[Field('textBefore', true), Field('textAfter', true)]}</Wrapper>
-      <Wrapper title="Rechnung | Textblöcke">
-        {[Field('invoiceTextBefore', true), Field('invoiceTextAfter', true)]}
+      <Wrapper title="Angebot | Textblöcke">
+        {[Field({ prop: 'textBefore', multiline }), Field({ prop: 'textAfter', multiline })]}
       </Wrapper>
+      <Wrapper title="Rechnung | Textblöcke">
+        {[Field({ multiline, prop: 'invoiceTextBefore' }), Field({ prop: 'invoiceTextAfter', multiline })]}
+      </Wrapper>
+
       <Box display="flex" justifyContent="space-between">
         <Button color="error" onClick={handleDelete}>
           Löschen

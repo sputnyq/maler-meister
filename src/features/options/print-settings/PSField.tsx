@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Grid, MenuItem } from '@mui/material';
 
 import { AppGridField } from '../../../components/AppGridField';
 import { AppTextField } from '../../../components/AppTextField';
@@ -8,13 +8,17 @@ interface Props {
   settings: PrintSettings;
   setSettings(ps: PrintSettings): void;
   multiline?: boolean;
+  type?: React.InputHTMLAttributes<unknown>['type'];
+  select?: true;
+  selectOptions?: string[];
 }
 
-export function PSField({ settings, prop, setSettings, multiline }: Props) {
+export function PSField({ settings, prop, setSettings, multiline, type, select, selectOptions }: Props) {
   if (multiline) {
     return (
       <Grid item xs={12}>
         <AppTextField
+          type={type}
           multiline={multiline}
           minRows={10}
           label={LABELS[prop]}
@@ -30,12 +34,20 @@ export function PSField({ settings, prop, setSettings, multiline }: Props) {
   return (
     <AppGridField>
       <AppTextField
+        select={select}
+        type={type}
         label={LABELS[prop]}
         value={settings[prop]}
         onChange={(ev) => {
           setSettings({ ...settings, [prop]: ev.target.value });
         }}
-      />
+      >
+        {selectOptions?.map((option) => (
+          <MenuItem key={option} value={option}>
+            {option}
+          </MenuItem>
+        ))}
+      </AppTextField>
     </AppGridField>
   );
 }
@@ -63,4 +75,7 @@ const LABELS = {
   textAfter: 'Schlußtext',
   invoiceTextBefore: 'Anfangstext',
   invoiceTextAfter: 'Schlußtext',
+  primaryColor: 'Farbe',
+  highlightColor: 'Titel Farbe',
+  font: 'Schrift',
 };

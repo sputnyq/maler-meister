@@ -1,7 +1,5 @@
 import PdfBuilder, { Margin } from './PdfBuilder';
 import {
-  HEADER_COLOR,
-  TEXT_COLOR,
   addBancAccount,
   addConstruction,
   addCustomer,
@@ -31,7 +29,13 @@ export function createInvoicePdf(payload: CreateInvoicePdfParams) {
     bottom: 15,
   };
 
-  const builder = new PdfBuilder(filename, margin, TEXT_COLOR, HEADER_COLOR);
+  const builder = new PdfBuilder(
+    filename,
+    margin,
+    printSettings.primaryColor,
+    printSettings.highlightColor,
+    printSettings.font,
+  );
 
   addLogo(builder, printSettings, margin);
   addHeader(builder, printSettings);
@@ -39,7 +43,7 @@ export function createInvoicePdf(payload: CreateInvoicePdfParams) {
   addDate(builder, invoice);
   addDocumentNumber(builder, invoice, 'Rechnung');
 
-  addConstruction(builder, construction);
+  addConstruction(builder, printSettings.highlightColor, construction);
   addText(builder, printSettings.invoiceTextBefore);
   addServices(builder, invoice.offerServices);
 

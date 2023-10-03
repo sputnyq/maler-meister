@@ -50,7 +50,6 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
     severity.current = 'error';
     alertMessage.current = 'Zeiten konnten nicht gespeichert werden';
     setOpenSnackbar(true);
-    return;
   }, []);
 
   const invalidEntry = useMemo(() => {

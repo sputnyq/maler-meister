@@ -47,5 +47,4 @@ export default function ConstructionView({ constructionId }: Props) {
       </Box>
     );
   }
-  return null;
 }

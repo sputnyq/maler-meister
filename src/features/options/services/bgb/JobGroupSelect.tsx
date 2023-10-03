@@ -11,7 +11,7 @@ export function JobGroupSelect({ onChange, value }: TextFieldProps) {
   return (
     <AppTextField onChange={onChange} label="Tätigkeitsgruppe" value={value} select>
       {appJobs.map(({ id, name, position }) => (
-        <MenuItem value={id}>{`${position === null ? '' : position} ${name}`}</MenuItem>
+        <MenuItem key={id} value={id}>{`${position === null ? '' : position} ${name}`}</MenuItem>
       ))}
     </AppTextField>
   );

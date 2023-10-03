@@ -28,7 +28,7 @@ export default function PrintSettings() {
         <Box mt={1}>
           {printSettings.map((ps, index) => {
             return (
-              <TabPanel index={index} value={value}>
+              <TabPanel key={ps.id} index={index} value={value}>
                 <PrintSettingsEdit ps={ps} />
               </TabPanel>
             );

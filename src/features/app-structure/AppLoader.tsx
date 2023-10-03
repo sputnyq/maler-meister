@@ -45,12 +45,9 @@ export default function AppLoader({ children }: React.PropsWithChildren) {
     }
   }, [appLoaded, dispatch, user]);
 
-  switch (appLoaded) {
-    case false: {
-      return <LoadingScreen />;
-    }
-
-    default:
-      return <>{children}</>;
+  if (appLoaded) {
+    return <>{children}</>;
   }
+
+  return <LoadingScreen />;
 }

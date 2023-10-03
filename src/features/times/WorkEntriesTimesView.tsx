@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { AppGridField } from '../../components/AppGridField';
 import { AppTextField } from '../../components/AppTextField';
+import { AppUserView } from '../../components/AppUserView';
 import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadWorkEntries } from '../../fetch/api';
@@ -68,6 +69,9 @@ export default function WorkEntriesTimesView() {
       {
         field: 'username',
         headerName: 'Mitarbeiter',
+        renderCell({ value }) {
+          return <AppUserView user={value} />;
+        },
       },
     ];
 

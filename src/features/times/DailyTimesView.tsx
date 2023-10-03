@@ -4,6 +4,7 @@ import { GridColDef, GridToolbarContainer } from '@mui/x-data-grid';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { AppUserView } from '../../components/AppUserView';
 import { RequestDailyViewButton } from '../../components/RequestDailyViewButton';
 import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
@@ -106,6 +107,9 @@ export default function DailyTimesView() {
       {
         field: 'username',
         headerName: 'Mitarbeiter',
+        renderCell({ value }) {
+          return <AppUserView user={value} />;
+        },
       },
     ];
 

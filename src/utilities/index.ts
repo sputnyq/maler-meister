@@ -77,3 +77,7 @@ export const isWeekend = (date: Date) => {
 
   return result;
 };
+
+export function userFullName(user: User) {
+  return `${user.lastName}, ${user.firstName}`;
+}

@@ -9,6 +9,7 @@ import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useHolidays } from '../../hooks/useHolidays';
 import { useIsSmall } from '../../hooks/useIsSmall';
 import { AppState } from '../../store';
+import { userFullName } from '../../utilities';
 import EditConstructionDialog from '../constructions/EditConstructionDialog';
 import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';
 
@@ -278,7 +279,10 @@ function constructions2Events(constructions: Construction[]): EventInput[] {
 
 function dailyEntries2Event(dailyEntries: DailyEntry[], users: User[]): EventInput[] {
   return dailyEntries.map((de) => {
-    const name = users.find((u) => u.username === de.username)?.lastName || de.username;
+    const user = users.find((u) => u.username === de.username);
+
+    const name = user ? userFullName(user) : de.username;
+
     return {
       date: de.date,
       title: `${de.type === 'Urlaub' ? '🏝️' : '🎓'} ${name}`,

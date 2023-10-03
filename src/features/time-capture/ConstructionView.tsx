@@ -42,7 +42,7 @@ export default function ConstructionView({ constructionId }: Props) {
       <Box display="flex" gap={1} alignItems="center">
         <ErrorOutlineOutlinedIcon color="error" />
         <Typography color="error" variant="body2">
-          ungültige Baustellen-ID
+          {`unbekannte Baustellen-ID: ${constructionId}`}
         </Typography>
       </Box>
     );

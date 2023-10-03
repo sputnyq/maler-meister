@@ -48,7 +48,7 @@ export default function OfferInvoices() {
             </TableHead>
             <TableBody>
               {invoices.map(({ id, createdAt, updatedAt }) => (
-                <TableRow>
+                <TableRow key={id}>
                   <TableCell sx={{ height: '40px', padding: 0 }}>
                     <Link to={`/invoices/${id}`}>
                       <Button>{id}</Button>

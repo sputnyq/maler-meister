@@ -1,5 +1,4 @@
 import CheckIcon from '@mui/icons-material/CheckOutlined';
-import CloseIcon from '@mui/icons-material/CloseOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Box, Button, DialogActions, DialogContent, DialogTitle, useTheme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
@@ -51,7 +50,7 @@ function MobileDialog({
       <AppBar sx={{ position: 'relative' }}>
         <Toolbar>
           <IconButton edge="start" color="inherit" onClick={onClose} aria-label="close">
-            <CloseIcon />
+            <CloseOutlinedIcon />
           </IconButton>
           <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
             {title}

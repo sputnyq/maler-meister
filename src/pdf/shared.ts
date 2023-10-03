@@ -165,7 +165,6 @@ export function addConstruction(builder: PdfBuilder, textColor: string, construc
       },
     );
   }
-  return;
 }
 
 function monthToPrint(date: Date) {

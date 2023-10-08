@@ -27,11 +27,12 @@ export default function AppLoader({ children }: React.PropsWithChildren) {
         actions.push(loadActiveConstructions);
       }
 
-      if (userRole === 'admin') {
-        actions.push(loadPrintSettings);
+      if (['admin', 'accountant'].includes(userRole)) {
         actions.push(loadServices);
+        actions.push(loadPrintSettings);
         actions.push(loadUsers);
       }
+
       Promise.allSettled(actions.map((a) => dispatch(a())))
         .then(() => {
           console.log('all done');

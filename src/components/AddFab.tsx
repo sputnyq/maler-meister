@@ -4,7 +4,8 @@ import { Box, Fab, useTheme } from '@mui/material';
 interface Props {
   onClick?(): void;
 }
-export default function AddFab({ onClick }: Props) {
+
+export default function AddFab({ onClick }: Readonly<Props>) {
   const theme = useTheme();
 
   return (

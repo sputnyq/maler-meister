@@ -19,7 +19,14 @@ interface Props {
   isDraft: boolean;
 }
 
-export default function DocumentActions({ isDraft, onCopy, onDelete, onDownload, onSave, unsavedChanges }: Props) {
+export default function DocumentActions({
+  isDraft,
+  onCopy,
+  onDelete,
+  onDownload,
+  onSave,
+  unsavedChanges,
+}: Readonly<Props>) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 

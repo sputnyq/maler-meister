@@ -21,8 +21,8 @@ export default function Constructions() {
   const user = useCurrentUser();
   const [constructions, setConstructions] = useState<Construction[]>([]);
   const [dateRange, setDateRange] = useState<AppDateRange>({});
-  const [active, setActive] = useState<boolean | undefined>(true);
-  const [confirmed, setConfirmed] = useState<boolean | undefined>(true);
+  const [active, setActive] = useState<boolean | undefined>(undefined);
+  const [confirmed, setConfirmed] = useState<boolean | undefined>(undefined);
   const [update, setUpdate] = useState<number>(0);
 
   const [constructionDialogOpen, setConstructionDialogOpen] = useState(false);
@@ -44,7 +44,6 @@ export default function Constructions() {
         headerName: '',
         renderCell({ row }) {
           const { id, name } = row as Construction;
-
           return <DeleteIconButton onClick={() => handleDeleteRequest(id, name)} />;
         },
       },
@@ -104,7 +103,7 @@ export default function Constructions() {
   const [loading, setLoading] = useState(false);
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 5,
+    pageSize: 25,
   });
 
   useEffect(() => {

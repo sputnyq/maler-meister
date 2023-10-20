@@ -110,7 +110,6 @@ export default function CalendarView() {
       pagination: {
         pageSize: 100,
       },
-      sort: { '0': 'date:asc' },
     };
     loadDailyEntries(queryObj).then((res) => {
       if (res) {

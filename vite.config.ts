@@ -9,10 +9,10 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      workbox: {
-        sourcemap: true,
+      devOptions: {
+        enabled: true,
       },
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
       manifest: {
         id: '/',
         icons: [

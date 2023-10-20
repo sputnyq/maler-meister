@@ -10,9 +10,11 @@ import './style/index.css';
 import { registerSW } from 'virtual:pwa-register';
 
 registerSW({
-  immediate: true,
-  onRegisterError: (error: any) => {
-    console.log(error);
+  onNeedRefresh() {
+    alert('Die Applikation wird aktualisiert!');
+  },
+  onOfflineReady() {
+    console.log('offline-ready');
   },
 });
 

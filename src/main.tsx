@@ -9,9 +9,11 @@ import './style/index.css';
 // @ts-ignore
 import { registerSW } from 'virtual:pwa-register';
 
+const version = import.meta.env.PACKAGE_VERSION || '';
+
 registerSW({
   onNeedRefresh() {
-    alert('Die Applikation wird aktualisiert!');
+    alert(`Die Applikation wird aktualisiert! ${version}`);
   },
   onOfflineReady() {
     console.log('offline-ready');

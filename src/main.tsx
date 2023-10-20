@@ -6,6 +6,16 @@ import App from './App';
 import { store } from './store';
 import './style/index.css';
 
+// @ts-ignore
+import { registerSW } from 'virtual:pwa-register';
+
+registerSW({
+  immediate: true,
+  onRegisterError: (error: any) => {
+    console.log(error);
+  },
+});
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <Provider store={store}>
     <BrowserRouter>

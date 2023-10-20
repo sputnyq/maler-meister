@@ -15,6 +15,7 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 
 import { AppDialog } from '../../components/AppDialog';
+import { ALLOWED_DAYS_TO_RENOVE } from '../../constants';
 import { dailyEntryById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
@@ -81,7 +82,7 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
     }
 
     const deDate = new Date(date);
-    const limit = addDays(new Date(), -31);
+    const limit = addDays(new Date(), ALLOWED_DAYS_TO_RENOVE);
     return deDate < limit;
   }, [dailyEntry, user]);
 

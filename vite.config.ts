@@ -9,10 +9,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      devOptions: {
-        enabled: true,
-      },
-      registerType: 'prompt',
+      registerType: 'autoUpdate',
       manifest: {
         id: '/',
         icons: [

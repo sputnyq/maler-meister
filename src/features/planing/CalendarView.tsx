@@ -79,13 +79,13 @@ export default function CalendarView() {
     const queryObj = {
       filters: {
         tenant: user?.tenant,
-        date: {
+        start: {
           $gte: formatISO(eventRange.start || new Date(), { representation: 'date' }),
           $lte: formatISO(eventRange.end || new Date(), { representation: 'date' }),
         },
-        pagination: {
-          pageSize: 100,
-        },
+      },
+      pagination: {
+        pageSize: 100,
       },
     };
     loadConstructions(queryObj).then((res) => {
@@ -106,11 +106,11 @@ export default function CalendarView() {
           $gte: formatISO(eventRange.start || new Date(), { representation: 'date' }),
           $lte: formatISO(eventRange.end || new Date(), { representation: 'date' }),
         },
-        pagination: {
-          pageSize: 100,
-        },
-        sort: { '0': 'start:asc' },
       },
+      pagination: {
+        pageSize: 100,
+      },
+      sort: { '0': 'date:asc' },
     };
     loadDailyEntries(queryObj).then((res) => {
       if (res) {

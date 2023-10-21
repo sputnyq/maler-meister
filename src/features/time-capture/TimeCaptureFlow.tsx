@@ -1,6 +1,6 @@
 import { Alert, AlertColor, Box, Snackbar } from '@mui/material';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 import AddFab from '../../components/AddFab';
 import { AppDialog } from '../../components/AppDialog';
@@ -8,7 +8,7 @@ import { DEFAULT_HOURS } from '../../constants';
 import { loadDailyEntries } from '../../fetch/api';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { StrapiQueryObject } from '../../utilities';
+import { StrapiQueryObject, formatDate } from '../../utilities';
 import DailyEntryEditor from './DailyEntryEditor';
 
 import { formatISO } from 'date-fns';
@@ -22,11 +22,9 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
   const user = useCurrentUser();
 
   const [open, setOpen] = useState(false);
-  const [hasEntries, setHasEntries] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const initialDailyEntry = {
-    sum: 8,
     date: formatISO(new Date(), { representation: 'date' }),
     type: 'Arbeit',
     username: user?.username,
@@ -57,37 +55,53 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
       return false;
     }
 
-    return workEntries.some((we) => !we.constructionId || !we.job || !we.hours);
+    return workEntries.some((we) => !we.constructionId || !we.job || !we.hours || we.hours === '0');
   }, [dailyEntry, workEntries]);
 
-  useEffect(() => {
-    if (user?.username && dailyEntry.date) {
-      const queryObject: StrapiQueryObject = {
-        filters: {
-          tenant: user?.tenant,
-          username: {
-            $eq: user?.username,
-          },
-          date: {
-            $eq: dailyEntry.date,
-          },
+  const checkHasEntry = useCallback(async () => {
+    const queryObject: StrapiQueryObject = {
+      filters: {
+        tenant: user?.tenant,
+        username: {
+          $eq: user?.username,
         },
-      };
-      loadDailyEntries(queryObject).then((res) => {
+        date: {
+          $eq: dailyEntry.date,
+        },
+      },
+    };
+
+    return loadDailyEntries(queryObject)
+      .then((res) => {
         if (res.meta.pagination.total > 0) {
-          setHasEntries(true);
+          return true;
         } else {
-          setHasEntries(false);
+          return false;
         }
+      })
+      .catch((e) => {
+        console.log(e);
+        return false;
       });
-    }
-  }, [dailyEntry.date, user]);
+  }, [user, dailyEntry.date]);
 
   const handleSave = async () => {
     if (!user) {
       //never happens
       return;
     }
+
+    const hasEntry = await checkHasEntry();
+    if (hasEntry) {
+      //
+      severity.current = 'error';
+      alertMessage.current = `Für den Tag (${formatDate(
+        dailyEntry.date,
+      )}) wurde die Zeit bereits erfasst. Ändere das Datum oder lösche den Eintrag`;
+      setOpenSnackbar(true);
+      return;
+    }
+
     if (dailyEntry.type === 'Arbeit') {
       /*
       UPLOAD WORK ENTRIES
@@ -118,7 +132,7 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
         ? workEntries.reduce((acc, next) => {
             return acc + Number(next.hours);
           }, 0) || 0
-        : dailyEntry.sum;
+        : DEFAULT_HOURS;
 
     toPersist.username = user.username;
     toPersist.tenant = user.tenant;
@@ -156,7 +170,6 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
       >
         <Box width={'inherit'} maxWidth={1000} marginX="auto" height={'100%'}>
           <DailyEntryEditor
-            hasEntries={hasEntries}
             workEntries={workEntries}
             dailyEntry={dailyEntry}
             setWorkEntries={setWorkEntries}

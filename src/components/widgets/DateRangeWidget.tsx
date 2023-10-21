@@ -3,6 +3,7 @@ import { Box, Button } from '@mui/material';
 import { useMemo, useState } from 'react';
 
 import { useIsSmall } from '../../hooks/useIsSmall';
+import { formatDate } from '../../utilities';
 import { AppDialog } from '../AppDialog';
 
 import { formatISO } from 'date-fns';
@@ -23,10 +24,6 @@ export function DateRangeWidget({ dateRange, setDateRange, definedRanges }: Prop
   const toggle = () => setOpen(!open);
 
   const handleClose = () => setOpen(false);
-
-  const formatDate = (asString: string) => {
-    return new Date(asString).toLocaleDateString('ru');
-  };
 
   const title = useMemo(() => {
     if (dateRange.end && dateRange.start) {

@@ -81,3 +81,9 @@ export const isWeekend = (date: Date) => {
 export function userFullName(user: User) {
   return `${user.lastName}, ${user.firstName}`;
 }
+
+export const formatDate = (asString: string) => {
+  return new Intl.DateTimeFormat('de-DE', { day: 'numeric', month: 'numeric', year: '2-digit' }).format(
+    new Date(asString),
+  );
+};

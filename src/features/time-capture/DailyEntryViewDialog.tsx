@@ -141,10 +141,10 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
               </Box>
 
               <Stack spacing={2}>
-                {dailyEntry.work_entries?.map((we, index) => {
+                {dailyEntry.work_entries?.map((we) => {
                   if (typeof we !== 'number') {
                     return (
-                      <Card key={index} variant="outlined">
+                      <Card key={we.id} variant="outlined">
                         <CardHeader title={<ConstructionView constructionId={we.constructionId} />}></CardHeader>
                         <CardContent>
                           <Box display={'flex'} justifyContent="space-between">

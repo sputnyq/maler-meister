@@ -21,8 +21,8 @@ export default function PrintSettings() {
             setValue(newValue);
           }}
         >
-          {printSettings.map((ps, index) => {
-            return <Tab label={ps.name} key={index}></Tab>;
+          {printSettings.map((ps) => {
+            return <Tab label={ps.name} key={ps.id}></Tab>;
           })}
         </Tabs>
         <Box mt={1}>

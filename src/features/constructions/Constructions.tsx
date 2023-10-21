@@ -118,7 +118,7 @@ export default function Constructions() {
         active,
         confirmed,
       },
-      sort: { '0': 'start:asc' },
+      sort: { '0': 'start:desc' },
       pagination: {
         page: paginationModel.page + 1,
         pageSize: paginationModel.pageSize,

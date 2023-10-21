@@ -31,10 +31,10 @@ export function WeekDetailView({ data, holidays }: Props) {
 
   return (
     <Box display="flex" justifyContent="space-between">
-      {allDays.map((date, index) => {
+      {allDays.map((date) => {
         const holiday = isHoliday(date, holidays);
         return (
-          <Box key={index} display="flex" flexDirection="column" alignItems="center">
+          <Box key={date.getMilliseconds()} display="flex" flexDirection="column" alignItems="center">
             <Typography color={holiday ? 'red' : undefined} variant="caption">
               {new Intl.DateTimeFormat('de-DE', {
                 weekday: 'short',

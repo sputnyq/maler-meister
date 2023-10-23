@@ -54,7 +54,7 @@ export function HoursCheckRow({ user, end, start }: Props) {
       return (
         <Tooltip key={de.id} title={de.type}>
           <Box p={'1px'} sx={{ background: 'error' }}>
-            <Chip size="small" color={getJobColor(de.type)} label={de.sum} />
+            <Chip size="small" color={getJobColor(de.type)} label={de.sum || '✓'} />
           </Box>
         </Tooltip>
       );
@@ -66,8 +66,8 @@ export function HoursCheckRow({ user, end, start }: Props) {
       <TableCell align="left" sx={{ position: 'sticky', left: '0', background: 'white' }}>
         <AppUserView user={user} />
       </TableCell>
-      {allDays.map((date, index) => (
-        <TableCell key={index} align="center">
+      {allDays.map((date) => (
+        <TableCell key={date.getMilliseconds()} align="center">
           {renderValues(getValues(date))}
         </TableCell>
       ))}

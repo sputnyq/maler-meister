@@ -127,6 +127,7 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
      CTREATE UPLOAD DAILY ENTRY
     */
     const toPersist = cloneDeep(dailyEntry);
+
     const sum =
       dailyEntry.type === 'Arbeit'
         ? workEntries.reduce((acc, next) => {
@@ -136,8 +137,10 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
 
     toPersist.username = user.username;
     toPersist.tenant = user.tenant;
-    toPersist.sum = sum;
-    toPersist.overload = sum - DEFAULT_HOURS;
+    if (dailyEntry.type === 'Arbeit') {
+      toPersist.sum = sum;
+      toPersist.overload = sum - DEFAULT_HOURS;
+    }
 
     if (workEntriesIds.current.length > 0) {
       toPersist.work_entries = workEntriesIds.current;

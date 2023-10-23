@@ -90,6 +90,9 @@ export default function DailyTimesView() {
       {
         field: 'sum',
         headerName: 'Stunden',
+        renderCell({ value }) {
+          return value || '✓';
+        },
       },
       {
         width: 250,

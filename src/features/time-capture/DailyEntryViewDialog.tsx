@@ -137,7 +137,7 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
             <Box display="flex" flexDirection={'column'} gap={2}>
               <Box display="flex" gap={2}>
                 <Chip label={dailyEntry.type} color={getJobColor(dailyEntry.type)} />
-                <Chip color="info" label={`${dailyEntry.sum} Stunden`}></Chip>
+                {Boolean(dailyEntry.sum) && <Chip color="info" label={`${dailyEntry.sum} Stunden`} />}
               </Box>
 
               <Stack spacing={2}>

@@ -133,7 +133,7 @@ export default function DailyTimesView() {
         vacations += 1;
       }
       if (dailyEntry.type === 'Krank') {
-        illnessHours += dailyEntry.sum;
+        illnessHours += 1;
       }
       if (dailyEntry.type === 'Schule') {
         school += 1;
@@ -156,12 +156,9 @@ export default function DailyTimesView() {
       },
       {
         amount: illnessHours,
-        title: 'Krankheit (Std)',
-      },
-      {
-        amount: (illnessHours / DEFAULT_HOURS).toFixed(1),
         title: 'Krankheit (Tag)',
       },
+
       {
         amount: school,
         title: 'Schule (Tag)',

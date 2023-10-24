@@ -74,7 +74,6 @@ export default function RequestVacationsDialog({ open, onClose }: Props) {
         const dailyEntry: Partial<DailyEntry> = {
           type: 'Urlaub',
           tenant: user?.tenant,
-          sum: DEFAULT_HOURS,
           username: user?.username,
           date: formatISO(date, { representation: 'date' }),
         };

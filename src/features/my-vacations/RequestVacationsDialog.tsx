@@ -73,6 +73,7 @@ export default function RequestVacationsDialog({ open, onClose }: Props) {
       if (!isHoliday(date, allHolidays) && !isWeekend(date)) {
         const dailyEntry: Partial<DailyEntry> = {
           type: 'Urlaub',
+          sum: DEFAULT_HOURS,
           tenant: user?.tenant,
           username: user?.username,
           date: formatISO(date, { representation: 'date' }),

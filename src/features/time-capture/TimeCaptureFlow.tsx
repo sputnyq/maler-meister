@@ -137,8 +137,8 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
 
     toPersist.username = user.username;
     toPersist.tenant = user.tenant;
+    toPersist.sum = sum;
     if (dailyEntry.type === 'Arbeit') {
-      toPersist.sum = sum;
       toPersist.overload = sum - DEFAULT_HOURS;
     }
 

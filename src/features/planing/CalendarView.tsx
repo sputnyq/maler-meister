@@ -10,6 +10,7 @@ import { useHolidays } from '../../hooks/useHolidays';
 import { useIsSmall } from '../../hooks/useIsSmall';
 import { AppState } from '../../store';
 import { userFullName } from '../../utilities';
+import { dailyEntries2Event, holidays2Events } from '../../utilities/cal-functions';
 import EditConstructionDialog from '../constructions/EditConstructionDialog';
 import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';
 
@@ -264,43 +265,4 @@ function constructions2Events(constructions: Construction[]): EventInput[] {
 
     return obj;
   });
-}
-
-function dailyEntries2Event(dailyEntries: DailyEntry[], users: User[]): EventInput[] {
-  return dailyEntries.map((de) => {
-    const user = users.find((u) => u.username === de.username);
-
-    const name = user ? userFullName(user) : de.username;
-
-    return {
-      date: de.date,
-      title: `${de.type === 'Urlaub' ? '🏝️' : '🎓'} ${name}`,
-      color: de.type === 'Urlaub' ? '#ed6c02' : '#19BEC3',
-      textColor: 'white',
-      allDay: true,
-      extendedProps: {
-        type: 'DAILY_ENTRY',
-        id: de.id,
-      },
-    } as EventInput;
-  });
-}
-
-function holidays2Events(holidays: Feiertag[]): EventInput[] {
-  const eventInputs = new Array<EventInput>();
-
-  for (const h of holidays) {
-    if (h.fname.toUpperCase() === 'AUGSBURGER FRIEDENSFEST') {
-      // not relevant
-      continue;
-    }
-
-    eventInputs.push({
-      display: 'background',
-      date: h.date,
-      allDay: true,
-      title: `🎉 ${h.fname}`,
-    });
-  }
-  return eventInputs;
 }

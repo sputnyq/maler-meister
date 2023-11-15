@@ -12,7 +12,7 @@ body,
 
 /* override fc-variables */
 :root {
-  --sec: #ff5e7b;
+  /* --sec: #ff5e7b;
   --sec-hover: #b24156;
 
   --fc-button-text-color: white;
@@ -23,7 +23,7 @@ body,
   --fc-button-hover-border-color: white;
 
   --fc-button-active-bg-color: var(--sec);
-  --fc-button-active-border-color: white;
+  --fc-button-active-border-color: white; */
 }
 
 .not-active .fc-event-title {

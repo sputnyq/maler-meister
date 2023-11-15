@@ -19,6 +19,7 @@ import { ALLOWED_DAYS_TO_RENOVE } from '../../constants';
 import { dailyEntryById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { dailyEntriesSignal } from '../../signals';
 import { genericConverter, getJobColor } from '../../utilities';
 import ConstructionView from './ConstructionView';
 
@@ -88,6 +89,7 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
 
   const handleDeleteRequest = async () => {
     const deleteRequest = appRequest('delete');
+
     if (confirm('Eintrag wirklich löschen?')) {
       if (dailyEntry && Array.isArray(dailyEntry?.work_entries)) {
         for (const we of dailyEntry.work_entries) {
@@ -95,8 +97,10 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
             await deleteRequest(`work-entries/${we.id}`);
           }
         }
+
+        await deleteRequest(dailyEntryById(dailyEntry.id));
+        dailyEntriesSignal.value = dailyEntriesSignal.value.filter((de) => de.id !== dailyEntry.id);
       }
-      await deleteRequest(dailyEntryById(dailyEntry?.id));
       closeDialog?.();
     }
   };

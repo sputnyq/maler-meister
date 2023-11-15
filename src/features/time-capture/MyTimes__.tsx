@@ -25,7 +25,7 @@ import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useHolidays } from '../../hooks/useHolidays';
 import { StrapiQueryObject, getJobColor } from '../../utilities';
 import { DailyEntryViewDialog } from './DailyEntryViewDialog';
-import { WeekDetailView } from './WeekDetailView';
+import { WeekDetailView } from './WeekDetailView__';
 
 import { addMonths, endOfMonth, endOfWeek, formatISO, startOfMonth, startOfWeek } from 'date-fns';
 

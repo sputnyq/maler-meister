@@ -1,3 +1,5 @@
+import { Theme } from '@mui/material';
+
 import { formatISO } from 'date-fns';
 import qs from 'qs';
 
@@ -38,16 +40,23 @@ export function buildQuery(queryObj: StrapiQueryObject) {
   return qs.stringify(queryObj);
 }
 
-export function getJobColor(type: DailyEntryType): any {
+export function getColorHex(type: DailyEntryType, theme: Theme) {
+  const { palette } = theme;
+  const themeProp = getJobColor(type);
+
+  return palette[themeProp].main;
+}
+
+export function getJobColor(type: DailyEntryType) {
   switch (type) {
     case 'Krank':
       return 'error';
     case 'Urlaub':
       return 'warning';
     case 'Schule':
+      return 'secondary';
+    case 'Arbeit':
       return 'primary';
-    default:
-      return 'default';
   }
 }
 
@@ -86,4 +95,8 @@ export const formatDate = (asString: string) => {
   return new Intl.DateTimeFormat('de-DE', { day: 'numeric', month: 'numeric', year: '2-digit' }).format(
     new Date(asString),
   );
+};
+
+export const formatNumber = (nmb: string | number) => {
+  return new Intl.NumberFormat('de-DE').format(Number(nmb));
 };

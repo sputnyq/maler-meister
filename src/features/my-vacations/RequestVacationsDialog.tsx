@@ -10,7 +10,8 @@ import { DEFAULT_HOURS } from '../../constants';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useHolidays } from '../../hooks/useHolidays';
-import { isHoliday, isWeekend } from '../../utilities';
+import { dailyEntriesSignal } from '../../signals';
+import { genericConverter, isHoliday, isWeekend } from '../../utilities';
 
 import { eachDayOfInterval, formatISO } from 'date-fns';
 
@@ -78,7 +79,10 @@ export default function RequestVacationsDialog({ open, onClose }: Props) {
           username: user?.username,
           date: formatISO(date, { representation: 'date' }),
         };
-        await appRequest('post')('daily-entries', { data: dailyEntry });
+        await appRequest('post')('daily-entries', { data: dailyEntry }).then((res) => {
+          const dailyEntry = genericConverter<DailyEntry>(res.data);
+          dailyEntriesSignal.value = [...dailyEntriesSignal.value, dailyEntry];
+        });
       }
     });
     onClose();

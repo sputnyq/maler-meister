@@ -8,17 +8,14 @@ import { DEFAULT_HOURS } from '../../constants';
 import { loadDailyEntries } from '../../fetch/api';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { StrapiQueryObject, formatDate } from '../../utilities';
+import { dailyEntriesSignal } from '../../signals';
+import { StrapiQueryObject, formatDate, genericConverter } from '../../utilities';
 import DailyEntryEditor from './DailyEntryEditor';
 
 import { formatISO } from 'date-fns';
 import { cloneDeep } from 'lodash';
 
-interface Props {
-  requestUpdate(): void;
-}
-
-export function TimeCaptureFlow({ requestUpdate }: Props) {
+export function TimeCaptureFlow() {
   const user = useCurrentUser();
 
   const [open, setOpen] = useState(false);
@@ -147,9 +144,13 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
     }
 
     appRequest('post')('daily-entries', { data: toPersist })
-      .then(() => {
+      .then((res) => {
+        const converted = genericConverter<DailyEntry>(res.data);
+        dailyEntriesSignal.value = [...dailyEntriesSignal.value, converted];
+
         severity.current = 'success';
         alertMessage.current = 'Zeiten erfolgreich gespeichert';
+
         setOpenSnackbar(true);
       })
       .catch(errorHandler)
@@ -158,7 +159,6 @@ export function TimeCaptureFlow({ requestUpdate }: Props) {
         setWorkEntries([]);
         setDailyEntry(initialDailyEntry);
         setOpen(false);
-        requestUpdate();
       });
   };
 

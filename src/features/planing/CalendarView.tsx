@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@mui/material';
+import { Card, CardContent, Theme, useTheme } from '@mui/material';
 
 import FullCalendar from '@fullcalendar/react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -9,7 +9,8 @@ import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useHolidays } from '../../hooks/useHolidays';
 import { useIsSmall } from '../../hooks/useIsSmall';
 import { AppState } from '../../store';
-import { dailyEntries2Event, holidays2Events } from '../../utilities/cal-functions';
+import { getColorHex, userFullName } from '../../utilities';
+import { holidays2Events } from '../../utilities/cal-functions';
 import EditConstructionDialog from '../constructions/EditConstructionDialog';
 import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';
 
@@ -55,6 +56,8 @@ export default function CalendarView() {
   const [dailyEntries, setDailyEntries] = useState<DailyEntry[]>([]);
   const [constructions, setConstructions] = useState<Construction[]>([]);
   const [update, setUpdate] = useState(0);
+
+  const theme = useTheme();
 
   const idRef = useRef<undefined | string | number>(undefined);
   const dateSelectArg = useRef<DateSelectArg | null>(null);
@@ -115,11 +118,11 @@ export default function CalendarView() {
 
   const events = useMemo(() => {
     const holidayEvents = holidays2Events(holidays);
-    const vacationEvents = dailyEntries2Event(dailyEntries, users);
+    const vacationEvents = dailyEntries2Event(dailyEntries, users, theme);
     const constructionEvents = constructions2Events(constructions);
 
     return [...holidayEvents, ...vacationEvents, ...constructionEvents];
-  }, [holidays, dailyEntries, users, constructions]);
+  }, [holidays, dailyEntries, users, constructions, theme]);
 
   const customButtons = useMemo(() => {
     const zoomIn = () => {
@@ -227,6 +230,26 @@ export default function CalendarView() {
       </Card>
     </>
   );
+}
+
+function dailyEntries2Event(dailyEntries: DailyEntry[], users: User[], theme: Theme): EventInput[] {
+  return dailyEntries.map((de) => {
+    const user = users.find((u) => u.username === de.username);
+
+    const name = user ? userFullName(user) : de.username;
+
+    return {
+      date: de.date,
+      title: name,
+      color: getColorHex(de.type, theme),
+      textColor: 'white',
+      allDay: true,
+      extendedProps: {
+        type: 'DAILY_ENTRY',
+        id: de.id,
+      },
+    } as EventInput;
+  });
 }
 
 function constructions2Events(constructions: Construction[]): EventInput[] {

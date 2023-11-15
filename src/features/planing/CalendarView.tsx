@@ -9,7 +9,6 @@ import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useHolidays } from '../../hooks/useHolidays';
 import { useIsSmall } from '../../hooks/useIsSmall';
 import { AppState } from '../../store';
-import { userFullName } from '../../utilities';
 import { dailyEntries2Event, holidays2Events } from '../../utilities/cal-functions';
 import EditConstructionDialog from '../constructions/EditConstructionDialog';
 import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';
@@ -20,11 +19,6 @@ import interactionPlugin from '@fullcalendar/interaction';
 import multiMonthPlugin from '@fullcalendar/multimonth';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { addDays, formatISO } from 'date-fns';
-
-type EventDateRange = {
-  start?: Date;
-  end?: Date;
-};
 
 const COLOR_CODES = [
   '#213363',

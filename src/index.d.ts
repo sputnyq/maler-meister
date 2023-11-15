@@ -162,3 +162,8 @@ interface PrintSettings {
 }
 
 type SupportedFonts = 'Courier' | 'Helvetica' | 'Times';
+
+type EventDateRange = {
+  start?: Date;
+  end?: Date;
+};

@@ -51,12 +51,14 @@ export function getJobColor(type: DailyEntryType) {
   switch (type) {
     case 'Krank':
       return 'error';
-    case 'Urlaub':
-      return 'warning';
     case 'Schule':
-      return 'secondary';
+      return 'success';
     case 'Arbeit':
       return 'primary';
+    case 'Feiertag':
+      return 'secondary';
+    case 'Urlaub':
+      return 'warning';
   }
 }
 

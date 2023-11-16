@@ -105,6 +105,9 @@ export default function DailyEntryEditor({ dailyEntry, workEntries, setWorkEntri
               <ToggleButton size="small" value="Schule">
                 Schule
               </ToggleButton>
+              <ToggleButton size="small" value="Feiertag">
+                Feiertag
+              </ToggleButton>
             </ToggleButtonGroup>
           </Box>
         </GridItem>

@@ -4,9 +4,10 @@ import { useSelector } from 'react-redux';
 
 import { AppTextField } from '../../../components/AppTextField';
 import { AppState } from '../../../store';
+import { formatNumber } from '../../../utilities';
 import { TimeCaptureTimePicker } from './TimeCaptureTimePicker';
 import { setWorkEntryValue, workEntrySignal } from './timeCaptureSignals';
-import { interval2String } from './timeCaptureUtils';
+import { calculateWorkingMinutes, interval2String } from './timeCaptureUtils';
 
 export function WorkEntryEditor() {
   const appJobs = useSelector<AppState, AppJob[]>((s) => s.jobs.jobs || []);
@@ -23,6 +24,8 @@ export function WorkEntryEditor() {
     }
     return '';
   };
+
+  const workingHours = calculateWorkingMinutes(workEntrySignal.value) / 60;
 
   return (
     <>
@@ -64,7 +67,7 @@ export function WorkEntryEditor() {
 
         <Divider sx={{ marginTop: 2 }} />
 
-        <Typography variant="h6">
+        <Typography>
           Anwesenheit: {duration({ start: workEntrySignal.value.start, end: workEntrySignal.value.end })}
         </Typography>
 
@@ -86,7 +89,7 @@ export function WorkEntryEditor() {
           />
         </Box>
 
-        <Typography variant="h6">
+        <Typography>
           Pause: {duration({ start: workEntrySignal.value.breakStart, end: workEntrySignal.value.breakEnd })}
         </Typography>
 
@@ -110,6 +113,9 @@ export function WorkEntryEditor() {
             }}
           />
         </Box>
+        <Typography variant="h6" color={workingHours >= 10 ? 'error' : 'primary'}>
+          Arbeitszeit: {formatNumber(workingHours)} Stunden
+        </Typography>
       </Box>
     </>
   );

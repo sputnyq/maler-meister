@@ -24,6 +24,17 @@ export function toDailyEntry(args: {
   };
 }
 
+export function calculateWorkingMinutes(workEntryStub: WorkEntryStub) {
+  const { end, start, breakEnd, breakStart } = workEntryStub;
+  const allMin = differenceInMinutes(end, start);
+  const breakExist = Boolean(breakStart) && Boolean(breakEnd);
+  let breakMin = 0;
+  if (breakExist) {
+    breakMin = differenceInMinutes(breakEnd, breakStart);
+  }
+  return allMin - breakMin;
+}
+
 export function toWorkEntry(args: {
   workEntryStub: WorkEntryStub;
   date: string;
@@ -36,13 +47,9 @@ export function toWorkEntry(args: {
 
   const timeFormat = new Intl.DateTimeFormat('de-DE', { hour: 'numeric', minute: '2-digit' });
 
-  const allMin = differenceInMinutes(end, start);
   const breakExist = Boolean(breakStart) && Boolean(breakEnd);
-  let breakMin = 0;
-  if (breakExist) {
-    breakMin = differenceInMinutes(breakEnd, breakStart);
-  }
-  const workMin = allMin - breakMin;
+
+  const workMin = calculateWorkingMinutes(workEntryStub);
 
   return {
     date,

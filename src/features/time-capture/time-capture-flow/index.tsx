@@ -65,7 +65,7 @@ export function TimeCaptureFlow() {
   const persistWorkEntry = async (): Promise<WorkEntry> => {
     const we: WorkEntry = toWorkEntry({
       workEntryStub: workEntrySignal.value,
-      tenant: user.username,
+      tenant: user.tenant,
       username: user.username,
       date: dailyEntrySignal.value.date,
     });

@@ -10,7 +10,7 @@ import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { getJobColor } from '../../utilities';
+import { formatNumber, getJobColor } from '../../utilities';
 import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';
 import { PastDateRange } from '../time-capture/PastDateRange';
 import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
@@ -80,7 +80,6 @@ export default function DailyTimesView() {
     const cols: GridColDef[] = [
       {
         field: 'date',
-        width: 250,
         headerName: 'Datum',
         renderCell({ value, id }) {
           return <RequestDailyViewButton value={value} onClick={() => handleDialogRequest(id)} />;
@@ -90,18 +89,19 @@ export default function DailyTimesView() {
         field: 'sum',
         headerName: 'Stunden',
         renderCell({ value }) {
-          return value || '✓';
+          return formatNumber(value);
         },
       },
       {
-        width: 250,
         field: 'overload',
         headerName: 'Delta',
+        renderCell({ value }) {
+          return formatNumber(value);
+        },
       },
       {
         field: 'type',
         headerName: 'Art',
-        flex: 1,
         renderCell({ value, row }) {
           return <Chip size="small" label={value} color={getJobColor(row.type)} />;
         },
@@ -141,11 +141,11 @@ export default function DailyTimesView() {
 
     return [
       {
-        amount: sum,
+        amount: formatNumber(sum),
         title: 'Gesamt (Std.)',
       },
       {
-        amount: overload,
+        amount: formatNumber(overload),
         title: 'Delta (Std.)',
       },
 

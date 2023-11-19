@@ -63,10 +63,7 @@ export function WorkerTimes() {
     const ext = arg.event.extendedProps as EventExtendedProps;
     if (ext.type === 'DAILY_ENTRY') {
       dailyEntryId.current = ext.id;
-
       setDialogOpen(true);
-    } else {
-      alert(`${formatDate(arg.event.start)}, ${arg.event.title}`);
     }
   };
 

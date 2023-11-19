@@ -10,20 +10,11 @@ body,
   font-family: 'Source Sans Pro', sans-serif;
 }
 
-/* override fc-variables */
-:root {
-  --sec: #ff5e7b;
-  --sec-hover: #b24156;
-
-  --fc-button-text-color: white;
-  --fc-button-bg-color: var(--sec);
-  --fc-button-border-color: white;
-
-  --fc-button-hover-bg-color: var(--sec-hover);
-  --fc-button-hover-border-color: white;
-
-  --fc-button-active-bg-color: var(--sec);
-  --fc-button-active-border-color: white;
+.fc-event-title {
+  word-wrap: break-word;
+  text-overflow: clip;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .not-active .fc-event-title {

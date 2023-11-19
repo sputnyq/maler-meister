@@ -56,7 +56,7 @@ interface User {
   tenant: string;
 }
 
-type DailyEntryType = 'Arbeit' | 'Urlaub' | 'Krank' | 'Schule';
+type DailyEntryType = 'Arbeit' | 'Urlaub' | 'Krank' | 'Schule' | 'Feiertag';
 
 interface Construction {
   id: number;
@@ -70,20 +70,32 @@ interface Construction {
 }
 interface WorkEntry {
   id?: number;
-  date: string;
   constructionId: number;
+  date: string;
   username: string;
-  hours: string;
+  hours: number;
   job: string;
-  jobId: number;
   tenant: string;
+  jobId: number;
+
+  start: string;
+  end: string;
+  breakStart: string | undefined;
+  breakEnd: string | undefined;
+  break: string | undefined;
+}
+
+interface WorkEntryStub extends WorkEntry {
+  start: Date;
+  end: Date;
+  breakStart: Date;
+  breakEnd: Date;
 }
 interface DailyEntry {
   id?: number;
   date: string;
   sum: number;
   overload: number;
-  underload: number;
   username: string;
   type: DailyEntryType;
   work_entries?: WorkEntry[] | number[];
@@ -162,3 +174,8 @@ interface PrintSettings {
 }
 
 type SupportedFonts = 'Courier' | 'Helvetica' | 'Times';
+
+type EventDateRange = {
+  start?: Date;
+  end?: Date;
+};

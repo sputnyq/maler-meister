@@ -56,7 +56,7 @@ export default function MainNavigation() {
                 <AccessTimeIcon />
               </Tile>
 
-              <Tile requiredRoles={['worker', 'admin']} to="time-capture" title="Zeiterfassung">
+              <Tile requiredRoles={['worker']} to="time-capture" title="Zeiterfassung">
                 <MoreTimeIcon />
               </Tile>
 

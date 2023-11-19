@@ -7,6 +7,7 @@ import {
   CardContent,
   CardHeader,
   Chip,
+  Divider,
   Skeleton,
   Stack,
   Typography,
@@ -19,7 +20,8 @@ import { ALLOWED_DAYS_TO_RENOVE } from '../../constants';
 import { dailyEntryById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { genericConverter, getJobColor } from '../../utilities';
+import { dailyEntriesSignal } from '../../signals';
+import { formatNumber, genericConverter, getJobColor } from '../../utilities';
 import ConstructionView from './ConstructionView';
 
 import { addDays } from 'date-fns';
@@ -88,6 +90,7 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
 
   const handleDeleteRequest = async () => {
     const deleteRequest = appRequest('delete');
+
     if (confirm('Eintrag wirklich löschen?')) {
       if (dailyEntry && Array.isArray(dailyEntry?.work_entries)) {
         for (const we of dailyEntry.work_entries) {
@@ -95,8 +98,10 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
             await deleteRequest(`work-entries/${we.id}`);
           }
         }
+
+        await deleteRequest(dailyEntryById(dailyEntry.id));
+        dailyEntriesSignal.value = dailyEntriesSignal.value.filter((de) => de.id !== dailyEntry.id);
       }
-      await deleteRequest(dailyEntryById(dailyEntry?.id));
       closeDialog?.();
     }
   };
@@ -119,6 +124,7 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
   if (loading) {
     return LoadingSkeleton;
   }
+
   return (
     <Box display="flex" flexDirection={'column'} gap={2}>
       {dailyEntry !== null ? (
@@ -137,7 +143,7 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
             <Box display="flex" flexDirection={'column'} gap={2}>
               <Box display="flex" gap={2}>
                 <Chip label={dailyEntry.type} color={getJobColor(dailyEntry.type)} />
-                {Boolean(dailyEntry.sum) && <Chip color="info" label={`${dailyEntry.sum} Stunden`} />}
+                {Boolean(dailyEntry.sum) && <Chip color="info" label={`${formatNumber(dailyEntry.sum)} Stunden`} />}
               </Box>
 
               <Stack spacing={2}>
@@ -149,8 +155,13 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
                         <CardContent>
                           <Box display={'flex'} justifyContent="space-between">
                             <Typography variant="subtitle2">{we.job}</Typography>
-                            <Typography variant="subtitle2">{`${we.hours} Stunden`}</Typography>
+                            <Typography variant="subtitle2">{`${formatNumber(we.hours)} Stunden`}</Typography>
                           </Box>
+                          <Box paddingY={2}>
+                            <Divider />
+                          </Box>
+                          <Typography variant="subtitle2">{`Anwesend: ${we.start} - ${we.end}`}</Typography>
+                          {we.break && <Typography variant="subtitle2">{`Pause:  ${we.break}`}</Typography>}
                         </CardContent>
                       </Card>
                     );

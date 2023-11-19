@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { AppUserView } from '../../../components/AppUserView';
 import { loadDailyEntries } from '../../../fetch/api';
 import { useCurrentUser } from '../../../hooks/useCurrentUser';
-import { StrapiQueryObject, getJobColor } from '../../../utilities';
+import { StrapiQueryObject, formatNumber, getJobColor } from '../../../utilities';
 
 import { eachDayOfInterval, formatISO } from 'date-fns';
 
@@ -54,7 +54,7 @@ export function HoursCheckRow({ user, end, start }: Props) {
       return (
         <Tooltip key={de.id} title={de.type}>
           <Box p={'1px'} sx={{ background: 'error' }}>
-            <Chip size="small" color={getJobColor(de.type)} label={de.sum || '✓'} />
+            <Chip size="small" color={getJobColor(de.type)} label={formatNumber(de.sum)} />
           </Box>
         </Tooltip>
       );

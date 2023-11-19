@@ -1,3 +1,5 @@
+import { Theme } from '@mui/material';
+
 import { formatISO } from 'date-fns';
 import qs from 'qs';
 
@@ -38,16 +40,25 @@ export function buildQuery(queryObj: StrapiQueryObject) {
   return qs.stringify(queryObj);
 }
 
-export function getJobColor(type: DailyEntryType): any {
+export function getColorHex(type: DailyEntryType, theme: Theme) {
+  const { palette } = theme;
+  const themeProp = getJobColor(type);
+
+  return palette[themeProp].main;
+}
+
+export function getJobColor(type: DailyEntryType) {
   switch (type) {
     case 'Krank':
       return 'error';
+    case 'Schule':
+      return 'success';
+    case 'Arbeit':
+      return 'primary';
+    case 'Feiertag':
+      return 'secondary';
     case 'Urlaub':
       return 'warning';
-    case 'Schule':
-      return 'primary';
-    default:
-      return 'default';
   }
 }
 
@@ -82,8 +93,15 @@ export function userFullName(user: User) {
   return `${user.lastName}, ${user.firstName}`;
 }
 
-export const formatDate = (asString: string) => {
-  return new Intl.DateTimeFormat('de-DE', { day: 'numeric', month: 'numeric', year: '2-digit' }).format(
-    new Date(asString),
-  );
+export const formatDate = (date: string | Date | null) => {
+  if (date === null) return '';
+  const f = new Intl.DateTimeFormat('de-DE', { day: '2-digit', month: 'numeric', year: '2-digit' });
+  if (typeof date === 'string') {
+    return f.format(new Date(date));
+  }
+  return f.format(date);
+};
+
+export const formatNumber = (nmb: string | number) => {
+  return new Intl.NumberFormat('de-DE', { maximumFractionDigits: 2 }).format(Number(nmb));
 };

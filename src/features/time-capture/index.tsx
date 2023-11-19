@@ -1,20 +1,32 @@
 import { Card, CardContent, CardHeader } from '@mui/material';
 
-import { useState } from 'react';
+import { dailyEntriesSignal, eventDateRangeSignal } from '../../signals';
+import { formatNumber } from '../../utilities';
+import { WorkerTimes } from './WorkerTimes';
+import { TimeCaptureFlow } from './time-capture-flow';
 
-import { MyTimes } from './MyTimes';
-import { TimeCaptureFlow } from './TimeCaptureFlow';
+import { isAfter, isBefore } from 'date-fns';
 
 export default function TimeCapture() {
-  const [update, setUpdate] = useState(0);
+  function isInRange(de: DailyEntry) {
+    const { start, end } = eventDateRangeSignal.value;
+
+    if (start && end) {
+      const date = new Date(de.date);
+      return isAfter(date, start) && isBefore(date, end);
+    }
+    return false;
+  }
+
+  const sum = dailyEntriesSignal.value.filter((de) => isInRange(de)).reduce((acc, next) => acc + next.sum, 0);
 
   return (
     <Card>
-      <CardHeader title="Meine Zeiten" />
+      <CardHeader title={`Gesamt: ${formatNumber(sum)} Stunden`}></CardHeader>
       <CardContent>
-        <MyTimes update={update} requestUpdate={() => setUpdate((u) => u + 1)} />
+        <WorkerTimes />
       </CardContent>
-      <TimeCaptureFlow requestUpdate={() => setUpdate((u) => u + 1)} />
+      <TimeCaptureFlow />
     </Card>
   );
 }

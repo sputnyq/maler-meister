@@ -1,4 +1,5 @@
 import { Alert, AlertColor, Box, Snackbar } from '@mui/material';
+import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
 
 import { useCallback, useMemo, useRef, useState } from 'react';
 
@@ -10,7 +11,6 @@ import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { dailyEntriesSignal } from '../../signals';
 import { StrapiQueryObject, formatDate, genericConverter } from '../../utilities';
-import DailyEntryEditor from './DailyEntryEditor';
 
 import { formatISO } from 'date-fns';
 import { cloneDeep } from 'lodash';
@@ -32,7 +32,7 @@ export function TimeCaptureFlow() {
 
   const [workEntries, setWorkEntries] = useState<WorkEntry[]>([
     {
-      hours: '8',
+      hours: 8,
     } as WorkEntry,
   ]);
 
@@ -156,7 +156,7 @@ export function TimeCaptureFlow() {
       .catch(errorHandler)
       .finally(() => {
         workEntriesIds.current = [];
-        setWorkEntries([]);
+        setWorkEntries([{ hours: 8 } as WorkEntry]);
         setDailyEntry(initialDailyEntry);
         setOpen(false);
       });
@@ -172,12 +172,14 @@ export function TimeCaptureFlow() {
         confirmDisabled={invalidEntry}
       >
         <Box width={'inherit'} maxWidth={1000} marginX="auto" height={'100%'}>
-          <DailyEntryEditor
-            workEntries={workEntries}
-            dailyEntry={dailyEntry}
-            setWorkEntries={setWorkEntries}
-            setDailyEntry={setDailyEntry}
-          />
+          <Box>
+            <DesktopTimePicker<Date>
+              timeSteps={{ hours: 1, minutes: 15 }}
+              onChange={(arg) => {
+                console.log(arg?.getTime());
+              }}
+            />
+          </Box>
         </Box>
       </AppDialog>
       <AddFab onClick={() => setOpen(true)} />

@@ -1,4 +1,6 @@
 import { Box, CssBaseline, ThemeProvider } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import { Suspense, lazy } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
@@ -13,6 +15,8 @@ import Login from './features/log-in-out/Login';
 import LoginProvider from './features/log-in-out/LoginProvider';
 import { useIsSmall } from './hooks/useIsSmall';
 import theme from './style/theme';
+
+import de from 'date-fns/locale/de';
 
 const Offers = lazy(() => import('./features/offers'));
 const Invoices = lazy(() => import('./features/invoices'));
@@ -33,25 +37,27 @@ const BgbServices = lazy(() => import('./features/options/services/bgb'));
 export default function App() {
   const isSmall = useIsSmall();
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline>
-        <RootBox>
-          <TopBar />
-          <Box mt={isSmall ? 6 : 7}>
-            <AppRoutes />
-          </Box>
-        </RootBox>
-        <img
-          style={{
-            zIndex: '-1',
-            position: 'fixed',
-            bottom: '0',
-            width: '100%',
-          }}
-          src={skylineUrl}
-        />
-      </CssBaseline>
-    </ThemeProvider>
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={de}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline>
+          <RootBox>
+            <TopBar />
+            <Box mt={isSmall ? 6 : 7}>
+              <AppRoutes />
+            </Box>
+          </RootBox>
+          <img
+            style={{
+              zIndex: '-1',
+              position: 'fixed',
+              bottom: '0',
+              width: '100%',
+            }}
+            src={skylineUrl}
+          />
+        </CssBaseline>
+      </ThemeProvider>
+    </LocalizationProvider>
   );
 }
 

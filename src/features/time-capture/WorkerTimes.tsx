@@ -7,7 +7,7 @@ import { loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useHolidays } from '../../hooks/useHolidays';
 import { dailyEntriesSignal, eventDateRangeSignal } from '../../signals';
-import { getColorHex } from '../../utilities';
+import { formatDate, formatNumber, getColorHex } from '../../utilities';
 import { holidays2Events } from '../../utilities/cal-functions';
 import { DailyEntryViewDialog } from './DailyEntryViewDialog';
 
@@ -61,8 +61,13 @@ export function WorkerTimes() {
 
   const handleEventClick = (arg: EventClickArg) => {
     const ext = arg.event.extendedProps as EventExtendedProps;
-    dailyEntryId.current = ext.id;
-    setDialogOpen(true);
+    if (ext.type === 'DAILY_ENTRY') {
+      dailyEntryId.current = ext.id;
+
+      setDialogOpen(true);
+    } else {
+      alert(`${formatDate(arg.event.start)}, ${arg.event.title}`);
+    }
   };
 
   const handleCloseRequest = () => {
@@ -95,15 +100,17 @@ export function WorkerTimes() {
 
 type EventExtendedProps = {
   id: number;
+  type: 'DAILY_ENTRY' | 'HOLIDAY';
 };
 
 function dailyEntry2Event(de: DailyEntry, theme: Theme) {
   return {
     color: getColorHex(de.type, theme),
     date: de.date,
-    title: String(de.sum),
+    title: formatNumber(de.sum),
     extendedProps: {
       id: de.id,
+      type: 'DAILY_ENTRY',
     },
   } as EventInput;
 }

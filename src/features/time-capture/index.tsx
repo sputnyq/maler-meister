@@ -2,8 +2,8 @@ import { Card, CardContent, CardHeader } from '@mui/material';
 
 import { dailyEntriesSignal, eventDateRangeSignal } from '../../signals';
 import { formatNumber } from '../../utilities';
-import { TimeCaptureFlow } from './TimeCaptureFlow';
 import { WorkerTimes } from './WorkerTimes';
+import { TimeCaptureFlow } from './time-capture-flow';
 
 import { isAfter, isBefore } from 'date-fns';
 

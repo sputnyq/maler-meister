@@ -15,6 +15,9 @@ export function holidays2Events(holidays: Feiertag[]): EventInput[] {
       color: 'red',
       allDay: true,
       title: `${h.fname}`,
+      extendedProps: {
+        type: 'HOLIDAY',
+      },
     });
   }
   return eventInputs;

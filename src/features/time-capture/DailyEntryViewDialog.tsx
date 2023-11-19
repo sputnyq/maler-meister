@@ -20,7 +20,7 @@ import { dailyEntryById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { dailyEntriesSignal } from '../../signals';
-import { genericConverter, getJobColor } from '../../utilities';
+import { formatNumber, genericConverter, getJobColor } from '../../utilities';
 import ConstructionView from './ConstructionView';
 
 import { addDays } from 'date-fns';
@@ -141,7 +141,7 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
             <Box display="flex" flexDirection={'column'} gap={2}>
               <Box display="flex" gap={2}>
                 <Chip label={dailyEntry.type} color={getJobColor(dailyEntry.type)} />
-                {Boolean(dailyEntry.sum) && <Chip color="info" label={`${dailyEntry.sum} Stunden`} />}
+                {Boolean(dailyEntry.sum) && <Chip color="info" label={`${formatNumber(dailyEntry.sum)} Stunden`} />}
               </Box>
 
               <Stack spacing={2}>
@@ -153,7 +153,7 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
                         <CardContent>
                           <Box display={'flex'} justifyContent="space-between">
                             <Typography variant="subtitle2">{we.job}</Typography>
-                            <Typography variant="subtitle2">{`${we.hours} Stunden`}</Typography>
+                            <Typography variant="subtitle2">{`${formatNumber(we.hours)} Stunden`}</Typography>
                           </Box>
                         </CardContent>
                       </Card>

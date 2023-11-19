@@ -81,8 +81,8 @@ export function HoursCheck() {
           <TableHead>
             <TableRow>
               <TableCell sx={{ position: 'sticky', left: '0' }} />
-              {allDays.map((day, index) => (
-                <TableCell align="center" key={index}>
+              {allDays.map((day) => (
+                <TableCell align="center" key={day.getDate()}>
                   {new Intl.DateTimeFormat('de-DE', { weekday: 'short', day: 'numeric', month: 'numeric' }).format(day)}
                 </TableCell>
               ))}

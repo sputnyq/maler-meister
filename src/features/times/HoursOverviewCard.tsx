@@ -23,8 +23,8 @@ export function HoursOverviewCard({ hours }: Props) {
           spacing={1}
           divider={<Divider orientation={small ? 'horizontal' : 'vertical'} flexItem />}
         >
-          {hours.map((hourObj, index) => (
-            <HoursTile {...hourObj} key={index} />
+          {hours.map((hourObj) => (
+            <HoursTile {...hourObj} key={`${hourObj.amount}-${hourObj.title}`} />
           ))}
         </Stack>
       </CardContent>

@@ -26,9 +26,9 @@ export default function WorkerNameFilter({ curUsername, setUsername }: Props) {
         label="Mitarbeiter"
       >
         <MenuItem>Alle</MenuItem>
-        {workers.map((worker, index) => {
+        {workers.map((worker) => {
           return (
-            <MenuItem key={index} value={worker.username}>
+            <MenuItem key={worker.username} value={worker.username}>
               {`${worker.lastName}, ${worker.firstName}`}
             </MenuItem>
           );

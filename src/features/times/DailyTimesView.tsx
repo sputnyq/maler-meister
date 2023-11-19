@@ -51,7 +51,7 @@ export default function DailyTimesView() {
 
   const handleExportRequest = useCallback(() => {
     const { start, end } = dateRange;
-    const fileName = `Export ${curUsername || ''} ${start || ''}-${end || ''}`;
+    const filename = `Export ${curUsername || ''} ${start || ''}-${end || ''}`;
 
     const queryObj = {
       filters: {
@@ -68,10 +68,11 @@ export default function DailyTimesView() {
         page: 1,
         pageSize: 150,
       },
+      populate: '*',
     };
     loadDailyEntries(queryObj).then((res) => {
       if (res.dailyEntries) {
-        downloadAsCsv(res.dailyEntries, fileName);
+        downloadAsCsv({ dailyEntries: res.dailyEntries, filename, dateRange });
       }
     });
   }, [curUsername, dailyEntryType, dateRange, user?.tenant]);

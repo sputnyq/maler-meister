@@ -22,7 +22,7 @@ export default function TimeCapture() {
 
   return (
     <Card>
-      <CardHeader title={`Gesamt: ${formatNumber(sum)} Stunden`} />
+      <CardHeader title={`Gesamt: ${formatNumber(sum)} Stunden`}></CardHeader>
       <CardContent>
         <WorkerTimes />
       </CardContent>

@@ -7,7 +7,7 @@ import { loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useHolidays } from '../../hooks/useHolidays';
 import { dailyEntriesSignal, eventDateRangeSignal } from '../../signals';
-import { formatDate, formatNumber, getColorHex } from '../../utilities';
+import { formatNumber, getColorHex } from '../../utilities';
 import { holidays2Events } from '../../utilities/cal-functions';
 import { DailyEntryViewDialog } from './DailyEntryViewDialog';
 

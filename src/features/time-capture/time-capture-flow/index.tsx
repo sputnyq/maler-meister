@@ -5,14 +5,13 @@ import { useRef, useState } from 'react';
 import AddFab from '../../../components/AddFab';
 import { AppDialog } from '../../../components/AppDialog';
 import { DEFAULT_HOURS } from '../../../constants';
-import { loadDailyEntries } from '../../../fetch/api';
 import { appRequest } from '../../../fetch/fetch-client';
 import { useCurrentUser } from '../../../hooks/useCurrentUser';
 import { dailyEntriesSignal } from '../../../signals';
-import { StrapiQueryObject, formatDate, genericConverter } from '../../../utilities';
+import { genericConverter } from '../../../utilities';
 import { TimeCaptureDialogContent } from './TimeCaptureDialogContent';
 import { dailyEntrySignal, initilDailyEntry, workEntrySignal } from './timeCaptureSignals';
-import { checkWorkEntry, toDailyEntry, toWorkEntry } from './timeCaptureUtils';
+import { checkWorkEntry, isEntryExists, toDailyEntry, toWorkEntry } from './timeCaptureUtils';
 
 export function TimeCaptureFlow() {
   const user = useCurrentUser();
@@ -38,30 +37,6 @@ export function TimeCaptureFlow() {
     dailyEntrySignal.value = initilDailyEntry;
   };
 
-  const isEntryExists = async () => {
-    const queryObject: StrapiQueryObject = {
-      filters: {
-        tenant: user?.tenant,
-        username: {
-          $eq: user?.username,
-        },
-        date: {
-          $eq: dailyEntrySignal.value.date,
-        },
-      },
-    };
-    return loadDailyEntries(queryObject).then((res) => {
-      if (res.meta.pagination.total > 0) {
-        throw new Error(
-          `Für den Tag ${formatDate(
-            dailyEntrySignal.value.date,
-          )} wurde die Zeit bereits erfasst. Ändere das Datum oder lösche den Eintrag`,
-        );
-      }
-      return false;
-    });
-  };
-
   const persistWorkEntry = async (): Promise<WorkEntry> => {
     const we: WorkEntry = toWorkEntry({
       workEntryStub: workEntrySignal.value,
@@ -76,7 +51,7 @@ export function TimeCaptureFlow() {
 
   const saveRequest = async () => {
     try {
-      await isEntryExists();
+      await isEntryExists({ tenant: user.tenant, username: user.username, date: dailyEntrySignal.value.date });
       let workEntry: WorkEntry | undefined = undefined;
 
       if (dailyEntrySignal.value.type === 'Arbeit') {

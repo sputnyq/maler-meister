@@ -1,4 +1,6 @@
 import { DEFAULT_HOURS } from '../../../constants';
+import { loadDailyEntries } from '../../../fetch/api';
+import { StrapiQueryObject, formatDate } from '../../../utilities';
 
 import { differenceInMinutes, formatDuration, intervalToDuration } from 'date-fns';
 import { de } from 'date-fns/locale';
@@ -123,4 +125,28 @@ export function checkWorkEntry(currentWE: WorkEntryStub) {
     throw new Error('Deine Pause muss mindestens 45 Min. dauern');
   }
   return true;
+}
+
+export async function isEntryExists(args: { tenant: string; username: string; date: string }) {
+  const { date, tenant, username } = args;
+
+  const queryObject: StrapiQueryObject = {
+    filters: {
+      tenant: tenant,
+      username: {
+        $eq: username,
+      },
+      date: {
+        $eq: date,
+      },
+    },
+  };
+  return loadDailyEntries(queryObject).then((res) => {
+    if (res.meta.pagination.total > 0) {
+      throw new Error(
+        `Für den Tag ${formatDate(date)} wurde die Zeit bereits erfasst. Ändere das Datum oder lösche den Eintrag`,
+      );
+    }
+    return false;
+  });
 }

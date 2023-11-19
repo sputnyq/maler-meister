@@ -62,7 +62,7 @@ export function TimeCaptureFlow() {
 
       const dailyEntry = toDailyEntry({
         date: dailyEntrySignal.value.date,
-        sum: workEntry?.hours || DEFAULT_HOURS,
+        sum: workEntry?.hours ?? DEFAULT_HOURS,
         tenant: user.tenant,
         username: user.username,
         type: dailyEntrySignal.value.type,

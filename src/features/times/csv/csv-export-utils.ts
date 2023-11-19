@@ -38,9 +38,9 @@ export function downloadAsCsv(args: { dailyEntries: DailyEntry[]; filename: stri
           formatter.format(new Date(de.date)).replace(',', ';'),
           de.username.toUpperCase(),
           de.type,
-          we?.start || '',
-          we?.break || '',
-          we?.end || '',
+          we?.start ?? '',
+          we?.break ?? '',
+          we?.end ?? '',
           formatNumber(de.sum),
         ].join(';');
       } else {

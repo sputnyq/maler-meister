@@ -52,11 +52,11 @@ export function TimeCaptureFlow() {
     };
     return loadDailyEntries(queryObject).then((res) => {
       if (res.meta.pagination.total > 0) {
-        throw {
-          message: `Für den Tag ${formatDate(
+        throw new Error(
+          `Für den Tag ${formatDate(
             dailyEntrySignal.value.date,
           )} wurde die Zeit bereits erfasst. Ändere das Datum oder lösche den Eintrag`,
-        };
+        );
       }
       return false;
     });
@@ -96,8 +96,9 @@ export function TimeCaptureFlow() {
 
       await appRequest('post')('daily-entries', { data: dailyEntry }).then(onSuccess);
     } catch (e: any) {
+      const errorString = e.toString();
       severity.current = 'error';
-      alertMessage.current = e.message;
+      alertMessage.current = errorString.split(': ')[1];
 
       setOpenSnackbar(true);
     }

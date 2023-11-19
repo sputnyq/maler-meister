@@ -80,9 +80,9 @@ interface WorkEntry {
 
   start: string;
   end: string;
-  breakStart: string;
-  breakEnd: string;
-  break: string;
+  breakStart: string | undefined;
+  breakEnd: string | undefined;
+  break: string | undefined;
 }
 
 interface WorkEntryStub extends WorkEntry {

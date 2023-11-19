@@ -36,8 +36,12 @@ export function toWorkEntry(args: {
 
   const timeFormat = new Intl.DateTimeFormat('de-DE', { hour: 'numeric', minute: '2-digit' });
 
-  const allMin = differenceInMinutes(workEntryStub.end, workEntryStub.start);
-  const breakMin = differenceInMinutes(workEntryStub.breakEnd, workEntryStub.breakStart);
+  const allMin = differenceInMinutes(end, start);
+  const breakExist = Boolean(breakStart) && Boolean(breakEnd);
+  let breakMin = 0;
+  if (breakExist) {
+    breakMin = differenceInMinutes(breakEnd, breakStart);
+  }
   const workMin = allMin - breakMin;
 
   return {
@@ -49,10 +53,10 @@ export function toWorkEntry(args: {
     jobId,
     start: timeFormat.format(start),
     end: timeFormat.format(end),
-    breakStart: timeFormat.format(breakStart),
-    breakEnd: timeFormat.format(breakEnd),
+    breakStart: breakExist ? timeFormat.format(breakStart) : undefined,
+    breakEnd: breakExist ? timeFormat.format(breakEnd) : undefined,
     hours: workMin / 60,
-    break: interval2String({ start: breakStart, end: breakEnd }),
+    break: breakExist ? interval2String({ start: breakStart, end: breakEnd }) : undefined,
   };
 }
 
@@ -64,53 +68,52 @@ export function interval2String(args: { start: Date; end: Date }) {
   return formatDuration(dur, { locale: de });
 }
 
-export function checkWorkEntry(currentWE: WorkEntryStub) {
+function checkPrimaryFields(currentWE: WorkEntryStub) {
   if (!currentWE.constructionId) {
-    throw { message: 'Bitte Baustelle auswählen' };
+    throw new Error('Bitte Baustelle auswählen');
   }
   if (!currentWE.job) {
-    throw { message: 'Bitte Tätigkeit auswählen' };
+    throw new Error('Bitte Tätigkeit auswählen');
   }
+}
+
+export function checkWorkEntry(currentWE: WorkEntryStub) {
+  checkPrimaryFields(currentWE);
+
   if (!currentWE.start || !currentWE.end) {
-    throw { message: 'Bitte erfasse deine Anwesenheit' };
+    throw new Error('Bitte erfasse deine Anwesenheit');
   }
   const allMin = differenceInMinutes(currentWE.end, currentWE.start);
-
+  console.log(allMin);
   if (allMin <= 6 * 60) {
     return true;
   }
 
   if (!currentWE.breakStart || !currentWE.breakEnd) {
-    throw { message: 'Bitte erfasse deine Pause' };
+    throw new Error('Bitte erfasse deine Pause');
   }
   // vor der Pause
   const beforeBreak = intervalToDuration({ start: currentWE.start, end: currentWE.breakStart });
   if (Number(beforeBreak.hours) >= 6 && Number(beforeBreak.minutes) >= 1) {
-    throw { message: 'Du hast vor deiner Pause mehr als 6 Stunden gearbeitet, das ist nicht zulässig!' };
+    throw new Error('Du hast vor deiner Pause mehr als 6 Stunden gearbeitet, das ist nicht zulässig!');
   }
   // nach der Pause
   const afterBreak = intervalToDuration({ start: currentWE.breakEnd, end: currentWE.end });
   if (Number(afterBreak.hours) >= 6 && Number(afterBreak.minutes) >= 1) {
-    throw { message: 'Du hast nach deiner Pause mehr als 6 Stunden gearbeitet, das ist nicht zulässig!' };
+    throw new Error('Du hast nach deiner Pause mehr als 6 Stunden gearbeitet, das ist nicht zulässig!');
   }
   // max Stunden
   const breakMin = differenceInMinutes(currentWE.breakEnd, currentWE.breakStart);
   const workMin = allMin - breakMin;
   if (workMin > 599) {
-    throw {
-      message: '10 und mehr Arbeitstunden sind nicht zulässig',
-    };
+    throw new Error('10 und mehr Arbeitstunden sind nicht zulässig');
   }
   // min Pause
   if (workMin >= 6 * 60 && breakMin < 30) {
-    throw {
-      message: 'Deine Pause muss mindestens 30 Min. dauern',
-    };
+    throw new Error('Deine Pause muss mindestens 30 Min. dauern');
   }
   if (workMin >= 9 * 60 && breakMin < 45) {
-    throw {
-      message: 'Deine Pause muss mindestens 45 Min. dauern',
-    };
+    throw new Error('Deine Pause muss mindestens 45 Min. dauern');
   }
   return true;
 }

@@ -7,6 +7,7 @@ import {
   CardContent,
   CardHeader,
   Chip,
+  Divider,
   Skeleton,
   Stack,
   Typography,
@@ -123,6 +124,7 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
   if (loading) {
     return LoadingSkeleton;
   }
+
   return (
     <Box display="flex" flexDirection={'column'} gap={2}>
       {dailyEntry !== null ? (
@@ -155,6 +157,11 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
                             <Typography variant="subtitle2">{we.job}</Typography>
                             <Typography variant="subtitle2">{`${formatNumber(we.hours)} Stunden`}</Typography>
                           </Box>
+                          <Box paddingY={2}>
+                            <Divider />
+                          </Box>
+                          <Typography variant="subtitle2">{`Anwesend: ${we.start} - ${we.end}`}</Typography>
+                          {we.break && <Typography variant="subtitle2">{`Pause:  ${we.break}`}</Typography>}
                         </CardContent>
                       </Card>
                     );

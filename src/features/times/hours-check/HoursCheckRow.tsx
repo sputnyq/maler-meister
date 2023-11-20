@@ -19,7 +19,7 @@ export function HoursCheckRow({ user, end, start }: Props) {
   const [data, setData] = useState<DailyEntry[]>([]);
   const currentUser = useCurrentUser();
 
-  const allDays = eachDayOfInterval({ end, start });
+  const daysInInterval = eachDayOfInterval({ end, start });
 
   useEffect(() => {
     const queryObj: StrapiQueryObject = {
@@ -45,20 +45,8 @@ export function HoursCheckRow({ user, end, start }: Props) {
       });
   }, [currentUser, end, start, user]);
 
-  const getValues = (date: Date) => {
+  const filterDailyEntriesBydate = (date: Date) => {
     return data.filter((de) => de.date === formatISO(date, { representation: 'date' }));
-  };
-
-  const renderValues = (dailyEntries: DailyEntry[]) => {
-    return dailyEntries.map((de) => {
-      return (
-        <Tooltip key={de.id} title={de.type}>
-          <Box p={'1px'} sx={{ background: 'error' }}>
-            <Chip size="small" color={getJobColor(de.type)} label={formatNumber(de.sum)} />
-          </Box>
-        </Tooltip>
-      );
-    });
   };
 
   return (
@@ -66,12 +54,33 @@ export function HoursCheckRow({ user, end, start }: Props) {
       <TableCell align="left" sx={{ position: 'sticky', left: '0', background: 'white' }}>
         <AppUserView user={user} />
       </TableCell>
-      {allDays.map((date) => (
-        <TableCell key={date.getMilliseconds()} align="center">
-          {renderValues(getValues(date))}
-        </TableCell>
-      ))}
+      {daysInInterval.map((date) => {
+        const dailyEntries = filterDailyEntriesBydate(date);
+
+        return (
+          <TableCell key={date.getDate()} align="center">
+            <Cell dailyEntries={dailyEntries} />
+          </TableCell>
+        );
+      })}
     </StyledTableRow>
+  );
+}
+
+interface CellProps {
+  dailyEntries: DailyEntry[];
+}
+function Cell({ dailyEntries }: CellProps) {
+  return (
+    <>
+      {dailyEntries.map((de) => (
+        <Tooltip key={de.id} title={de.type}>
+          <Box p={'1px'} sx={{ background: 'error' }}>
+            <Chip size="small" color={getJobColor(de.type)} label={formatNumber(de.sum)} />
+          </Box>
+        </Tooltip>
+      ))}
+    </>
   );
 }
 

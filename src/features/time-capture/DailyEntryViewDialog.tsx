@@ -160,7 +160,10 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
                           <Box paddingY={2}>
                             <Divider />
                           </Box>
-                          <Typography variant="subtitle2">{`Anwesend: ${we.start} - ${we.end}`}</Typography>
+
+                          {we.start && (
+                            <Typography variant="subtitle2">{`Anwesend: ${we.start} - ${we.end}`}</Typography>
+                          )}
                           {we.break && <Typography variant="subtitle2">{`Pause:  ${we.break}`}</Typography>}
                         </CardContent>
                       </Card>

@@ -3,11 +3,15 @@ import { Box, Divider, MenuItem, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import { AppTextField } from '../../../components/AppTextField';
+import { workEntryStubSignal } from '../../../signals';
 import { AppState } from '../../../store';
 import { formatNumber } from '../../../utilities';
 import { TimeCaptureTimePicker } from './TimeCaptureTimePicker';
-import { setWorkEntryValue, workEntrySignal } from './timeCaptureSignals';
 import { calculateWorkingMinutes, interval2String } from './timeCaptureUtils';
+
+const setWorkEntryValue = (args: { prop: keyof WorkEntryStub; value: any }) => {
+  workEntryStubSignal.value = { ...workEntryStubSignal.value, [args.prop]: args.value };
+};
 
 export function WorkEntryEditor() {
   const appJobs = useSelector<AppState, AppJob[]>((s) => s.jobs.jobs || []);
@@ -29,14 +33,14 @@ export function WorkEntryEditor() {
     return '';
   };
 
-  const workingHours = calculateWorkingMinutes(workEntrySignal.value) / 60;
+  const workingHours = calculateWorkingMinutes(workEntryStubSignal.value) / 60;
 
   return (
     <Box display="flex" flexDirection={'column'} gap={2} mt={2}>
       <AppTextField
         select
         label="Baustelle"
-        value={workEntrySignal.value.constructionId}
+        value={workEntryStubSignal.value.constructionId}
         onChange={(ev) => {
           setWorkEntryValue({ prop: 'constructionId', value: ev.target.value });
         }}
@@ -54,7 +58,7 @@ export function WorkEntryEditor() {
           setWorkEntryValue({ prop: 'job', value: getJobName(jobId) });
           setWorkEntryValue({ prop: 'jobId', value: jobId });
         }}
-        value={workEntrySignal.value.jobId}
+        value={workEntryStubSignal.value.jobId}
         select
         type="number"
         label="Tätigkeit"
@@ -71,21 +75,21 @@ export function WorkEntryEditor() {
       <Divider sx={{ marginTop: 2 }} />
 
       <Typography>
-        Anwesenheit: {duration({ start: workEntrySignal.value.start, end: workEntrySignal.value.end })}
+        Anwesenheit: {duration({ start: workEntryStubSignal.value.start, end: workEntryStubSignal.value.end })}
       </Typography>
 
       <Box display="flex" gap={2}>
         <TimeCaptureTimePicker
           label="von"
-          value={workEntrySignal.value.start || null}
+          value={workEntryStubSignal.value.start || null}
           onChange={(value) => {
             setWorkEntryValue({ prop: 'start', value });
           }}
         />
         <TimeCaptureTimePicker
           label="bis"
-          minTime={workEntrySignal.value.start}
-          value={workEntrySignal.value.end || null}
+          minTime={workEntryStubSignal.value.start}
+          value={workEntryStubSignal.value.end || null}
           onChange={(value) => {
             setWorkEntryValue({ prop: 'end', value });
           }}
@@ -93,24 +97,24 @@ export function WorkEntryEditor() {
       </Box>
 
       <Typography>
-        Pause: {duration({ start: workEntrySignal.value.breakStart, end: workEntrySignal.value.breakEnd })}
+        Pause: {duration({ start: workEntryStubSignal.value.breakStart, end: workEntryStubSignal.value.breakEnd })}
       </Typography>
 
       <Box display="flex" gap={2}>
         <TimeCaptureTimePicker
           label="von"
-          minTime={workEntrySignal.value.start}
-          maxTime={workEntrySignal.value.end}
-          value={workEntrySignal.value.breakStart || null}
+          minTime={workEntryStubSignal.value.start}
+          maxTime={workEntryStubSignal.value.end}
+          value={workEntryStubSignal.value.breakStart || null}
           onChange={(value) => {
             setWorkEntryValue({ prop: 'breakStart', value });
           }}
         />
         <TimeCaptureTimePicker
           label="bis"
-          minTime={workEntrySignal.value.breakStart}
-          maxTime={workEntrySignal.value.end}
-          value={workEntrySignal.value.breakEnd || null}
+          minTime={workEntryStubSignal.value.breakStart}
+          maxTime={workEntryStubSignal.value.end}
+          value={workEntryStubSignal.value.breakEnd || null}
           onChange={(value) => {
             setWorkEntryValue({ prop: 'breakEnd', value });
           }}

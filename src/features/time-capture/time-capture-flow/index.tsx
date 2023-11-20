@@ -4,13 +4,12 @@ import { useRef, useState } from 'react';
 
 import AddFab from '../../../components/AddFab';
 import { AppDialog } from '../../../components/AppDialog';
-import { DEFAULT_HOURS } from '../../../constants';
+import { DEFAULT_HOURS, INITIAL_DAILY_ENTRY } from '../../../constants';
 import { appRequest } from '../../../fetch/fetch-client';
 import { useCurrentUser } from '../../../hooks/useCurrentUser';
-import { dailyEntriesSignal } from '../../../signals';
+import { dailyEntriesSignal, dailyEntrySignal, workEntryStubSignal } from '../../../signals';
 import { genericConverter } from '../../../utilities';
 import { TimeCaptureDialogContent } from './TimeCaptureDialogContent';
-import { dailyEntrySignal, initilDailyEntry, workEntrySignal } from './timeCaptureSignals';
 import { checkWorkEntry, isEntryExists, toDailyEntry, toWorkEntry } from './timeCaptureUtils';
 
 export function TimeCaptureFlow() {
@@ -34,12 +33,12 @@ export function TimeCaptureFlow() {
 
     setOpenSnackbar(true);
     setDialogOpen(false);
-    dailyEntrySignal.value = initilDailyEntry;
+    dailyEntrySignal.value = INITIAL_DAILY_ENTRY;
   };
 
   const persistWorkEntry = async (): Promise<WorkEntry> => {
     const we: WorkEntry = toWorkEntry({
-      workEntryStub: workEntrySignal.value,
+      workEntryStub: workEntryStubSignal.value,
       tenant: user.tenant,
       username: user.username,
       date: dailyEntrySignal.value.date,
@@ -55,7 +54,7 @@ export function TimeCaptureFlow() {
       let workEntry: WorkEntry | undefined = undefined;
 
       if (dailyEntrySignal.value.type === 'Arbeit') {
-        if (checkWorkEntry(workEntrySignal.value)) {
+        if (checkWorkEntry(workEntryStubSignal.value)) {
           workEntry = await persistWorkEntry();
         }
       }

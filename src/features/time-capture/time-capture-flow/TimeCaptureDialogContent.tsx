@@ -3,8 +3,12 @@ import { Box } from '@mui/system';
 
 import AppGrid from '../../../components/AppGrid';
 import { AppTextField } from '../../../components/AppTextField';
+import { dailyEntrySignal } from '../../../signals';
 import { WorkEntryEditor } from './WorkEntryEditor';
-import { dailyEntrySignal, setDailyEntrySignalValue } from './timeCaptureSignals';
+
+const setDailyEntrySignalValue = (args: { prop: keyof DailyEntry; value: any }) => {
+  dailyEntrySignal.value = { ...dailyEntrySignal.value, [args.prop]: args.value };
+};
 
 export function TimeCaptureDialogContent() {
   const isArbeit = dailyEntrySignal.value.type === 'Arbeit';

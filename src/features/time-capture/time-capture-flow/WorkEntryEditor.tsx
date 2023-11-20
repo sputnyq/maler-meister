@@ -19,8 +19,12 @@ export function WorkEntryEditor() {
 
   const duration = (args: { start?: Date; end?: Date }) => {
     const { start, end } = args;
-    if (start && end) {
-      return interval2String({ start, end });
+    try {
+      if (start && end) {
+        return interval2String({ start, end });
+      }
+    } catch (e) {
+      return '';
     }
     return '';
   };
@@ -73,16 +77,16 @@ export function WorkEntryEditor() {
       <Box display="flex" gap={2}>
         <TimeCaptureTimePicker
           label="von"
-          value={workEntrySignal.value.start}
-          onAccept={(value) => {
+          value={workEntrySignal.value.start || null}
+          onChange={(value) => {
             setWorkEntryValue({ prop: 'start', value });
           }}
         />
         <TimeCaptureTimePicker
           label="bis"
           minTime={workEntrySignal.value.start}
-          value={workEntrySignal.value.end}
-          onAccept={(value) => {
+          value={workEntrySignal.value.end || null}
+          onChange={(value) => {
             setWorkEntryValue({ prop: 'end', value });
           }}
         />
@@ -97,23 +101,23 @@ export function WorkEntryEditor() {
           label="von"
           minTime={workEntrySignal.value.start}
           maxTime={workEntrySignal.value.end}
-          value={workEntrySignal.value.breakStart}
-          onAccept={(value) => {
+          value={workEntrySignal.value.breakStart || null}
+          onChange={(value) => {
             setWorkEntryValue({ prop: 'breakStart', value });
           }}
         />
         <TimeCaptureTimePicker
           label="bis"
-          minTime={workEntrySignal.value.start}
+          minTime={workEntrySignal.value.breakStart}
           maxTime={workEntrySignal.value.end}
-          value={workEntrySignal.value.breakEnd}
-          onAccept={(value) => {
+          value={workEntrySignal.value.breakEnd || null}
+          onChange={(value) => {
             setWorkEntryValue({ prop: 'breakEnd', value });
           }}
         />
       </Box>
       <Typography variant="h6" color={workingHours >= 10 ? 'error' : 'primary'}>
-        Arbeitszeit: {formatNumber(workingHours)} Stunden
+        {!isNaN(workingHours) ? `Arbeitszeit: ${formatNumber(workingHours)} Stunden` : ''}
       </Typography>
     </Box>
   );

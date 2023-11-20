@@ -13,7 +13,6 @@ import { LoadingScreen } from './features/app-structure/LoadingScreen';
 import TopBar from './features/app-structure/TopBar';
 import Login from './features/log-in-out/Login';
 import LoginProvider from './features/log-in-out/LoginProvider';
-import { useIsSmall } from './hooks/useIsSmall';
 import theme from './style/theme';
 
 import de from 'date-fns/locale/de';
@@ -35,14 +34,13 @@ const PrintSettings = lazy(() => import('./features/options/print-settings'));
 const BgbServices = lazy(() => import('./features/options/services/bgb'));
 
 export default function App() {
-  const isSmall = useIsSmall();
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={de}>
       <ThemeProvider theme={theme}>
         <CssBaseline>
           <RootBox>
             <TopBar />
-            <Box mt={isSmall ? 6 : 7}>
+            <Box mt={6}>
               <AppRoutes />
             </Box>
           </RootBox>

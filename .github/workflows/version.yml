@@ -24,6 +24,7 @@ jobs:
           skip-tag: 'true'
           minor-wording: 'new,feat,minor'
           major-wording: 'major'
-          commit-message: 'RELEASE: {{version}} [skip ci]'
+          # commit-message: 'RELEASE: {{version}} [skip ci]'
+          commit-message: 'RELEASE: {{version}}'
         env:
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}

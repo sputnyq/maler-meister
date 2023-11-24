@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 
 import { prepareCols } from './appDataGridUtils';
 
-export function AppDataGrid(props: DataGridProps) {
+export function AppDataGrid(props: Readonly<DataGridProps>) {
   const { columns } = props;
 
   const gridColumns = useMemo(() => {

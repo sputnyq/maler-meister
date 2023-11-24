@@ -9,7 +9,7 @@ export function AppDataGrid(props: DataGridProps) {
   const { columns } = props;
 
   const gridColumns = useMemo(() => {
-    return prepareCols(columns);
+    return prepareCols([...columns]);
   }, [columns]);
 
   return (

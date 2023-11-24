@@ -20,7 +20,7 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/lab": "^5.0.0-alpha.149",
     "@mui/material": "^5.13.6",
-    "@mui/x-data-grid": "^6.9.0",
+    "@mui/x-data-grid": "^6.18.2",
     "@mui/x-date-pickers": "^6.18.1",
     "@reduxjs/toolkit": "^1.9.7",
     "@types/qs": "^6.9.7",

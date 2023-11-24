@@ -20,7 +20,6 @@ import { ALLOWED_DAYS_TO_RENOVE } from '../../constants';
 import { dailyEntryById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { dailyEntriesSignal } from '../../signals';
 import { formatNumber, genericConverter, getJobColor } from '../../utilities';
 import ConstructionView from './ConstructionView';
 
@@ -100,7 +99,6 @@ function DailyEntryViewCard({ dailyEntryId: id, closeDialog }: Partial<Props>) {
         }
 
         await deleteRequest(dailyEntryById(dailyEntry.id));
-        dailyEntriesSignal.value = dailyEntriesSignal.value.filter((de) => de.id !== dailyEntry.id);
       }
       closeDialog?.();
     }

@@ -3,17 +3,17 @@ import { Box, Divider, MenuItem, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import { AppTextField } from '../../../components/AppTextField';
-import { workEntryStubSignal } from '../../../signals';
 import { AppState } from '../../../store';
 import { formatNumber } from '../../../utilities';
 import { TimeCaptureTimePicker } from './TimeCaptureTimePicker';
 import { calculateWorkingMinutes, interval2String } from './timeCaptureUtils';
 
-const setWorkEntryValue = (args: { prop: keyof WorkEntryStub; value: any }) => {
-  workEntryStubSignal.value = { ...workEntryStubSignal.value, [args.prop]: args.value };
-};
+interface Props {
+  workEntryStub: WorkEntryStub;
+  setWorkEntryStubValue: (args: { prop: keyof WorkEntryStub; value: any }) => void;
+}
 
-export function WorkEntryEditor() {
+export function WorkEntryEditor({ setWorkEntryStubValue, workEntryStub }: Readonly<Props>) {
   const appJobs = useSelector<AppState, AppJob[]>((s) => s.jobs.jobs || []);
   const constructions = useSelector<AppState, Construction[]>((s) => s.construction.activeConstructions || []);
 
@@ -33,16 +33,16 @@ export function WorkEntryEditor() {
     return '';
   };
 
-  const workingHours = calculateWorkingMinutes(workEntryStubSignal.value) / 60;
+  const workingHours = calculateWorkingMinutes(workEntryStub) / 60;
 
   return (
     <Box display="flex" flexDirection={'column'} gap={2} mt={2}>
       <AppTextField
         select
         label="Baustelle"
-        value={workEntryStubSignal.value.constructionId}
+        value={workEntryStub.constructionId}
         onChange={(ev) => {
-          setWorkEntryValue({ prop: 'constructionId', value: ev.target.value });
+          setWorkEntryStubValue({ prop: 'constructionId', value: ev.target.value });
         }}
       >
         {constructions.map(({ id, name }) => (
@@ -55,10 +55,10 @@ export function WorkEntryEditor() {
       <AppTextField
         onChange={(ev) => {
           const jobId = Number(ev.target.value);
-          setWorkEntryValue({ prop: 'job', value: getJobName(jobId) });
-          setWorkEntryValue({ prop: 'jobId', value: jobId });
+          setWorkEntryStubValue({ prop: 'job', value: getJobName(jobId) });
+          setWorkEntryStubValue({ prop: 'jobId', value: jobId });
         }}
-        value={workEntryStubSignal.value.jobId}
+        value={workEntryStub.jobId}
         select
         type="number"
         label="Tätigkeit"
@@ -74,49 +74,45 @@ export function WorkEntryEditor() {
 
       <Divider sx={{ marginTop: 2 }} />
 
-      <Typography>
-        Anwesenheit: {duration({ start: workEntryStubSignal.value.start, end: workEntryStubSignal.value.end })}
-      </Typography>
+      <Typography>Anwesenheit: {duration({ start: workEntryStub.start, end: workEntryStub.end })}</Typography>
 
       <Box display="flex" gap={2}>
         <TimeCaptureTimePicker
           label="von"
-          value={workEntryStubSignal.value.start || null}
+          value={workEntryStub.start || null}
           onChange={(value) => {
-            setWorkEntryValue({ prop: 'start', value });
+            setWorkEntryStubValue({ prop: 'start', value });
           }}
         />
         <TimeCaptureTimePicker
           label="bis"
-          minTime={workEntryStubSignal.value.start}
-          value={workEntryStubSignal.value.end || null}
+          minTime={workEntryStub.start}
+          value={workEntryStub.end || null}
           onChange={(value) => {
-            setWorkEntryValue({ prop: 'end', value });
+            setWorkEntryStubValue({ prop: 'end', value });
           }}
         />
       </Box>
 
-      <Typography>
-        Pause: {duration({ start: workEntryStubSignal.value.breakStart, end: workEntryStubSignal.value.breakEnd })}
-      </Typography>
+      <Typography>Pause: {duration({ start: workEntryStub.breakStart, end: workEntryStub.breakEnd })}</Typography>
 
       <Box display="flex" gap={2}>
         <TimeCaptureTimePicker
           label="von"
-          minTime={workEntryStubSignal.value.start}
-          maxTime={workEntryStubSignal.value.end}
-          value={workEntryStubSignal.value.breakStart || null}
+          minTime={workEntryStub.start}
+          maxTime={workEntryStub.end}
+          value={workEntryStub.breakStart || null}
           onChange={(value) => {
-            setWorkEntryValue({ prop: 'breakStart', value });
+            setWorkEntryStubValue({ prop: 'breakStart', value });
           }}
         />
         <TimeCaptureTimePicker
           label="bis"
-          minTime={workEntryStubSignal.value.breakStart}
-          maxTime={workEntryStubSignal.value.end}
-          value={workEntryStubSignal.value.breakEnd || null}
+          minTime={workEntryStub.breakStart}
+          maxTime={workEntryStub.end}
+          value={workEntryStub.breakEnd || null}
           onChange={(value) => {
-            setWorkEntryValue({ prop: 'breakEnd', value });
+            setWorkEntryStubValue({ prop: 'breakEnd', value });
           }}
         />
       </Box>

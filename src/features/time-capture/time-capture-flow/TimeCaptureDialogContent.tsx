@@ -3,15 +3,22 @@ import { Box } from '@mui/system';
 
 import AppGrid from '../../../components/AppGrid';
 import { AppTextField } from '../../../components/AppTextField';
-import { dailyEntrySignal } from '../../../signals';
 import { WorkEntryEditor } from './WorkEntryEditor';
 
-const setDailyEntrySignalValue = (args: { prop: keyof DailyEntry; value: any }) => {
-  dailyEntrySignal.value = { ...dailyEntrySignal.value, [args.prop]: args.value };
-};
+interface Props {
+  dailyEntryStub: DailyEntry;
+  workEntryStub: WorkEntryStub;
+  setDailyEntryStubValue: (args: { prop: keyof DailyEntry; value: any }) => void;
+  setWorkEntryStubValue: (args: { prop: keyof WorkEntryStub; value: any }) => void;
+}
 
-export function TimeCaptureDialogContent() {
-  const isArbeit = dailyEntrySignal.value.type === 'Arbeit';
+export function TimeCaptureDialogContent({
+  dailyEntryStub,
+  workEntryStub,
+  setDailyEntryStubValue,
+  setWorkEntryStubValue,
+}: Readonly<Props>) {
+  const isArbeit = dailyEntryStub.type === 'Arbeit';
 
   const gridProps = { item: true, xs: 12, sm: 4 };
   const toggles: DailyEntryType[] = ['Arbeit', 'Krank', 'Schule', 'Feiertag'];
@@ -23,9 +30,9 @@ export function TimeCaptureDialogContent() {
           <AppTextField
             label="Datum"
             type={'date'}
-            value={dailyEntrySignal.value.date}
+            value={dailyEntryStub.date}
             onChange={(ev) => {
-              setDailyEntrySignalValue({ prop: 'date', value: ev.target.value });
+              setDailyEntryStubValue({ prop: 'date', value: ev.target.value });
             }}
           />
         </Grid>
@@ -34,9 +41,9 @@ export function TimeCaptureDialogContent() {
             <ToggleButtonGroup
               fullWidth
               exclusive
-              value={dailyEntrySignal.value.type}
+              value={dailyEntryStub.type}
               onChange={(_, value) => {
-                setDailyEntrySignalValue({ prop: 'type', value });
+                setDailyEntryStubValue({ prop: 'type', value });
               }}
             >
               {toggles.map((tgl) => (
@@ -50,7 +57,7 @@ export function TimeCaptureDialogContent() {
 
         <Grid {...gridProps} sm={12}>
           {isArbeit ? (
-            <WorkEntryEditor />
+            <WorkEntryEditor workEntryStub={workEntryStub} setWorkEntryStubValue={setWorkEntryStubValue} />
           ) : (
             <Box display="flex" alignItems="center" flexDirection="column" gap={2}>
               <Typography variant="h3">8</Typography>

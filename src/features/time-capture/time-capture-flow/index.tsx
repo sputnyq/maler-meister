@@ -7,16 +7,21 @@ import { AppDialog } from '../../../components/AppDialog';
 import { DEFAULT_HOURS, INITIAL_DAILY_ENTRY } from '../../../constants';
 import { appRequest } from '../../../fetch/fetch-client';
 import { useCurrentUser } from '../../../hooks/useCurrentUser';
-import { dailyEntriesSignal, dailyEntrySignal, workEntryStubSignal } from '../../../signals';
 import { genericConverter } from '../../../utilities';
 import { TimeCaptureDialogContent } from './TimeCaptureDialogContent';
 import { checkWorkEntry, isEntryExists, toDailyEntry, toWorkEntry } from './timeCaptureUtils';
 
-export function TimeCaptureFlow() {
+interface Props {
+  requestUpdate: () => void;
+}
+
+export function TimeCaptureFlow({ requestUpdate }: Readonly<Props>) {
   const user = useCurrentUser();
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [dailyEntryStub, setDailyEntryStub] = useState<DailyEntry>(INITIAL_DAILY_ENTRY);
+  const [workEntryStub, setWorkEntryStub] = useState<WorkEntryStub>({} as WorkEntryStub);
 
   const severity = useRef<AlertColor>('error');
   const alertMessage = useRef('');
@@ -25,23 +30,22 @@ export function TimeCaptureFlow() {
     return null;
   }
 
-  const onSuccess = (res: any) => {
-    const converted = genericConverter<DailyEntry>(res.data);
-    dailyEntriesSignal.value = [...dailyEntriesSignal.value, converted];
+  const onSuccess = () => {
     severity.current = 'success';
     alertMessage.current = 'Zeiten erfolgreich gespeichert';
 
+    requestUpdate();
     setOpenSnackbar(true);
     setDialogOpen(false);
-    dailyEntrySignal.value = INITIAL_DAILY_ENTRY;
+    setDailyEntryStub(INITIAL_DAILY_ENTRY);
   };
 
   const persistWorkEntry = async (): Promise<WorkEntry> => {
     const we: WorkEntry = toWorkEntry({
-      workEntryStub: workEntryStubSignal.value,
+      workEntryStub,
       tenant: user.tenant,
       username: user.username,
-      date: dailyEntrySignal.value.date,
+      date: dailyEntryStub.date,
     });
     return appRequest('post')('work-entries', {
       data: we,
@@ -50,21 +54,21 @@ export function TimeCaptureFlow() {
 
   const saveRequest = async () => {
     try {
-      await isEntryExists({ tenant: user.tenant, username: user.username, date: dailyEntrySignal.value.date });
+      await isEntryExists({ tenant: user.tenant, username: user.username, date: dailyEntryStub.date });
       let workEntry: WorkEntry | undefined = undefined;
 
-      if (dailyEntrySignal.value.type === 'Arbeit') {
-        if (checkWorkEntry(workEntryStubSignal.value)) {
+      if (dailyEntryStub.type === 'Arbeit') {
+        if (checkWorkEntry(workEntryStub)) {
           workEntry = await persistWorkEntry();
         }
       }
 
       const dailyEntry = toDailyEntry({
-        date: dailyEntrySignal.value.date,
+        date: dailyEntryStub.date,
         sum: workEntry?.hours ?? DEFAULT_HOURS,
         tenant: user.tenant,
         username: user.username,
-        type: dailyEntrySignal.value.type,
+        type: dailyEntryStub.type,
         work_entries: workEntry ? [workEntry.id as number] : undefined,
       });
 
@@ -78,6 +82,14 @@ export function TimeCaptureFlow() {
     }
   };
 
+  const setDailyEntryStubValue = (args: { prop: keyof DailyEntry; value: any }) => {
+    setDailyEntryStub((cur) => ({ ...cur, [args.prop]: args.value }));
+  };
+
+  const setWorkEntryStubValue = (args: { prop: keyof WorkEntryStub; value: any }) => {
+    setWorkEntryStub((cur) => ({ ...cur, [args.prop]: args.value }));
+  };
+
   return (
     <>
       <AddFab onClick={() => setDialogOpen(true)} />
@@ -88,7 +100,12 @@ export function TimeCaptureFlow() {
         onConfirm={saveRequest}
         confirmDisabled={false}
       >
-        <TimeCaptureDialogContent />
+        <TimeCaptureDialogContent
+          setWorkEntryStubValue={setWorkEntryStubValue}
+          setDailyEntryStubValue={setDailyEntryStubValue}
+          workEntryStub={workEntryStub}
+          dailyEntryStub={dailyEntryStub}
+        />
       </AppDialog>
 
       <Snackbar

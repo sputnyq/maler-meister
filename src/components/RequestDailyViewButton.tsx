@@ -13,6 +13,7 @@ export function RequestDailyViewButton({ value, onClick }: Props) {
         month: 'short',
         weekday: 'short',
         day: 'numeric',
+        year: '2-digit',
       }).format(new Date(value))}
     </Button>
   );

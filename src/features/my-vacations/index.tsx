@@ -1,5 +1,9 @@
 import BeachAccessIcon from '@mui/icons-material/BeachAccessOutlined';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   Card,
   CardContent,
@@ -28,53 +32,63 @@ import { addYears, endOfYear, startOfYear } from 'date-fns';
 export default function MyVacations() {
   const user = useCurrentUser();
 
-  const [yearSwitchValue, setYearSwitchValue] = useState<'last' | 'current' | 'next'>('current');
+  const [yearSwitchValue, setYearSwitchValue] = useState<'last' | 'current'>('current');
   const [update, setUpdate] = useState(0);
   const [requestDialog, setRequestDialog] = useState(false);
   const [viewDialog, setViewDialog] = useState(false);
   const [data, setData] = useState<DailyEntry[]>([]);
+  const [plannedData, setPlannedData] = useState<DailyEntry[]>([]);
 
   const dailyEntryId = useRef('');
 
   useEffect(() => {
+    const buildQueryObject = (dateObj: any) => {
+      return {
+        filters: {
+          tenant: user?.tenant,
+          username: user?.username,
+          type: 'Urlaub',
+          date: dateObj,
+        },
+        sort: { '0': 'date:desc' },
+      } as StrapiQueryObject;
+    };
+
     let dateObj = undefined;
+    let nextDateObj = undefined;
 
     const now = new Date();
 
-    switch (yearSwitchValue) {
-      case 'current':
-        dateObj = {
-          $gte: startOfYear(now),
-          $lte: now,
-        };
-        break;
-
-      case 'last':
-        dateObj = {
-          $gte: startOfYear(addYears(now, -1)),
-          $lt: endOfYear(addYears(now, -1)),
-        };
-        break;
-      case 'next':
-        dateObj = {
-          $gt: now,
-        };
+    if (yearSwitchValue === 'last') {
+      dateObj = {
+        $gte: startOfYear(addYears(now, -1)),
+        $lt: endOfYear(addYears(now, -1)),
+      };
+      setPlannedData([]);
+    } else {
+      dateObj = {
+        $gte: startOfYear(now),
+        $lte: now,
+      };
+      nextDateObj = {
+        $gt: now,
+      };
     }
-    const queryObj: StrapiQueryObject = {
-      filters: {
-        tenant: user?.tenant,
-        username: user?.username,
-        type: 'Urlaub',
-        date: dateObj,
-      },
-      sort: { '0': 'date:desc' },
-    };
 
-    loadDailyEntries(queryObj).then((res) => {
-      if (res) {
-        setData(res.dailyEntries);
-      }
-    });
+    if (nextDateObj) {
+      loadDailyEntries(buildQueryObject(nextDateObj)).then((res) => {
+        if (res) {
+          setPlannedData(res.dailyEntries);
+        }
+      });
+    }
+    if (dateObj) {
+      loadDailyEntries(buildQueryObject(dateObj)).then((res) => {
+        if (res) {
+          setData(res.dailyEntries);
+        }
+      });
+    }
   }, [yearSwitchValue, user, update]);
 
   const handleDialogRequest = (id: any) => {
@@ -88,6 +102,8 @@ export default function MyVacations() {
     setRequestDialog(false);
   }, []);
 
+  const sum = data.length + plannedData.length;
+
   return (
     <>
       <DailyEntryViewDialog
@@ -100,7 +116,7 @@ export default function MyVacations() {
 
       <AddFab onClick={() => setRequestDialog(true)} />
 
-      <Card>
+      <Card sx={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
         <CardContent>
           <Box display={'flex'} flexDirection="column" gap={2}>
             <Box maxWidth={400}>
@@ -119,41 +135,53 @@ export default function MyVacations() {
                 <ToggleButton size="small" value="current">
                   Dieses Jahr
                 </ToggleButton>
-                <ToggleButton size="small" value="next">
-                  Geplant
-                </ToggleButton>
               </ToggleButtonGroup>
             </Box>
-
-            <Box display={'flex'} justifyContent="space-between">
-              <Typography color={'GrayText'} variant="h6">
-                Gesamt:
-              </Typography>
-              <Typography color={'GrayText'} variant="h6">{`${data.length} Tag(e)`}</Typography>
-            </Box>
-
-            <Box>
-              <List>
-                {data.map((de) => {
-                  return (
-                    <React.Fragment key={de.id}>
-                      <ListItem>
-                        <ListItemIcon>
-                          <BeachAccessIcon color="warning" />
-                        </ListItemIcon>
-                        <ListItemText>
-                          <RequestDailyViewButton value={de.date} onClick={() => handleDialogRequest(de.id)} />
-                        </ListItemText>
-                      </ListItem>
-                      <Divider />
-                    </React.Fragment>
-                  );
-                })}
-              </List>
-            </Box>
+            <Typography variant="h5">Gesamt: {sum} Tage(e)</Typography>
           </Box>
         </CardContent>
       </Card>
+      {plannedData.length > 0 && (
+        <DataRenderer data={plannedData} prefix="Geplant" handleDialogRequest={handleDialogRequest} />
+      )}
+      <DataRenderer data={data} prefix="Genommen" handleDialogRequest={handleDialogRequest} />
     </>
+  );
+}
+
+interface Props {
+  data: DailyEntry[];
+  prefix: string;
+  handleDialogRequest: (id: number | undefined) => void;
+}
+
+function DataRenderer({ data, prefix, handleDialogRequest }: Readonly<Props>) {
+  return (
+    <Accordion>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Typography>{`${prefix}: ${data.length} Tag(e)`}</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Box>
+          <List>
+            {data.map((de) => {
+              return (
+                <React.Fragment key={de.id}>
+                  <ListItem>
+                    <ListItemIcon>
+                      <BeachAccessIcon color="warning" />
+                    </ListItemIcon>
+                    <ListItemText>
+                      <RequestDailyViewButton value={de.date} onClick={() => handleDialogRequest(de.id)} />
+                    </ListItemText>
+                  </ListItem>
+                  <Divider />
+                </React.Fragment>
+              );
+            })}
+          </List>
+        </Box>
+      </AccordionDetails>
+    </Accordion>
   );
 }

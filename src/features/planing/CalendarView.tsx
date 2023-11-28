@@ -78,8 +78,10 @@ export default function CalendarView() {
       filters: {
         tenant: user?.tenant,
         start: {
-          $gte: formatISO(eventRange.start || new Date(), { representation: 'date' }),
           $lte: formatISO(eventRange.end || new Date(), { representation: 'date' }),
+        },
+        end: {
+          $gte: formatISO(eventRange.start || new Date(), { representation: 'date' }),
         },
       },
       pagination: {

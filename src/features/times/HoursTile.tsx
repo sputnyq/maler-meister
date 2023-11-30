@@ -1,12 +1,9 @@
 import { Box, Typography } from '@mui/material';
 
 import { useIsSmall } from '../../hooks/useIsSmall';
+import { HoursType } from './HoursOverviewCard';
 
-interface Props {
-  amount: number;
-  title: string;
-}
-export function HoursTile({ amount, title }: Props) {
+export function HoursTile({ amount, title }: Readonly<HoursType>) {
   const small = useIsSmall();
 
   return (

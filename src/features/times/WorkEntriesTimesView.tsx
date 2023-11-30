@@ -10,6 +10,7 @@ import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadWorkEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { formatNumber } from '../../utilities';
 import ConstructionView from '../time-capture/ConstructionView';
 import { PastDateRange } from '../time-capture/PastDateRange';
 import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
@@ -87,7 +88,7 @@ export default function WorkEntriesTimesView() {
 
     return [
       {
-        amount: fotmatNumber(sum),
+        amount: formatNumber(sum),
         title: 'Gesamt',
       },
     ] as HoursType[];
@@ -174,7 +175,4 @@ export default function WorkEntriesTimesView() {
       </Box>
     </>
   );
-}
-function fotmatNumber(sum: number): number {
-  throw new Error('Function not implemented.');
 }

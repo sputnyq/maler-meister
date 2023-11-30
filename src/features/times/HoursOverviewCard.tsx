@@ -5,7 +5,7 @@ import { HoursTile } from './HoursTile';
 
 export type HoursType = {
   title: string;
-  amount: number;
+  amount: number | string;
 };
 
 interface Props {

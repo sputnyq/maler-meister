@@ -18,6 +18,7 @@ export const loadUsers = createAsyncThunk<User[], void, { state: AppState }>('us
   const query = buildQuery({
     filters: {
       tenant,
+      blocked: false,
     },
     sort: { '0': 'lastName:asc' },
   });

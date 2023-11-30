@@ -87,7 +87,7 @@ export default function WorkEntriesTimesView() {
 
     return [
       {
-        amount: sum,
+        amount: fotmatNumber(sum),
         title: 'Gesamt',
       },
     ] as HoursType[];
@@ -174,4 +174,7 @@ export default function WorkEntriesTimesView() {
       </Box>
     </>
   );
+}
+function fotmatNumber(sum: number): number {
+  throw new Error('Function not implemented.');
 }

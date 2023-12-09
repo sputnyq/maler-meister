@@ -13,6 +13,7 @@ import { getColorHex, userFullName } from '../../utilities';
 import { holidays2Events } from '../../utilities/cal-functions';
 import EditConstructionDialog from '../constructions/EditConstructionDialog';
 import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';
+import { ShiftPlanDialog } from './shift-plan-dialog';
 
 import { DateSelectArg, EventClickArg, EventInput } from '@fullcalendar/core';
 import deLocale from '@fullcalendar/core/locales/de';
@@ -35,20 +36,18 @@ const COLOR_CODES = [
   '#ae2c1c',
 ];
 
-type ConstructionProps = {
-  type: 'CONSTRUCTION';
-  id: number | string;
-};
-type DailyEntryProps = {
-  type: 'DAILY_ENTRY';
-  id: number | string;
-};
+type CalEventType = 'CONSTRUCTION' | 'DAILY_ENTRY' | 'PLAN_ENTRY';
 
-type ExtendedProps = ConstructionProps | DailyEntryProps;
+type ExtendedProps = {
+  type: CalEventType;
+  id: number | string;
+};
 
 export default function CalendarView() {
   const [constructionDialog, setConstructionDialog] = useState(false);
+  const [planDialogOpen, setPlanDialogOpen] = useState(false);
   const [dailyEntryDialog, setDailyEntryDialog] = useState(false);
+
   const [weekends, setWeekends] = useState(true);
   const [curYear, setCurYear] = useState(new Date().getFullYear());
   const [multiMonthMaxColumns, setMultiMonthMaxColumns] = useState(2);
@@ -163,7 +162,8 @@ export default function CalendarView() {
   const handleDateSelect = useCallback((arg: DateSelectArg) => {
     idRef.current = undefined;
     dateSelectArg.current = arg;
-    setConstructionDialog(true);
+    console.log(dateSelectArg.current.startStr);
+    setPlanDialogOpen(true);
   }, []);
 
   const handleEventClick = useCallback((arg: EventClickArg) => {
@@ -178,35 +178,36 @@ export default function CalendarView() {
       case 'DAILY_ENTRY':
         setDailyEntryDialog(true);
         break;
+      case 'PLAN_ENTRY':
+        setPlanDialogOpen(true);
+        break;
       default:
         return;
     }
   }, []);
 
-  const onClose = useCallback(() => {
-    setConstructionDialog(false);
+  const onClose = useCallback((func: (bool: boolean) => void) => {
+    func(false);
     setUpdate((u) => u + 1);
   }, []);
 
   return (
     <>
+      <ShiftPlanDialog
+        id={idRef.current}
+        dateSelectArg={dateSelectArg.current}
+        open={planDialogOpen}
+        onClose={() => onClose(setPlanDialogOpen)}
+      />
       <DailyEntryViewDialog
-        closeDialog={() => setDailyEntryDialog(false)}
+        closeDialog={() => onClose(setDailyEntryDialog)}
         dialogOpen={dailyEntryDialog}
         dailyEntryId={idRef.current}
       />
       <EditConstructionDialog
-        initStart={
-          dateSelectArg.current?.startStr &&
-          formatISO(new Date(dateSelectArg.current.startStr), { representation: 'date' })
-        }
-        initEnd={
-          dateSelectArg.current?.endStr &&
-          formatISO(addDays(new Date(dateSelectArg.current?.endStr), -1), { representation: 'date' })
-        }
         dialogOpen={constructionDialog}
         constructionId={idRef.current}
-        onClose={onClose}
+        onClose={() => onClose(setConstructionDialog)}
       />
       <Card>
         <CardContent>
@@ -214,9 +215,7 @@ export default function CalendarView() {
             weekends={weekends}
             events={events}
             height={'calc(100vh - 170px)'}
-            datesSet={(params) => {
-              setEventRange({ end: params.end, start: params.start });
-            }}
+            datesSet={setEventRange}
             selectable
             select={handleDateSelect}
             eventClick={handleEventClick}
@@ -227,6 +226,9 @@ export default function CalendarView() {
             plugins={[multiMonthPlugin, timeGridPlugin, interactionPlugin]}
             multiMonthMaxColumns={multiMonthMaxColumns}
             initialView="multiMonthYear"
+            viewDidMount={({ view }) => {
+              console.log(view.type);
+            }}
           />
         </CardContent>
       </Card>

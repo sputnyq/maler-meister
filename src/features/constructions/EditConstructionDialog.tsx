@@ -11,14 +11,16 @@ interface Props {
   constructionId: string | number | undefined;
   dialogOpen: boolean;
   onClose(): void;
-
+  initStart?: any;
+  initEnd?: any;
   onCreateSuccess?: () => void;
 }
 
 export default function EditConstructionDialog({
   constructionId,
   dialogOpen,
-
+  initStart,
+  initEnd,
   onClose,
   onCreateSuccess,
 }: Props) {
@@ -28,6 +30,8 @@ export default function EditConstructionDialog({
   useEffect(() => {
     if (!constructionId) {
       setConstruction({
+        start: initStart,
+        end: initEnd,
         active: false,
         tenant: user?.tenant,
         confirmed: false,
@@ -41,7 +45,7 @@ export default function EditConstructionDialog({
         })
         .catch(console.log);
     }
-  }, [constructionId, user]);
+  }, [constructionId, user, initStart, initEnd]);
 
   const handleSaveRequest = () => {
     appRequest(constructionId ? 'put' : 'post')(constructionById(constructionId || ''), {

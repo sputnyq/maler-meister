@@ -212,6 +212,14 @@ export default function CalendarView() {
         dailyEntryId={idRef.current}
       />
       <EditConstructionDialog
+        initStart={
+          dateSelectArg.current?.startStr &&
+          formatISO(new Date(dateSelectArg.current.startStr), { representation: 'date' })
+        }
+        initEnd={
+          dateSelectArg.current?.endStr &&
+          formatISO(addDays(new Date(dateSelectArg.current?.endStr), -1), { representation: 'date' })
+        }
         dialogOpen={constructionDialog}
         constructionId={idRef.current}
         onClose={() => onClose(setConstructionDialog)}

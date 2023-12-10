@@ -5,7 +5,7 @@ export function WorkerChip(props: ChipProps) {
     <Chip
       {...props}
       sx={{
-        minWidth: '180px',
+        minWidth: '170px',
         justifyContent: 'space-between',
         ...props.sx,
       }}

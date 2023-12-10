@@ -1,6 +1,8 @@
 import { Grid, Typography } from '@mui/material';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { TouchBackend } from 'react-dnd-touch-backend';
 import { useSelector } from 'react-redux';
 
 import { AppDialog } from '../../../components/AppDialog';
@@ -14,7 +16,6 @@ import { ConstructionPlanCard } from './ConstructionPlan';
 
 import { DateSelectArg } from '@fullcalendar/core';
 import { formatISO } from 'date-fns';
-import { cloneDeep } from 'lodash';
 
 interface Props {
   open: boolean;
@@ -77,7 +78,7 @@ export function ShiftPlanDialog({ open, onClose, id, dateSelectArg }: Readonly<P
 
   return (
     <AppDialog title={`Einsatzplan ${date}`} open={open} onClose={onClose}>
-      {shift === null ? <Typography>Loading</Typography> : <ShiftPlanEdit initial={shift} />}
+      {shift === null ? <Typography>Loading</Typography> : <ShiftPlanEdit initial={shift} key={shift.date} />}
     </AppDialog>
   );
 }
@@ -88,37 +89,25 @@ interface ShiftPlanEditProps {
 
 function ShiftPlanEdit({ initial }: ShiftPlanEditProps) {
   const [shift, setShift] = useState(initial);
-
   const users = useSelector<AppState, User[]>((s) => s.users.all);
 
   const isAvailable = (user: User) => !shift.constructionsPlan.some((cp) => cp.usernames.includes(user.username));
-
   const availableWorkers = users.filter(isAvailable);
 
-  const drag = (ev: React.DragEvent<HTMLDivElement>, username: string) => {
-    ev.dataTransfer.setData('username', username);
-  };
-
-  const drop: React.DragEventHandler<HTMLElement> = (ev) => {
-    ev.preventDefault();
-    const username = ev.dataTransfer.getData('username');
-    const cid = ev.currentTarget.getAttribute('data-cid');
-
-    const nextShift = cloneDeep(shift);
-
-    const entry = nextShift.constructionsPlan.find((pe) => Number(pe.id) === Number(cid));
+  const onDrop = (username: string, cid: number) => {
+    const nextShift = { ...shift };
+    const entry = nextShift.constructionsPlan.find((cp) => Number(cp.id) === Number(cid));
     if (entry) {
       entry.usernames.push(username);
-      setShift(nextShift);
+      setShift((s) => ({ ...s, ...nextShift }));
     }
   };
 
   const onDelete = (username: string) => {
-    const nextShift = cloneDeep(shift);
-
-    const cp = nextShift.constructionsPlan.find((cp) => cp.usernames.includes(username));
-    if (cp) {
-      cp.usernames = cp.usernames.filter((u) => u !== username);
+    const nextShift = { ...shift };
+    const entry = nextShift.constructionsPlan.find((cp) => cp.usernames.includes(username));
+    if (entry) {
+      entry.usernames = entry.usernames.filter((u) => u !== username);
       setShift(nextShift);
     }
   };
@@ -127,20 +116,28 @@ function ShiftPlanEdit({ initial }: ShiftPlanEditProps) {
     <ColFlexBox pt={1}>
       <Typography variant="h4">{formatter.format(new Date(shift.date))}</Typography>
       <AppGrid p={1}>
-        <Grid item xs={6}>
-          <ColFlexBox>
-            {shift.constructionsPlan.map((cp) => (
-              <ConstructionPlanCard onDelete={onDelete} constructionPlan={cp} drop={drop} />
-            ))}
-          </ColFlexBox>
-        </Grid>
-        <Grid item xs={6}>
-          <ColFlexBox mt={1}>
-            {availableWorkers.map((user) => (
-              <AvailableWorker user={user} onDragStart={(ev) => drag(ev, user.username)} />
-            ))}
-          </ColFlexBox>
-        </Grid>
+        <DndProvider backend={TouchBackend} options={{ enableMouseEvents: true }}>
+          <Grid item xs={6}>
+            <ColFlexBox>
+              {shift.constructionsPlan.map((cp) => (
+                <ConstructionPlanCard
+                  key={cp.id}
+                  onDelete={onDelete}
+                  constructionPlan={cp}
+                  onDrop={(username) => onDrop(username, cp.id)}
+                />
+              ))}
+            </ColFlexBox>
+          </Grid>
+
+          <Grid item xs={6}>
+            <ColFlexBox mt={1}>
+              {availableWorkers.map((user) => (
+                <AvailableWorker key={user.username} user={user} />
+              ))}
+            </ColFlexBox>
+          </Grid>
+        </DndProvider>
       </AppGrid>
     </ColFlexBox>
   );

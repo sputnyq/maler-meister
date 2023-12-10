@@ -1,6 +1,6 @@
-import { Avatar, Card, CardContent, CardHeader, Chip } from '@mui/material';
+import { Avatar, Box, Card, CardContent, CardHeader, Chip } from '@mui/material';
 
-import { DragEventHandler } from 'react';
+import { useDrop } from 'react-dnd';
 import { useSelector } from 'react-redux';
 
 import { ColFlexBox } from '../../../components/ColFlexBox';
@@ -9,16 +9,21 @@ import { userFullName } from '../../../utilities';
 
 interface Props {
   constructionPlan: ConstructionPlan;
-  drop: DragEventHandler<HTMLDivElement>;
+  onDrop: (username: string) => void;
   onDelete: (username: string) => void;
 }
 
 export function ConstructionPlanCard({
-  drop,
+  onDrop,
   onDelete,
   constructionPlan: { allocatedPersons, id, name, usernames },
 }: Readonly<Props>) {
   const users = useSelector<AppState, User[]>((s) => s.users.all);
+
+  const [, drop] = useDrop<{ username: string }>(() => ({
+    accept: 'WORKER',
+    drop: (arg) => onDrop(arg.username),
+  }));
 
   const getFullWorkerName = (username: string) => {
     const user = users.find((u) => u.username === username);
@@ -26,13 +31,15 @@ export function ConstructionPlanCard({
   };
 
   return (
-    <Card onDrop={drop} key={id} data-cid={id} onDragOver={(ev) => ev.preventDefault()}>
+    <Card ref={drop} data-cid={id}>
       <CardHeader avatar={<Avatar>{allocatedPersons}</Avatar>} title={name} />
 
       <CardContent>
         <ColFlexBox>
           {usernames.map((username) => (
-            <Chip key={username} label={getFullWorkerName(username)} onDelete={() => onDelete(username)} />
+            <Box key={username}>
+              <Chip label={getFullWorkerName(username)} onDelete={() => onDelete(username)} />
+            </Box>
           ))}
         </ColFlexBox>
       </CardContent>

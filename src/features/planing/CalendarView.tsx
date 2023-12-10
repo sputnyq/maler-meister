@@ -43,6 +43,8 @@ type ExtendedProps = {
   id: number | string;
 };
 
+const TIME_GRID_WEEK = 'timeGridWeek';
+
 export default function CalendarView() {
   const [constructionDialog, setConstructionDialog] = useState(false);
   const [planDialogOpen, setPlanDialogOpen] = useState(false);
@@ -60,6 +62,7 @@ export default function CalendarView() {
 
   const idRef = useRef<undefined | string | number>(undefined);
   const dateSelectArg = useRef<DateSelectArg | null>(null);
+  const viewType = useRef<string | null>(null);
 
   const small = useIsSmall();
   const users = useSelector<AppState, User[]>((s) => s.users.all);
@@ -162,8 +165,12 @@ export default function CalendarView() {
   const handleDateSelect = useCallback((arg: DateSelectArg) => {
     idRef.current = undefined;
     dateSelectArg.current = arg;
-    console.log(dateSelectArg.current.startStr);
-    setPlanDialogOpen(true);
+
+    if (viewType.current === TIME_GRID_WEEK) {
+      setPlanDialogOpen(true);
+    } else {
+      setConstructionDialog(true);
+    }
   }, []);
 
   const handleEventClick = useCallback((arg: EventClickArg) => {
@@ -227,7 +234,7 @@ export default function CalendarView() {
             multiMonthMaxColumns={multiMonthMaxColumns}
             initialView="multiMonthYear"
             viewDidMount={({ view }) => {
-              console.log(view.type);
+              viewType.current = view.type;
             }}
           />
         </CardContent>

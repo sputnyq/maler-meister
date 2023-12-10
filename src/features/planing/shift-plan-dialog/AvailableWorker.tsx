@@ -1,8 +1,10 @@
-import { Box, Chip } from '@mui/material';
+import DragIndicatorOutlinedIcon from '@mui/icons-material/DragIndicatorOutlined';
+import { Box } from '@mui/material';
 
 import { useDrag } from 'react-dnd';
 
 import { userFullName } from '../../../utilities';
+import { WorkerChip } from './WorkerChip';
 
 interface Props {
   user: User;
@@ -19,21 +21,24 @@ export function AvailableWorker({ user }: Readonly<Props>) {
     }),
     [user.username],
   );
+
   return (
     <Box ref={drag}>
-      <Chip
+      <WorkerChip
         sx={
           isDragging
             ? {
+                backgroundColor: (theme) => theme.palette.grey[500],
                 position: 'relative',
                 zIndex: 9999,
                 transform: `translate(${difference?.x}px, ${difference?.y}px)`,
                 pointerEvents: 'none',
               }
-            : {}
+            : undefined
         }
-        color={isDragging ? 'secondary' : 'primary'}
         label={userFullName(user)}
+        deleteIcon={<DragIndicatorOutlinedIcon />}
+        onDelete={() => {}}
       />
     </Box>
   );

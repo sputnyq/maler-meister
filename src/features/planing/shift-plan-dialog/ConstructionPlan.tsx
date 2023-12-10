@@ -1,11 +1,11 @@
-import { Avatar, Box, Card, CardContent, CardHeader, Chip } from '@mui/material';
+import { Card, CardContent, CardHeader, Typography } from '@mui/material';
 
 import { useDrop } from 'react-dnd';
-import { useSelector } from 'react-redux';
 
 import { ColFlexBox } from '../../../components/ColFlexBox';
-import { AppState } from '../../../store';
+import { useWorkers } from '../../../hooks/useWorkers';
 import { userFullName } from '../../../utilities';
+import { WorkerChip } from './WorkerChip';
 
 interface Props {
   constructionPlan: ConstructionPlan;
@@ -18,28 +18,29 @@ export function ConstructionPlanCard({
   onDelete,
   constructionPlan: { allocatedPersons, id, name, usernames },
 }: Readonly<Props>) {
-  const users = useSelector<AppState, User[]>((s) => s.users.all);
+  const workers = useWorkers();
 
-  const [, drop] = useDrop<{ username: string }>(() => ({
+  const [{ isOver }, drop] = useDrop<{ username: string }, any, { isOver: boolean }>(() => ({
     accept: 'WORKER',
     drop: (arg) => onDrop(arg.username),
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
   }));
 
   const getFullWorkerName = (username: string) => {
-    const user = users.find((u) => u.username === username);
+    const user = workers.find((u) => u.username === username);
     return user ? userFullName(user) : username;
   };
 
   return (
-    <Card ref={drop} data-cid={id}>
-      <CardHeader avatar={<Avatar>{allocatedPersons}</Avatar>} title={name} />
+    <Card ref={drop} data-cid={id} elevation={isOver ? 5 : 1}>
+      <CardHeader title={<Typography>{`[${allocatedPersons}] ${name}`}</Typography>} />
 
-      <CardContent>
-        <ColFlexBox>
+      <CardContent sx={{ p: 1 }}>
+        <ColFlexBox gap={1} flexDirection={'row'} flexWrap="wrap">
           {usernames.map((username) => (
-            <Box key={username}>
-              <Chip label={getFullWorkerName(username)} onDelete={() => onDelete(username)} />
-            </Box>
+            <WorkerChip key={username} label={getFullWorkerName(username)} onDelete={() => onDelete(username)} />
           ))}
         </ColFlexBox>
       </CardContent>

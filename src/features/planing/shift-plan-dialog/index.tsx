@@ -3,14 +3,13 @@ import { Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { TouchBackend } from 'react-dnd-touch-backend';
-import { useSelector } from 'react-redux';
 
 import { AppDialog } from '../../../components/AppDialog';
 import AppGrid from '../../../components/AppGrid';
 import { ColFlexBox } from '../../../components/ColFlexBox';
 import { loadConstructions } from '../../../fetch/api';
 import { useCurrentUser } from '../../../hooks/useCurrentUser';
-import { AppState } from '../../../store';
+import { useWorkers } from '../../../hooks/useWorkers';
 import { AvailableWorker } from './AvailableWorker';
 import { ConstructionPlanCard } from './ConstructionPlan';
 
@@ -89,10 +88,10 @@ interface ShiftPlanEditProps {
 
 function ShiftPlanEdit({ initial }: ShiftPlanEditProps) {
   const [shift, setShift] = useState(initial);
-  const users = useSelector<AppState, User[]>((s) => s.users.all);
+  const workers = useWorkers();
 
   const isAvailable = (user: User) => !shift.constructionsPlan.some((cp) => cp.usernames.includes(user.username));
-  const availableWorkers = users.filter(isAvailable);
+  const availableWorkers = workers.filter(isAvailable);
 
   const onDrop = (username: string, cid: number) => {
     const nextShift = { ...shift };
@@ -114,7 +113,6 @@ function ShiftPlanEdit({ initial }: ShiftPlanEditProps) {
 
   return (
     <ColFlexBox pt={1}>
-      <Typography variant="h4">{formatter.format(new Date(shift.date))}</Typography>
       <AppGrid p={1}>
         <DndProvider backend={TouchBackend} options={{ enableMouseEvents: true }}>
           <Grid item xs={6}>

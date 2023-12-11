@@ -119,6 +119,7 @@ export default function CalendarView() {
       }
     });
   }, [eventRange, user]);
+  // todo load shifts
 
   const events = useMemo(() => {
     const holidayEvents = holidays2Events(holidays);

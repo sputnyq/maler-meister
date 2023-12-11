@@ -1,5 +1,15 @@
 import { StrapiQueryObject, buildQuery, genericConverter } from '../utilities';
-import { appJobs, bgbServices, constructionById, constructions, dailyEntries, invoices, offers } from './endpoints';
+import {
+  appJobs,
+  bgbServices,
+  constructionById,
+  constructions,
+  dailyEntries,
+  invoices,
+  offers,
+  shiftById,
+  shifts,
+} from './endpoints';
 import { appRequest } from './fetch-client';
 
 export async function loadConstructionById(constructionId: string | number) {
@@ -99,4 +109,27 @@ export async function loadJobs(queryObj: StrapiQueryObject) {
     jobs,
     meta,
   };
+}
+export async function loadShifts(queryObj: StrapiQueryObject) {
+  const query = buildQuery(queryObj);
+  const response = await appRequest('get')(shifts(query));
+
+  const converted = response.data.map((e: any) => genericConverter<Shift[]>(e));
+
+  const meta = response.meta as ApiMeta;
+  return {
+    shifts: converted,
+    meta,
+  };
+}
+
+export async function loadShiftById(constructionId: string | number) {
+  return appRequest('get')(shiftById(constructionId))
+    .then((res) => {
+      return genericConverter<Shift>(res.data);
+    })
+    .catch((e) => {
+      console.log(e);
+      return undefined;
+    });
 }

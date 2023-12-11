@@ -5,6 +5,7 @@ import { loadConstructionById } from '../../fetch/api';
 import { constructionById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { LoadingScreen } from '../app-structure/LoadingScreen';
 import EditConstructionWidget from './EditConstructionWidget';
 
 interface Props {
@@ -61,12 +62,13 @@ export default function EditConstructionDialog({
       .finally(onClose);
   };
 
-  if (construction) {
-    return (
-      <AppDialog title="Baustelle bearbeiten" onClose={onClose} open={dialogOpen} onConfirm={handleSaveRequest}>
+  return (
+    <AppDialog title="Baustelle bearbeiten" onClose={onClose} open={dialogOpen} onConfirm={handleSaveRequest}>
+      {construction === null ? (
+        <LoadingScreen />
+      ) : (
         <EditConstructionWidget construction={construction} setConstruction={setConstruction} />
-      </AppDialog>
-    );
-  }
-  return null;
+      )}
+    </AppDialog>
+  );
 }

@@ -18,6 +18,7 @@ import {
 
 import { useMemo, useState } from 'react';
 
+import { ColFlexBox } from '../../../components/ColFlexBox';
 import { useIsSmall } from '../../../hooks/useIsSmall';
 import { useWorkers } from '../../../hooks/useWorkers';
 import { HoursCheckRow } from './HoursCheckRow';
@@ -49,7 +50,7 @@ export function HoursCheck() {
   const allDays = eachDayOfInterval({ end: interval.end, start: interval.start });
 
   return (
-    <Box display={'flex'} flexDirection="column" gap={2}>
+    <ColFlexBox>
       <Card>
         <CardContent>
           <Box maxWidth={400} margin="auto">
@@ -94,7 +95,7 @@ export function HoursCheck() {
           </TableBody>
         </StyledTable>
       </TableContainer>
-    </Box>
+    </ColFlexBox>
   );
 }
 

@@ -1,5 +1,4 @@
 import {
-  Box,
   Card,
   CardContent,
   FormControl,
@@ -15,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { AppDialog } from '../../components/AppDialog';
+import { ColFlexBox } from '../../components/ColFlexBox';
 import DocumentActions from '../../components/DocumentActions';
 import { invoiceById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
@@ -95,7 +95,7 @@ export function InvoiceActions() {
       );
     } else {
       return (
-        <Box display="flex" flexDirection="column" gap={2}>
+        <ColFlexBox>
           <FormControl>
             <FormLabel id="print-settings-label">PDF erzeugen für:</FormLabel>
             <RadioGroup aria-labelledby="print-settings-label" value={printSettingID} onChange={handlePSChange}>
@@ -104,7 +104,7 @@ export function InvoiceActions() {
               ))}
             </RadioGroup>
           </FormControl>
-        </Box>
+        </ColFlexBox>
       );
     }
   }, [allPrintSettings, printSettingID]);

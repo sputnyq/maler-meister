@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import { AppDialog } from '../../../components/AppDialog';
-import { loadConstructions } from '../../../fetch/api';
+import { loadConstructions, loadShiftById } from '../../../fetch/api';
+import { shiftById } from '../../../fetch/endpoints';
+import { appRequest } from '../../../fetch/fetch-client';
 import { useCurrentUser } from '../../../hooks/useCurrentUser';
 import { LoadingScreen } from '../../app-structure/LoadingScreen';
 import { ShiftPlanEdit } from './ShiftPlanEdit';
@@ -23,7 +25,11 @@ export function ShiftPlanDialog({ open, onClose, id, dateSelectArg }: Readonly<P
 
   useEffect(() => {
     if (id) {
-      console.log('test');
+      loadShiftById(id).then((res) => {
+        if (res) {
+          setShift(res);
+        }
+      });
     } else if (dateSelectArg) {
       const { start } = dateSelectArg;
       const queryObj = {
@@ -44,8 +50,10 @@ export function ShiftPlanDialog({ open, onClose, id, dateSelectArg }: Readonly<P
       loadConstructions(queryObj).then((res) => {
         if (res) {
           const nextShift = {
+            tenant: user?.tenant,
             constructionsPlan: new Array<ConstructionPlan>(),
-            date: formatISO(start, { representation: 'date' }),
+            start: dateSelectArg.startStr,
+            end: dateSelectArg.endStr,
           } as Shift;
 
           res.constructions
@@ -59,8 +67,26 @@ export function ShiftPlanDialog({ open, onClose, id, dateSelectArg }: Readonly<P
     }
   }, [id, dateSelectArg, user?.tenant]);
 
+  const onCloseRequest = () => {
+    setShift(null);
+    onClose();
+  };
+
+  const onConfirm = () => {
+    appRequest(shift?.id ? 'put' : 'post')(shiftById(shift?.id || ''), {
+      data: shift,
+    })
+      .catch((e) => {
+        console.log(e);
+        alert('Fehler beim speichern!');
+      })
+      .finally(onCloseRequest);
+  };
+
+  const onDelete = shift?.id ? () => {} : undefined;
+
   return (
-    <AppDialog title="Schichtplanung" open={open} onClose={onClose} showConfirm onConfirm={console.log}>
+    <AppDialog title="Schichtplanung" open={open} onClose={onCloseRequest} onConfirm={onConfirm} onDelete={onDelete}>
       {shift === null ? <LoadingScreen /> : <ShiftPlanEdit shift={shift} setShift={setShift} />}
     </AppDialog>
   );

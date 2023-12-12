@@ -39,8 +39,8 @@ export function ShiftPlanEdit({ shift, setShift }: Readonly<Props>) {
   };
 
   return (
-    <ColFlexBox pt={1}>
-      <AppGrid p={1}>
+    <ColFlexBox>
+      <AppGrid>
         <DndProvider backend={TouchBackend} options={{ enableMouseEvents: true }}>
           <Grid item xs={6}>
             <ColFlexBox>
@@ -56,7 +56,7 @@ export function ShiftPlanEdit({ shift, setShift }: Readonly<Props>) {
           </Grid>
 
           <Grid item xs={6}>
-            <ColFlexBox mt={1}>
+            <ColFlexBox>
               {availableWorkers.map((user) => (
                 <AvailableWorker key={user.username} user={user} />
               ))}

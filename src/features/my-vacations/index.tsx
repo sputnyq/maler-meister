@@ -20,6 +20,7 @@ import {
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import AddFab from '../../components/AddFab';
+import { ColFlexBox } from '../../components/ColFlexBox';
 import { RequestDailyViewButton } from '../../components/RequestDailyViewButton';
 import { loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
@@ -118,7 +119,7 @@ export default function MyVacations() {
 
       <Card sx={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
         <CardContent>
-          <Box display={'flex'} flexDirection="column" gap={2}>
+          <ColFlexBox>
             <Box maxWidth={400}>
               <ToggleButtonGroup
                 color="primary"
@@ -138,7 +139,7 @@ export default function MyVacations() {
               </ToggleButtonGroup>
             </Box>
             <Typography variant="h5">Gesamt: {sum} Tage(e)</Typography>
-          </Box>
+          </ColFlexBox>
         </CardContent>
       </Card>
       {plannedData.length > 0 && (

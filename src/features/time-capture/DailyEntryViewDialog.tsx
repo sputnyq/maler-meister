@@ -31,6 +31,7 @@ interface Props {
   closeDialog(): void;
 }
 
+//TODO: refactor use delete in Dialog
 export function DailyEntryViewDialog({ closeDialog, dailyEntryId, dialogOpen }: Props) {
   const dailyEntryView = useMemo(
     () => <DailyEntryViewCard dailyEntryId={dailyEntryId} closeDialog={closeDialog} />,
@@ -38,7 +39,7 @@ export function DailyEntryViewDialog({ closeDialog, dailyEntryId, dialogOpen }: 
   );
 
   return (
-    <AppDialog showConfirm={false} open={dialogOpen} onClose={closeDialog} title="Tagesansicht">
+    <AppDialog open={dialogOpen} onClose={closeDialog} title="Tagesansicht">
       {dailyEntryView}
     </AppDialog>
   );

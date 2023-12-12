@@ -1,10 +1,11 @@
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
-import { Box, Button, Card, CardContent, Chip } from '@mui/material';
+import { Button, Card, CardContent, Chip } from '@mui/material';
 import { GridColDef, GridToolbarContainer } from '@mui/x-data-grid';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AppUserView } from '../../components/AppUserView';
+import { ColFlexBox } from '../../components/ColFlexBox';
 import { RequestDailyViewButton } from '../../components/RequestDailyViewButton';
 import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
@@ -216,7 +217,7 @@ export default function DailyTimesView() {
 
   return (
     <>
-      <Box display="flex" flexDirection="column" gap={2}>
+      <ColFlexBox>
         <FilterWrapperCard>
           <PastDateRange dateRange={dateRange} setDateRange={setDateRange} />
           <WorkerNameFilter curUsername={curUsername} setUsername={setCurUsername} />
@@ -239,7 +240,7 @@ export default function DailyTimesView() {
             />
           </CardContent>
         </Card>
-      </Box>
+      </ColFlexBox>
 
       <DailyEntryViewDialog closeDialog={closeDialog} dailyEntryId={dailyEntryId.current} dialogOpen={dialogOpen} />
     </>

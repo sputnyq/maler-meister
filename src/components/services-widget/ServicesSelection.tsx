@@ -22,7 +22,7 @@ export function ServicesSelection(props: Props) {
   const jobs = useSelector<AppState, AppJob[] | undefined>((s) => s.jobs.jobs);
 
   return (
-    <AppDialog open={open} onClose={onClose} title="Leistungen auswählen" showConfirm={false}>
+    <AppDialog open={open} onClose={onClose} title="Leistungen auswählen">
       <Card elevation={0}>
         <CardContent sx={{ height: '100%', overflowY: 'auto' }}>
           <TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>

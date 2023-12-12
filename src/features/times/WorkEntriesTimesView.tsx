@@ -1,4 +1,4 @@
-import { Box, Card, CardContent } from '@mui/material';
+import { Card, CardContent } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
 import { useEffect, useMemo, useState } from 'react';
@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { AppGridField } from '../../components/AppGridField';
 import { AppTextField } from '../../components/AppTextField';
 import { AppUserView } from '../../components/AppUserView';
+import { ColFlexBox } from '../../components/ColFlexBox';
 import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadWorkEntries } from '../../fetch/api';
@@ -141,7 +142,7 @@ export default function WorkEntriesTimesView() {
 
   return (
     <>
-      <Box display="flex" flexDirection="column" gap={2}>
+      <ColFlexBox>
         <FilterWrapperCard>
           <PastDateRange dateRange={dateRange} setDateRange={setDateRange} />
           <WorkerNameFilter curUsername={curUsername} setUsername={setCurUsername} />
@@ -172,7 +173,7 @@ export default function WorkEntriesTimesView() {
             />
           </CardContent>
         </Card>
-      </Box>
+      </ColFlexBox>
     </>
   );
 }

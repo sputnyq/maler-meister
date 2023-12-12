@@ -1,10 +1,11 @@
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import { Box, Grid, IconButton, Link } from '@mui/material';
+import { Grid, IconButton, Link } from '@mui/material';
 
 import { useMemo } from 'react';
 
 import AppGrid from '../../components/AppGrid';
+import { ColFlexBox } from '../../components/ColFlexBox';
 import { Wrapper } from '../../components/Wrapper';
 import { useCurrentInvoice } from '../../hooks/useCurrentInvoice';
 import ConstructionView from '../time-capture/ConstructionView';
@@ -28,7 +29,7 @@ export function InvoiceCustomer() {
   }, [invoice?.phone]);
 
   return (
-    <Box display="flex" flexDirection="column" gap={2}>
+    <ColFlexBox>
       <Wrapper title="Kunde">
         <AppGrid>
           <Field path="company" label="Firmenname" />
@@ -100,7 +101,7 @@ export function InvoiceCustomer() {
           </Grid>
         </AppGrid>
       </Wrapper>
-    </Box>
+    </ColFlexBox>
   );
 }
 

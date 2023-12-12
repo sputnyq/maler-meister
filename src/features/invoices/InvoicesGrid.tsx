@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { AppGridField } from '../../components/AppGridField';
 import { AppTextField } from '../../components/AppTextField';
+import { ColFlexBox } from '../../components/ColFlexBox';
 import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadInvoices } from '../../fetch/api';
@@ -186,7 +187,7 @@ export function InvoicesGrid() {
   }, []);
 
   return (
-    <Box display="flex" flexDirection="column" gap={2}>
+    <ColFlexBox>
       <FilterWrapperCard>
         <AppGridField>
           <AppTextField type="search" label="ID" value={id} onChange={(ev) => setId(ev.target.value?.trim())} />
@@ -230,6 +231,6 @@ export function InvoicesGrid() {
           />
         </CardContent>
       </Card>
-    </Box>
+    </ColFlexBox>
   );
 }

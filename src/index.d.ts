@@ -183,9 +183,8 @@ type EventDateRange = {
 type Shift = {
   id?: number;
   tenant: string;
-  date: string;
-  // start: string;
-  // end: string;
+  start: string;
+  end: string;
   constructionsPlan: ConstructionPlan[];
 };
 

@@ -123,8 +123,8 @@ export async function loadShifts(queryObj: StrapiQueryObject) {
   };
 }
 
-export async function loadShiftById(constructionId: string | number) {
-  return appRequest('get')(shiftById(constructionId))
+export async function loadShiftById(shiftId: string | number) {
+  return appRequest('get')(shiftById(shiftId))
     .then((res) => {
       return genericConverter<Shift>(res.data);
     })

@@ -28,7 +28,7 @@ export function AvailableWorker({ user }: Readonly<Props>) {
         sx={
           isDragging
             ? {
-                backgroundColor: (theme) => theme.palette.grey[500],
+                backgroundColor: (theme) => theme.palette.info.dark,
                 position: 'relative',
                 zIndex: 9999,
                 transform: `translate(${difference?.x}px, ${difference?.y}px)`,

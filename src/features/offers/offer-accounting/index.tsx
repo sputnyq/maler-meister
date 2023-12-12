@@ -1,5 +1,6 @@
 import { Box, Card, CardContent } from '@mui/material';
 
+import { ColFlexBox } from '../../../components/ColFlexBox';
 import CreateInvoiceForOfferButton from './CreateInvoiceForOfferButton';
 import OfferInvoices from './OfferInvoices';
 
@@ -7,12 +8,12 @@ export function OfferAccounting() {
   return (
     <Card>
       <CardContent>
-        <Box display={'flex'} flexDirection="column" gap={2}>
+        <ColFlexBox>
           <Box>
             <CreateInvoiceForOfferButton />
           </Box>
           <OfferInvoices />
-        </Box>
+        </ColFlexBox>
       </CardContent>
     </Card>
   );

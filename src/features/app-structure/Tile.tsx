@@ -1,10 +1,9 @@
 import { Divider, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { AppState } from '../../store';
+import { RoleBased } from './RoleBased';
 
 interface Props {
   title: string;
@@ -19,16 +18,8 @@ export default function Tile({
   hasDivider = true,
   children,
 }: React.PropsWithChildren<Props>) {
-  const currentRole = useSelector<AppState, UserRole | undefined>((s) => s.login.user?.userRole);
-
-  const hasRight = currentRole && requiredRoles.includes(currentRole);
-
-  if (!hasRight) {
-    return null;
-  }
-
   return (
-    <>
+    <RoleBased requiredRoles={requiredRoles}>
       <Link to={to} style={{ textDecoration: 'none', color: 'inherit' }}>
         <ListItemButton>
           <ListItemIcon>{children}</ListItemIcon>
@@ -36,6 +27,6 @@ export default function Tile({
         </ListItemButton>
       </Link>
       {hasDivider && <Divider />}
-    </>
+    </RoleBased>
   );
 }

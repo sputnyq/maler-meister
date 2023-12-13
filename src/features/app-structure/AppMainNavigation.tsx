@@ -7,11 +7,14 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import MoreTimeIcon from '@mui/icons-material/MoreTimeOutlined';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLongOutlined';
 import TuneIcon from '@mui/icons-material/TuneOutlined';
-import { Box, Card, Grid, List, Typography } from '@mui/material';
+import { Card, Grid, List, Typography } from '@mui/material';
 
 import { useMemo } from 'react';
 
+import { ColFlexBox } from '../../components/ColFlexBox';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { MyShifts } from '../my-shifts';
+import { RoleBased } from './RoleBased';
 import Tile from './Tile';
 
 export default function MainNavigation() {
@@ -29,12 +32,18 @@ export default function MainNavigation() {
   }, []);
 
   return (
-    <>
-      <Box marginTop={9} marginBottom={2}>
-        <Typography color="GrayText" variant="h4" align="center">
-          {`${text} ${currentUser?.firstName}!`}
-        </Typography>
-      </Box>
+    <ColFlexBox marginTop={8}>
+      <Typography color="GrayText" variant="h4" align="center">
+        {`${text} ${currentUser?.firstName}!`}
+      </Typography>
+
+      <RoleBased requiredRoles={['worker']}>
+        <Grid container justifyContent={'center'}>
+          <Grid item xs={12} md={6}>
+            <MyShifts />
+          </Grid>
+        </Grid>
+      </RoleBased>
 
       <Grid container justifyContent={'center'}>
         <Grid item xs={12} md={6}>
@@ -79,6 +88,6 @@ export default function MainNavigation() {
           </Card>
         </Grid>
       </Grid>
-    </>
+    </ColFlexBox>
   );
 }

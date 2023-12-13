@@ -83,6 +83,7 @@ export default function DailyTimesView() {
       {
         field: 'date',
         headerName: 'Datum',
+        width: 150,
         renderCell({ value, id }) {
           return <RequestDailyViewButton value={value} onClick={() => handleDialogRequest(id)} />;
         },

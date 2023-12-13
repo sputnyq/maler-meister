@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent } from '@mui/material';
+import { Button, Card, CardContent } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
 import { useEffect, useMemo, useState } from 'react';

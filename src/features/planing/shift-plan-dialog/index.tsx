@@ -83,7 +83,14 @@ export function ShiftPlanDialog({ open, onClose, id, dateSelectArg }: Readonly<P
       .finally(onCloseRequest);
   };
 
-  const onDelete = shift?.id ? () => {} : undefined;
+  const deleteShiftById = (shiftId: number) => {
+    appRequest('delete')(shiftById(shiftId));
+  };
+
+  const onDelete = shift?.id
+    ? //@ts-ignore
+      () => deleteShiftById(shift.id)
+    : undefined;
 
   return (
     <AppDialog title="Schichtplanung" open={open} onClose={onCloseRequest} onConfirm={onConfirm} onDelete={onDelete}>

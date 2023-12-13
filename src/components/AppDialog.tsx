@@ -28,7 +28,8 @@ export function AppDialog(props: React.PropsWithChildren<Props>) {
   const onDelete = props.onDelete
     ? () => {
         if (confirm('Möchtest du es wirklich löschen?')) {
-          onDelete?.();
+          props.onDelete?.();
+          props.onClose();
         }
       }
     : undefined;
@@ -67,7 +68,7 @@ function MobileDialog({
             {title}
           </Typography>
           {onDelete && (
-            <IconButton sx={{ mr: 3 }} color="error" onClick={onDelete}>
+            <IconButton color="error" onClick={onDelete}>
               <DeleteForeverOutlinedIcon />
             </IconButton>
           )}

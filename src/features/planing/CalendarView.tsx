@@ -45,10 +45,12 @@ type ExtendedProps = {
 
 const TIME_GRID_WEEK = 'timeGridWeek';
 
+type DialogProp = { open: boolean; id: number | undefined };
+
 export default function CalendarView() {
-  const [constructionDialog, setConstructionDialog] = useState(false);
-  const [shiftPlanDialog, setShiftPlanDialog] = useState(false);
-  const [dailyEntryDialog, setDailyEntryDialog] = useState(false);
+  const [constructionDialog, setConstructionDialog] = useState<DialogProp>({ open: false, id: undefined });
+  const [shiftPlanDialog, setShiftPlanDialog] = useState<DialogProp>({ open: false, id: undefined });
+  const [dailyEntryDialog, setDailyEntryDialog] = useState<DialogProp>({ open: false, id: undefined });
 
   const [weekends, setWeekends] = useState(true);
   const [curYear, setCurYear] = useState(new Date().getFullYear());
@@ -62,8 +64,6 @@ export default function CalendarView() {
   const [update, setUpdate] = useState(0);
 
   const theme = useTheme();
-
-  const idRef = useRef<undefined | string | number>(undefined);
 
   const dateSelectArg = useRef<DateSelectArg | null>(null);
   const viewType = useRef<string | null>(null);
@@ -143,7 +143,6 @@ export default function CalendarView() {
       }
     });
   }, [eventRange, user]);
-  // todo load shifts
 
   const events = useMemo(() => {
     const holidayEvents = holidays2Events(holidays);
@@ -189,52 +188,49 @@ export default function CalendarView() {
   }, [small]);
 
   const handleDateSelect = useCallback((arg: DateSelectArg) => {
-    idRef.current = undefined;
     dateSelectArg.current = arg;
 
     if (viewType.current === TIME_GRID_WEEK) {
-      setShiftPlanDialog(true);
+      setShiftPlanDialog({ open: true, id: undefined });
     } else {
-      setConstructionDialog(true);
+      setConstructionDialog({ open: true, id: undefined });
     }
   }, []);
 
   const handleEventClick = useCallback((arg: EventClickArg) => {
     const ext = arg.event.extendedProps as ExtendedProps;
 
-    idRef.current = ext.id;
-
     switch (ext.type) {
       case 'CONSTRUCTION':
-        setConstructionDialog(true);
+        setConstructionDialog({ open: true, id: Number(ext.id) });
         break;
       case 'DAILY_ENTRY':
-        setDailyEntryDialog(true);
+        setDailyEntryDialog({ open: true, id: Number(ext.id) });
         break;
       case 'SHIFT_ENTRY':
-        setShiftPlanDialog(true);
+        setShiftPlanDialog({ open: true, id: Number(ext.id) });
         break;
       default:
         return;
     }
   }, []);
 
-  const onClose = useCallback((func: (bool: boolean) => void) => {
-    func(false);
+  const onClose = useCallback((func: (args: any) => void) => {
+    func({ open: false, id: undefined });
     setUpdate((u) => u + 1);
   }, []);
 
   return (
     <>
       <ShiftPlanDialog
-        id={idRef.current}
+        id={shiftPlanDialog.id}
         dateSelectArg={dateSelectArg.current}
-        open={shiftPlanDialog}
+        open={shiftPlanDialog.open}
         onClose={() => onClose(setShiftPlanDialog)}
       />
       <DailyEntryViewDialog
-        dialogOpen={dailyEntryDialog}
-        dailyEntryId={idRef.current}
+        dialogOpen={dailyEntryDialog.open}
+        dailyEntryId={dailyEntryDialog.id}
         closeDialog={() => onClose(setDailyEntryDialog)}
       />
       <EditConstructionDialog
@@ -246,8 +242,8 @@ export default function CalendarView() {
           dateSelectArg.current?.endStr &&
           formatISO(addDays(new Date(dateSelectArg.current?.endStr), -1), { representation: 'date' })
         }
-        dialogOpen={constructionDialog}
-        constructionId={idRef.current}
+        dialogOpen={constructionDialog.open}
+        constructionId={constructionDialog.id}
         onClose={() => onClose(setConstructionDialog)}
       />
       <Card>

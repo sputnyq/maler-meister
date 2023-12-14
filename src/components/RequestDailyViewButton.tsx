@@ -10,9 +10,9 @@ export function RequestDailyViewButton({ value, onClick }: Props) {
   return (
     <Button color="info" startIcon={<OpenInNewOutlinedIcon />} onClick={onClick}>
       {new Intl.DateTimeFormat('de-DE', {
-        month: 'short',
+        month: '2-digit',
         weekday: 'short',
-        day: 'numeric',
+        day: '2-digit',
         year: '2-digit',
       }).format(new Date(value))}
     </Button>

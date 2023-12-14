@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import AppGrid from '../../../components/AppGrid';
+import { ColFlexBox } from '../../../components/ColFlexBox';
 import { AppDispatch } from '../../../store';
 import { deletePrintSettings, updatePrintSettings } from '../../../store/printSettingsReducer';
 import { PSField } from './PSField';
@@ -53,7 +54,7 @@ export function PrintSettingsEdit({ ps }: Props) {
   const multiline = true;
 
   return (
-    <Box display={'flex'} flexDirection="column" gap={2}>
+    <ColFlexBox>
       <Wrapper title="Aussehen">
         {[
           Field({ prop: 'primaryColor', type: 'color' }),
@@ -103,7 +104,7 @@ export function PrintSettingsEdit({ ps }: Props) {
           Speichern
         </Button>
       </Box>
-    </Box>
+    </ColFlexBox>
   );
 }
 

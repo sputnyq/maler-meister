@@ -1,10 +1,11 @@
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
-import { Box, Button, Card, CardContent } from '@mui/material';
+import { Button, Card, CardContent } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AppGridField } from '../../components/AppGridField';
+import { ColFlexBox } from '../../components/ColFlexBox';
 import { DeleteIconButton } from '../../components/DeleteIconButton';
 import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
@@ -141,7 +142,7 @@ export default function Constructions() {
         constructionId={curConstructionId.current}
         dialogOpen={constructionDialogOpen}
       />
-      <Box display="flex" flexDirection="column" gap={2}>
+      <ColFlexBox>
         <FilterWrapperCard>
           <ConstructionsDateRangeFilter dateRange={dateRange} setDateRange={setDateRange} />
           <AppGridField>
@@ -164,12 +165,8 @@ export default function Constructions() {
             />
           </CardContent>
         </Card>
-        <CreateConstruction
-          onCreateSuccess={() => {
-            setUpdate((u) => u + 1);
-          }}
-        />
-      </Box>
+        <CreateConstruction onCreateSuccess={() => setUpdate((u) => u + 1)} />
+      </ColFlexBox>
     </>
   );
 }

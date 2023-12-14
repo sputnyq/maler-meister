@@ -1,10 +1,8 @@
 import { MenuItem } from '@mui/material';
 
-import { useSelector } from 'react-redux';
-
 import { AppGridField } from '../../../components/AppGridField';
 import { AppTextField } from '../../../components/AppTextField';
-import { AppState } from '../../../store';
+import { useWorkers } from '../../../hooks/useWorkers';
 
 interface Props {
   curUsername: string;
@@ -12,9 +10,8 @@ interface Props {
 }
 
 export default function WorkerNameFilter({ curUsername, setUsername }: Props) {
-  const allUsers = useSelector<AppState, User[]>((s) => s.users.all);
+  const workers = useWorkers();
 
-  const workers = allUsers.filter((user) => user.userRole === 'worker');
   return (
     <AppGridField>
       <AppTextField

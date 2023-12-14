@@ -2,16 +2,20 @@ import AccessTimeIcon from '@mui/icons-material/AccessTimeOutlined';
 import ArticleIcon from '@mui/icons-material/ArticleOutlined';
 import BeachAccessIcon from '@mui/icons-material/BeachAccessOutlined';
 import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FormatPaintOutlinedIcon from '@mui/icons-material/FormatPaintOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import MoreTimeIcon from '@mui/icons-material/MoreTimeOutlined';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLongOutlined';
 import TuneIcon from '@mui/icons-material/TuneOutlined';
-import { Box, Card, Grid, List, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Card, Grid, List, Typography } from '@mui/material';
 
 import { useMemo } from 'react';
 
+import { ColFlexBox } from '../../components/ColFlexBox';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { MyShifts } from '../my-shifts';
+import { RoleBased } from './RoleBased';
 import Tile from './Tile';
 
 export default function MainNavigation() {
@@ -29,16 +33,14 @@ export default function MainNavigation() {
   }, []);
 
   return (
-    <>
-      <Box marginTop={9} marginBottom={2}>
-        <Typography color="GrayText" variant="h4" align="center">
-          {`${text} ${currentUser?.firstName}!`}
-        </Typography>
-      </Box>
+    <ColFlexBox marginTop={8}>
+      <Typography color="GrayText" variant="h4" align="center">
+        {`${text} ${currentUser?.firstName}!`}
+      </Typography>
 
       <Grid container justifyContent={'center'}>
         <Grid item xs={12} md={6}>
-          <Card>
+          <Card sx={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
             <List sx={{ padding: 0 }}>
               <Tile requiredRoles={['accountant', 'admin']} to="offers" title="Angebote">
                 <ArticleIcon />
@@ -77,8 +79,17 @@ export default function MainNavigation() {
               </Tile>
             </List>
           </Card>
+
+          <RoleBased requiredRoles={['worker']}>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>Meine Schichten</AccordionSummary>
+              <AccordionDetails>
+                <MyShifts />
+              </AccordionDetails>
+            </Accordion>
+          </RoleBased>
         </Grid>
       </Grid>
-    </>
+    </ColFlexBox>
   );
 }

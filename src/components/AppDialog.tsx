@@ -1,6 +1,7 @@
 import CheckIcon from '@mui/icons-material/CheckOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import { Box, Button, DialogActions, DialogContent, DialogTitle, useTheme } from '@mui/material';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import { Box, Button, DialogActions, DialogContent, DialogTitle, SxProps, Theme, useTheme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
@@ -17,15 +18,26 @@ interface Props {
   open: boolean;
   onClose(): void;
   title?: string;
-  showConfirm?: boolean;
   onConfirm?: () => void;
   confirmDisabled?: boolean;
+  onDelete?: () => void;
 }
 
 export function AppDialog(props: React.PropsWithChildren<Props>) {
   const isSmall = useIsSmall();
-  return isSmall ? <MobileDialog {...props} /> : <DesktopDialog {...props} />;
+  const onDelete = props.onDelete
+    ? () => {
+        if (confirm('Möchtest du es wirklich löschen?')) {
+          props.onDelete?.();
+          props.onClose();
+        }
+      }
+    : undefined;
+
+  return isSmall ? <MobileDialog {...props} onDelete={onDelete} /> : <DesktopDialog {...props} onDelete={onDelete} />;
 }
+
+const dialogContentSX: SxProps<Theme> = { paddingTop: (theme) => `${theme.spacing(2)}!important` };
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -40,9 +52,9 @@ function MobileDialog({
   children,
   open,
   title,
-  showConfirm = true,
   onClose,
   onConfirm,
+  onDelete,
   confirmDisabled,
 }: React.PropsWithChildren<Props>) {
   return (
@@ -55,14 +67,19 @@ function MobileDialog({
           <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
             {title}
           </Typography>
-          {showConfirm && (
+          {onDelete && (
+            <IconButton color="error" onClick={onDelete}>
+              <DeleteForeverOutlinedIcon />
+            </IconButton>
+          )}
+          {onConfirm && (
             <IconButton disabled={confirmDisabled} onClick={onConfirm} color="inherit">
               <CheckIcon />
             </IconButton>
           )}
         </Toolbar>
       </AppBar>
-      {children}
+      <DialogContent sx={dialogContentSX}>{children}</DialogContent>
     </Dialog>
   );
 }
@@ -71,32 +88,38 @@ function DesktopDialog({
   children,
   open,
   title,
-  showConfirm = true,
+  confirmDisabled,
   onClose,
   onConfirm,
-  confirmDisabled,
+  onDelete,
 }: React.PropsWithChildren<Props>) {
   const theme = useTheme();
+
   return (
     <Dialog maxWidth={'md'} fullWidth={true} open={open} onClose={onClose}>
       <DialogTitle color={'white'} sx={{ background: theme.palette.primary.main }}>
-        <Box display={'flex'} alignItems="center">
+        <Box display="flex" alignItems="center">
           <Typography variant="h6" flexGrow={1}>
             {title}
           </Typography>
-          <IconButton color={'inherit'} onClick={onClose}>
+          <IconButton color="inherit" onClick={onClose}>
             <CloseOutlinedIcon />
           </IconButton>
         </Box>
       </DialogTitle>
-      <DialogContent>{children}</DialogContent>
-      {showConfirm && (
-        <DialogActions>
+      <DialogContent sx={dialogContentSX}>{children}</DialogContent>
+      <DialogActions sx={{ justifyContent: 'space-between' }}>
+        {onDelete && (
+          <Button color="error" onClick={onDelete}>
+            Löschen
+          </Button>
+        )}
+        {onConfirm && (
           <Button disabled={confirmDisabled} variant="contained" disableElevation onClick={onConfirm}>
             OK
           </Button>
-        </DialogActions>
-      )}
+        )}
+      </DialogActions>
     </Dialog>
   );
 }

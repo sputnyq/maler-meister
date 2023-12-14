@@ -17,10 +17,10 @@ import {
 } from '@mui/material';
 
 import { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 
+import { ColFlexBox } from '../../../components/ColFlexBox';
 import { useIsSmall } from '../../../hooks/useIsSmall';
-import { AppState } from '../../../store';
+import { useWorkers } from '../../../hooks/useWorkers';
 import { HoursCheckRow } from './HoursCheckRow';
 
 import { addMonths, addWeeks, eachDayOfInterval, endOfMonth, endOfWeek, startOfMonth, startOfWeek } from 'date-fns';
@@ -29,7 +29,6 @@ export function HoursCheck() {
   const small = useIsSmall();
 
   const [value, setValue] = useState('0');
-  const allUsers = useSelector<AppState, User[]>((s) => s.users.all);
 
   const interval = useMemo(() => {
     const now = new Date();
@@ -46,12 +45,12 @@ export function HoursCheck() {
     }
   }, [small, value]);
 
-  const workers = allUsers.filter((user) => user.userRole === 'worker');
+  const workers = useWorkers();
 
   const allDays = eachDayOfInterval({ end: interval.end, start: interval.start });
 
   return (
-    <Box display={'flex'} flexDirection="column" gap={2}>
+    <ColFlexBox>
       <Card>
         <CardContent>
           <Box maxWidth={400} margin="auto">
@@ -96,7 +95,7 @@ export function HoursCheck() {
           </TableBody>
         </StyledTable>
       </TableContainer>
-    </Box>
+    </ColFlexBox>
   );
 }
 

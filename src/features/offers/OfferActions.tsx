@@ -1,11 +1,12 @@
 import { FormControl } from '@mui/base';
-import { Box, Card, CardContent, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@mui/material';
+import { Card, CardContent, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@mui/material';
 
 import { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { AppDialog } from '../../components/AppDialog';
+import { ColFlexBox } from '../../components/ColFlexBox';
 import DocumentActions from '../../components/DocumentActions';
 import { offerById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
@@ -83,7 +84,7 @@ export default function OfferActions() {
       );
     } else {
       return (
-        <Box display="flex" flexDirection="column" gap={2}>
+        <ColFlexBox>
           <FormControl>
             <FormLabel id="print-settings-label">PDF erzeugen für:</FormLabel>
             <RadioGroup aria-labelledby="print-settings-label" value={printSettingID} onChange={handlePSChange}>
@@ -99,7 +100,7 @@ export default function OfferActions() {
               <FormControlLabel value={'Kostenvoranschlag'} control={<Radio />} label={'Kostenvoranschlag'} />
             </RadioGroup>
           </FormControl>
-        </Box>
+        </ColFlexBox>
       );
     }
   }, [allPrintSettings, type, printSettingID]);

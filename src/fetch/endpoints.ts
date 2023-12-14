@@ -16,6 +16,9 @@ export const offers = (query: string) => `offers/?${query}`;
 export const invoiceById = (id: number | string) => `invoices/${id}`;
 export const invoices = (query: string) => `invoices/?${query}`;
 
+export const shiftById = (id: number | string) => `shifts/${id}`;
+export const shifts = (query: string) => `shifts/?${query}`;
+
 export const dailyEntries = (query: string) => `daily-entries/?${query}`;
 export const dailyEntryById = (id: number | string | undefined = '') => `daily-entries/${id}`;
 export const users = (query: string) => `users/?${query}`;

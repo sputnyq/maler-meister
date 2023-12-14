@@ -1,8 +1,9 @@
-import { Box, Card, CardContent, CardHeader, FormControlLabel, FormGroup, Switch, Typography } from '@mui/material';
+import { Card, CardContent, CardHeader, FormControlLabel, FormGroup, Switch, Typography } from '@mui/material';
 
 import { useCallback } from 'react';
 
 import { AppTextField } from '../../components/AppTextField';
+import { ColFlexBox } from '../../components/ColFlexBox';
 import { DateRangeWidget } from '../../components/widgets/DateRangeWidget';
 
 interface Props {
@@ -23,7 +24,7 @@ export default function EditConstructionWidget({ setConstruction, construction }
       <CardHeader title={`ID: ${construction.id || ' Neu'}`} />
 
       <CardContent>
-        <Box display={'flex'} flexDirection="column" gap={2} maxWidth={'400px'}>
+        <ColFlexBox maxWidth={'400px'}>
           <AppTextField label="Name" value={construction.name} onChange={(ev) => setProp('name', ev.target.value)} />
 
           <AppTextField
@@ -60,7 +61,7 @@ export default function EditConstructionWidget({ setConstruction, construction }
               label="Bestätigt"
             />
           </FormGroup>
-        </Box>
+        </ColFlexBox>
       </CardContent>
     </Card>
   );

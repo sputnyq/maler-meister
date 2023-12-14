@@ -3,6 +3,7 @@ import { Box } from '@mui/system';
 
 import AppGrid from '../../../components/AppGrid';
 import { AppTextField } from '../../../components/AppTextField';
+import { ColFlexBox } from '../../../components/ColFlexBox';
 import { WorkEntryEditor } from './WorkEntryEditor';
 
 interface Props {
@@ -59,10 +60,10 @@ export function TimeCaptureDialogContent({
           {isArbeit ? (
             <WorkEntryEditor workEntryStub={workEntryStub} setWorkEntryStubValue={setWorkEntryStubValue} />
           ) : (
-            <Box display="flex" alignItems="center" flexDirection="column" gap={2}>
+            <ColFlexBox alignItems={'center'}>
               <Typography variant="h3">8</Typography>
               <Typography>Stunden werden erfasst.</Typography>
-            </Box>
+            </ColFlexBox>
           )}
         </Grid>
       </AppGrid>

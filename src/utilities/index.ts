@@ -95,7 +95,7 @@ export function userFullName(user: User) {
 
 export const formatDate = (date: string | Date | null) => {
   if (date === null) return '';
-  const f = new Intl.DateTimeFormat('de-DE', { day: '2-digit', month: 'numeric', year: '2-digit' });
+  const f = new Intl.DateTimeFormat('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit' });
   if (typeof date === 'string') {
     return f.format(new Date(date));
   }
@@ -104,4 +104,9 @@ export const formatDate = (date: string | Date | null) => {
 
 export const formatNumber = (nmb: string | number) => {
   return new Intl.NumberFormat('de-DE', { maximumFractionDigits: 2 }).format(Number(nmb));
+};
+
+export const getFullWorkerName = (username: string, users: User[]) => {
+  const user = users.find((u) => u.username === username);
+  return user ? userFullName(user) : username;
 };

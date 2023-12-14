@@ -1,7 +1,8 @@
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
 import { useSelector } from 'react-redux';
 
+import { ColFlexBox } from '../../../../components/ColFlexBox';
 import { AppState } from '../../../../store';
 import { BgbServiceEdit } from './BgbServiceEdit';
 
@@ -17,10 +18,10 @@ export function BgbServicesByJobGroup({ jobId }: Props) {
     return <Typography variant="subtitle2">Keine Leistungen in dieser Tätigkeitsgruppe.</Typography>;
   }
   return (
-    <Box display={'flex'} flexDirection="column" gap={2}>
+    <ColFlexBox>
       {currentServices.map((service) => (
         <BgbServiceEdit service={service} key={service.id} />
       ))}
-    </Box>
+    </ColFlexBox>
   );
 }

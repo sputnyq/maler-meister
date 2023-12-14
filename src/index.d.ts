@@ -179,3 +179,18 @@ type EventDateRange = {
   start?: Date;
   end?: Date;
 };
+
+type Shift = {
+  id?: number;
+  tenant: string;
+  start: string;
+  end: string;
+  constructionsPlan: ConstructionPlan[];
+};
+
+type ConstructionPlan = {
+  id: number;
+  name: string;
+  allocatedPersons: number;
+  usernames: string[];
+};

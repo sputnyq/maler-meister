@@ -1,4 +1,6 @@
-import { Box, Card, CardContent, CardHeader } from '@mui/material';
+import { Card, CardContent, CardHeader } from '@mui/material';
+
+import { ColFlexBox } from './ColFlexBox';
 
 interface WrapperProps {
   title: string;
@@ -9,9 +11,7 @@ export function Wrapper({ children, title }: React.PropsWithChildren<WrapperProp
     <Card>
       <CardHeader title={title} />
       <CardContent>
-        <Box display="flex" flexDirection="column" gap={2}>
-          {children}
-        </Box>
+        <ColFlexBox>{children}</ColFlexBox>
       </CardContent>
     </Card>
   );

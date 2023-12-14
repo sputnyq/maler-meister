@@ -4,15 +4,16 @@ import FullCalendar from '@fullcalendar/react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { loadConstructions, loadDailyEntries } from '../../fetch/api';
+import { loadConstructions, loadDailyEntries, loadShifts } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useHolidays } from '../../hooks/useHolidays';
 import { useIsSmall } from '../../hooks/useIsSmall';
 import { AppState } from '../../store';
-import { getColorHex, userFullName } from '../../utilities';
+import { StrapiQueryObject, getColorHex, userFullName } from '../../utilities';
 import { holidays2Events } from '../../utilities/cal-functions';
 import EditConstructionDialog from '../constructions/EditConstructionDialog';
 import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';
+import { ShiftPlanDialog } from './shift-plan-dialog';
 
 import { DateSelectArg, EventClickArg, EventInput } from '@fullcalendar/core';
 import deLocale from '@fullcalendar/core/locales/de';
@@ -35,32 +36,37 @@ const COLOR_CODES = [
   '#ae2c1c',
 ];
 
-type ConstructionProps = {
-  type: 'CONSTRUCTION';
-  id: number | string;
-};
-type DailyEntryProps = {
-  type: 'DAILY_ENTRY';
+type CalEventType = 'CONSTRUCTION' | 'DAILY_ENTRY' | 'SHIFT_ENTRY';
+
+type ExtendedProps = {
+  type: CalEventType;
   id: number | string;
 };
 
-type ExtendedProps = ConstructionProps | DailyEntryProps;
+const TIME_GRID_WEEK = 'timeGridWeek';
+
+type DialogProp = { open: boolean; id: number | undefined };
 
 export default function CalendarView() {
-  const [constructionDialog, setConstructionDialog] = useState(false);
-  const [dailyEntryDialog, setDailyEntryDialog] = useState(false);
+  const [constructionDialog, setConstructionDialog] = useState<DialogProp>({ open: false, id: undefined });
+  const [shiftPlanDialog, setShiftPlanDialog] = useState<DialogProp>({ open: false, id: undefined });
+  const [dailyEntryDialog, setDailyEntryDialog] = useState<DialogProp>({ open: false, id: undefined });
+
   const [weekends, setWeekends] = useState(true);
   const [curYear, setCurYear] = useState(new Date().getFullYear());
   const [multiMonthMaxColumns, setMultiMonthMaxColumns] = useState(2);
   const [eventRange, setEventRange] = useState<EventDateRange>({});
+
+  const [shifts, setShifts] = useState<Shift[]>([]);
   const [dailyEntries, setDailyEntries] = useState<DailyEntry[]>([]);
   const [constructions, setConstructions] = useState<Construction[]>([]);
+
   const [update, setUpdate] = useState(0);
 
   const theme = useTheme();
 
-  const idRef = useRef<undefined | string | number>(undefined);
   const dateSelectArg = useRef<DateSelectArg | null>(null);
+  const viewType = useRef<string | null>(null);
 
   const small = useIsSmall();
   const users = useSelector<AppState, User[]>((s) => s.users.all);
@@ -72,6 +78,26 @@ export default function CalendarView() {
     const newYear = eventRange.start?.getFullYear();
     newYear && setCurYear(newYear);
   }, [eventRange]);
+
+  useEffect(() => {
+    const queryObj: StrapiQueryObject = {
+      filters: {
+        tenant: user?.tenant,
+        start: {
+          $lte: formatISO(eventRange.end || new Date(), { representation: 'date' }),
+        },
+        end: {
+          $gte: formatISO(eventRange.start || new Date(), { representation: 'date' }),
+        },
+      },
+    };
+
+    loadShifts(queryObj).then((res) => {
+      if (res) {
+        setShifts(res.shifts);
+      }
+    });
+  }, [eventRange, user, update]);
 
   useEffect(() => {
     const queryObj = {
@@ -122,9 +148,10 @@ export default function CalendarView() {
     const holidayEvents = holidays2Events(holidays);
     const vacationEvents = dailyEntries2Event(dailyEntries, users, theme);
     const constructionEvents = constructions2Events(constructions);
+    const shiftEvents = shifts2Events(shifts, users, theme);
 
-    return [...holidayEvents, ...vacationEvents, ...constructionEvents];
-  }, [holidays, dailyEntries, users, constructions, theme]);
+    return [...holidayEvents, ...vacationEvents, ...constructionEvents, ...shiftEvents];
+  }, [holidays, dailyEntries, users, constructions, shifts, theme]);
 
   const customButtons = useMemo(() => {
     const zoomIn = () => {
@@ -161,39 +188,50 @@ export default function CalendarView() {
   }, [small]);
 
   const handleDateSelect = useCallback((arg: DateSelectArg) => {
-    idRef.current = undefined;
     dateSelectArg.current = arg;
-    setConstructionDialog(true);
+
+    if (viewType.current === TIME_GRID_WEEK) {
+      setShiftPlanDialog({ open: true, id: undefined });
+    } else {
+      setConstructionDialog({ open: true, id: undefined });
+    }
   }, []);
 
   const handleEventClick = useCallback((arg: EventClickArg) => {
     const ext = arg.event.extendedProps as ExtendedProps;
 
-    idRef.current = ext.id;
     switch (ext.type) {
       case 'CONSTRUCTION':
-        setConstructionDialog(true);
+        setConstructionDialog({ open: true, id: Number(ext.id) });
         break;
-
       case 'DAILY_ENTRY':
-        setDailyEntryDialog(true);
+        setDailyEntryDialog({ open: true, id: Number(ext.id) });
+        break;
+      case 'SHIFT_ENTRY':
+        setShiftPlanDialog({ open: true, id: Number(ext.id) });
         break;
       default:
         return;
     }
   }, []);
 
-  const onClose = useCallback(() => {
-    setConstructionDialog(false);
+  const onClose = useCallback((func: (args: any) => void) => {
+    func({ open: false, id: undefined });
     setUpdate((u) => u + 1);
   }, []);
 
   return (
     <>
+      <ShiftPlanDialog
+        id={shiftPlanDialog.id}
+        dateSelectArg={dateSelectArg.current}
+        open={shiftPlanDialog.open}
+        onClose={() => onClose(setShiftPlanDialog)}
+      />
       <DailyEntryViewDialog
-        closeDialog={() => setDailyEntryDialog(false)}
-        dialogOpen={dailyEntryDialog}
-        dailyEntryId={idRef.current}
+        dialogOpen={dailyEntryDialog.open}
+        dailyEntryId={dailyEntryDialog.id}
+        closeDialog={() => onClose(setDailyEntryDialog)}
       />
       <EditConstructionDialog
         initStart={
@@ -204,29 +242,33 @@ export default function CalendarView() {
           dateSelectArg.current?.endStr &&
           formatISO(addDays(new Date(dateSelectArg.current?.endStr), -1), { representation: 'date' })
         }
-        dialogOpen={constructionDialog}
-        constructionId={idRef.current}
-        onClose={onClose}
+        dialogOpen={constructionDialog.open}
+        constructionId={constructionDialog.id}
+        onClose={() => onClose(setConstructionDialog)}
       />
       <Card>
         <CardContent>
           <FullCalendar
+            selectable
+            weekNumbers
             weekends={weekends}
             events={events}
             height={'calc(100vh - 170px)'}
-            datesSet={(params) => {
-              setEventRange({ end: params.end, start: params.start });
-            }}
-            selectable
+            datesSet={setEventRange}
             select={handleDateSelect}
             eventClick={handleEventClick}
-            weekNumbers
             headerToolbar={headerToolbar}
             customButtons={customButtons}
             locale={deLocale}
             plugins={[multiMonthPlugin, timeGridPlugin, interactionPlugin]}
             multiMonthMaxColumns={multiMonthMaxColumns}
             initialView="multiMonthYear"
+            eventContent={(arg) => {
+              return { html: arg.event.title.replaceAll('\n', '<br />') };
+            }}
+            viewDidMount={({ view }) => {
+              viewType.current = view.type;
+            }}
           />
         </CardContent>
       </Card>
@@ -252,6 +294,40 @@ function dailyEntries2Event(dailyEntries: DailyEntry[], users: User[], theme: Th
       },
     } as EventInput;
   });
+}
+
+function shifts2Events(shifts: Shift[], users: User[], theme: Theme): EventInput[] {
+  return shifts.map((shift) => ({
+    start: new Date(shift.start),
+    end: new Date(shift.end),
+    title: shiftTitle(shift, users),
+    backgroundColor: theme.palette.primary.main,
+    borderColor: theme.palette.primary.light,
+    textColor: 'white',
+    extendedProps: {
+      type: 'SHIFT_ENTRY',
+      id: shift.id,
+    },
+  }));
+}
+
+function shiftTitle(shift: Shift, users: User[]) {
+  return shift.constructionsPlan.map((cp) => cp2String(cp, users)).join('<hr>');
+}
+
+function retrieveUserByUsername(un: string, users: User[]) {
+  return users.find((u) => u.username === un);
+}
+
+function cp2String(cp: ConstructionPlan, users: User[]) {
+  const allocatedWorkers = cp.usernames.map((un) => {
+    const user = retrieveUserByUsername(un, users);
+    if (user) {
+      return userFullName(user);
+    }
+    return un;
+  });
+  return [`<strong>${cp.name}</strong>`, ...allocatedWorkers].join('\n');
 }
 
 function constructions2Events(constructions: Construction[]): EventInput[] {

@@ -22,7 +22,7 @@ export default function AppLoader({ children }: React.PropsWithChildren) {
     if (user !== null && !appLoaded) {
       const { userRole } = user;
 
-      const actions: any[] = [loadAllJobs];
+      const actions: any[] = [loadAllJobs, loadUsers];
       if (userRole === 'worker') {
         actions.push(loadActiveConstructions);
       }
@@ -30,7 +30,6 @@ export default function AppLoader({ children }: React.PropsWithChildren) {
       if (['admin', 'accountant'].includes(userRole)) {
         actions.push(loadServices);
         actions.push(loadPrintSettings);
-        actions.push(loadUsers);
       }
 
       Promise.allSettled(actions.map((a) => dispatch(a())))

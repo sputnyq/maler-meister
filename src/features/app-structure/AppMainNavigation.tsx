@@ -2,12 +2,13 @@ import AccessTimeIcon from '@mui/icons-material/AccessTimeOutlined';
 import ArticleIcon from '@mui/icons-material/ArticleOutlined';
 import BeachAccessIcon from '@mui/icons-material/BeachAccessOutlined';
 import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FormatPaintOutlinedIcon from '@mui/icons-material/FormatPaintOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import MoreTimeIcon from '@mui/icons-material/MoreTimeOutlined';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLongOutlined';
 import TuneIcon from '@mui/icons-material/TuneOutlined';
-import { Card, Grid, List, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Card, Grid, List, Typography } from '@mui/material';
 
 import { useMemo } from 'react';
 
@@ -37,17 +38,9 @@ export default function MainNavigation() {
         {`${text} ${currentUser?.firstName}!`}
       </Typography>
 
-      <RoleBased requiredRoles={['worker']}>
-        <Grid container justifyContent={'center'}>
-          <Grid item xs={12} md={6}>
-            <MyShifts />
-          </Grid>
-        </Grid>
-      </RoleBased>
-
       <Grid container justifyContent={'center'}>
         <Grid item xs={12} md={6}>
-          <Card>
+          <Card sx={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
             <List sx={{ padding: 0 }}>
               <Tile requiredRoles={['accountant', 'admin']} to="offers" title="Angebote">
                 <ArticleIcon />
@@ -86,6 +79,15 @@ export default function MainNavigation() {
               </Tile>
             </List>
           </Card>
+
+          <RoleBased requiredRoles={['worker']}>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>Meine Schichten</AccordionSummary>
+              <AccordionDetails>
+                <MyShifts />
+              </AccordionDetails>
+            </Accordion>
+          </RoleBased>
         </Grid>
       </Grid>
     </ColFlexBox>

@@ -105,3 +105,8 @@ export const formatDate = (date: string | Date | null) => {
 export const formatNumber = (nmb: string | number) => {
   return new Intl.NumberFormat('de-DE', { maximumFractionDigits: 2 }).format(Number(nmb));
 };
+
+export const getFullWorkerName = (username: string, users: User[]) => {
+  const user = users.find((u) => u.username === username);
+  return user ? userFullName(user) : username;
+};

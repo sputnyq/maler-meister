@@ -4,7 +4,7 @@ import { useDrop } from 'react-dnd';
 
 import { ColFlexBox } from '../../../components/ColFlexBox';
 import { useWorkers } from '../../../hooks/useWorkers';
-import { userFullName } from '../../../utilities';
+import { getFullWorkerName } from '../../../utilities';
 import { WorkerChip } from './WorkerChip';
 
 interface Props {
@@ -28,11 +28,6 @@ export function ConstructionPlanCard({
     }),
   }));
 
-  const getFullWorkerName = (username: string) => {
-    const user = workers.find((u) => u.username === username);
-    return user ? userFullName(user) : username;
-  };
-
   return (
     <Card ref={drop} data-cid={id} elevation={isOver ? 5 : 1}>
       <CardHeader title={<Typography>{`[${allocatedPersons}] ${name}`}</Typography>} />
@@ -40,7 +35,11 @@ export function ConstructionPlanCard({
       <CardContent sx={{ p: 1 }}>
         <ColFlexBox gap={1} flexDirection={'row'} flexWrap="wrap">
           {usernames.map((username) => (
-            <WorkerChip key={username} label={getFullWorkerName(username)} onDelete={() => onDelete(username)} />
+            <WorkerChip
+              key={username}
+              label={getFullWorkerName(username, workers)}
+              onDelete={() => onDelete(username)}
+            />
           ))}
         </ColFlexBox>
       </CardContent>

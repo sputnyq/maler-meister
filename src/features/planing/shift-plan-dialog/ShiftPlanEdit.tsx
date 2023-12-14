@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
 import { DndProvider } from 'react-dnd';
 import { TouchBackend } from 'react-dnd-touch-backend';
@@ -13,6 +13,8 @@ interface Props {
   shift: Shift;
   setShift(shift: Shift): void;
 }
+
+const formatter = new Intl.DateTimeFormat('de-DE', { weekday: 'long', day: '2-digit', month: 'long' });
 
 export function ShiftPlanEdit({ shift, setShift }: Readonly<Props>) {
   const workers = useWorkers();
@@ -40,6 +42,7 @@ export function ShiftPlanEdit({ shift, setShift }: Readonly<Props>) {
 
   return (
     <ColFlexBox>
+      <Typography variant="h6">{formatter.formatRange(new Date(shift.start), new Date(shift.end))}</Typography>
       <AppGrid>
         <DndProvider backend={TouchBackend} options={{ enableMouseEvents: true }}>
           <Grid item xs={6}>

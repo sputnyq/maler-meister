@@ -83,8 +83,8 @@ export function ShiftPlanDialog({ open, onClose, id, dateSelectArg }: Readonly<P
       .finally(onCloseRequest);
   };
 
-  const deleteShiftById = (shiftId: number) => {
-    appRequest('delete')(shiftById(shiftId));
+  const deleteShiftById = async (shiftId: number) => {
+    await appRequest('delete')(shiftById(shiftId));
   };
 
   const onDelete = shift?.id

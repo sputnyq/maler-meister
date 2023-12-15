@@ -15,10 +15,11 @@ interface Props {
   open: boolean;
   onClose(): void;
   id?: string | number;
+  dailyEntries: DailyEntry[];
   dateSelectArg?: DateSelectArg | null;
 }
 
-export function ShiftPlanDialog({ open, onClose, id, dateSelectArg }: Readonly<Props>) {
+export function ShiftPlanDialog({ open, onClose, id, dateSelectArg, dailyEntries }: Readonly<Props>) {
   const user = useCurrentUser();
 
   const [shift, setShift] = useState<Shift | null>(null);
@@ -94,7 +95,11 @@ export function ShiftPlanDialog({ open, onClose, id, dateSelectArg }: Readonly<P
 
   return (
     <AppDialog title="Schichtplanung" open={open} onClose={onCloseRequest} onConfirm={onConfirm} onDelete={onDelete}>
-      {shift === null ? <LoadingScreen /> : <ShiftPlanEdit shift={shift} setShift={setShift} />}
+      {shift === null ? (
+        <LoadingScreen />
+      ) : (
+        <ShiftPlanEdit dailyEntries={dailyEntries} shift={shift} setShift={setShift} />
+      )}
     </AppDialog>
   );
 }

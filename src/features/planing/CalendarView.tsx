@@ -224,6 +224,7 @@ export default function CalendarView() {
     <>
       <ShiftPlanDialog
         id={shiftPlanDialog.id}
+        dailyEntries={dailyEntries}
         dateSelectArg={dateSelectArg.current}
         open={shiftPlanDialog.open}
         onClose={() => onClose(setShiftPlanDialog)}

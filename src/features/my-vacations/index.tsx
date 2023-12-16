@@ -63,7 +63,7 @@ export default function MyVacations() {
     if (yearSwitchValue === 'last') {
       dateObj = {
         $gte: startOfYear(addYears(now, -1)),
-        $lt: endOfYear(addYears(now, -1)),
+        $lte: endOfYear(addYears(now, -1)),
       };
       setPlannedData([]);
     } else {
@@ -73,6 +73,7 @@ export default function MyVacations() {
       };
       nextDateObj = {
         $gt: now,
+        $lte: endOfYear(now),
       };
     }
 

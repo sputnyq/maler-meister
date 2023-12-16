@@ -19,8 +19,6 @@ export function MyShifts() {
         tenant: user?.tenant,
         start: {
           $gte: formatISO(new Date(), { representation: 'date' }),
-        },
-        end: {
           $lte: formatISO(addDays(new Date(), 5), { representation: 'date' }),
         },
       },

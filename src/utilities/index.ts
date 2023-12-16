@@ -3,6 +3,18 @@ import { Theme } from '@mui/material';
 import { formatISO } from 'date-fns';
 import qs from 'qs';
 
+export function numberValue(value: string | number | undefined) {
+  if (typeof value == 'undefined' || value === '') {
+    return '';
+  }
+  let toFormat = value;
+  if (typeof value === 'string') {
+    toFormat = value.replace(',', '.');
+  }
+
+  return new Intl.NumberFormat('de-DE').format(Number(toFormat));
+}
+
 export function euroValue(value: string | number | undefined) {
   if (typeof value == 'undefined' || value === '') {
     return '';

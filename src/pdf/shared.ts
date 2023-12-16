@@ -1,4 +1,4 @@
-import { calculatePriceSummary, euroValue } from '../utilities';
+import { calculatePriceSummary, euroValue, numberValue } from '../utilities';
 import PdfBuilder, { Margin } from './PdfBuilder';
 
 const NON_REGULAR_SPACES = /[\u00A0\u1680\u180e\u2000\u2009\u200a\u200b\u202f\u205f\u3000]/g;
@@ -90,7 +90,7 @@ export function addServices(builder: PdfBuilder, offerServices: OfferService[]) 
     const serviceLine = {
       pos: serv.name ? i + 1 : '',
       desc: serv.name,
-      quantity: String(serv.quantity || '').concat(` ${serv.unit || ''}`),
+      quantity: numberValue(serv.quantity).concat(` ${serv.unit || ''}`),
       price: euroValue(serv.unitPrice),
       sum: euroValue(serv.netto),
     };

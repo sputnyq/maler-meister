@@ -54,7 +54,7 @@ export function DailyEntryViewDialog({ closeDialog, dailyEntryId, dialogOpen }: 
       return true;
     }
 
-    return differenceInDays(new Date(date), new Date()) < ALLOWED_DAYS_TO_REMOVE;
+    return differenceInDays(new Date(), new Date(date)) < ALLOWED_DAYS_TO_REMOVE;
   }, [dailyEntry, user]);
 
   const handleDeleteRequest = async () => {

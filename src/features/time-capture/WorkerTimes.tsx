@@ -17,7 +17,7 @@ interface Props {
 export function WorkerTimes({ setEventDateRange, events, requestUpdate }: Readonly<Props>) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const dailyEntryId = useRef(-1);
+  const dailyEntryId = useRef<number | undefined>(undefined);
 
   const handleEventClick = (arg: EventClickArg) => {
     const ext = arg.event.extendedProps as EventExtendedProps;

@@ -21,7 +21,6 @@ jobs:
         id: version-bump
         uses: 'phips28/gh-action-bump-version@master'
         with:
-          skip-tag: 'true'
           patch-wording: 'fix,deps'
           minor-wording: 'new,feat,minor'
           major-wording: 'major'

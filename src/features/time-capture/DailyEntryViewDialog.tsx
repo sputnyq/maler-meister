@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardHeader, Chip, Divider, Stack, Typography } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, Chip, Divider, Typography } from '@mui/material';
 
 import { useEffect, useMemo, useState } from 'react';
 
@@ -76,52 +76,40 @@ export function DailyEntryViewDialog({ closeDialog, dailyEntryId, dialogOpen }: 
       {dailyEntry === null ? (
         <LoadingScreen />
       ) : (
-        <Card elevation={0}>
-          <CardHeader
-            title={
-              <Box>
-                <Typography variant="h6">
-                  {new Intl.DateTimeFormat('de-DE', { dateStyle: 'full' }).format(new Date(dailyEntry.date))}
-                </Typography>
-                <Typography>{dailyEntry.username}</Typography>
-              </Box>
+        <ColFlexBox>
+          <Box>
+            <Typography variant="h6">
+              {new Intl.DateTimeFormat('de-DE', { dateStyle: 'full' }).format(new Date(dailyEntry.date))}
+            </Typography>
+            <Typography>{dailyEntry.username}</Typography>
+          </Box>
+          <Box display="flex" gap={2}>
+            <Chip label={dailyEntry.type} color={getJobColor(dailyEntry.type)} />
+            {Boolean(dailyEntry.sum) && <Chip color="info" label={`${formatNumber(dailyEntry.sum)} Stunden`} />}
+          </Box>
+
+          {dailyEntry.work_entries?.map((we) => {
+            if (typeof we !== 'number') {
+              return (
+                <Card key={we.id} variant="outlined">
+                  <CardHeader title={<ConstructionView constructionId={we.constructionId} />} />
+                  <CardContent>
+                    <Box display={'flex'} justifyContent="space-between">
+                      <Typography variant="subtitle2">{we.job}</Typography>
+                      <Typography variant="subtitle2">{`${formatNumber(we.hours)} Stunden`}</Typography>
+                    </Box>
+                    <Box paddingY={2}>
+                      <Divider />
+                    </Box>
+
+                    {we.start && <Typography variant="subtitle2">{`Anwesend: ${we.start} - ${we.end}`}</Typography>}
+                    {we.break && <Typography variant="subtitle2">{`Pause:  ${we.break}`}</Typography>}
+                  </CardContent>
+                </Card>
+              );
             }
-          />
-          <CardContent>
-            <ColFlexBox>
-              <Box display="flex" gap={2}>
-                <Chip label={dailyEntry.type} color={getJobColor(dailyEntry.type)} />
-                {Boolean(dailyEntry.sum) && <Chip color="info" label={`${formatNumber(dailyEntry.sum)} Stunden`} />}
-              </Box>
-
-              <Stack spacing={2}>
-                {dailyEntry.work_entries?.map((we) => {
-                  if (typeof we !== 'number') {
-                    return (
-                      <Card key={we.id} variant="outlined">
-                        <CardHeader title={<ConstructionView constructionId={we.constructionId} />} />
-                        <CardContent>
-                          <Box display={'flex'} justifyContent="space-between">
-                            <Typography variant="subtitle2">{we.job}</Typography>
-                            <Typography variant="subtitle2">{`${formatNumber(we.hours)} Stunden`}</Typography>
-                          </Box>
-                          <Box paddingY={2}>
-                            <Divider />
-                          </Box>
-
-                          {we.start && (
-                            <Typography variant="subtitle2">{`Anwesend: ${we.start} - ${we.end}`}</Typography>
-                          )}
-                          {we.break && <Typography variant="subtitle2">{`Pause:  ${we.break}`}</Typography>}
-                        </CardContent>
-                      </Card>
-                    );
-                  }
-                })}
-              </Stack>
-            </ColFlexBox>
-          </CardContent>
-        </Card>
+          })}
+        </ColFlexBox>
       )}
     </AppDialog>
   );

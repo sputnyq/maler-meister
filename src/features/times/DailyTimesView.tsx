@@ -25,6 +25,7 @@ export default function DailyTimesView() {
   const user = useCurrentUser();
 
   const [data, setData] = useState<DailyEntry[]>([]);
+  const [update, setUpdate] = useState(0);
   const [curUsername, setCurUsername] = useState('');
   const [rowCount, setRowCount] = useState(0);
   const [dailyEntryType, setDailyEntryType] = useState<DailyEntryType | undefined>(undefined);
@@ -47,6 +48,7 @@ export default function DailyTimesView() {
   }, []);
 
   const closeDialog = useCallback(() => {
+    setUpdate((u) => u + 1);
     setDialogOpen(false);
   }, []);
 
@@ -214,6 +216,7 @@ export default function DailyTimesView() {
     paginationModel.page,
     paginationModel.pageSize,
     user?.tenant,
+    update,
   ]);
 
   return (

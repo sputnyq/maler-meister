@@ -7,6 +7,7 @@ import { AppDialog } from '../../components/AppDialog';
 import AppGrid from '../../components/AppGrid';
 import { AppTextField } from '../../components/AppTextField';
 import { DEFAULT_HOURS } from '../../constants';
+import { dailyEntryById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useHolidays } from '../../hooks/useHolidays';
@@ -66,10 +67,10 @@ export default function RequestVacationsDialog({ open, onClose }: Props) {
     }
   }, [start, end, invalid, allHolidays]);
 
-  const handleHolidaysRequest = useCallback(() => {
+  const handleHolidaysRequest = useCallback(async () => {
     const allDays = eachDayOfInterval({ start: start, end: end });
 
-    allDays.forEach(async (date) => {
+    const requests = allDays.map((date) => {
       if (!isHoliday(date, allHolidays) && !isWeekend(date)) {
         const dailyEntry: Partial<DailyEntry> = {
           type: 'Urlaub',
@@ -78,10 +79,11 @@ export default function RequestVacationsDialog({ open, onClose }: Props) {
           username: user?.username,
           date: formatISO(date, { representation: 'date' }),
         };
-        await appRequest('post')('daily-entries', { data: dailyEntry });
+        return () => appRequest('post')(dailyEntryById(''), { data: dailyEntry });
       }
     });
-    onClose();
+
+    await Promise.allSettled(requests.map((r) => r?.())).then(onClose);
   }, [end, start, user, allHolidays, onClose]);
 
   return (

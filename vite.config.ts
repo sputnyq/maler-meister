@@ -31,7 +31,6 @@ export default defineConfig({
         short_name: 'Maler Meister',
       },
     }),
-    //@ts-ignore
-    loadVersion.default(),
+    loadVersion(),
   ],
 });

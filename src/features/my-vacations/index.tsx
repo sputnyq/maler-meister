@@ -139,7 +139,7 @@ export default function MyVacations() {
                 </ToggleButton>
               </ToggleButtonGroup>
             </Box>
-            <Typography variant="h5">Gesamt: {sum} Tage(e)</Typography>
+            <Typography variant="h5">Gesamt: {sum} Tag(e)</Typography>
           </ColFlexBox>
         </CardContent>
       </Card>

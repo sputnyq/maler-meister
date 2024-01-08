@@ -254,7 +254,7 @@ export default function CalendarView() {
             weekNumbers
             weekends={weekends}
             events={events}
-            height={'calc(100vh - 170px)'}
+            height={'calc(100svh - 170px)'}
             datesSet={setEventRange}
             select={handleDateSelect}
             eventClick={handleEventClick}

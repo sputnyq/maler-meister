@@ -63,7 +63,7 @@ export function ServicesWidgetRow({ offerService, disableDown, disableUp, update
   return (
     <Card sx={{ padding: 1 }}>
       <Grid container spacing={1.5}>
-        <Grid item xs={12} sm={9} lg={4}>
+        <Grid item xs={12} sm={8}>
           <Autocomplete
             freeSolo
             options={bgbServices}
@@ -96,10 +96,13 @@ export function ServicesWidgetRow({ offerService, disableDown, disableUp, update
           />
         </Grid>
 
-        <Grid item xs={6} sm={3} lg={2}>
+        <Grid item xs={6} sm={2}>
           <AppTextField label="Menge" type="number" value={offerService.quantity} onChange={handleChange('quantity')} />
         </Grid>
-        <Grid item xs={6} sm={4} lg={2}>
+        <Grid item xs={6} sm={2}>
+          <AppTextField label="Einheit" value={offerService.unit} onChange={handleChange('unit')} />
+        </Grid>
+        <Grid item xs={6} sm={4}>
           <AppTextField
             label="EPR"
             type="number"
@@ -108,7 +111,7 @@ export function ServicesWidgetRow({ offerService, disableDown, disableUp, update
             InputProps={{ endAdornment: '€' }}
           />
         </Grid>
-        <Grid item xs={6} sm={4} lg={2}>
+        <Grid item xs={6} sm={4}>
           <AppTextField
             label="Netto"
             type="number"
@@ -118,7 +121,7 @@ export function ServicesWidgetRow({ offerService, disableDown, disableUp, update
           />
         </Grid>
 
-        <Grid item xs={6} sm={4} lg={2}>
+        <Grid item xs={6} sm={4}>
           <TaxSelector value={offerService.taxRate} onChange={handleChange('taxRate')} />
         </Grid>
         <Grid item xs={12} lg={6}>

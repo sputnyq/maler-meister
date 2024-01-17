@@ -107,9 +107,9 @@ export function addServices(builder: PdfBuilder, offerServices: OfferService[]) 
 
   const prices = calculatePriceSummary(offerServices);
 
-  body.push(['', 'Angebotssumme Netto', '', '', euroValue(prices.netto)]);
+  body.push(['', 'Netto', '', '', euroValue(prices.netto)]);
   body.push(['', 'Zzgl MwSt 19%', '', '', euroValue(prices.tax)]);
-  body.push(['', 'Angebotssumme Brutto', '', '', euroValue(prices.brutto)]);
+  body.push(['', 'Gesamtbetrag', '', '', euroValue(prices.brutto)]);
 
   builder.addSpace();
 

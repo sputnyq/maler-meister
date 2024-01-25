@@ -44,15 +44,6 @@ export default function App() {
               <AppRoutes />
             </Box>
           </RootBox>
-          <img
-            style={{
-              zIndex: '-1',
-              position: 'fixed',
-              bottom: '0',
-              width: '100%',
-            }}
-            src={skylineUrl}
-          />
         </CssBaseline>
       </ThemeProvider>
     </LocalizationProvider>

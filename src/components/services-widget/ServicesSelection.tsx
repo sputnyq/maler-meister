@@ -1,8 +1,8 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import TreeItem from '@mui/lab/TreeItem';
-import TreeView from '@mui/lab/TreeView';
 import { Box, Card, CardContent, Checkbox, Typography, useTheme } from '@mui/material';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
+import { TreeView } from '@mui/x-tree-view/TreeView';
 
 import { useSelector } from 'react-redux';
 

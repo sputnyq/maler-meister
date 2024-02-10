@@ -4,15 +4,15 @@ import { deDE } from '@mui/x-date-pickers/locales';
 const theme = createTheme(
   {
     shape: {
-      borderRadius: 6,
+      borderRadius: 4,
     },
     palette: {
       background: {
-        default: '#F3F6F9',
-        paper: '#fff',
+        default: '#EFEFF2',
+        paper: '#FFF',
       },
       primary: {
-        main: '#19BEC3',
+        main: '#000205',
         contrastText: '#fff',
       },
       secondary: {

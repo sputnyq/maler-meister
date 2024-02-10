@@ -1,11 +1,12 @@
 import ChecklistRtlOutlinedIcon from '@mui/icons-material/ChecklistRtlOutlined';
 import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
-import { Box, Button, Card, CardContent } from '@mui/material';
+import { Box, Button, CardContent } from '@mui/material';
 
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { AppState } from '../../store';
+import { AppCard } from '../AppCard';
 import { PriceSummary } from '../PriceSummary';
 import { ServicesSelection } from './ServicesSelection';
 import { ServicesWidgetRow } from './ServicesWidgetRow';
@@ -60,13 +61,8 @@ export default function ServicesWidget({ offerServices = [], update }: Props) {
     update([...offerServices, { taxRate: 19 } as OfferService]);
   };
 
-  const Summary = (
-    <Box sx={{ position: 'sticky', top: '48px', zIndex: 100, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-      <PriceSummary offerServices={offerServices} />
-    </Box>
-  );
   const Buttons = (
-    <Card>
+    <AppCard>
       <CardContent>
         <Box display={'flex'} justifyContent="flex-end" gap={2}>
           <Button endIcon={<PlaylistAddOutlinedIcon />} onClick={onAdd}>
@@ -83,13 +79,15 @@ export default function ServicesWidget({ offerServices = [], update }: Props) {
           </Button>
         </Box>
       </CardContent>
-    </Card>
+    </AppCard>
   );
 
   return (
     <>
       <Box display="flex" flexDirection="column" gap={3}>
-        {Summary}
+        <Box sx={{ position: 'sticky', top: '48px', zIndex: 100, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+          <PriceSummary offerServices={offerServices} />
+        </Box>
         {offerServices.map((offerService, index) => (
           <ServicesWidgetRow
             key={index}

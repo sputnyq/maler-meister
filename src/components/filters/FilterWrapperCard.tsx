@@ -1,15 +1,16 @@
-import { Card, CardContent } from '@mui/material';
+import { CardContent } from '@mui/material';
 
 import React from 'react';
 
+import { AppCard } from '../AppCard';
 import AppGrid from '../AppGrid';
 
 export function FilterWrapperCard({ children }: React.PropsWithChildren) {
   return (
-    <Card>
+    <AppCard>
       <CardContent>
         <AppGrid>{children}</AppGrid>
       </CardContent>
-    </Card>
+    </AppCard>
   );
 }

@@ -8,10 +8,11 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import MoreTimeIcon from '@mui/icons-material/MoreTimeOutlined';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLongOutlined';
 import TuneIcon from '@mui/icons-material/TuneOutlined';
-import { Accordion, AccordionDetails, AccordionSummary, Card, Grid, List, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Grid, List, Typography } from '@mui/material';
 
 import { useMemo } from 'react';
 
+import { AppCard } from '../../components/AppCard';
 import { ColFlexBox } from '../../components/ColFlexBox';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { MyShifts } from '../my-shifts';
@@ -40,7 +41,7 @@ export default function MainNavigation() {
 
       <Grid container justifyContent={'center'}>
         <Grid item xs={12} md={6}>
-          <Card sx={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
+          <AppCard sx={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
             <List sx={{ padding: 0 }}>
               <Tile requiredRoles={['accountant', 'admin']} to="offers" title="Angebote">
                 <ArticleIcon />
@@ -78,7 +79,7 @@ export default function MainNavigation() {
                 <InfoOutlinedIcon />
               </Tile>
             </List>
-          </Card>
+          </AppCard>
 
           <RoleBased requiredRoles={['worker']}>
             <Accordion>

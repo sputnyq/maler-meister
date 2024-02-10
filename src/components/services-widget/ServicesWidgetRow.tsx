@@ -1,10 +1,11 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import { Autocomplete, Box, Card, Grid, IconButton } from '@mui/material';
+import { Autocomplete, Box, Grid, IconButton } from '@mui/material';
 
 import { useSelector } from 'react-redux';
 
 import { AppState } from '../../store';
+import { AppCard } from '../AppCard';
 import { AppTextField } from '../AppTextField';
 import { DeleteIconButton } from '../DeleteIconButton';
 import TaxSelector from '../TaxSelector';
@@ -61,7 +62,7 @@ export function ServicesWidgetRow({ offerService, disableDown, disableUp, update
   };
 
   return (
-    <Card sx={{ padding: 1 }}>
+    <AppCard sx={{ padding: 1 }}>
       <Grid container spacing={1.5}>
         <Grid item xs={12} sm={8}>
           <Autocomplete
@@ -148,6 +149,6 @@ export function ServicesWidgetRow({ offerService, disableDown, disableUp, update
           </Box>
         </Grid>
       </Grid>
-    </Card>
+    </AppCard>
   );
 }

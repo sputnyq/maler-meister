@@ -2,11 +2,12 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TreeItem from '@mui/lab/TreeItem';
 import TreeView from '@mui/lab/TreeView';
-import { Box, Card, CardContent, Checkbox, Typography, useTheme } from '@mui/material';
+import { Box, CardContent, Checkbox, Typography, useTheme } from '@mui/material';
 
 import { useSelector } from 'react-redux';
 
 import { AppState } from '../../store';
+import { AppCard } from '../AppCard';
 import { AppDialog } from '../AppDialog';
 
 interface Props {
@@ -23,7 +24,7 @@ export function ServicesSelection(props: Props) {
 
   return (
     <AppDialog open={open} onClose={onClose} title="Leistungen auswählen">
-      <Card elevation={0}>
+      <AppCard>
         <CardContent sx={{ height: '100%', overflowY: 'auto' }}>
           <TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
             {jobs?.map((job) => (
@@ -31,7 +32,7 @@ export function ServicesSelection(props: Props) {
             ))}
           </TreeView>
         </CardContent>
-      </Card>
+      </AppCard>
     </AppDialog>
   );
 }

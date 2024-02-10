@@ -1,9 +1,10 @@
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
-import { Button, Card, CardContent } from '@mui/material';
+import { Button, CardContent } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { AppCard } from '../../components/AppCard';
 import { AppGridField } from '../../components/AppGridField';
 import { ColFlexBox } from '../../components/ColFlexBox';
 import { DeleteIconButton } from '../../components/DeleteIconButton';
@@ -152,7 +153,7 @@ export default function Constructions() {
             <GenericBooleanFilter label="Bestätigt" value={confirmed} setValue={setConfirmed} />
           </AppGridField>
         </FilterWrapperCard>
-        <Card>
+        <AppCard>
           <CardContent>
             <AppDataGrid
               rows={constructions}
@@ -164,7 +165,7 @@ export default function Constructions() {
               loading={loading}
             />
           </CardContent>
-        </Card>
+        </AppCard>
         <CreateConstruction onCreateSuccess={() => setUpdate((u) => u + 1)} />
       </ColFlexBox>
     </>

@@ -20,7 +20,7 @@ import deLocale from '@fullcalendar/core/locales/de';
 import interactionPlugin from '@fullcalendar/interaction';
 import multiMonthPlugin from '@fullcalendar/multimonth';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { addDays, formatISO } from 'date-fns';
+import { addDays, addMinutes, differenceInMinutes, formatISO } from 'date-fns';
 
 const COLOR_CODES = [
   '#213363',
@@ -189,8 +189,14 @@ export default function CalendarView() {
 
   const handleDateSelect = useCallback((arg: DateSelectArg) => {
     dateSelectArg.current = arg;
-
+    const MIN_DURATION = 240;
     if (viewType.current === TIME_GRID_WEEK) {
+      if (differenceInMinutes(arg.end, arg.start) < MIN_DURATION) {
+        const cur = { ...dateSelectArg.current };
+        cur.end = addMinutes(cur.start, MIN_DURATION);
+        cur.endStr = formatISO(cur.end);
+        dateSelectArg.current = cur;
+      }
       setShiftPlanDialog({ open: true, id: undefined });
     } else {
       setConstructionDialog({ open: true, id: undefined });
@@ -257,6 +263,7 @@ export default function CalendarView() {
             height={'calc(100svh - 170px)'}
             datesSet={setEventRange}
             select={handleDateSelect}
+            selectMinDistance={4}
             eventClick={handleEventClick}
             headerToolbar={headerToolbar}
             customButtons={customButtons}

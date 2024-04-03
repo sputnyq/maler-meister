@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { loadInvoices } from '../../../fetch/api';
 import { useCurrentOffer } from '../../../hooks/useCurrentOffer';
 import { useCurrentUser } from '../../../hooks/useCurrentUser';
+import { calculatePriceSummary, euroValue } from '../../../utilities';
 
 export default function OfferInvoices() {
   const [invoices, setInvoices] = useState<AppInvoice[]>([]);
@@ -33,35 +34,35 @@ export default function OfferInvoices() {
 
   return (
     <>
-      <Box>
-        <Typography variant="h5">Rechnungen zum Angebot</Typography>
-      </Box>
-      <Box>
-        <Box>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Erstellt</TableCell>
-                <TableCell>Aktualisiert</TableCell>
+      <Typography variant="h5">Rechnungen zum Angebot</Typography>
+
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>ID</TableCell>
+            <TableCell>Erstellt</TableCell>
+            <TableCell>Aktualisiert</TableCell>
+            <TableCell>Rechnungssumme (Netto)</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {invoices.map(({ id, createdAt, updatedAt, offerServices }) => {
+            const { netto } = calculatePriceSummary(offerServices);
+            return (
+              <TableRow key={id}>
+                <TableCell sx={{ height: '40px', padding: 0 }}>
+                  <Link to={`/invoices/${id}`}>
+                    <Button>{id}</Button>
+                  </Link>
+                </TableCell>
+                <TableCell>{dtFormat.format(new Date(createdAt))}</TableCell>
+                <TableCell>{dtFormat.format(new Date(updatedAt))}</TableCell>
+                <TableCell>{euroValue(netto)}</TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {invoices.map(({ id, createdAt, updatedAt }) => (
-                <TableRow key={id}>
-                  <TableCell sx={{ height: '40px', padding: 0 }}>
-                    <Link to={`/invoices/${id}`}>
-                      <Button>{id}</Button>
-                    </Link>
-                  </TableCell>
-                  <TableCell>{dtFormat.format(new Date(createdAt))}</TableCell>
-                  <TableCell>{dtFormat.format(new Date(updatedAt))}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Box>
-      </Box>
+            );
+          })}
+        </TableBody>
+      </Table>
     </>
   );
 }

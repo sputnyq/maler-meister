@@ -24,6 +24,9 @@ interface AppOffer {
   phone: string;
   email: string;
   street: string;
+  /**
+   * Hausnummer
+   */
   number: string;
   zip: string;
   city: string;

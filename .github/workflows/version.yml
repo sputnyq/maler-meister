@@ -3,7 +3,7 @@ name: 🆙 Bump version
 on:
   push:
     branches:
-      - 'main' # excludes main
+      - 'main'
 
 jobs:
   bump-version:

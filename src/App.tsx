@@ -5,7 +5,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Suspense, lazy } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
 
-import skylineUrl from './assets/skyline.svg';
 import { RootBox } from './components/RootBox';
 import AppLoader from './features/app-structure/AppLoader';
 import MainNavigation from './features/app-structure/AppMainNavigation';

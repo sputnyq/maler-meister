@@ -1,5 +1,5 @@
 import { Button, Card, CardContent } from '@mui/material';
-import { GridColDef } from '@mui/x-data-grid';
+import { GridColDef, GridPaginationModel } from '@mui/x-data-grid';
 
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -11,10 +11,13 @@ import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadInvoices } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 import ConstructionView from '../time-capture/ConstructionView';
 import { PastDateRange } from '../time-capture/PastDateRange';
 
 export function InvoicesGrid() {
+  const { value: pageSize, setValue: setPageSize } = useLocalStorage<number>('invoices-pageSize', 10);
+
   const user = useCurrentUser();
 
   const [rows, setRows] = useState<AppInvoice[]>([]);
@@ -38,7 +41,7 @@ export function InvoicesGrid() {
 
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 10,
+    pageSize,
   });
 
   useEffect(() => {
@@ -186,6 +189,11 @@ export function InvoicesGrid() {
     ] as GridColDef[];
   }, []);
 
+  const onPaginationModelChange = (newPaginationModel: GridPaginationModel) => {
+    setPageSize(newPaginationModel.pageSize);
+    setPaginationModel(newPaginationModel);
+  };
+
   return (
     <ColFlexBox>
       <FilterWrapperCard>
@@ -227,7 +235,7 @@ export function InvoicesGrid() {
             rowCount={rowCount}
             paginationMode="server"
             paginationModel={paginationModel}
-            onPaginationModelChange={setPaginationModel}
+            onPaginationModelChange={onPaginationModelChange}
           />
         </CardContent>
       </Card>

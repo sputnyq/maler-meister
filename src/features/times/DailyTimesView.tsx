@@ -1,6 +1,6 @@
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import { Button, Card, CardContent, Chip } from '@mui/material';
-import { GridColDef, GridToolbarContainer } from '@mui/x-data-grid';
+import { GridColDef, GridPaginationModel, GridToolbarContainer } from '@mui/x-data-grid';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -11,6 +11,7 @@ import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { formatNumber, getJobColor } from '../../utilities';
 import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';
 import { PastDateRange } from '../time-capture/PastDateRange';
@@ -22,6 +23,8 @@ import WorkerNameFilter from './filters/WorkerNameFilter';
 import { endOfMonth, formatISO, startOfMonth } from 'date-fns';
 
 export default function DailyTimesView() {
+  const { value: pageSize, setValue: setPageSize } = useLocalStorage<number>('dailyTimes-pageSize', 50);
+
   const user = useCurrentUser();
 
   const [data, setData] = useState<DailyEntry[]>([]);
@@ -37,7 +40,7 @@ export default function DailyTimesView() {
   });
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 50,
+    pageSize,
   });
 
   const dailyEntryId = useRef('');
@@ -219,6 +222,11 @@ export default function DailyTimesView() {
     update,
   ]);
 
+  const onPaginationModelChange = (newPaginationModel: GridPaginationModel) => {
+    setPageSize(newPaginationModel.pageSize);
+    setPaginationModel(newPaginationModel);
+  };
+
   return (
     <>
       <ColFlexBox>
@@ -239,7 +247,7 @@ export default function DailyTimesView() {
               rowCount={rowCount}
               paginationModel={paginationModel}
               paginationMode="server"
-              onPaginationModelChange={setPaginationModel}
+              onPaginationModelChange={onPaginationModelChange}
               loading={loading}
             />
           </CardContent>

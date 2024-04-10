@@ -1,6 +1,6 @@
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 import { Button, Card, CardContent } from '@mui/material';
-import { GridColDef } from '@mui/x-data-grid';
+import { GridColDef, GridPaginationModel } from '@mui/x-data-grid';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -14,11 +14,14 @@ import { loadConstructions } from '../../fetch/api';
 import { constructionById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { ConstructionsDateRangeFilter } from './ConstructionsDateRangeFilter';
 import { CreateConstruction } from './CreateConstruction';
 import EditConstructionDialog from './EditConstructionDialog';
 
 export default function Constructions() {
+  const { value: pageSize, setValue: setPageSize } = useLocalStorage<number>('constructions-pageSize', 25);
+
   const user = useCurrentUser();
   const [constructions, setConstructions] = useState<Construction[]>([]);
   const [dateRange, setDateRange] = useState<AppDateRange>({});
@@ -104,7 +107,7 @@ export default function Constructions() {
   const [loading, setLoading] = useState(false);
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 25,
+    pageSize,
   });
 
   useEffect(() => {
@@ -135,6 +138,10 @@ export default function Constructions() {
       .finally(() => setLoading(false));
   }, [active, confirmed, dateRange.end, dateRange.start, paginationModel, user?.tenant, update]);
 
+  const onPaginationModelChange = (newPaginationModel: GridPaginationModel) => {
+    setPageSize(newPaginationModel.pageSize);
+    setPaginationModel(newPaginationModel);
+  };
   return (
     <>
       <EditConstructionDialog
@@ -160,7 +167,7 @@ export default function Constructions() {
               rowCount={rowCount}
               paginationModel={paginationModel}
               paginationMode="server"
-              onPaginationModelChange={setPaginationModel}
+              onPaginationModelChange={onPaginationModelChange}
               loading={loading}
             />
           </CardContent>

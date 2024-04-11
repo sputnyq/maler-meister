@@ -11,10 +11,13 @@ import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadOffers } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { usePersistPageSize } from '../../hooks/usePersistPageSize';
 import ConstructionView from '../time-capture/ConstructionView';
 import { PastDateRange } from '../time-capture/PastDateRange';
 
 export default function OffersGrid() {
+  const { pageSize, onPaginationModelChange } = usePersistPageSize('offers-pageSize', 50)
+
   const user = useCurrentUser();
 
   const [rows, setRows] = useState<AppOffer[]>([]);
@@ -60,7 +63,7 @@ export default function OffersGrid() {
 
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 10,
+    pageSize,
   });
 
   useEffect(() => {
@@ -209,7 +212,7 @@ export default function OffersGrid() {
             rowCount={rowCount}
             paginationMode="server"
             paginationModel={paginationModel}
-            onPaginationModelChange={setPaginationModel}
+            onPaginationModelChange={onPaginationModelChange(setPaginationModel)}
           />
         </CardContent>
       </Card>

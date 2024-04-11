@@ -20,8 +20,11 @@ import DailyEntryTypeFilter from './filters/DailyEntryTypeFilter';
 import WorkerNameFilter from './filters/WorkerNameFilter';
 
 import { endOfMonth, formatISO, startOfMonth } from 'date-fns';
+import { usePersistPageSize } from '../../hooks/usePersistPageSize';
 
 export default function DailyTimesView() {
+  const { pageSize, onPaginationModelChange } = usePersistPageSize('dailyTimes-pageSize', 50)
+
   const user = useCurrentUser();
 
   const [data, setData] = useState<DailyEntry[]>([]);
@@ -37,7 +40,7 @@ export default function DailyTimesView() {
   });
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 50,
+    pageSize,
   });
 
   const dailyEntryId = useRef('');
@@ -54,7 +57,7 @@ export default function DailyTimesView() {
 
   const handleExportRequest = useCallback(() => {
     const { start, end } = dateRange;
-    const filename = `Export ${curUsername || ''} ${start || ''}-${end || ''}`;
+    const filename = `Export ${curUsername || ''} ${start ?? ''}-${end ?? ''}`;
 
     const queryObj = {
       filters: {
@@ -219,6 +222,8 @@ export default function DailyTimesView() {
     update,
   ]);
 
+
+
   return (
     <>
       <ColFlexBox>
@@ -239,7 +244,7 @@ export default function DailyTimesView() {
               rowCount={rowCount}
               paginationModel={paginationModel}
               paginationMode="server"
-              onPaginationModelChange={setPaginationModel}
+              onPaginationModelChange={onPaginationModelChange(setPaginationModel)}
               loading={loading}
             />
           </CardContent>

@@ -8,5 +8,5 @@ export function useLocalStorage<T>(storageKey: string, fallbackState: any) {
     localStorage.setItem(storageKey, JSON.stringify(value));
   }, [value, storageKey]);
 
-  return [value, setValue];
+  return { value, setValue };
 }

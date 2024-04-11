@@ -14,11 +14,14 @@ import { loadConstructions } from '../../fetch/api';
 import { constructionById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { usePersistPageSize } from '../../hooks/usePersistPageSize';
 import { ConstructionsDateRangeFilter } from './ConstructionsDateRangeFilter';
 import { CreateConstruction } from './CreateConstruction';
 import EditConstructionDialog from './EditConstructionDialog';
 
 export default function Constructions() {
+  const { pageSize, onPaginationModelChange } = usePersistPageSize('constructions-pageSize', 50)
+
   const user = useCurrentUser();
   const [constructions, setConstructions] = useState<Construction[]>([]);
   const [dateRange, setDateRange] = useState<AppDateRange>({});
@@ -104,7 +107,7 @@ export default function Constructions() {
   const [loading, setLoading] = useState(false);
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 25,
+    pageSize,
   });
 
   useEffect(() => {
@@ -160,7 +163,7 @@ export default function Constructions() {
               rowCount={rowCount}
               paginationModel={paginationModel}
               paginationMode="server"
-              onPaginationModelChange={setPaginationModel}
+              onPaginationModelChange={onPaginationModelChange(setPaginationModel)}
               loading={loading}
             />
           </CardContent>

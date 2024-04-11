@@ -18,8 +18,11 @@ import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
 import WorkerNameFilter from './filters/WorkerNameFilter';
 
 import { endOfMonth, formatISO, startOfMonth } from 'date-fns';
+import { usePersistPageSize } from '../../hooks/usePersistPageSize';
 
 export default function WorkEntriesTimesView() {
+  const { pageSize, onPaginationModelChange } = usePersistPageSize('workEntriesTimes-pageSize', 50)
+
   const user = useCurrentUser();
 
   const [curUsername, setCurUsername] = useState('');
@@ -35,7 +38,7 @@ export default function WorkEntriesTimesView() {
   const [rowCount, setRowCount] = useState(0);
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 10,
+    pageSize,
   });
 
   const columns = useMemo(() => {
@@ -140,40 +143,39 @@ export default function WorkEntriesTimesView() {
     user?.tenant,
   ]);
 
+
   return (
-    <>
-      <ColFlexBox>
-        <FilterWrapperCard>
-          <PastDateRange dateRange={dateRange} setDateRange={setDateRange} />
-          <WorkerNameFilter curUsername={curUsername} setUsername={setCurUsername} />
-          <AppGridField>
-            <AppTextField
-              value={constructionId}
-              onChange={(ev) => {
-                setConstructionId(ev.target.value);
-              }}
-              label="Baustellen-ID"
-              type="search"
-            />
-          </AppGridField>
-        </FilterWrapperCard>
+    <ColFlexBox>
+      <FilterWrapperCard>
+        <PastDateRange dateRange={dateRange} setDateRange={setDateRange} />
+        <WorkerNameFilter curUsername={curUsername} setUsername={setCurUsername} />
+        <AppGridField>
+          <AppTextField
+            value={constructionId}
+            onChange={(ev) => {
+              setConstructionId(ev.target.value);
+            }}
+            label="Baustellen-ID"
+            type="search"
+          />
+        </AppGridField>
+      </FilterWrapperCard>
 
-        <HoursOverviewCard hours={hours} />
+      <HoursOverviewCard hours={hours} />
 
-        <Card>
-          <CardContent>
-            <AppDataGrid
-              rows={data}
-              columns={columns}
-              rowCount={rowCount}
-              paginationModel={paginationModel}
-              paginationMode="server"
-              onPaginationModelChange={setPaginationModel}
-              loading={loading}
-            />
-          </CardContent>
-        </Card>
-      </ColFlexBox>
-    </>
+      <Card>
+        <CardContent>
+          <AppDataGrid
+            rows={data}
+            columns={columns}
+            rowCount={rowCount}
+            paginationModel={paginationModel}
+            paginationMode="server"
+            onPaginationModelChange={onPaginationModelChange(setPaginationModel)}
+            loading={loading}
+          />
+        </CardContent>
+      </Card>
+    </ColFlexBox>
   );
 }

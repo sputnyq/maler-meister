@@ -1,5 +1,5 @@
 import { Button, Card, CardContent } from '@mui/material';
-import { GridColDef, GridPaginationModel } from '@mui/x-data-grid';
+import { GridColDef } from '@mui/x-data-grid';
 
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -11,12 +11,12 @@ import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadOffers } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { usePersistPageSize } from '../../hooks/usePersistPageSize';
 import ConstructionView from '../time-capture/ConstructionView';
 import { PastDateRange } from '../time-capture/PastDateRange';
 
 export default function OffersGrid() {
-  const { value: pageSize, setValue: setPageSize } = useLocalStorage<number>('offers-pageSize', 10);
+  const { pageSize, onPaginationModelChange } = usePersistPageSize('offers-pageSize', 50)
 
   const user = useCurrentUser();
 
@@ -174,11 +174,6 @@ export default function OffersGrid() {
     ] as GridColDef[];
   }, []);
 
-  const onPaginationModelChange = (newPaginationModel: GridPaginationModel) => {
-    setPageSize(newPaginationModel.pageSize);
-    setPaginationModel(newPaginationModel);
-  };
-
   return (
     <ColFlexBox>
       <FilterWrapperCard>
@@ -217,7 +212,7 @@ export default function OffersGrid() {
             rowCount={rowCount}
             paginationMode="server"
             paginationModel={paginationModel}
-            onPaginationModelChange={onPaginationModelChange}
+            onPaginationModelChange={onPaginationModelChange(setPaginationModel)}
           />
         </CardContent>
       </Card>

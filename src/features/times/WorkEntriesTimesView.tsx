@@ -1,5 +1,5 @@
 import { Card, CardContent } from '@mui/material';
-import { GridColDef, GridPaginationModel } from '@mui/x-data-grid';
+import { GridColDef } from '@mui/x-data-grid';
 
 import { useEffect, useMemo, useState } from 'react';
 
@@ -11,7 +11,6 @@ import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadWorkEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { formatNumber } from '../../utilities';
 import ConstructionView from '../time-capture/ConstructionView';
 import { PastDateRange } from '../time-capture/PastDateRange';
@@ -19,9 +18,10 @@ import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
 import WorkerNameFilter from './filters/WorkerNameFilter';
 
 import { endOfMonth, formatISO, startOfMonth } from 'date-fns';
+import { usePersistPageSize } from '../../hooks/usePersistPageSize';
 
 export default function WorkEntriesTimesView() {
-  const { value: pageSize, setValue: setPageSize } = useLocalStorage<number>('workTimeEntries-pageSize', 10);
+  const { pageSize, onPaginationModelChange } = usePersistPageSize('workEntriesTimes-pageSize', 50)
 
   const user = useCurrentUser();
 
@@ -143,45 +143,39 @@ export default function WorkEntriesTimesView() {
     user?.tenant,
   ]);
 
-  const onPaginationModelChange = (newPaginationModel: GridPaginationModel) => {
-    setPageSize(newPaginationModel.pageSize);
-    setPaginationModel(newPaginationModel);
-  };
 
   return (
-    <>
-      <ColFlexBox>
-        <FilterWrapperCard>
-          <PastDateRange dateRange={dateRange} setDateRange={setDateRange} />
-          <WorkerNameFilter curUsername={curUsername} setUsername={setCurUsername} />
-          <AppGridField>
-            <AppTextField
-              value={constructionId}
-              onChange={(ev) => {
-                setConstructionId(ev.target.value);
-              }}
-              label="Baustellen-ID"
-              type="search"
-            />
-          </AppGridField>
-        </FilterWrapperCard>
+    <ColFlexBox>
+      <FilterWrapperCard>
+        <PastDateRange dateRange={dateRange} setDateRange={setDateRange} />
+        <WorkerNameFilter curUsername={curUsername} setUsername={setCurUsername} />
+        <AppGridField>
+          <AppTextField
+            value={constructionId}
+            onChange={(ev) => {
+              setConstructionId(ev.target.value);
+            }}
+            label="Baustellen-ID"
+            type="search"
+          />
+        </AppGridField>
+      </FilterWrapperCard>
 
-        <HoursOverviewCard hours={hours} />
+      <HoursOverviewCard hours={hours} />
 
-        <Card>
-          <CardContent>
-            <AppDataGrid
-              rows={data}
-              columns={columns}
-              rowCount={rowCount}
-              paginationModel={paginationModel}
-              paginationMode="server"
-              onPaginationModelChange={onPaginationModelChange}
-              loading={loading}
-            />
-          </CardContent>
-        </Card>
-      </ColFlexBox>
-    </>
+      <Card>
+        <CardContent>
+          <AppDataGrid
+            rows={data}
+            columns={columns}
+            rowCount={rowCount}
+            paginationModel={paginationModel}
+            paginationMode="server"
+            onPaginationModelChange={onPaginationModelChange(setPaginationModel)}
+            loading={loading}
+          />
+        </CardContent>
+      </Card>
+    </ColFlexBox>
   );
 }

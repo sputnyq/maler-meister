@@ -1,6 +1,6 @@
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import { Button, Card, CardContent, Chip } from '@mui/material';
-import { GridColDef, GridPaginationModel, GridToolbarContainer } from '@mui/x-data-grid';
+import { GridColDef, GridToolbarContainer } from '@mui/x-data-grid';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -11,7 +11,6 @@ import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { formatNumber, getJobColor } from '../../utilities';
 import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';
 import { PastDateRange } from '../time-capture/PastDateRange';
@@ -21,9 +20,10 @@ import DailyEntryTypeFilter from './filters/DailyEntryTypeFilter';
 import WorkerNameFilter from './filters/WorkerNameFilter';
 
 import { endOfMonth, formatISO, startOfMonth } from 'date-fns';
+import { usePersistPageSize } from '../../hooks/usePersistPageSize';
 
 export default function DailyTimesView() {
-  const { value: pageSize, setValue: setPageSize } = useLocalStorage<number>('dailyTimes-pageSize', 50);
+  const { pageSize, onPaginationModelChange } = usePersistPageSize('dailyTimes-pageSize', 50)
 
   const user = useCurrentUser();
 
@@ -57,7 +57,7 @@ export default function DailyTimesView() {
 
   const handleExportRequest = useCallback(() => {
     const { start, end } = dateRange;
-    const filename = `Export ${curUsername || ''} ${start || ''}-${end || ''}`;
+    const filename = `Export ${curUsername || ''} ${start ?? ''}-${end ?? ''}`;
 
     const queryObj = {
       filters: {
@@ -222,10 +222,7 @@ export default function DailyTimesView() {
     update,
   ]);
 
-  const onPaginationModelChange = (newPaginationModel: GridPaginationModel) => {
-    setPageSize(newPaginationModel.pageSize);
-    setPaginationModel(newPaginationModel);
-  };
+
 
   return (
     <>
@@ -247,7 +244,7 @@ export default function DailyTimesView() {
               rowCount={rowCount}
               paginationModel={paginationModel}
               paginationMode="server"
-              onPaginationModelChange={onPaginationModelChange}
+              onPaginationModelChange={onPaginationModelChange(setPaginationModel)}
               loading={loading}
             />
           </CardContent>

@@ -1,6 +1,6 @@
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 import { Button, Card, CardContent } from '@mui/material';
-import { GridColDef, GridPaginationModel } from '@mui/x-data-grid';
+import { GridColDef } from '@mui/x-data-grid';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -14,13 +14,13 @@ import { loadConstructions } from '../../fetch/api';
 import { constructionById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { usePersistPageSize } from '../../hooks/usePersistPageSize';
 import { ConstructionsDateRangeFilter } from './ConstructionsDateRangeFilter';
 import { CreateConstruction } from './CreateConstruction';
 import EditConstructionDialog from './EditConstructionDialog';
 
 export default function Constructions() {
-  const { value: pageSize, setValue: setPageSize } = useLocalStorage<number>('constructions-pageSize', 25);
+  const { pageSize, onPaginationModelChange } = usePersistPageSize('dailyTimes-pageSize', 50)
 
   const user = useCurrentUser();
   const [constructions, setConstructions] = useState<Construction[]>([]);
@@ -138,10 +138,6 @@ export default function Constructions() {
       .finally(() => setLoading(false));
   }, [active, confirmed, dateRange.end, dateRange.start, paginationModel, user?.tenant, update]);
 
-  const onPaginationModelChange = (newPaginationModel: GridPaginationModel) => {
-    setPageSize(newPaginationModel.pageSize);
-    setPaginationModel(newPaginationModel);
-  };
   return (
     <>
       <EditConstructionDialog
@@ -167,7 +163,7 @@ export default function Constructions() {
               rowCount={rowCount}
               paginationModel={paginationModel}
               paginationMode="server"
-              onPaginationModelChange={onPaginationModelChange}
+              onPaginationModelChange={onPaginationModelChange(setPaginationModel)}
               loading={loading}
             />
           </CardContent>

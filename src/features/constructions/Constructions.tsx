@@ -20,7 +20,7 @@ import { CreateConstruction } from './CreateConstruction';
 import EditConstructionDialog from './EditConstructionDialog';
 
 export default function Constructions() {
-  const { pageSize, onPaginationModelChange } = usePersistPageSize('constructions-pageSize', 50)
+  const { pageSize, onPaginationModelChange } = usePersistPageSize('constructions-pageSize', 50);
 
   const user = useCurrentUser();
   const [constructions, setConstructions] = useState<Construction[]>([]);

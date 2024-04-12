@@ -85,18 +85,20 @@ export function addServices(builder: PdfBuilder, offerServices: OfferService[]) 
   const emptyLine = ['', '', '', '', ''];
 
   const body = [];
-  for (let i = 0; i < offerServices.length; i++) {
-    const serv = offerServices[i];
+
+  let pos = 1;
+
+  for (const serv of offerServices) {
     const serviceLine = {
-      pos: serv.name ? i + 1 : '',
-      desc: serv.name,
+      pos: serv.name ? pos++ : '',
+      desc: serv.name ? serv.name : serv.description || '',
       quantity: numberValue(serv.quantity).concat(` ${serv.unit || ''}`),
       price: euroValue(serv.unitPrice),
       sum: euroValue(serv.netto),
     };
 
     body.push(serviceLine);
-    if (serv.description) {
+    if (serv.description && serv.name) {
       body.push(['', serv.description, '', '', '']);
     }
 

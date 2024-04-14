@@ -1,8 +1,6 @@
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Box, Card, CardContent, Checkbox, Typography, useTheme } from '@mui/material';
+import { SimpleTreeView } from '@mui/x-tree-view';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
-import { TreeView } from '@mui/x-tree-view/TreeView';
 
 import { useSelector } from 'react-redux';
 
@@ -25,11 +23,11 @@ export function ServicesSelection(props: Props) {
     <AppDialog open={open} onClose={onClose} title="Leistungen auswählen">
       <Card elevation={0}>
         <CardContent sx={{ height: '100%', overflowY: 'auto' }}>
-          <TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
+          <SimpleTreeView>
             {jobs?.map((job) => (
               <JobRender onCheck={onCheck} offerServices={offerServices} job={job} key={job.id} />
             ))}
-          </TreeView>
+          </SimpleTreeView>
         </CardContent>
       </Card>
     </AppDialog>
@@ -58,20 +56,15 @@ function JobRender({ job, offerServices, onCheck }: JobRenderProps) {
   };
 
   return (
-    <TreeItem nodeId={`job-${job.id}`} label={job.name}>
+    <TreeItem itemId={`job-${job.id}`} label={job.name}>
       {filtered.map((serv) => (
         <TreeItem
           key={serv.id}
-          nodeId={String(serv.id)}
+          itemId={String(serv.id)}
           label={
-            <Box
-              borderBottom={`1px solid ${theme.palette.grey[200]}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Typography variant="body1">{serv.name}</Typography>
+            <Box borderBottom={`1px solid ${theme.palette.grey[200]}`} display="flex" alignItems="center">
               <Checkbox checked={included(serv.id)} onChange={(ev) => handleChange(serv.id, ev)} />
+              <Typography variant="body1">{serv.name}</Typography>
             </Box>
           }
         />

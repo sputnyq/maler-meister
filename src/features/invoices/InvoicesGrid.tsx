@@ -1,4 +1,4 @@
-import { Button, Card, CardContent } from '@mui/material';
+import { Button, Card, CardContent, MenuItem } from '@mui/material';
 import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 
 import { useEffect, useMemo, useState } from 'react';
@@ -29,11 +29,13 @@ export function InvoicesGrid() {
   const [offerId, setOfferId] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [constrId, setConstrId] = useState<string>('');
+  const [isPaid, setIsPaid] = useState<'Bezahlt' | 'Unbezahlt' | 'Alle'>('Alle');
 
   const [idSearch, setIdSearch] = useState<string>('');
   const [offerIdSearch, setOfferIdSearch] = useState<string>('');
   const [lastNameSearch, setLastNameSearch] = useState<string>('');
   const [constrIdSearch, setConstrIdSearch] = useState<string>('');
+  const [isPaidSearch, setIsPaidSearch] = useState<boolean | undefined>(undefined);
 
   const [dateRange, setDateRange] = useState<AppDateRange>({
     start: undefined,
@@ -44,6 +46,22 @@ export function InvoicesGrid() {
     page: 0,
     pageSize,
   });
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      let next = undefined;
+      if (isPaid === 'Bezahlt') {
+        next = true;
+      } else if (isPaid === 'Unbezahlt') {
+        next = false;
+      } else {
+        next = undefined;
+      }
+      setIsPaidSearch(next);
+    }, 1000);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [isPaid]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -91,6 +109,7 @@ export function InvoicesGrid() {
       queryObj = {
         filters: {
           tenant: user?.tenant,
+          isPaid: isPaidSearch,
           lastName: {
             $containsi: lastNameSearch === '' ? undefined : lastNameSearch,
           },
@@ -129,6 +148,7 @@ export function InvoicesGrid() {
     offerIdSearch,
     constrIdSearch,
     idSearch,
+    isPaidSearch,
   ]);
 
   const columns = useMemo(() => {
@@ -238,6 +258,15 @@ export function InvoicesGrid() {
             value={lastName}
             onChange={(ev) => setLastName(ev.target.value)}
           />
+        </AppGridField>
+        <AppGridField>
+          <AppTextField select value={isPaid} onChange={(ev) => setIsPaid(ev.target.value as any)}>
+            {['Alle', 'Bezahlt', 'Unbezahlt'].map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </AppTextField>
         </AppGridField>
         <PastDateRange dateRange={dateRange} setDateRange={setDateRange} />
       </FilterWrapperCard>

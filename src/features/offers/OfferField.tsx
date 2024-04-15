@@ -17,7 +17,6 @@ export interface OfferFieldProps {
   multiline?: true;
   select?: true;
   selectOptions?: string[];
-  capitalize?: true;
   InputProps?: Partial<InputProps>;
 }
 
@@ -30,7 +29,7 @@ export default function OfferField({
   path,
   InputProps,
   placeholder,
-}: OfferFieldProps) {
+}: Readonly<OfferFieldProps>) {
   const dispatch = useDispatch<AppDispatch>();
   const initValue = useOfferValue(path);
 

@@ -34,8 +34,7 @@ export const loadInvoice = createAsyncThunk('invoices/load', async (id: string |
 export const updateInvoice = createAsyncThunk<AppInvoice, void, { state: AppState }>(
   'offers/update',
   async (_, thunkApi) => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const invoice = thunkApi.getState().invoice.current!; // never happens
+    const invoice = thunkApi.getState().invoice.current!;
 
     const response = await appRequest('put')(invoiceById(invoice.id), {
       data: {

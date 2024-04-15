@@ -34,8 +34,7 @@ export const loadOffer = createAsyncThunk('offers/load', async (id: string | num
 export const updateOffer = createAsyncThunk<AppOffer, void, { state: AppState }>(
   'offers/update',
   async (_, thunkApi) => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const offer = thunkApi.getState().offer.current!; // never happens
+    const offer = thunkApi.getState().offer.current!;
 
     const response = await appRequest('put')(offerById(offer.id), {
       data: {

@@ -1,5 +1,5 @@
-import { Button, Card, CardContent } from '@mui/material';
-import { GridColDef } from '@mui/x-data-grid';
+import { Button, Card, CardContent, MenuItem } from '@mui/material';
+import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -12,11 +12,12 @@ import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadInvoices } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { usePersistPageSize } from '../../hooks/usePersistPageSize';
+import { calculatePriceSummary, euroValue } from '../../utilities';
 import ConstructionView from '../time-capture/ConstructionView';
 import { PastDateRange } from '../time-capture/PastDateRange';
 
 export function InvoicesGrid() {
-  const { pageSize, onPaginationModelChange } = usePersistPageSize('invoices-pageSize', 50)
+  const { pageSize, onPaginationModelChange } = usePersistPageSize('invoices-pageSize', 50);
 
   const user = useCurrentUser();
 
@@ -28,11 +29,13 @@ export function InvoicesGrid() {
   const [offerId, setOfferId] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [constrId, setConstrId] = useState<string>('');
+  const [isPaid, setIsPaid] = useState<'Bezahlt' | 'Unbezahlt' | 'Alle'>('Alle');
 
   const [idSearch, setIdSearch] = useState<string>('');
   const [offerIdSearch, setOfferIdSearch] = useState<string>('');
   const [lastNameSearch, setLastNameSearch] = useState<string>('');
   const [constrIdSearch, setConstrIdSearch] = useState<string>('');
+  const [isPaidSearch, setIsPaidSearch] = useState<boolean | undefined>(undefined);
 
   const [dateRange, setDateRange] = useState<AppDateRange>({
     start: undefined,
@@ -43,6 +46,22 @@ export function InvoicesGrid() {
     page: 0,
     pageSize,
   });
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      let next = undefined;
+      if (isPaid === 'Bezahlt') {
+        next = true;
+      } else if (isPaid === 'Unbezahlt') {
+        next = false;
+      } else {
+        next = undefined;
+      }
+      setIsPaidSearch(next);
+    }, 1000);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [isPaid]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -90,6 +109,7 @@ export function InvoicesGrid() {
       queryObj = {
         filters: {
           tenant: user?.tenant,
+          isPaid: isPaidSearch,
           lastName: {
             $containsi: lastNameSearch === '' ? undefined : lastNameSearch,
           },
@@ -128,6 +148,7 @@ export function InvoicesGrid() {
     offerIdSearch,
     constrIdSearch,
     idSearch,
+    isPaidSearch,
   ]);
 
   const columns = useMemo(() => {
@@ -143,6 +164,10 @@ export function InvoicesGrid() {
             </Link>
           );
         },
+      },
+      {
+        field: 'invoiceType',
+        headerName: 'Typ',
       },
       {
         field: 'offerId',
@@ -164,7 +189,7 @@ export function InvoicesGrid() {
       },
       {
         field: 'constructionId',
-        headerName: 'Baustellen-ID',
+        headerName: 'Baustellen',
         flex: 1,
         renderCell({ value }) {
           return <ConstructionView constructionId={value} />;
@@ -185,6 +210,21 @@ export function InvoicesGrid() {
         renderCell({ value }) {
           return dtFormat.format(new Date(value));
         },
+      },
+      {
+        field: 'offerServices',
+        headerName: 'Netto / Brutto',
+        minWidth: 160,
+        renderCell(params: GridRenderCellParams<AppInvoice>) {
+          const { offerServices } = params.row;
+          const { brutto, netto } = calculatePriceSummary(offerServices);
+          return `${euroValue(netto)} / ${euroValue(brutto)}`;
+        },
+      },
+      {
+        field: 'isPaid',
+        headerName: 'Bezahlt',
+        type: 'boolean',
       },
     ] as GridColDef[];
   }, []);
@@ -218,6 +258,15 @@ export function InvoicesGrid() {
             value={lastName}
             onChange={(ev) => setLastName(ev.target.value)}
           />
+        </AppGridField>
+        <AppGridField>
+          <AppTextField select value={isPaid} onChange={(ev) => setIsPaid(ev.target.value as any)}>
+            {['Alle', 'Bezahlt', 'Unbezahlt'].map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </AppTextField>
         </AppGridField>
         <PastDateRange dateRange={dateRange} setDateRange={setDateRange} />
       </FilterWrapperCard>

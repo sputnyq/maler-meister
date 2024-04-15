@@ -37,8 +37,14 @@ interface AppOffer {
   updatedAt: string;
 }
 
+/**
+ * @file  "src/constants.ts"
+ */
+type InvoiceType = 'RECHNUNG' | 'ABSCHLAGSRECHNUNG' | 'VORAUSZAHLUNG' | 'SCHLUSSRECHNUNG';
 interface AppInvoice extends AppOffer {
   offerId: number;
+  isPaid: boolean;
+  invoiceType: InvoiceType;
 }
 
 interface LoginResponse {

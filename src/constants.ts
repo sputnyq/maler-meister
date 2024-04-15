@@ -11,3 +11,5 @@ export const INITIAL_DAILY_ENTRY = {
   date: formatISO(new Date(), { representation: 'date' }),
   type: 'Arbeit',
 } as DailyEntry;
+
+export const InvoiceTypeArray = ['RECHNUNG', 'ABSCHLAGSRECHNUNG', 'VORAUSZAHLUNG', 'SCHLUSSRECHNUNG'] as const;

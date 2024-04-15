@@ -14,7 +14,7 @@ export default function CreateInvoiceForOfferButton() {
   const onCreateRequest = useCallback(
     async (offer: AppOffer) => {
       try {
-        const nextInvoice: AppInvoice = { ...offer, offerId: offer.id };
+        const nextInvoice: AppInvoice = { ...offer, offerId: offer.id, isPaid: false, invoiceType: 'SCHLUSSRECHNUNG' };
         //@ts-ignore
         delete nextInvoice.id;
         const response = await appRequest('post')(invoiceById(''), { data: nextInvoice });

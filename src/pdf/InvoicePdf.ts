@@ -1,3 +1,4 @@
+import { capitalizeFirstLetter } from '../utilities';
 import PdfBuilder, { Margin } from './PdfBuilder';
 import {
   addBancAccount,
@@ -42,6 +43,7 @@ export function createInvoicePdf(payload: CreateInvoicePdfParams) {
   addCustomer(builder, invoice);
   addDate(builder, invoice);
   addDocumentNumber(builder, invoice, 'Rechnung');
+  invoice.invoiceType !== 'RECHNUNG' && addText(builder, capitalizeFirstLetter(invoice.invoiceType));
 
   addConstruction(builder, printSettings.highlightColor, construction);
   addText(builder, printSettings.invoiceTextBefore);

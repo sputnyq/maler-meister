@@ -14,9 +14,10 @@ import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { usePersistPageSize } from '../../hooks/usePersistPageSize';
 import ConstructionView from '../time-capture/ConstructionView';
 import { PastDateRange } from '../time-capture/PastDateRange';
+import { OfferInvoiceLinks } from './OfferInvoiceLinks';
 
 export default function OffersGrid() {
-  const { pageSize, onPaginationModelChange } = usePersistPageSize('offers-pageSize', 50)
+  const { pageSize, onPaginationModelChange } = usePersistPageSize('offers-pageSize', 50);
 
   const user = useCurrentUser();
 
@@ -169,6 +170,13 @@ export default function OffersGrid() {
         minWidth: 160,
         renderCell({ value }) {
           return dtFormat.format(new Date(value));
+        },
+      },
+      {
+        field: '_links',
+        headerName: 'Rechnungen',
+        renderCell(param: { row: AppOffer }) {
+          return <OfferInvoiceLinks offerId={param.row.id} />;
         },
       },
     ] as GridColDef[];

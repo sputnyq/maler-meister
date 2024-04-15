@@ -1,3 +1,5 @@
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Box, Button, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 
 import { useEffect, useMemo, useState } from 'react';
@@ -40,14 +42,16 @@ export default function OfferInvoices() {
         <TableHead>
           <TableRow>
             <TableCell>ID</TableCell>
+            <TableCell>Typ</TableCell>
             <TableCell>Erstellt</TableCell>
             <TableCell>Aktualisiert</TableCell>
-            <TableCell>Rechnungssumme (Netto)</TableCell>
+            <TableCell>Netto / Brutto</TableCell>
+            <TableCell>Bezahlt</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {invoices.map(({ id, createdAt, updatedAt, offerServices }) => {
-            const { netto } = calculatePriceSummary(offerServices);
+          {invoices.map(({ id, createdAt, updatedAt, offerServices, invoiceType, isPaid }) => {
+            const { netto, brutto } = calculatePriceSummary(offerServices);
             return (
               <TableRow key={id}>
                 <TableCell sx={{ height: '40px', padding: 0 }}>
@@ -55,9 +59,13 @@ export default function OfferInvoices() {
                     <Button>{id}</Button>
                   </Link>
                 </TableCell>
+                <TableCell>{invoiceType ?? 'RECHNUNG'}</TableCell>
                 <TableCell>{dtFormat.format(new Date(createdAt))}</TableCell>
                 <TableCell>{dtFormat.format(new Date(updatedAt))}</TableCell>
-                <TableCell>{euroValue(netto)}</TableCell>
+                <TableCell>
+                  {euroValue(netto)} / {euroValue(brutto)}
+                </TableCell>
+                <TableCell>{isPaid ? <CheckOutlinedIcon /> : <CloseOutlinedIcon />}</TableCell>
               </TableRow>
             );
           })}

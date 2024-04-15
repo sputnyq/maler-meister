@@ -51,7 +51,7 @@ export default function OfferEdit() {
         <TabPanel index={1} value={value}>
           <ServicesWidget
             key={currentOffer.id}
-            offerServices={offerServices !== null ? offerServices : undefined}
+            offerServices={offerServices ?? undefined}
             update={updateOfferServices}
           />
         </TabPanel>

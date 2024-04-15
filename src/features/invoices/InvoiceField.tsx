@@ -1,4 +1,4 @@
-import { InputProps, MenuItem } from '@mui/material';
+import { Checkbox, FormControl, FormControlLabel, FormGroup, InputProps, MenuItem } from '@mui/material';
 
 import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,9 +16,9 @@ export interface InvoiceFieldProps {
   type?: 'text' | 'number' | 'email' | 'tel';
   multiline?: true;
   select?: true;
-  selectOptions?: string[];
-  capitalize?: true;
+  selectOptions?: readonly string[];
   InputProps?: Partial<InputProps>;
+  as?: 'checkbox';
 }
 
 export default function OfferField({
@@ -30,7 +30,8 @@ export default function OfferField({
   path,
   InputProps,
   placeholder,
-}: InvoiceFieldProps) {
+  as,
+}: Readonly<InvoiceFieldProps>) {
   const dispatch = useDispatch<AppDispatch>();
   const initValue = useOfferValue(path);
 
@@ -41,6 +42,35 @@ export default function OfferField({
 
     dispatch(setInvoiceProp({ path: propPath, value }));
   }, [dispatch, path, value]);
+
+  const handleChange = useCallback(
+    (newValue: any) => {
+      const propPath: string[] = [path];
+
+      dispatch(setInvoiceProp({ path: propPath, value: newValue }));
+    },
+    [path, dispatch],
+  );
+
+  if (as === 'checkbox') {
+    return (
+      <FormControl>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={initValue as boolean}
+                onChange={(ev) => {
+                  handleChange(ev.target.checked);
+                }}
+              />
+            }
+            label={label}
+          />
+        </FormGroup>
+      </FormControl>
+    );
+  }
 
   return (
     <AppTextField

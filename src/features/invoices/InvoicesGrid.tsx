@@ -1,5 +1,5 @@
 import { Button, Card, CardContent } from '@mui/material';
-import { GridColDef } from '@mui/x-data-grid';
+import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -12,11 +12,12 @@ import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadInvoices } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { usePersistPageSize } from '../../hooks/usePersistPageSize';
+import { calculatePriceSummary, euroValue } from '../../utilities';
 import ConstructionView from '../time-capture/ConstructionView';
 import { PastDateRange } from '../time-capture/PastDateRange';
 
 export function InvoicesGrid() {
-  const { pageSize, onPaginationModelChange } = usePersistPageSize('invoices-pageSize', 50)
+  const { pageSize, onPaginationModelChange } = usePersistPageSize('invoices-pageSize', 50);
 
   const user = useCurrentUser();
 
@@ -145,6 +146,10 @@ export function InvoicesGrid() {
         },
       },
       {
+        field: 'invoiceType',
+        headerName: 'Typ',
+      },
+      {
         field: 'offerId',
         headerName: 'Angebots-ID',
       },
@@ -164,7 +169,7 @@ export function InvoicesGrid() {
       },
       {
         field: 'constructionId',
-        headerName: 'Baustellen-ID',
+        headerName: 'Baustellen',
         flex: 1,
         renderCell({ value }) {
           return <ConstructionView constructionId={value} />;
@@ -185,6 +190,21 @@ export function InvoicesGrid() {
         renderCell({ value }) {
           return dtFormat.format(new Date(value));
         },
+      },
+      {
+        field: 'offerServices',
+        headerName: 'Netto / Brutto',
+        minWidth: 160,
+        renderCell(params: GridRenderCellParams<AppInvoice>) {
+          const { offerServices } = params.row;
+          const { brutto, netto } = calculatePriceSummary(offerServices);
+          return `${euroValue(netto)} / ${euroValue(brutto)}`;
+        },
+      },
+      {
+        field: 'isPaid',
+        headerName: 'Bezahlt',
+        type: 'boolean',
       },
     ] as GridColDef[];
   }, []);

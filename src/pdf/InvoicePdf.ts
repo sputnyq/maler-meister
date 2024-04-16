@@ -43,7 +43,10 @@ export function createInvoicePdf(payload: CreateInvoicePdfParams) {
   addCustomer(builder, invoice);
   addDate(builder, invoice);
   addDocumentNumber(builder, invoice, 'Rechnung');
-  invoice.invoiceType !== 'RECHNUNG' && addText(builder, capitalizeFirstLetter(invoice.invoiceType));
+
+  if (invoice.invoiceType && invoice.invoiceType !== 'RECHNUNG') {
+    addText(builder, capitalizeFirstLetter(invoice.invoiceType));
+  }
 
   addConstruction(builder, printSettings.highlightColor, construction);
   addText(builder, printSettings.invoiceTextBefore);

@@ -50,7 +50,6 @@ export const updateOffer = createAsyncThunk<AppOffer, void, { state: AppState }>
 export const createOffer = createAsyncThunk<AppOffer, { cb: (id: string | number) => void }, { state: AppState }>(
   'offers/create',
   async (payload, thunkApi) => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const offer = thunkApi.getState().offer.current!; // never happens
     const tenant = thunkApi.getState().login.user?.tenant;
 

@@ -50,7 +50,6 @@ export const updateInvoice = createAsyncThunk<AppInvoice, void, { state: AppStat
 export const createInvoice = createAsyncThunk<AppInvoice, { cb: (id: string | number) => void }, { state: AppState }>(
   'offers/create',
   async (payload, thunkApi) => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const invoice = thunkApi.getState().invoice.current!; // never happens
     const tenant = thunkApi.getState().login.user?.tenant;
 

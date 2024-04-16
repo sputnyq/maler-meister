@@ -1,10 +1,8 @@
-name: 🛠️ Build application
-
+name: Build and Lint
 on:
   push:
     branches:
-      - '!main' # matches every branch
-
+      - '!main'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,15 +10,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install modules
+      - name: Install
         run: npm install
 
-      - name: Build App
+      - name: Build
         run: npm run build
         env:
-          VITE_BACKEND_URL: http://localhost
+          VITE_BACKEND_URL: http://ignored.dev
+
+      - name: Lint
+        run: npm run lint

@@ -1,6 +1,7 @@
 import ChecklistRtlOutlinedIcon from '@mui/icons-material/ChecklistRtlOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import PlaylistAddOutlinedIcon from '@mui/icons-material/PlaylistAddOutlined';
-import { Box, Button, Card, CardContent } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -60,36 +61,19 @@ export default function ServicesWidget({ offerServices = [], update }: Props) {
     update([...offerServices, { taxRate: 19 } as OfferService]);
   };
 
-  const Summary = (
-    <Box sx={{ position: 'sticky', top: '48px', zIndex: 100, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-      <PriceSummary offerServices={offerServices} />
-    </Box>
-  );
-  const Buttons = (
-    <Card>
-      <CardContent>
-        <Box display={'flex'} justifyContent="flex-end" gap={2}>
-          <Button endIcon={<PlaylistAddOutlinedIcon />} onClick={onAdd}>
-            neue Zeile
-          </Button>
-
-          <Button
-            onClick={() => setOpen(true)}
-            variant="contained"
-            disableElevation
-            endIcon={<ChecklistRtlOutlinedIcon />}
-          >
-            Auswählen
-          </Button>
-        </Box>
-      </CardContent>
-    </Card>
-  );
+  const onDeleteAll = () => {
+    if (confirm('Alle Leistungen löschen?')) update([{} as OfferService]);
+  };
 
   return (
     <>
       <Box display="flex" flexDirection="column" gap={3}>
-        {Summary}
+        {/* Price Summary */}
+        <Box sx={{ position: 'sticky', top: '48px', zIndex: 100, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+          <PriceSummary offerServices={offerServices} />
+        </Box>
+
+        {/* Services   */}
         {offerServices.map((offerService, index) => (
           <ServicesWidgetRow
             key={index}
@@ -101,7 +85,27 @@ export default function ServicesWidget({ offerServices = [], update }: Props) {
             update={updateOnIndex(index)}
           />
         ))}
-        {Buttons}
+
+        {/* Buttons */}
+
+        <Box display={'flex'} justifyContent="flex-end" gap={2}>
+          <Button variant="outlined" color="error" endIcon={<DeleteOutlineOutlinedIcon />} onClick={onDeleteAll}>
+            Löschen
+          </Button>
+
+          <Button
+            variant="outlined"
+            onClick={() => setOpen(true)}
+            disableElevation
+            endIcon={<ChecklistRtlOutlinedIcon />}
+          >
+            Auswählen
+          </Button>
+
+          <Button variant="outlined" endIcon={<PlaylistAddOutlinedIcon />} onClick={onAdd}>
+            Zeile
+          </Button>
+        </Box>
       </Box>
 
       <ServicesSelection onCheck={onCheck} open={open} onClose={() => setOpen(false)} offerServices={offerServices} />

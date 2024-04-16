@@ -61,7 +61,7 @@ export function ServicesWidgetRow({ offerService, disableDown, disableUp, update
   };
 
   return (
-    <Card sx={{ padding: 1 }}>
+    <Card sx={{ padding: 1 }} variant="outlined">
       <Grid container spacing={1.5}>
         <Grid item xs={12} sm={8}>
           <Autocomplete

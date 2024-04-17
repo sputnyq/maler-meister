@@ -10,7 +10,7 @@ interface Props {
   constructionId: string | number | undefined;
 }
 
-export default function ConstructionView({ constructionId }: Props) {
+export default function ConstructionView({ constructionId }: Readonly<Props>) {
   const user = useCurrentUser();
 
   const [name, setName] = useState('');
@@ -22,29 +22,36 @@ export default function ConstructionView({ constructionId }: Props) {
         if (res?.constructions.length === 1) {
           setName(res.constructions[0].name);
           setKnown(true);
-          return;
         }
       });
+    } else {
+      setKnown(false);
     }
-    setKnown(false);
   }, [constructionId, user]);
 
   if (!constructionId) {
     return null;
   }
 
+  let content = null;
+
   if (constructionId && known) {
-    return (
+    content = (
       <Typography color="secondary" variant="body2">{`${constructionId}${name ? ' | '.concat(name) : ''}`}</Typography>
     );
   } else {
-    return (
-      <Box display="flex" gap={1} alignItems="center">
+    content = (
+      <>
         <ErrorOutlineOutlinedIcon color="error" />
         <Typography color="error" variant="body2">
           {`unbekannte Baustellen-ID: ${constructionId}`}
         </Typography>
-      </Box>
+      </>
     );
   }
+  return (
+    <Box display="flex" gap={1} alignItems="center" sx={{ height: '100%' }}>
+      {content}
+    </Box>
+  );
 }

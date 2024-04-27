@@ -20,7 +20,14 @@ interface Props {
   moveEntry: (offset: number) => void;
 }
 
-export function ServicesWidgetRow({ offerService, disableDown, disableUp, update, moveEntry, onDelete }: Props) {
+export function ServicesWidgetRow({
+  offerService,
+  disableDown,
+  disableUp,
+  update,
+  moveEntry,
+  onDelete,
+}: Readonly<Props>) {
   const bgbServices = useSelector<AppState, BgbService[]>((s) => s.services.bgbServices || []);
 
   const findService = (label: string) => {
@@ -61,7 +68,7 @@ export function ServicesWidgetRow({ offerService, disableDown, disableUp, update
   };
 
   return (
-    <Card sx={{ padding: 1 }} variant="outlined">
+    <Card sx={{ padding: 1 }} elevation={0}>
       <Grid container spacing={1.5}>
         <Grid item xs={12} sm={8}>
           <Autocomplete

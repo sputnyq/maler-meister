@@ -12,11 +12,11 @@ interface Props {
   hours: HoursType[];
 }
 
-export function HoursOverviewCard({ hours }: Props) {
+export function HoursOverviewCard({ hours }: Readonly<Props>) {
   const small = useIsSmall();
 
   return (
-    <Card>
+    <Card elevation={0}>
       <CardContent>
         <Stack
           direction={small ? 'column' : 'row'}

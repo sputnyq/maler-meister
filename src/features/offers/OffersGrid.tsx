@@ -211,7 +211,7 @@ export default function OffersGrid() {
         </AppGridField>
         <PastDateRange dateRange={dateRange} setDateRange={setDateRange} />
       </FilterWrapperCard>
-      <Card>
+      <Card elevation={0}>
         <CardContent>
           <AppDataGrid
             columns={columns}

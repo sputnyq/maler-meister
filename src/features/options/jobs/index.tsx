@@ -12,7 +12,7 @@ export default function Jobs() {
 
   return (
     <>
-      <Card>
+      <Card elevation={0}>
         <CardContent>
           <ColFlexBox>
             {appJobs.map((job) => (

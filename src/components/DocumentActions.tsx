@@ -3,7 +3,7 @@ import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
 import FileDownloadIcon from '@mui/icons-material/FileDownloadOutlined';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import SaveIcon from '@mui/icons-material/SaveOutlined';
-import { Badge, Divider, IconButton, ListItemIcon, Menu, MenuItem, MenuList, Tooltip } from '@mui/material';
+import { Badge, IconButton, ListItemIcon, Menu, MenuItem, MenuList, Tooltip } from '@mui/material';
 import { Stack } from '@mui/system';
 
 import { useState } from 'react';
@@ -50,7 +50,7 @@ export default function DocumentActions({
   const disabled = isDraft || unsavedChanges;
 
   const DownloadButton = () => (
-    <IconButton disabled={disabled} color="inherit" onClick={onDownload}>
+    <IconButton disabled={disabled} onClick={onDownload}>
       <FileDownloadIcon />
     </IconButton>
   );
@@ -62,7 +62,7 @@ export default function DocumentActions({
   );
 
   const CopyButton = () => (
-    <IconButton disabled={disabled} color="inherit" onClick={onCopy}>
+    <IconButton disabled={disabled} onClick={onCopy}>
       <FileCopyIcon />
     </IconButton>
   );
@@ -76,7 +76,7 @@ export default function DocumentActions({
   if (isSmall) {
     return (
       <>
-        <IconButton onClick={handleClick} id="doc-menu-button" color="inherit">
+        <IconButton onClick={handleClick} id="doc-menu-button">
           <Badge color={color} variant="dot">
             <MoreVertOutlinedIcon />
           </Badge>
@@ -128,9 +128,9 @@ export default function DocumentActions({
     );
   }
   return (
-    <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
+    <Stack direction="row" spacing={1}>
       <Tooltip title="Speichern">
-        <IconButton color="inherit" onClick={onSave}>
+        <IconButton onClick={onSave}>
           <Badge color={color} variant="dot">
             <SaveIcon />
           </Badge>

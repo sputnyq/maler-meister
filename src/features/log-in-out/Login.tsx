@@ -44,7 +44,7 @@ export default function Login() {
   return (
     <>
       <Box mt={10} display="flex" justifyContent="center">
-        <Card>
+        <Card elevation={0}>
           <CardHeader title="Anmeldung" />
           <CardContent>
             <form>

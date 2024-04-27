@@ -11,6 +11,7 @@ import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadWorkEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { usePersistPageSize } from '../../hooks/usePersistPageSize';
 import { formatNumber } from '../../utilities';
 import ConstructionView from '../time-capture/ConstructionView';
 import { PastDateRange } from '../time-capture/PastDateRange';
@@ -18,10 +19,9 @@ import { HoursOverviewCard, HoursType } from './HoursOverviewCard';
 import WorkerNameFilter from './filters/WorkerNameFilter';
 
 import { endOfMonth, formatISO, startOfMonth } from 'date-fns';
-import { usePersistPageSize } from '../../hooks/usePersistPageSize';
 
 export default function WorkEntriesTimesView() {
-  const { pageSize, onPaginationModelChange } = usePersistPageSize('workEntriesTimes-pageSize', 50)
+  const { pageSize, onPaginationModelChange } = usePersistPageSize('workEntriesTimes-pageSize', 50);
 
   const user = useCurrentUser();
 
@@ -143,7 +143,6 @@ export default function WorkEntriesTimesView() {
     user?.tenant,
   ]);
 
-
   return (
     <ColFlexBox>
       <FilterWrapperCard>
@@ -163,7 +162,7 @@ export default function WorkEntriesTimesView() {
 
       <HoursOverviewCard hours={hours} />
 
-      <Card>
+      <Card elevation={0}>
         <CardContent>
           <AppDataGrid
             rows={data}

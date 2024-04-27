@@ -8,7 +8,7 @@ interface WrapperProps {
 
 export function Wrapper({ children, title }: React.PropsWithChildren<WrapperProps>) {
   return (
-    <Card>
+    <Card elevation={0}>
       <CardHeader title={title} />
       <CardContent>
         <ColFlexBox>{children}</ColFlexBox>

@@ -4,9 +4,9 @@ import React from 'react';
 
 import AppGrid from '../AppGrid';
 
-export function FilterWrapperCard({ children }: React.PropsWithChildren) {
+export function FilterWrapperCard({ children }: Readonly<React.PropsWithChildren>) {
   return (
-    <Card>
+    <Card elevation={0}>
       <CardContent>
         <AppGrid>{children}</AppGrid>
       </CardContent>

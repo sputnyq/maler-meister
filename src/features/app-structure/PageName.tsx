@@ -58,7 +58,7 @@ export default function PageName() {
     }
   }, [pathname]);
   return (
-    <Typography variant="h6" flex={1} align="center">
+    <Typography variant="h6" flex={1} align="center" color={'GrayText'}>
       {pageName}
     </Typography>
   );

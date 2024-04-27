@@ -8,7 +8,7 @@ export default function Options() {
   const isSmall = useIsSmall();
   return (
     <>
-      <Card>
+      <Card elevation={0}>
         <CardContent>
           <Stack
             direction={isSmall ? 'column' : 'row'}

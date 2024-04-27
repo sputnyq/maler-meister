@@ -270,7 +270,7 @@ export function InvoicesGrid() {
         </AppGridField>
         <PastDateRange dateRange={dateRange} setDateRange={setDateRange} />
       </FilterWrapperCard>
-      <Card>
+      <Card elevation={0}>
         <CardContent>
           <AppDataGrid
             columns={columns}

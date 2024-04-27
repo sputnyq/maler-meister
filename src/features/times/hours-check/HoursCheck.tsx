@@ -4,11 +4,9 @@ import {
   Box,
   Card,
   CardContent,
-  Paper,
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
   ToggleButton,
@@ -51,7 +49,7 @@ export function HoursCheck() {
 
   return (
     <ColFlexBox>
-      <Card>
+      <Card elevation={0}>
         <CardContent>
           <Box maxWidth={400} margin="auto">
             <ToggleButtonGroup
@@ -75,7 +73,7 @@ export function HoursCheck() {
         </CardContent>
       </Card>
 
-      <TableContainer component={Paper}>
+      <Card elevation={0}>
         <StyledTable>
           <TableHead>
             <TableRow>
@@ -94,7 +92,7 @@ export function HoursCheck() {
             ))}
           </TableBody>
         </StyledTable>
-      </TableContainer>
+      </Card>
     </ColFlexBox>
   );
 }

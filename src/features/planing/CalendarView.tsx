@@ -253,7 +253,7 @@ export default function CalendarView() {
         constructionId={constructionDialog.id}
         onClose={() => onClose(setConstructionDialog)}
       />
-      <Card>
+      <Card elevation={0}>
         <CardContent>
           <FullCalendar
             selectable

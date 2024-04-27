@@ -11,6 +11,7 @@ import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadDailyEntries } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { usePersistPageSize } from '../../hooks/usePersistPageSize';
 import { formatNumber, getJobColor } from '../../utilities';
 import { DailyEntryViewDialog } from '../time-capture/DailyEntryViewDialog';
 import { PastDateRange } from '../time-capture/PastDateRange';
@@ -20,10 +21,9 @@ import DailyEntryTypeFilter from './filters/DailyEntryTypeFilter';
 import WorkerNameFilter from './filters/WorkerNameFilter';
 
 import { endOfMonth, formatISO, startOfMonth } from 'date-fns';
-import { usePersistPageSize } from '../../hooks/usePersistPageSize';
 
 export default function DailyTimesView() {
-  const { pageSize, onPaginationModelChange } = usePersistPageSize('dailyTimes-pageSize', 50)
+  const { pageSize, onPaginationModelChange } = usePersistPageSize('dailyTimes-pageSize', 50);
 
   const user = useCurrentUser();
 
@@ -222,8 +222,6 @@ export default function DailyTimesView() {
     update,
   ]);
 
-
-
   return (
     <>
       <ColFlexBox>
@@ -235,7 +233,7 @@ export default function DailyTimesView() {
 
         <HoursOverviewCard hours={hours} />
 
-        <Card>
+        <Card elevation={0}>
           <CardContent>
             <AppDataGrid
               slots={{ toolbar }}

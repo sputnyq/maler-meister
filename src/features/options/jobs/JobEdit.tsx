@@ -1,4 +1,4 @@
-import { Box, Card, CircularProgress, Grid, useTheme } from '@mui/material';
+import { Box, Card, CircularProgress, Grid } from '@mui/material';
 
 import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -12,11 +12,9 @@ import { deleteJob, updateJob } from '../../../store/jobsReducer';
 interface Props {
   job: AppJob;
 }
-export default function JobEdit(props: Props) {
+export default function JobEdit(props: Readonly<Props>) {
   const [job, setJob] = useState(props.job);
   const [loading, setLoading] = useState(false);
-
-  const theme = useTheme();
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -40,7 +38,7 @@ export default function JobEdit(props: Props) {
   };
 
   return (
-    <Card sx={{ p: 1, background: theme.palette.background.default }} elevation={0}>
+    <Card sx={{ py: 2 }} elevation={0}>
       <AppGrid>
         <Grid item xs={12} sm={8}>
           <AppTextField onBlur={onBlur} onChange={onPropChange('name')} label="Name" value={job.name} />

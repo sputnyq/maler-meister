@@ -18,7 +18,7 @@ interface Props {
   update: (os: OfferService[]) => void;
 }
 
-export default function ServicesWidget({ offerServices = [], update }: Props) {
+export default function ServicesWidget({ offerServices = [], update }: Readonly<Props>) {
   const allServices = useSelector<AppState, BgbService[]>((s) => s.services.bgbServices || []);
   const [open, setOpen] = useState(false);
 

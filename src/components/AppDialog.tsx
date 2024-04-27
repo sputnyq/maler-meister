@@ -1,7 +1,7 @@
 import CheckIcon from '@mui/icons-material/CheckOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
-import { Box, Button, DialogActions, DialogContent, DialogTitle, SxProps, Theme, useTheme } from '@mui/material';
+import { Box, Button, DialogActions, DialogContent, DialogTitle, SxProps, Theme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
@@ -59,7 +59,7 @@ function MobileDialog({
 }: React.PropsWithChildren<Props>) {
   return (
     <Dialog fullScreen open={open} onClose={onClose} TransitionComponent={Transition}>
-      <AppBar sx={{ position: 'relative' }}>
+      <AppBar sx={{ position: 'relative' }} color="transparent">
         <Toolbar>
           <IconButton edge="start" color="inherit" onClick={onClose} aria-label="close">
             <CloseOutlinedIcon />
@@ -93,11 +93,9 @@ function DesktopDialog({
   onConfirm,
   onDelete,
 }: React.PropsWithChildren<Props>) {
-  const theme = useTheme();
-
   return (
     <Dialog maxWidth={'md'} fullWidth={true} open={open} onClose={onClose}>
-      <DialogTitle color={'white'} sx={{ background: theme.palette.primary.main }}>
+      <DialogTitle>
         <Box display="flex" alignItems="center">
           <Typography variant="h6" flexGrow={1}>
             {title}

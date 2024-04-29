@@ -51,19 +51,19 @@ export default function DocumentActions({
 
   const DownloadButton = () => (
     <IconButton disabled={disabled} onClick={onDownload}>
-      <FileDownloadIcon />
+      <FileDownloadIcon color="primary" />
     </IconButton>
   );
 
   const DeleteButton = () => (
     <IconButton disabled={isDraft} onClick={handleDelete} color="error">
-      <DeleteIcon />
+      <DeleteIcon color="error" />
     </IconButton>
   );
 
   const CopyButton = () => (
     <IconButton disabled={disabled} onClick={onCopy}>
-      <FileCopyIcon />
+      <FileCopyIcon color="primary" />
     </IconButton>
   );
 
@@ -78,7 +78,7 @@ export default function DocumentActions({
       <>
         <IconButton onClick={handleClick} id="doc-menu-button">
           <Badge color={color} variant="dot">
-            <MoreVertOutlinedIcon />
+            <MoreVertOutlinedIcon color="primary" />
           </Badge>
         </IconButton>
 
@@ -132,7 +132,7 @@ export default function DocumentActions({
       <Tooltip title="Speichern">
         <IconButton onClick={onSave}>
           <Badge color={color} variant="dot">
-            <SaveIcon />
+            <SaveIcon color="primary" />
           </Badge>
         </IconButton>
       </Tooltip>

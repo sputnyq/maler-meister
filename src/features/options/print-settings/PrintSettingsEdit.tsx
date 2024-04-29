@@ -26,7 +26,6 @@ export function PrintSettingsEdit({ ps }: Props) {
     selectOptions?: string[];
   }) => {
     const { multiline, prop, type, select, selectOptions } = params;
-    console.log(select);
     return (
       <PSField
         multiline={multiline}
@@ -55,6 +54,19 @@ export function PrintSettingsEdit({ ps }: Props) {
 
   return (
     <ColFlexBox>
+      <Card elevation={0}>
+        <CardContent>
+          <Box display="flex" justifyContent="flex-end" gap={2}>
+            <Button variant="outlined" color="error" onClick={handleDelete}>
+              Löschen
+            </Button>
+
+            <Button variant="contained" disableElevation onClick={handleSave}>
+              Speichern
+            </Button>
+          </Box>
+        </CardContent>
+      </Card>
       <Wrapper title="Aussehen">
         {[
           Field({ prop: 'primaryColor', type: 'color' }),
@@ -94,16 +106,6 @@ export function PrintSettingsEdit({ ps }: Props) {
       <Wrapper title="Rechnung | Textblöcke">
         {[Field({ multiline, prop: 'invoiceTextBefore' }), Field({ prop: 'invoiceTextAfter', multiline })]}
       </Wrapper>
-
-      <Box display="flex" justifyContent="space-between">
-        <Button color="error" onClick={handleDelete}>
-          Löschen
-        </Button>
-
-        <Button variant="contained" disableElevation onClick={handleSave}>
-          Speichern
-        </Button>
-      </Box>
     </ColFlexBox>
   );
 }

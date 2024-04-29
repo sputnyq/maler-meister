@@ -1,10 +1,11 @@
-import { Typography } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 
 import { useMemo } from 'react';
 import { useLocation } from 'react-router';
 
 export default function PageName() {
   const { pathname } = useLocation();
+  const theme = useTheme();
 
   const retrieveId = (p: string) => {
     return p.split('/').reverse()[0];
@@ -58,7 +59,7 @@ export default function PageName() {
     }
   }, [pathname]);
   return (
-    <Typography variant="h6" flex={1} align="center" color={'GrayText'}>
+    <Typography variant="h6" flex={1} align="center" color={theme.palette.primary.main}>
       {pageName}
     </Typography>
   );

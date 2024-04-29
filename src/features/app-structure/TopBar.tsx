@@ -24,7 +24,7 @@ export default function TopBar() {
 
     return (
       <IconButton onClick={() => navigate('/')}>
-        <HomeOutlinedIcon />
+        <HomeOutlinedIcon color="primary" />
       </IconButton>
     );
   }, [isRootLocation, isLoginLocation, navigate]);

@@ -73,7 +73,7 @@ export function HoursCheck() {
         </CardContent>
       </Card>
 
-      <Card elevation={0}>
+      <Card elevation={0} sx={{ overflowX: 'auto' }}>
         <StyledTable>
           <TableHead>
             <TableRow>

@@ -1,7 +1,7 @@
 import CheckIcon from '@mui/icons-material/CheckOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
-import { Box, Button, DialogActions, DialogContent, DialogTitle, SxProps, Theme } from '@mui/material';
+import { Box, Button, DialogActions, DialogContent, DialogTitle, SxProps, Theme, useTheme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
@@ -52,19 +52,21 @@ function MobileDialog({
   children,
   open,
   title,
+  confirmDisabled,
   onClose,
   onConfirm,
   onDelete,
-  confirmDisabled,
 }: React.PropsWithChildren<Props>) {
+  const { palette } = useTheme();
+
   return (
     <Dialog fullScreen open={open} onClose={onClose} TransitionComponent={Transition}>
-      <AppBar sx={{ position: 'relative' }} color="transparent">
+      <AppBar sx={{ position: 'relative', background: palette.background.default }}>
         <Toolbar>
-          <IconButton edge="start" color="inherit" onClick={onClose} aria-label="close">
+          <IconButton edge="start" color="primary" onClick={onClose} aria-label="close">
             <CloseOutlinedIcon />
           </IconButton>
-          <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+          <Typography sx={{ ml: 2, flex: 1 }} color={palette.primary.main} variant="h6" component="div">
             {title}
           </Typography>
           {onDelete && (
@@ -73,7 +75,7 @@ function MobileDialog({
             </IconButton>
           )}
           {onConfirm && (
-            <IconButton disabled={confirmDisabled} onClick={onConfirm} color="inherit">
+            <IconButton disabled={confirmDisabled} onClick={onConfirm} color={'primary'}>
               <CheckIcon />
             </IconButton>
           )}

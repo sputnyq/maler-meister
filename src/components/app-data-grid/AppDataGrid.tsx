@@ -1,4 +1,4 @@
-import { Box, Paper } from '@mui/material';
+import { Box, Paper, styled } from '@mui/material';
 import { DataGrid, DataGridProps } from '@mui/x-data-grid';
 
 import { useMemo } from 'react';
@@ -22,7 +22,7 @@ export function AppDataGrid(props: Readonly<DataGridProps>) {
           },
         }}
       >
-        <DataGrid
+        <StyledDataGrid
           slotProps={{
             pagination: {
               labelRowsPerPage: 'Seitengröße',
@@ -46,3 +46,11 @@ export function AppDataGrid(props: Readonly<DataGridProps>) {
     </Paper>
   );
 }
+
+const StyledDataGrid = styled(DataGrid)(({ theme }) => {
+  return {
+    '.MuiDataGrid-container--top [role=row]': {
+      background: theme.palette.background.paper,
+    },
+  };
+});

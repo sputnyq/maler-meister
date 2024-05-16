@@ -54,6 +54,8 @@ export default function PageName() {
         return 'Zeiterfassung';
       case '/info':
         return 'Informationen';
+      case '/upload':
+        return 'Bilder hochladen';
       default:
         return '';
     }

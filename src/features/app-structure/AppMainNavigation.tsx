@@ -1,4 +1,5 @@
 import AccessTimeIcon from '@mui/icons-material/AccessTimeOutlined';
+import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
 import ArticleIcon from '@mui/icons-material/ArticleOutlined';
 import BeachAccessIcon from '@mui/icons-material/BeachAccessOutlined';
 import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
@@ -48,6 +49,10 @@ export default function MainNavigation() {
 
               <Tile requiredRoles={['admin']} to="constructions" title="Baustellen">
                 <FormatPaintOutlinedIcon />
+              </Tile>
+
+              <Tile requiredRoles={['worker', 'admin']} to="upload" title="Bilder hochladen">
+                <AddPhotoAlternateOutlinedIcon />
               </Tile>
 
               <Tile requiredRoles={['admin']} to="options" title="Optionen">

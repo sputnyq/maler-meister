@@ -24,7 +24,7 @@ const OfferEdit = lazy(() => import('./features/offers/OfferEdit'));
 const Options = lazy(() => import('./features/options'));
 const Constructions = lazy(() => import('./features/constructions/Constructions'));
 const Times = lazy(() => import('./features/times'));
-const Upload = lazy(() => import('./routes/Upload'));
+const Upload = lazy(() => import('./features/upload'));
 const Planing = lazy(() => import('./features/planing'));
 const MyVacations = lazy(() => import('./features/my-vacations'));
 const Info = lazy(() => import('./features/info'));
@@ -167,6 +167,14 @@ function AppRoutes() {
           element={
             <LazyLoad>
               <Times />
+            </LazyLoad>
+          }
+        />
+        <Route
+          path="/upload"
+          element={
+            <LazyLoad>
+              <Upload />
             </LazyLoad>
           }
         />

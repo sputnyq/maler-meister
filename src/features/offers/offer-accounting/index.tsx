@@ -1,4 +1,4 @@
-import { Box, Card, CardContent } from '@mui/material';
+import { Box, Card, CardContent, Typography } from '@mui/material';
 
 import { ColFlexBox } from '../../../components/ColFlexBox';
 import CreateInvoiceForOfferButton from './CreateInvoiceForOfferButton';
@@ -14,6 +14,7 @@ export function OfferAccounting() {
             <AccountingAssistant />
             <CreateInvoiceForOfferButton />
           </Box>
+          <Typography variant="h5">Rechnungen zum Angebot</Typography>
           <OfferInvoices />
         </ColFlexBox>
       </CardContent>

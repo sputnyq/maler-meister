@@ -1,4 +1,4 @@
-import { Box, Slider, Typography } from '@mui/material';
+import { Box, Card, CardContent, Slider, Typography } from '@mui/material';
 
 import { ColFlexBox } from '../../../../../components/ColFlexBox';
 import { useCurrentOffer } from '../../../../../hooks/useCurrentOffer';
@@ -60,9 +60,13 @@ export function VorauszahlungPercent({ value, setValue }: Readonly<Props>) {
           marks={marks}
         />
       </Box>
-      <Typography variant="h4" textAlign={'end'}>
-        Vorauszahlung (Netto): {vorauszahlungValue()}
-      </Typography>
+      <Card variant="outlined">
+        <CardContent>
+          <Typography variant="h6" textAlign={'center'}>
+            Vorauszahlung (Netto): {vorauszahlungValue()}
+          </Typography>
+        </CardContent>
+      </Card>
     </ColFlexBox>
   );
 }

@@ -9,6 +9,7 @@ import { ColFlexBox } from '../../../../components/ColFlexBox';
 import { CreateInvoiceStep } from './aa-dialog-steps/CreateInvoiceStep';
 import { EmptyStep } from './aa-dialog-steps/EmptyStep';
 import { InvoiceTypeSelection } from './aa-dialog-steps/InvoiceTypeSelection';
+import { SchlussRechnungStep } from './aa-dialog-steps/SchlussRechnungStep';
 import { VorauszahlungPercent } from './aa-dialog-steps/VorauszahlungPercent';
 
 export function AADialog() {
@@ -33,6 +34,7 @@ export function AADialog() {
         <VorauszahlungPercent value={vorauszahlungPercent} setValue={setVorauszahlungPercent} />
       )}
       {activeStep === 1 && invoiceType === 'RECHNUNG' && <EmptyStep />}
+      {activeStep === 1 && invoiceType === 'SCHLUSSRECHNUNG' && <SchlussRechnungStep />}
 
       {activeStep === MAX_STEPS - 1 && <CreateInvoiceStep invoiceType={invoiceType} />}
 

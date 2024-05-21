@@ -6,10 +6,13 @@ import MobileStepper from '@mui/material/MobileStepper';
 import { useState } from 'react';
 
 import { ColFlexBox } from '../../../../components/ColFlexBox';
+import { CreateInvoiceStep } from './aa-dialog-steps/CreateInvoiceStep';
+import { EmptyStep } from './aa-dialog-steps/EmptyStep';
 import { InvoiceTypeSelection } from './aa-dialog-steps/InvoiceTypeSelection';
 import { VorauszahlungPercent } from './aa-dialog-steps/VorauszahlungPercent';
 
 export function AADialog() {
+  const MAX_STEPS = 3;
   const [activeStep, setActiveStep] = useState(0);
 
   const [invoiceType, setInvoiceType] = useState<InvoiceType>('VORAUSZAHLUNG');
@@ -29,15 +32,18 @@ export function AADialog() {
       {activeStep === 1 && invoiceType === 'VORAUSZAHLUNG' && (
         <VorauszahlungPercent value={vorauszahlungPercent} setValue={setVorauszahlungPercent} />
       )}
+      {activeStep === 1 && invoiceType === 'RECHNUNG' && <EmptyStep />}
+
+      {activeStep === MAX_STEPS - 1 && <CreateInvoiceStep invoiceType={invoiceType} />}
 
       <MobileStepper
         variant="dots"
-        steps={2}
+        steps={MAX_STEPS}
         position="static"
         activeStep={activeStep}
         sx={{ flexGrow: 1, background: 'transparent' }}
         nextButton={
-          <Button size="small" onClick={handleNext} disabled={activeStep === 5}>
+          <Button size="small" onClick={handleNext} disabled={activeStep === MAX_STEPS - 1}>
             Weiter
             {<KeyboardArrowRightOutlinedIcon />}
           </Button>

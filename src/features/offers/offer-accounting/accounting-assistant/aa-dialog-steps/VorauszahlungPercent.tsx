@@ -1,7 +1,8 @@
-import { Grid, Slider, Typography } from '@mui/material';
+import { Box, Slider, Typography } from '@mui/material';
 
-import AppGrid from '../../../../../components/AppGrid';
 import { ColFlexBox } from '../../../../../components/ColFlexBox';
+import { useCurrentOffer } from '../../../../../hooks/useCurrentOffer';
+import { calculatePriceSummary, euroValue } from '../../../../../utilities';
 
 interface Props {
   value: number;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export function VorauszahlungPercent({ value, setValue }: Readonly<Props>) {
+  const offer = useCurrentOffer();
   const handleSliderChange = (_: Event, newValue: number | number[]) => {
     setValue(newValue as number);
   };
@@ -22,7 +24,6 @@ export function VorauszahlungPercent({ value, setValue }: Readonly<Props>) {
       value: 50,
       label: '50 %',
     },
-
     {
       value: 100,
       label: '100 %',
@@ -30,29 +31,38 @@ export function VorauszahlungPercent({ value, setValue }: Readonly<Props>) {
   ];
 
   function valuetext(value: number) {
-    return `${value}°C`;
+    return `${value} %`;
   }
+  if (!offer) {
+    return null;
+  }
+
+  const vorauszahlungValue = () => {
+    const { netto } = calculatePriceSummary(offer.offerServices);
+    return euroValue(netto * (value / 100));
+  };
 
   return (
     <ColFlexBox>
       <Typography id="input-slider" gutterBottom>
         Wieviel Prozent des Angebots geht in die Vorauszahlung?
       </Typography>
-      <AppGrid>
-        <Grid item xs>
-          <Slider
-            step={10}
-            min={0}
-            max={100}
-            getAriaValueText={valuetext}
-            value={typeof value === 'number' ? value : 0}
-            onChange={handleSliderChange}
-            aria-labelledby="input-slider"
-            valueLabelDisplay="auto"
-            marks={marks}
-          />
-        </Grid>
-      </AppGrid>
+      <Box paddingInline={1}>
+        <Slider
+          step={5}
+          min={0}
+          max={100}
+          getAriaValueText={valuetext}
+          value={typeof value === 'number' ? value : 0}
+          onChange={handleSliderChange}
+          aria-labelledby="input-slider"
+          valueLabelDisplay="auto"
+          marks={marks}
+        />
+      </Box>
+      <Typography variant="h4" textAlign={'end'}>
+        Vorauszahlung (Netto): {vorauszahlungValue()}
+      </Typography>
     </ColFlexBox>
   );
 }

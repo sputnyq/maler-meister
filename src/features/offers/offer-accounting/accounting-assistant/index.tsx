@@ -11,7 +11,7 @@ export function AccountingAssistant() {
 
   return (
     <>
-      <AppDialog onClose={() => setDialogOpen(false)} open={dialogOpen} title="Rechnung erstellen">
+      <AppDialog onClose={() => setDialogOpen(false)} open={dialogOpen} title="Rechnungsassistent">
         <AADialog />
       </AppDialog>
       <Button

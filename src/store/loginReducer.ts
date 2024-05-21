@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface RootState {
-  user: User | null;
+  user: Maybe<User>;
   isLoggedIn: boolean;
   appLoaded: boolean;
 }

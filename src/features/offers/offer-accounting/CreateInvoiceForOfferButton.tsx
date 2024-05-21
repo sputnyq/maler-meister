@@ -1,3 +1,4 @@
+import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 import { Button } from '@mui/material';
 
 import React, { useCallback } from 'react';
@@ -34,8 +35,13 @@ export default function CreateInvoiceForOfferButton() {
   }
 
   return (
-    <Button onClick={() => onCreateRequest(offer)} disableElevation variant="contained">
-      Neue Rechnung erstellen
+    <Button
+      onClick={() => onCreateRequest(offer)}
+      disableElevation
+      variant="outlined"
+      endIcon={<PostAddOutlinedIcon />}
+    >
+      Rechnung erstellen
     </Button>
   );
 }

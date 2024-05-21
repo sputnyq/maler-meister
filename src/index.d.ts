@@ -203,3 +203,5 @@ type ConstructionPlan = {
   allocatedPersons: number;
   usernames: string[];
 };
+
+type Maybe<T> = T | null;

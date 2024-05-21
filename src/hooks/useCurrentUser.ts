@@ -3,6 +3,6 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../store';
 
 export function useCurrentUser() {
-  const user = useSelector<AppState, User | null>((s) => s.login.user);
+  const user = useSelector<AppState, Maybe<User>>((s) => s.login.user);
   return user;
 }

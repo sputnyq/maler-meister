@@ -63,7 +63,7 @@ export default function OfferField({
 }
 
 function useOfferValue(path: Path) {
-  const offer = useSelector<AppState, AppOffer | null>((s) => s.offer.current);
+  const offer = useSelector<AppState, Maybe<AppOffer>>((s) => s.offer.current);
 
   return offer?.[path] || '';
 }

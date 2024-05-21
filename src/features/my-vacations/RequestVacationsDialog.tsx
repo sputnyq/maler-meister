@@ -1,10 +1,11 @@
 import BeachAccessIcon from '@mui/icons-material/BeachAccessOutlined';
-import { Box, Grid, SvgIconProps, Typography } from '@mui/material';
+import { Box, SvgIconProps, Typography } from '@mui/material';
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { AppDialog } from '../../components/AppDialog';
 import AppGrid from '../../components/AppGrid';
+import { AppGridItem } from '../../components/AppGridItem';
 import { AppTextField } from '../../components/AppTextField';
 import { DEFAULT_HOURS } from '../../constants';
 import { dailyEntryById } from '../../fetch/endpoints';
@@ -96,7 +97,7 @@ export default function RequestVacationsDialog({ open, onClose }: Props) {
     >
       <Box p={2} display="flex" flexDirection="column" alignItems={'center'} gap={6}>
         <AppGrid>
-          <GridItem>
+          <AppGridItem>
             <AppTextField
               label="Ab"
               type={'date'}
@@ -105,8 +106,8 @@ export default function RequestVacationsDialog({ open, onClose }: Props) {
                 setStart(new Date(ev.target.value));
               }}
             />
-          </GridItem>
-          <GridItem>
+          </AppGridItem>
+          <AppGridItem>
             <AppTextField
               inputProps={{ min: formatISO(start, { representation: 'date' }) }}
               label="Bis"
@@ -116,7 +117,7 @@ export default function RequestVacationsDialog({ open, onClose }: Props) {
                 setEnd(new Date(ev.target.value));
               }}
             />
-          </GridItem>
+          </AppGridItem>
         </AppGrid>
         <Box>
           <Typography align="center" color={'primary'} variant="h6">
@@ -132,13 +133,5 @@ export default function RequestVacationsDialog({ open, onClose }: Props) {
         </>
       </Box>
     </AppDialog>
-  );
-}
-
-function GridItem(props: React.PropsWithChildren) {
-  return (
-    <Grid item xs={12} sm={4}>
-      {props.children}
-    </Grid>
   );
 }

@@ -14,17 +14,24 @@ export default function CreateInvoiceForOfferButton() {
 
   const onCreateRequest = useCallback(
     async (offer: AppOffer) => {
-      try {
-        const nextInvoice: AppInvoice = { ...offer, offerId: offer.id, isPaid: false, invoiceType: 'SCHLUSSRECHNUNG' };
-        //@ts-ignore
-        delete nextInvoice.id;
-        const response = await appRequest('post')(invoiceById(''), { data: nextInvoice });
-        const invoiceId = response.data.id;
+      if (confirm('Möchtest du eine Rechnung für dieses Angebot erstellen?')) {
+        try {
+          const nextInvoice: AppInvoice = {
+            ...offer,
+            offerId: offer.id,
+            isPaid: false,
+            invoiceType: 'SCHLUSSRECHNUNG',
+          };
+          //@ts-ignore
+          delete nextInvoice.id;
+          const response = await appRequest('post')(invoiceById(''), { data: nextInvoice });
+          const invoiceId = response.data.id;
 
-        navigate(`/invoices/${invoiceId}`);
-      } catch (e) {
-        console.log(e);
-        alert('Rechnung konnte nicht erstellt werden.\n Bitte versuche später erneut!');
+          navigate(`/invoices/${invoiceId}`);
+        } catch (e) {
+          console.log(e);
+          alert('Rechnung konnte nicht erstellt werden.\n Bitte versuche später erneut!');
+        }
       }
     },
     [navigate],

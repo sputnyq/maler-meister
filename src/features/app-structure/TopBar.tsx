@@ -1,5 +1,5 @@
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import { AppBar, Box, IconButton, Toolbar, useTheme } from '@mui/material';
+import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
 
 import { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -14,7 +14,6 @@ export default function TopBar() {
   const navigate = useNavigate();
   const isRootLocation = location.pathname === '/';
   const isLoginLocation = location.pathname === '/login';
-  const theme = useTheme();
 
   const homeButton = useMemo(() => {
     if (isRootLocation || isLoginLocation) {
@@ -23,8 +22,8 @@ export default function TopBar() {
     }
 
     return (
-      <IconButton onClick={() => navigate('/')}>
-        <HomeOutlinedIcon color="primary" />
+      <IconButton color="inherit" onClick={() => navigate('/')}>
+        <HomeOutlinedIcon />
       </IconButton>
     );
   }, [isRootLocation, isLoginLocation, navigate]);
@@ -44,7 +43,7 @@ export default function TopBar() {
 
   return (
     <Box flexGrow={1}>
-      <AppBar position="fixed" elevation={0} sx={{ backgroundColor: theme.palette.background.default }}>
+      <AppBar position="fixed" elevation={0}>
         <Toolbar variant="dense">
           {homeButton}
           <PageName />

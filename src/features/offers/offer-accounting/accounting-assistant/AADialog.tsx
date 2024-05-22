@@ -6,6 +6,7 @@ import MobileStepper from '@mui/material/MobileStepper';
 import { useState } from 'react';
 
 import { ColFlexBox } from '../../../../components/ColFlexBox';
+import { AbschlagStep } from './aa-dialog-steps/AbschlagStep';
 import { CreateInvoiceStep } from './aa-dialog-steps/CreateInvoiceStep';
 import { EmptyStep } from './aa-dialog-steps/EmptyStep';
 import { InvoiceTypeSelection } from './aa-dialog-steps/InvoiceTypeSelection';
@@ -18,6 +19,7 @@ export function AADialog() {
 
   const [invoiceType, setInvoiceType] = useState<InvoiceType>('VORAUSZAHLUNG');
   const [vorauszahlungPercent, setVorauszahlungPercent] = useState<number>(50);
+  const [services, setServices] = useState<OfferService[]>([]);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -35,6 +37,9 @@ export function AADialog() {
       )}
       {activeStep === 1 && invoiceType === 'RECHNUNG' && <EmptyStep />}
       {activeStep === 1 && invoiceType === 'SCHLUSSRECHNUNG' && <SchlussRechnungStep />}
+      {activeStep === 1 && invoiceType === 'ABSCHLAGSRECHNUNG' && (
+        <AbschlagStep services={services} setServices={setServices} />
+      )}
 
       {activeStep === MAX_STEPS - 1 && <CreateInvoiceStep invoiceType={invoiceType} />}
 

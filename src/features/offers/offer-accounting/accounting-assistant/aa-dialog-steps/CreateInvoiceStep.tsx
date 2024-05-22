@@ -1,5 +1,7 @@
 import { Button } from '@mui/material';
 
+import { ColFlexBox } from '../../../../../components/ColFlexBox';
+
 interface Props {
   invoiceType: InvoiceType;
 }
@@ -7,8 +9,10 @@ interface Props {
 export function CreateInvoiceStep({ invoiceType }: Readonly<Props>) {
   console.log(invoiceType);
   return (
-    <Button variant="contained" disableElevation>
-      Jetzt Rechnung erstellen
-    </Button>
+    <ColFlexBox>
+      <Button variant="contained" disableElevation>
+        Jetzt Rechnung erstellen
+      </Button>
+    </ColFlexBox>
   );
 }

@@ -26,7 +26,7 @@ export default function EditConstructionDialog({
   onCreateSuccess,
 }: Props) {
   const user = useCurrentUser();
-  const [construction, setConstruction] = useState<Construction | null>(null);
+  const [construction, setConstruction] = useState<Maybe<Construction>>(null);
 
   useEffect(() => {
     if (!constructionId) {

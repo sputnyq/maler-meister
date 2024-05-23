@@ -131,7 +131,7 @@ export function ServicesWidgetRow({
         <Grid item xs={6} sm={4}>
           <TaxSelector value={offerService.taxRate} onChange={handleChange('taxRate')} />
         </Grid>
-        <Grid item xs={12} lg={6}>
+        <Grid item xs={12}>
           <AppTextField
             onChange={handleChange('description')}
             placeholder="Beschreibung"

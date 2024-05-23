@@ -29,7 +29,7 @@ export function ConstructionPlanCard({
   }));
 
   return (
-    <Card ref={drop} data-cid={id} elevation={isOver ? 5 : 1}>
+    <Card ref={drop} data-cid={id} elevation={isOver ? 5 : 3}>
       <CardHeader title={<Typography>{`[${allocatedPersons}] ${name}`}</Typography>} />
 
       <CardContent sx={{ p: 1 }}>

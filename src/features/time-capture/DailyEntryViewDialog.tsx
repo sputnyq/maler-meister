@@ -21,7 +21,7 @@ interface Props {
 }
 
 export function DailyEntryViewDialog({ closeDialog, dailyEntryId, dialogOpen }: Props) {
-  const [dailyEntry, setDailyEntry] = useState<DailyEntry | null>(null);
+  const [dailyEntry, setDailyEntry] = useState<Maybe<DailyEntry>>(null);
 
   const user = useCurrentUser();
 

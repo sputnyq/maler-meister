@@ -94,7 +94,7 @@ export default function OfferField({
 }
 
 function useOfferValue(path: Path) {
-  const offer = useSelector<AppState, AppInvoice | null>((s) => s.invoice.current);
+  const offer = useSelector<AppState, Maybe<AppInvoice>>((s) => s.invoice.current);
 
   return offer?.[path] || '';
 }

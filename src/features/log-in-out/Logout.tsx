@@ -24,8 +24,8 @@ export default function Logout() {
 
   return (
     <Tooltip title="Abmelden">
-      <IconButton onClick={onClick}>
-        <LogoutIcon color="primary" />
+      <IconButton onClick={onClick} color="inherit">
+        <LogoutIcon />
       </IconButton>
     </Tooltip>
   );

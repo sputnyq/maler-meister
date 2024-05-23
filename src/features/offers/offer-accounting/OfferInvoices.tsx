@@ -20,7 +20,11 @@ import { useCurrentOffer } from '../../../hooks/useCurrentOffer';
 import { useCurrentUser } from '../../../hooks/useCurrentUser';
 import { calculatePriceSummary, euroValue } from '../../../utilities';
 
-export default function OfferInvoices() {
+interface Props {
+  full?: boolean;
+}
+
+export default function OfferInvoices({ full = true }: Readonly<Props>) {
   const [invoices, setInvoices] = useState<AppInvoice[]>([]);
   const offer = useCurrentOffer();
   const user = useCurrentUser();
@@ -50,57 +54,53 @@ export default function OfferInvoices() {
 
   return (
     <>
-      <Typography variant="h5">Rechnungen zum Angebot</Typography>
-
       <Box sx={{ overflowX: 'auto' }}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Typ</TableCell>
-              <TableCell>Erstellt</TableCell>
-              <TableCell>Aktualisiert</TableCell>
+              {full && <TableCell>ID</TableCell>}
+              {full && <TableCell>Typ</TableCell>}
+              {full ? <TableCell>Aktualisiert</TableCell> : <TableCell />}
               <TableCell>Netto</TableCell>
               <TableCell>Brutto</TableCell>
-              <TableCell>Bezahlt</TableCell>
+              {full && <TableCell>Bezahlt</TableCell>}
             </TableRow>
           </TableHead>
+
           <TableBody>
-            {invoices.map(({ id, createdAt, updatedAt, offerServices, invoiceType, isPaid }) => {
-              const { netto, brutto } = calculatePriceSummary(offerServices);
-              return (
-                <TableRow key={id}>
-                  <TableCell sx={{ height: '40px', padding: 0 }}>
-                    <Link to={`/invoices/${id}`}>
-                      <Button>{id}</Button>
-                    </Link>
-                  </TableCell>
-                  <TableCell>{invoiceType ?? 'RECHNUNG'}</TableCell>
-                  <TableCell>{dtFormat.format(new Date(createdAt))}</TableCell>
-                  <TableCell>{dtFormat.format(new Date(updatedAt))}</TableCell>
-                  <TableCell>{euroValue(netto)}</TableCell>
-                  <TableCell>{euroValue(brutto)}</TableCell>
-                  <TableCell>{isPaid ? <CheckOutlinedIcon /> : <CloseOutlinedIcon />}</TableCell>
-                </TableRow>
-              );
-            })}
-            <TableRow sx={{ borderTop: '2px solid #000000' }}>
-              <TableCell colSpan={3} />
-              <StrongCell colSpan={1}>Summe aller Rechnungen</StrongCell>
+            {full === true &&
+              invoices.map(({ id, updatedAt, offerServices, invoiceType, isPaid }) => {
+                const { netto, brutto } = calculatePriceSummary(offerServices);
+                return (
+                  <TableRow key={id}>
+                    <TableCell sx={{ padding: 0 }}>
+                      <Link to={`/invoices/${id}`}>
+                        <Button>{id}</Button>
+                      </Link>
+                    </TableCell>
+                    <TableCell>{invoiceType ?? 'RECHNUNG'}</TableCell>
+                    <TableCell>{dtFormat.format(new Date(updatedAt))}</TableCell>
+                    <TableCell>{euroValue(netto)}</TableCell>
+
+                    <TableCell>{euroValue(brutto)}</TableCell>
+                    <TableCell>{isPaid ? <CheckOutlinedIcon /> : <CloseOutlinedIcon />}</TableCell>
+                  </TableRow>
+                );
+              })}
+            <TableRow>
+              <StrongCell colSpan={full ? 3 : 1}>Summe aller Rechnungen</StrongCell>
               <StrongCell>{euroValue(allNetto)}</StrongCell>
-              <StrongCell colSpan={2}>{euroValue(allBrutto)}</StrongCell>
+              <StrongCell colSpan={full ? 2 : 1}>{euroValue(allBrutto)}</StrongCell>
             </TableRow>
             <TableRow>
-              <TableCell colSpan={3} />
-              <StrongCell>Angebot</StrongCell>
+              <StrongCell colSpan={full ? 3 : 1}>Angebot</StrongCell>
               <StrongCell>{euroValue(offerNetto)}</StrongCell>
-              <StrongCell colSpan={2}>{euroValue(offerBrutto)}</StrongCell>
+              <StrongCell colSpan={full ? 2 : 1}>{euroValue(offerBrutto)}</StrongCell>
             </TableRow>
             <TableRow>
-              <TableCell colSpan={3} />
-              <StrongCell>Differenz</StrongCell>
+              <StrongCell colSpan={full ? 3 : 1}>Differenz</StrongCell>
               <StrongCell>{euroValue(offerNetto - allNetto)}</StrongCell>
-              <StrongCell colSpan={2}>{euroValue(offerBrutto - allBrutto)}</StrongCell>
+              <StrongCell colSpan={full ? 2 : 1}>{euroValue(offerBrutto - allBrutto)}</StrongCell>
             </TableRow>
           </TableBody>
         </Table>
@@ -109,4 +109,4 @@ export default function OfferInvoices() {
   );
 }
 
-const StrongCell = (props: TableCellProps) => <TableCell sx={{ fontWeight: 'bold' }} {...props} />;
+const StrongCell = (props: TableCellProps) => <TableCell sx={{ fontWeight: 'bold', ...(props.sx || {}) }} {...props} />;

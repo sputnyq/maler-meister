@@ -50,20 +50,20 @@ export default function DocumentActions({
   const disabled = isDraft || unsavedChanges;
 
   const DownloadButton = () => (
-    <IconButton disabled={disabled} onClick={onDownload}>
-      <FileDownloadIcon color="primary" />
+    <IconButton color="inherit" disabled={disabled} onClick={onDownload}>
+      <FileDownloadIcon />
     </IconButton>
   );
 
   const DeleteButton = () => (
-    <IconButton disabled={isDraft} onClick={handleDelete} color="error">
-      <DeleteIcon color="error" />
+    <IconButton color="error" disabled={isDraft} onClick={handleDelete}>
+      <DeleteIcon />
     </IconButton>
   );
 
   const CopyButton = () => (
-    <IconButton disabled={disabled} onClick={onCopy}>
-      <FileCopyIcon color="primary" />
+    <IconButton color="inherit" disabled={disabled} onClick={onCopy}>
+      <FileCopyIcon />
     </IconButton>
   );
 
@@ -76,9 +76,9 @@ export default function DocumentActions({
   if (isSmall) {
     return (
       <>
-        <IconButton onClick={handleClick} id="doc-menu-button">
+        <IconButton color="inherit" onClick={handleClick} id="doc-menu-button">
           <Badge color={color} variant="dot">
-            <MoreVertOutlinedIcon color="primary" />
+            <MoreVertOutlinedIcon />
           </Badge>
         </IconButton>
 
@@ -130,9 +130,9 @@ export default function DocumentActions({
   return (
     <Stack direction="row" spacing={1}>
       <Tooltip title="Speichern">
-        <IconButton onClick={onSave}>
+        <IconButton color="inherit" onClick={onSave}>
           <Badge color={color} variant="dot">
-            <SaveIcon color="primary" />
+            <SaveIcon />
           </Badge>
         </IconButton>
       </Tooltip>

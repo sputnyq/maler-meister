@@ -93,7 +93,7 @@ export default function WorkEntriesTimesView() {
     return [
       {
         amount: formatNumber(sum),
-        title: 'Gesamt',
+        title: 'Gesamt (Std.)',
       },
     ] as HoursType[];
   }, [data]);

@@ -122,7 +122,3 @@ export const getFullWorkerName = (username: string, users: User[]) => {
   const user = users.find((u) => u.username === username);
   return user ? userFullName(user) : username;
 };
-
-export function capitalizeFirstLetter(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}

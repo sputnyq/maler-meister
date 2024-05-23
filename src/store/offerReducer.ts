@@ -7,7 +7,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { cloneDeep, set } from 'lodash';
 
 interface RootState {
-  current: AppOffer | null;
+  current: Maybe<AppOffer>;
   unsavedChanges: boolean;
 }
 

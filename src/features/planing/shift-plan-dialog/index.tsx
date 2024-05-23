@@ -16,13 +16,13 @@ interface Props {
   onClose(): void;
   id?: string | number;
   dailyEntries: DailyEntry[];
-  dateSelectArg?: DateSelectArg | null;
+  dateSelectArg?: Maybe<DateSelectArg>;
 }
 
 export function ShiftPlanDialog({ open, onClose, id, dateSelectArg, dailyEntries }: Readonly<Props>) {
   const user = useCurrentUser();
 
-  const [shift, setShift] = useState<Shift | null>(null);
+  const [shift, setShift] = useState<Maybe<Shift>>(null);
 
   useEffect(() => {
     if (id) {

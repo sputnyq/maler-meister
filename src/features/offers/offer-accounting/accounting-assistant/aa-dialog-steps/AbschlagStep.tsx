@@ -25,11 +25,13 @@ export function AbschlagStep({ services, setServices }: Readonly<Props>) {
   if (!offer) return null;
 
   const isSelected = (os: OfferService) => {
-    return services.some((s) => s.name === os.name && s.description === os.description && s.netto === os.netto);
+    return services.some(
+      (s) => s.name === os.name && s.description === os.description && s.netto === os.netto,
+    );
   };
 
   const handleToggle = (os: OfferService) => () => {
-    const next = services.filter((s) => s.id !== os.id);
+    const next = services.filter((s) => s.name !== os.name);
     if (isSelected(os)) {
       setServices(next);
     } else {
@@ -41,7 +43,9 @@ export function AbschlagStep({ services, setServices }: Readonly<Props>) {
 
   return (
     <ColFlexBox>
-      <Typography variant="h6">Wähle die Abschläge aus welche für die Rechnung verwendet werden sollen</Typography>
+      <Typography variant="h6">
+        Wähle die Abschläge aus welche für die Rechnung verwendet werden sollen
+      </Typography>
       <List dense>
         {(offer.offerServices || []).map((os, index) => {
           const labelId = `checkbox-list-label-${index}`;

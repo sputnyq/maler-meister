@@ -10,8 +10,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import React from 'react';
-
 import { ColFlexBox } from '../../../../../components/ColFlexBox';
 import { useCurrentOffer } from '../../../../../hooks/useCurrentOffer';
 import { calculatePriceSummary, euroValue } from '../../../../../utilities';

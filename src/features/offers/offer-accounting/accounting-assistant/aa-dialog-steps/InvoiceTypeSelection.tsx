@@ -3,7 +3,8 @@ import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mu
 import React, { useId } from 'react';
 
 import { InvoiceTypeArray } from '../../../../../constants';
-import { capitalizeFirstLetter } from '../../../../../utilities';
+
+import { capitalize } from 'lodash';
 
 interface Props {
   invoiceType: InvoiceType;
@@ -21,7 +22,7 @@ export function InvoiceTypeSelection({ invoiceType, onInvoiceTypeChanged: onInvo
       <FormLabel id={id}>Welche Rechnung möchtest du erstellen?</FormLabel>
       <RadioGroup aria-labelledby={id} value={invoiceType} onChange={handleChange}>
         {InvoiceTypeArray.map((invT) => (
-          <FormControlLabel key={invT} value={invT} control={<Radio />} label={capitalizeFirstLetter(invT)} />
+          <FormControlLabel key={invT} value={invT} control={<Radio />} label={capitalize(invT)} />
         ))}
       </RadioGroup>
     </FormControl>

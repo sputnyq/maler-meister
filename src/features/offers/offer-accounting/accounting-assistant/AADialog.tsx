@@ -32,16 +32,19 @@ export function AADialog() {
   return (
     <ColFlexBox>
       {activeStep === 0 && <InvoiceTypeSelection invoiceType={invoiceType} onInvoiceTypeChanged={setInvoiceType} />}
+
+      {activeStep === 1 && invoiceType === 'RECHNUNG' && <EmptyStep />}
+      {activeStep === 1 && invoiceType === 'SCHLUSSRECHNUNG' && <SchlussRechnungStep />}
       {activeStep === 1 && invoiceType === 'VORAUSZAHLUNG' && (
         <VorauszahlungPercent value={vorauszahlungPercent} setValue={setVorauszahlungPercent} />
       )}
-      {activeStep === 1 && invoiceType === 'RECHNUNG' && <EmptyStep />}
-      {activeStep === 1 && invoiceType === 'SCHLUSSRECHNUNG' && <SchlussRechnungStep />}
       {activeStep === 1 && invoiceType === 'ABSCHLAGSRECHNUNG' && (
         <AbschlagStep services={services} setServices={setServices} />
       )}
 
-      {activeStep === MAX_STEPS - 1 && <CreateInvoiceStep invoiceType={invoiceType} />}
+      {activeStep === MAX_STEPS - 1 && (
+        <CreateInvoiceStep invoiceType={invoiceType} services={services} vorauszahlungPercent={vorauszahlungPercent} />
+      )}
 
       <MobileStepper
         variant="dots"

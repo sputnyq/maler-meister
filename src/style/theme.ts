@@ -13,7 +13,9 @@ const theme = createTheme(
       },
     },
     typography: {
-      allVariants: { fontFamily: ['Source Sans Pro', 'sans-serif'].join(',') },
+      allVariants: {
+        fontFamily: ['Arial', 'Helvetica', 'sans-serif'].join(','),
+      },
     },
   },
   deDE,

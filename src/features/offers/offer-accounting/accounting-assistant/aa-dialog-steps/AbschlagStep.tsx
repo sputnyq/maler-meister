@@ -25,14 +25,13 @@ export function AbschlagStep({ services, setServices }: Readonly<Props>) {
   if (!offer) return null;
 
   const isSelected = (os: OfferService) => {
-    return services.some(
-      (s) => s.name === os.name && s.description === os.description && s.netto === os.netto,
-    );
+    return services.indexOf(os) > -1;
   };
 
   const handleToggle = (os: OfferService) => () => {
-    const next = services.filter((s) => s.name !== os.name);
+    const next = [...services];
     if (isSelected(os)) {
+      next.splice(next.indexOf(os), 1);
       setServices(next);
     } else {
       setServices([...next, os]);

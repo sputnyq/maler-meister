@@ -29,12 +29,12 @@ export function DateRangeWidget({ dateRange, setDateRange, definedRanges }: Prop
     if (dateRange.end && dateRange.start) {
       return `${formatDate(dateRange.start)} - ${formatDate(dateRange.end)}`;
     }
-    return 'Zeitraum auswählen';
+    return 'Zeitraum wählen';
   }, [dateRange]);
 
   return (
     <>
-      <AppDialog title="Zeitraum auswählen" open={open} onClose={handleClose} onConfirm={handleClose}>
+      <AppDialog title="Zeitraum wählen" open={open} onClose={handleClose} onConfirm={handleClose}>
         <Box
           sx={{
             '& .MuiPaper-root': {

@@ -34,21 +34,18 @@ const BgbServices = lazy(() => import('./features/options/services/bgb'));
 
 export default function App() {
   return (
-    <>
-      {/* <meta name="theme-color" content={theme.palette.primary.main} /> */}
-      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={de}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline>
-            <RootBox>
-              <TopBar />
-              <Box mt={6}>
-                <AppRoutes />
-              </Box>
-            </RootBox>
-          </CssBaseline>
-        </ThemeProvider>
-      </LocalizationProvider>
-    </>
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={de}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline>
+          <RootBox>
+            <TopBar />
+            <Box mt={6}>
+              <AppRoutes />
+            </Box>
+          </RootBox>
+        </CssBaseline>
+      </ThemeProvider>
+    </LocalizationProvider>
   );
 }
 

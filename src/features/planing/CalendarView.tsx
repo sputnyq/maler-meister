@@ -48,9 +48,18 @@ const TIME_GRID_WEEK = 'timeGridWeek';
 type DialogProp = { open: boolean; id: number | undefined };
 
 export default function CalendarView() {
-  const [constructionDialog, setConstructionDialog] = useState<DialogProp>({ open: false, id: undefined });
-  const [shiftPlanDialog, setShiftPlanDialog] = useState<DialogProp>({ open: false, id: undefined });
-  const [dailyEntryDialog, setDailyEntryDialog] = useState<DialogProp>({ open: false, id: undefined });
+  const [constructionDialog, setConstructionDialog] = useState<DialogProp>({
+    open: false,
+    id: undefined,
+  });
+  const [shiftPlanDialog, setShiftPlanDialog] = useState<DialogProp>({
+    open: false,
+    id: undefined,
+  });
+  const [dailyEntryDialog, setDailyEntryDialog] = useState<DialogProp>({
+    open: false,
+    id: undefined,
+  });
 
   const [weekends, setWeekends] = useState(true);
   const [curYear, setCurYear] = useState(new Date().getFullYear());
@@ -247,7 +256,9 @@ export default function CalendarView() {
         }
         initEnd={
           dateSelectArg.current?.endStr &&
-          formatISO(addDays(new Date(dateSelectArg.current?.endStr), -1), { representation: 'date' })
+          formatISO(addDays(new Date(dateSelectArg.current?.endStr), -1), {
+            representation: 'date',
+          })
         }
         dialogOpen={constructionDialog.open}
         constructionId={constructionDialog.id}
@@ -260,7 +271,7 @@ export default function CalendarView() {
             weekNumbers
             weekends={weekends}
             events={events}
-            height={'calc(100svh - 170px)'}
+            height={'calc(100svh - 130px)'}
             datesSet={setEventRange}
             select={handleDateSelect}
             selectMinDistance={4}

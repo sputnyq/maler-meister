@@ -128,7 +128,7 @@ export const fullCustomerName = (obj: AppOffer | AppInvoice) => {
 
   const customer = `${salutation || ''} ${firstName || ''} ${lastName || ''}`;
   if (company) {
-    return `(${company}) ${customer} `;
+    return `${company} | ${customer} `;
   }
   return customer;
 };

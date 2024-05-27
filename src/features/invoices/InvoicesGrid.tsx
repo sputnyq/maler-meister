@@ -196,14 +196,7 @@ export function InvoicesGrid() {
           return <ConstructionView constructionId={value} />;
         },
       },
-      {
-        field: 'createdAt',
-        headerName: 'Erstellt',
-        minWidth: 160,
-        renderCell({ value }) {
-          return dtFormat.format(new Date(value));
-        },
-      },
+
       {
         field: 'updatedAt',
         headerName: 'Aktualisiert',
@@ -214,12 +207,12 @@ export function InvoicesGrid() {
       },
       {
         field: 'offerServices',
-        headerName: 'Netto / Brutto',
-        minWidth: 160,
+        headerName: 'Netto | Brutto',
+        minWidth: 200,
         renderCell(params: GridRenderCellParams<AppInvoice>) {
           const { offerServices } = params.row;
           const { brutto, netto } = calculatePriceSummary(offerServices);
-          return `${euroValue(netto)} / ${euroValue(brutto)}`;
+          return `${euroValue(netto)} | ${euroValue(brutto)}`;
         },
       },
       {

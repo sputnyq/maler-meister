@@ -122,3 +122,13 @@ export const getFullWorkerName = (username: string, users: User[]) => {
   const user = users.find((u) => u.username === username);
   return user ? userFullName(user) : username;
 };
+
+export const fullCustomerName = (obj: AppOffer | AppInvoice) => {
+  const { salutation, lastName, firstName, company } = obj as AppOffer;
+
+  const customer = `${salutation || ''} ${firstName || ''} ${lastName || ''}`;
+  if (company) {
+    return `(${company}) ${customer} `;
+  }
+  return customer;
+};

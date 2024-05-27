@@ -18,3 +18,11 @@ body,
 .not-active .fc-event-title {
   font-style: italic;
 }
+
+.app-date-range-picker > div {
+  box-shadow: none;
+}
+
+.app-date-range-picker .MuiList-root {
+  height: 100%;
+}

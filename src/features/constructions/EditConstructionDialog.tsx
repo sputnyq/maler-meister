@@ -63,7 +63,12 @@ export default function EditConstructionDialog({
   };
 
   return (
-    <AppDialog title="Baustelle bearbeiten" onClose={onClose} open={dialogOpen} onConfirm={handleSaveRequest}>
+    <AppDialog
+      title="Baustelle bearbeiten"
+      onClose={onClose}
+      open={dialogOpen}
+      onConfirm={handleSaveRequest}
+    >
       {construction === null ? (
         <LoadingScreen />
       ) : (

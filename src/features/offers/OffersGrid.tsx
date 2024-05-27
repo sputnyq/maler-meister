@@ -12,6 +12,7 @@ import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadOffers } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { usePersistPageSize } from '../../hooks/usePersistPageSize';
+import { fullCustomerName } from '../../utilities';
 import ConstructionView from '../time-capture/ConstructionView';
 import { PastDateRange } from '../time-capture/PastDateRange';
 import { OfferInvoiceLinks } from './OfferInvoiceLinks';
@@ -134,18 +135,14 @@ export default function OffersGrid() {
           );
         },
       },
-      {
-        field: 'company',
-        headerName: 'Firma',
-      },
 
       {
         field: 'lastName',
         headerName: 'Kunde',
         flex: 1,
+        minWidth: 250,
         renderCell({ row }) {
-          const { salutation, lastName, firstName } = row as AppOffer;
-          return `${salutation} ${firstName} ${lastName}`;
+          return fullCustomerName(row as AppOffer);
         },
       },
       {

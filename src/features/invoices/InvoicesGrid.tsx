@@ -12,9 +12,11 @@ import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadInvoices } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { usePersistPageSize } from '../../hooks/usePersistPageSize';
-import { calculatePriceSummary, euroValue } from '../../utilities';
+import { calculatePriceSummary, euroValue, fullCustomerName } from '../../utilities';
 import ConstructionView from '../time-capture/ConstructionView';
 import { PastDateRange } from '../time-capture/PastDateRange';
+
+import { capitalize } from 'lodash';
 
 export function InvoicesGrid() {
   const { pageSize, onPaginationModelChange } = usePersistPageSize('invoices-pageSize', 50);
@@ -168,23 +170,22 @@ export function InvoicesGrid() {
       {
         field: 'invoiceType',
         headerName: 'Typ',
+        renderCell(params) {
+          return capitalize(params.row.invoiceType);
+        },
       },
       {
         field: 'offerId',
         headerName: 'Angebot',
-      },
-      {
-        field: 'company',
-        headerName: 'Firma',
       },
 
       {
         field: 'lastName',
         headerName: 'Kunde',
         flex: 1,
+        minWidth: 250,
         renderCell({ row }) {
-          const { salutation, lastName, firstName } = row as AppOffer;
-          return `${salutation} ${firstName} ${lastName}`;
+          return fullCustomerName(row as AppInvoice);
         },
       },
       {
@@ -233,7 +234,12 @@ export function InvoicesGrid() {
     <ColFlexBox>
       <FilterWrapperCard>
         <AppGridField>
-          <AppTextField type="search" label="ID" value={id} onChange={(ev) => setId(ev.target.value?.trim())} />
+          <AppTextField
+            type="search"
+            label="ID"
+            value={id}
+            onChange={(ev) => setId(ev.target.value?.trim())}
+          />
         </AppGridField>
         <AppGridField>
           <AppTextField

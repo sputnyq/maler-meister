@@ -37,14 +37,8 @@ export function DateRangeWidget({ dateRange, setDateRange, definedRanges }: Prop
       <AppDialog title="Zeitraum wählen" open={open} onClose={handleClose} onConfirm={handleClose}>
         <Box
           sx={{
-            '& .MuiPaper-root': {
-              boxShadow: 'none',
-            },
-            '& .MuiList-root': {
-              height: '100%',
-            },
             paddingBottom: 0,
-            borderTop: '1px solid #ededed',
+            border: '1px solid #ededed',
             borderBottom: '1px solid #ededed',
             '& hr': {
               display: 'none',
@@ -52,6 +46,7 @@ export function DateRangeWidget({ dateRange, setDateRange, definedRanges }: Prop
           }}
         >
           <DateRangePicker
+            wrapperClassName="app-date-range-picker"
             initialDateRange={{
               startDate: new Date(dateRange.start || new Date()),
               endDate: new Date(dateRange.end || new Date()),

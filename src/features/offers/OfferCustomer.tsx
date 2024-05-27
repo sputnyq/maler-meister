@@ -8,6 +8,7 @@ import AppGrid from '../../components/AppGrid';
 import { ColFlexBox } from '../../components/ColFlexBox';
 import { Wrapper } from '../../components/Wrapper';
 import { useCurrentOffer } from '../../hooks/useCurrentOffer';
+import ConstructionButton from '../constructions/ConstructionButton';
 import ConstructionView from '../time-capture/ConstructionView';
 import OfferField, { OfferFieldProps } from './OfferField';
 
@@ -15,9 +16,10 @@ export default function OfferCustomer() {
   const offer = useCurrentOffer();
 
   const emailHref = useMemo(() => {
-    const body = ['Sehr geehrte Damen und Herren,', 'im Anhang befindet sich unsere Leistungsbeschreibung.'].join(
-      '%0D',
-    );
+    const body = [
+      'Sehr geehrte Damen und Herren,',
+      'im Anhang befindet sich unsere Leistungsbeschreibung.',
+    ].join('%0D');
 
     const href = `mailto:${offer?.email}?subject=Leistungsbeschreibung&body=${body}`;
 
@@ -88,7 +90,16 @@ export default function OfferCustomer() {
       </Wrapper>
       <Wrapper title="Baustelle">
         <AppGrid>
-          <Field path="constructionId" type="number" label="Baustellen-ID" />
+          <Field
+            path="constructionId"
+            type="number"
+            label="Baustellen-ID"
+            InputProps={{
+              endAdornment: (
+                <ConstructionButton color="primary" constructionId={offer?.constructionId} />
+              ),
+            }}
+          />
         </AppGrid>
         <ConstructionView constructionId={offer?.constructionId} />
       </Wrapper>

@@ -9,6 +9,7 @@ import { ColFlexBox } from '../../components/ColFlexBox';
 import { Wrapper } from '../../components/Wrapper';
 import { InvoiceTypeArray } from '../../constants';
 import { useCurrentInvoice } from '../../hooks/useCurrentInvoice';
+import ConstructionButton from '../constructions/ConstructionButton';
 import ConstructionView from '../time-capture/ConstructionView';
 import InvoiceField, { InvoiceFieldProps } from './InvoiceField';
 
@@ -16,9 +17,10 @@ export function InvoiceCustomer() {
   const invoice = useCurrentInvoice();
 
   const emailHref = useMemo(() => {
-    const body = ['Sehr geehrte Damen und Herren,', 'im Anhang befindet sich unsere Leistungsbeschreibung.'].join(
-      '%0D',
-    );
+    const body = [
+      'Sehr geehrte Damen und Herren,',
+      'im Anhang befindet sich unsere Leistungsbeschreibung.',
+    ].join('%0D');
 
     const href = `mailto:${invoice?.email}?subject=Leistungsbeschreibung&body=${body}`;
 
@@ -33,7 +35,12 @@ export function InvoiceCustomer() {
     <ColFlexBox>
       <Wrapper title="Allgemeine Informationen">
         <AppGrid>
-          <Field path="invoiceType" label="Rechnungstyp" select selectOptions={InvoiceTypeArray}></Field>
+          <Field
+            path="invoiceType"
+            label="Rechnungstyp"
+            select
+            selectOptions={InvoiceTypeArray}
+          ></Field>
           <Field path="isPaid" as="checkbox" label="Rechnung bezahlt?"></Field>
         </AppGrid>
       </Wrapper>
@@ -96,7 +103,16 @@ export function InvoiceCustomer() {
 
       <Wrapper title="Baustelle">
         <AppGrid>
-          <Field path="constructionId" type="number" label="Baustellen-ID" />
+          <Field
+            path="constructionId"
+            type="number"
+            label="Baustellen-ID"
+            InputProps={{
+              endAdornment: (
+                <ConstructionButton color="primary" constructionId={invoice?.constructionId} />
+              ),
+            }}
+          />
         </AppGrid>
         <ConstructionView constructionId={invoice?.constructionId} />
       </Wrapper>

@@ -189,7 +189,7 @@ export function InvoicesGrid() {
       },
       {
         field: 'constructionId',
-        headerName: 'Baustellen',
+        headerName: 'Baustelle',
         flex: 1,
         renderCell({ value }) {
           return <ConstructionView constructionId={value} />;

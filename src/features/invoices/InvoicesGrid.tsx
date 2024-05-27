@@ -171,7 +171,7 @@ export function InvoicesGrid() {
       },
       {
         field: 'offerId',
-        headerName: 'Angebots-ID',
+        headerName: 'Angebot',
       },
       {
         field: 'company',

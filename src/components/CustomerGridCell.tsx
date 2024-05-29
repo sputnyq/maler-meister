@@ -11,9 +11,9 @@ export default function CustomerGridCell({ obj }: Readonly<Props>) {
   if (company) {
     return (
       <>
-        <strong>{company}</strong> {fcn}
+        <strong>{fcn}</strong> - {company}
       </>
     );
   }
-  return fcn;
+  return <strong>{fcn}</strong>;
 }

@@ -16,11 +16,11 @@ export function AppDataGrid(props: Readonly<DataGridProps>) {
     <Paper elevation={0}>
       <Box
         position={'relative'}
-        sx={{
-          '& .MuiDataGrid-root': {
-            border: 'none',
-          },
-        }}
+        // sx={{
+        //   '& .MuiDataGrid-root': {
+        //     border: 'none',
+        //   },
+        // }}
       >
         <StyledDataGrid
           slotProps={{

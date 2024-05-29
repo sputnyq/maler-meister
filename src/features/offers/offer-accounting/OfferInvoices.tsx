@@ -15,10 +15,13 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import AmountTypography from '../../../components/AmountTypography';
 import { loadInvoices } from '../../../fetch/api';
 import { useCurrentOffer } from '../../../hooks/useCurrentOffer';
 import { useCurrentUser } from '../../../hooks/useCurrentUser';
 import { calculatePriceSummary, euroValue } from '../../../utilities';
+
+import { capitalize } from 'lodash';
 
 interface Props {
   full?: boolean;
@@ -35,7 +38,10 @@ export default function OfferInvoices({ full = true }: Readonly<Props>) {
     });
   }, [offer?.id, user?.tenant]);
 
-  const dtFormat = useMemo(() => new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' }), []);
+  const dtFormat = useMemo(
+    () => new Intl.DateTimeFormat('de-DE', { timeStyle: 'medium', dateStyle: 'medium' }),
+    [],
+  );
 
   if (!offer?.id) {
     return null;
@@ -78,29 +84,48 @@ export default function OfferInvoices({ full = true }: Readonly<Props>) {
                         <Button>{id}</Button>
                       </Link>
                     </TableCell>
-                    <TableCell>{invoiceType ?? 'RECHNUNG'}</TableCell>
+                    <TableCell>{capitalize(invoiceType) ?? 'RECHNUNG'}</TableCell>
                     <TableCell>{dtFormat.format(new Date(updatedAt))}</TableCell>
-                    <TableCell>{euroValue(netto)}</TableCell>
+                    <TableCell>
+                      <AmountTypography>{euroValue(netto)}</AmountTypography>
+                    </TableCell>
 
-                    <TableCell>{euroValue(brutto)}</TableCell>
+                    <TableCell>
+                      <AmountTypography>{euroValue(brutto)}</AmountTypography>
+                    </TableCell>
                     <TableCell>{isPaid ? <CheckOutlinedIcon /> : <CloseOutlinedIcon />}</TableCell>
                   </TableRow>
                 );
               })}
             <TableRow>
-              <StrongCell colSpan={full ? 3 : 1}>Summe aller Rechnungen</StrongCell>
-              <StrongCell>{euroValue(allNetto)}</StrongCell>
-              <StrongCell colSpan={full ? 2 : 1}>{euroValue(allBrutto)}</StrongCell>
+              <StrongCell colSpan={full ? 3 : 1}>Summe aller Rechnungen:</StrongCell>
+              <StrongCell>
+                <AmountTypography>{euroValue(allNetto)}</AmountTypography>
+              </StrongCell>
+              <StrongCell>
+                <AmountTypography>{euroValue(allBrutto)}</AmountTypography>
+              </StrongCell>
+              {full && <StrongCell />}
             </TableRow>
             <TableRow>
-              <StrongCell colSpan={full ? 3 : 1}>Angebot</StrongCell>
-              <StrongCell>{euroValue(offerNetto)}</StrongCell>
-              <StrongCell colSpan={full ? 2 : 1}>{euroValue(offerBrutto)}</StrongCell>
+              <StrongCell colSpan={full ? 3 : 1}>Angebot:</StrongCell>
+              <StrongCell>
+                <AmountTypography>{euroValue(offerNetto)}</AmountTypography>
+              </StrongCell>
+              <StrongCell>
+                <AmountTypography>{euroValue(offerBrutto)}</AmountTypography>
+              </StrongCell>
+              {full && <StrongCell />}
             </TableRow>
             <TableRow>
-              <StrongCell colSpan={full ? 3 : 1}>Differenz</StrongCell>
-              <StrongCell>{euroValue(offerNetto - allNetto)}</StrongCell>
-              <StrongCell colSpan={full ? 2 : 1}>{euroValue(offerBrutto - allBrutto)}</StrongCell>
+              <StrongCell colSpan={full ? 3 : 1}>Differenz:</StrongCell>
+              <StrongCell>
+                <AmountTypography>{euroValue(offerNetto - allNetto)}</AmountTypography>
+              </StrongCell>
+              <StrongCell>
+                <AmountTypography>{euroValue(offerBrutto - allBrutto)}</AmountTypography>
+              </StrongCell>
+              {full && <StrongCell />}
             </TableRow>
           </TableBody>
         </Table>
@@ -109,4 +134,6 @@ export default function OfferInvoices({ full = true }: Readonly<Props>) {
   );
 }
 
-const StrongCell = (props: TableCellProps) => <TableCell sx={{ fontWeight: 'bold', ...(props.sx || {}) }} {...props} />;
+const StrongCell = (props: TableCellProps) => (
+  <TableCell sx={{ fontWeight: 'bold', ...(props.sx || {}) }} {...props} />
+);

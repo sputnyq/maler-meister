@@ -1,4 +1,4 @@
-import { calculatePriceSummary, euroValue, numberValue } from '../utilities';
+import { calculatePriceSummary, euroValue, fullCustomerName, numberValue } from '../utilities';
 import PdfBuilder, { Margin } from './PdfBuilder';
 
 const NON_REGULAR_SPACES = /[\u00A0\u1680\u180e\u2000\u2009\u200a\u200b\u202f\u205f\u3000]/g;
@@ -40,7 +40,7 @@ export function addCustomer(builder: PdfBuilder, doc: AppOffer | AppInvoice) {
   }
   left.push(
     ...[
-      `${doc.salutation} ${doc.firstName} ${doc.lastName}`,
+      `${fullCustomerName(doc)}`,
       `${doc.street} ${doc.number}, ${doc.zip} ${doc.city}`,
       `${doc.phone ? '+'.concat(doc.phone) : ''}${doc.email ? ' | '.concat(doc.email) : ''}`,
     ],
@@ -58,7 +58,12 @@ export function addCustomer(builder: PdfBuilder, doc: AppOffer | AppInvoice) {
 
 export function addDate(builder: PdfBuilder, doc: AppOffer | AppInvoice) {
   const date = new Date(doc.updatedAt);
-  builder.addText(`Datum: ${new Intl.DateTimeFormat('de-DE', { dateStyle: 'long' }).format(date)}`, 9, 9, 'right');
+  builder.addText(
+    `Datum: ${new Intl.DateTimeFormat('de-DE', { dateStyle: 'long' }).format(date)}`,
+    9,
+    9,
+    'right',
+  );
 }
 
 export function addServices(builder: PdfBuilder, offerServices: OfferService[]) {
@@ -124,7 +129,9 @@ export function addServices(builder: PdfBuilder, offerServices: OfferService[]) 
 }
 
 export function addBancAccount(builder: PdfBuilder, printSettings: PrintSettings) {
-  builder.addFooterText(`Bankverbindung: ${printSettings.ownerName} | ${printSettings.bank} | ${printSettings.iban}`);
+  builder.addFooterText(
+    `Bankverbindung: ${printSettings.ownerName} | ${printSettings.bank} | ${printSettings.iban}`,
+  );
 }
 
 export function addText(builder: PdfBuilder, text?: string) {
@@ -149,7 +156,11 @@ export function buildDocId(doc: AppOffer | AppInvoice) {
   return `${date.getFullYear()}-${monthToPrint(date)}.${id}`;
 }
 
-export function addConstruction(builder: PdfBuilder, textColor: string, construction?: Construction) {
+export function addConstruction(
+  builder: PdfBuilder,
+  textColor: string,
+  construction?: Construction,
+) {
   if (construction?.start && construction?.end) {
     const dateFormatter = new Intl.DateTimeFormat('de-DE', { dateStyle: 'long' });
     const range = dateFormatter

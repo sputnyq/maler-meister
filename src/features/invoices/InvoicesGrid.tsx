@@ -1,5 +1,5 @@
 import { Button, Card, CardContent, MenuItem } from '@mui/material';
-import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { GridCellParams, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -7,12 +7,13 @@ import { Link } from 'react-router-dom';
 import { AppGridField } from '../../components/AppGridField';
 import { AppTextField } from '../../components/AppTextField';
 import { ColFlexBox } from '../../components/ColFlexBox';
+import CustomerGridCell from '../../components/CustomerGridCell';
+import OfferServicesAmountGridCell from '../../components/OfferServicesAmountGridCell';
 import { AppDataGrid } from '../../components/app-data-grid/AppDataGrid';
 import { FilterWrapperCard } from '../../components/filters/FilterWrapperCard';
 import { loadInvoices } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { usePersistPageSize } from '../../hooks/usePersistPageSize';
-import { calculatePriceSummary, euroValue, fullCustomerName } from '../../utilities';
 import ConstructionView from '../time-capture/ConstructionView';
 import { PastDateRange } from '../time-capture/PastDateRange';
 
@@ -167,25 +168,14 @@ export function InvoicesGrid() {
           );
         },
       },
-      {
-        field: 'invoiceType',
-        headerName: 'Typ',
-        renderCell(params) {
-          return capitalize(params.row.invoiceType);
-        },
-      },
-      {
-        field: 'offerId',
-        headerName: 'Angebot',
-      },
 
       {
         field: 'lastName',
         headerName: 'Kunde',
         flex: 1,
         minWidth: 250,
-        renderCell({ row }) {
-          return fullCustomerName(row as AppInvoice);
+        renderCell({ row }: GridCellParams<AppInvoice>) {
+          return <CustomerGridCell obj={row} />;
         },
       },
       {
@@ -196,7 +186,32 @@ export function InvoicesGrid() {
           return <ConstructionView constructionId={value} />;
         },
       },
+      {
+        field: 'offerServices',
+        headerName: 'Netto',
+        minWidth: 120,
+        renderCell({ value }: GridRenderCellParams<AppInvoice, OfferService[]>) {
+          return <OfferServicesAmountGridCell offerServices={value} />;
+        },
+      },
+      {
+        field: 'invoiceType',
+        headerName: 'Typ',
+        minWidth: 140,
+        renderCell(params) {
+          return capitalize(params.row.invoiceType);
+        },
+      },
+      {
+        field: 'offerId',
+        headerName: 'Angebot',
+      },
 
+      {
+        field: 'isPaid',
+        headerName: 'Bezahlt',
+        type: 'boolean',
+      },
       {
         field: 'updatedAt',
         headerName: 'Aktualisiert',
@@ -204,21 +219,6 @@ export function InvoicesGrid() {
         renderCell({ value }) {
           return dtFormat.format(new Date(value));
         },
-      },
-      {
-        field: 'offerServices',
-        headerName: 'Netto | Brutto',
-        minWidth: 200,
-        renderCell(params: GridRenderCellParams<AppInvoice>) {
-          const { offerServices } = params.row;
-          const { brutto, netto } = calculatePriceSummary(offerServices);
-          return `${euroValue(netto)} | ${euroValue(brutto)}`;
-        },
-      },
-      {
-        field: 'isPaid',
-        headerName: 'Bezahlt',
-        type: 'boolean',
       },
     ] as GridColDef[];
   }, []);

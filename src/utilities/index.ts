@@ -124,11 +124,7 @@ export const getFullWorkerName = (username: string, users: User[]) => {
 };
 
 export const fullCustomerName = (obj: AppOffer | AppInvoice) => {
-  const { salutation, lastName, firstName, company } = obj as AppOffer;
+  const { salutation, lastName, firstName } = obj as AppOffer;
 
-  const customer = `${salutation || ''} ${firstName || ''} ${lastName || ''}`;
-  if (company) {
-    return `${company} | ${customer} `;
-  }
-  return customer;
+  return `${salutation || ''} ${firstName || ''} ${lastName || ''}`;
 };

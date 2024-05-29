@@ -15,6 +15,7 @@ import { constructionById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { usePersistPageSize } from '../../hooks/usePersistPageSize';
+import { formatDate } from '../../utilities';
 import { ConstructionsDateRangeFilter } from './ConstructionsDateRangeFilter';
 import { CreateConstruction } from './CreateConstruction';
 import EditConstructionDialog from './EditConstructionDialog';
@@ -79,10 +80,16 @@ export default function Constructions() {
       {
         field: 'start',
         headerName: 'Anfang',
+        renderCell({ value }) {
+          return formatDate(value);
+        },
       },
       {
         field: 'end',
         headerName: 'Ende',
+        renderCell({ value }) {
+          return formatDate(value);
+        },
       },
       {
         field: 'allocatedPersons',

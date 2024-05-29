@@ -30,9 +30,9 @@ export default function ConstructionView({ constructionId }: Readonly<Props>) {
 
   return (
     <Box display="flex" gap={1} alignItems="center" sx={{ height: '100%' }}>
-      <Typography variant="body2" color={name ? 'info' : 'error'}>{`${constructionId} | ${
-        name ? name : 'unbekannt'
-      }`}</Typography>
+      <Typography variant="body2" color={name ? 'info' : 'error'}>{`${String(
+        constructionId,
+      ).padStart(4, '0')} | ${name ? name : 'unbekannt'}`}</Typography>
     </Box>
   );
 }

@@ -12,7 +12,7 @@ export function PriceSummary({ offerServices }: Props) {
 
   const sx = { border: 'none' };
   return (
-    <Card elevation={0} sx={{ flexGrow: 1 }}>
+    <Card variant="outlined" sx={{ flexGrow: 1 }}>
       <CardContent>
         <Box display="flex" justifyContent="end">
           <Table size="small" sx={{ width: 250 }}>

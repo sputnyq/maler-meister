@@ -7,8 +7,8 @@ export default function Info() {
   return (
     <Box>
       <Typography variant="h6">Maler Meister</Typography>
-      <Typography color={'GrayText'} variant="subtitle2">{`Version: ${import.meta.env.PACKAGE_VERSION}`}</Typography>
-      <Typography color={'GrayText'} variant="subtitle2">{`Angemeldet als: ${user?.username}`}</Typography>
+      <Typography>{`Version: ${import.meta.env.PACKAGE_VERSION}`}</Typography>
+      <Typography variant="subtitle2">{`Angemeldet als: ${user?.username}`}</Typography>
     </Box>
   );
 }

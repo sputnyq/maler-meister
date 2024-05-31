@@ -1,6 +1,10 @@
 name: 🤖 AI Code Review
 
-on: [pull_request]
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - '.github/**'
 
 jobs:
   code-review:
@@ -16,6 +20,6 @@ jobs:
         with:
           openai-key: ${{ secrets.OPENAI_API_KEY }}
           # model: 'gpt-4'
-          # max-length: 8000
+          max-length: 8000
           # prompt: 'Only suggest performance improvements for this code.'
           # post-if-error: false

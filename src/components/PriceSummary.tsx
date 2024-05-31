@@ -7,7 +7,7 @@ interface Props {
   offerServices: OfferService[];
 }
 
-export function PriceSummary({ offerServices }: Props) {
+export function PriceSummary({ offerServices }: Readonly<Props>) {
   const { brutto, netto, tax } = calculatePriceSummary(offerServices);
 
   const sx = { border: 'none' };

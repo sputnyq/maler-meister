@@ -32,7 +32,7 @@ export default function ConstructionView({ constructionId }: Readonly<Props>) {
     <Box display="flex" gap={1} alignItems="center" sx={{ height: '100%' }}>
       <Typography variant="inherit" color={name ? 'info' : 'error'}>{`${String(
         constructionId,
-      ).padStart(5, '0')} | ${name ? name : 'unbekannt'}`}</Typography>
+      ).padStart(5, '0')} | ${name ?? 'unbekannt'}`}</Typography>
     </Box>
   );
 }

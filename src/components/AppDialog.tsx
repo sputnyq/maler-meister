@@ -1,7 +1,15 @@
 import CheckIcon from '@mui/icons-material/CheckOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
-import { Box, Button, DialogActions, DialogContent, DialogTitle, SxProps, Theme } from '@mui/material';
+import {
+  Box,
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  SxProps,
+  Theme,
+} from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
@@ -23,7 +31,7 @@ interface Props {
   onDelete?: () => void;
 }
 
-export function AppDialog(props: React.PropsWithChildren<Props>) {
+export function AppDialog(props: Readonly<React.PropsWithChildren<Props>>) {
   const isSmall = useIsSmall();
   const onDelete = props.onDelete
     ? () => {
@@ -34,7 +42,11 @@ export function AppDialog(props: React.PropsWithChildren<Props>) {
       }
     : undefined;
 
-  return isSmall ? <MobileDialog {...props} onDelete={onDelete} /> : <DesktopDialog {...props} onDelete={onDelete} />;
+  return isSmall ? (
+    <MobileDialog {...props} onDelete={onDelete} />
+  ) : (
+    <DesktopDialog {...props} onDelete={onDelete} />
+  );
 }
 
 const dialogContentSX: SxProps<Theme> = { paddingTop: (theme) => `${theme.spacing(2)}!important` };
@@ -113,7 +125,12 @@ function DesktopDialog({
           </Button>
         )}
         {onConfirm && (
-          <Button disabled={confirmDisabled} variant="contained" disableElevation onClick={onConfirm}>
+          <Button
+            disabled={confirmDisabled}
+            variant="contained"
+            disableElevation
+            onClick={onConfirm}
+          >
             OK
           </Button>
         )}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { PropsWithChildren, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useCurrentUser } from '../../hooks/useCurrentUser';
@@ -11,7 +11,7 @@ import { loadServices } from '../../store/servicesReducer';
 import { loadUsers } from '../../store/usersReducer';
 import { LoadingScreen } from './LoadingScreen';
 
-export default function AppLoader({ children }: React.PropsWithChildren) {
+export default function AppLoader({ children }: PropsWithChildren) {
   const appLoaded = useSelector<AppState, boolean>((s) => s.login.appLoaded);
 
   const user = useCurrentUser();

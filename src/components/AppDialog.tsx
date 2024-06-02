@@ -16,7 +16,7 @@ import Slide from '@mui/material/Slide';
 import Typography from '@mui/material/Typography';
 import { TransitionProps } from '@mui/material/transitions';
 
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
 import { useIsSmall } from '../hooks/useIsSmall';
 import ApplicationToolbar from './ApplicationToolbar';
@@ -30,7 +30,7 @@ interface Props {
   onDelete?: () => void;
 }
 
-export function AppDialog(props: Readonly<React.PropsWithChildren<Props>>) {
+export function AppDialog(props: Readonly<PropsWithChildren<Props>>) {
   const isSmall = useIsSmall();
   const onDelete = props.onDelete
     ? () => {
@@ -67,7 +67,7 @@ function MobileDialog({
   onClose,
   onConfirm,
   onDelete,
-}: React.PropsWithChildren<Props>) {
+}: PropsWithChildren<Props>) {
   return (
     <Dialog fullScreen open={open} onClose={onClose} TransitionComponent={Transition}>
       <ApplicationToolbar position="relative">
@@ -101,7 +101,7 @@ function DesktopDialog({
   onClose,
   onConfirm,
   onDelete,
-}: React.PropsWithChildren<Props>) {
+}: PropsWithChildren<Props>) {
   return (
     <Dialog maxWidth={'md'} fullWidth={true} open={open} onClose={onClose}>
       <DialogTitle>

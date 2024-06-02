@@ -31,6 +31,12 @@ import {
   startOfWeek,
 } from 'date-fns';
 
+const formatter = new Intl.DateTimeFormat('de-DE', {
+  weekday: 'short',
+  day: 'numeric',
+  month: 'numeric',
+});
+
 export function HoursCheck() {
   const small = useIsSmall();
 
@@ -55,11 +61,6 @@ export function HoursCheck() {
 
   const allDays = eachDayOfInterval({ end: interval.end, start: interval.start });
 
-  const formatter = new Intl.DateTimeFormat('de-DE', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'numeric',
-  });
   return (
     <ColFlexBox>
       <Card elevation={0}>

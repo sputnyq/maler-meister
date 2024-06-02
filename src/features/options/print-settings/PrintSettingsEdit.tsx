@@ -1,6 +1,6 @@
 import { Box, Button, Card, CardContent, CardHeader } from '@mui/material';
 
-import React, { useState } from 'react';
+import { InputHTMLAttributes, PropsWithChildren, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import AppGrid from '../../../components/AppGrid';
@@ -21,7 +21,7 @@ export function PrintSettingsEdit({ ps }: Props) {
   const Field = (params: {
     prop: keyof PrintSettings;
     multiline?: boolean;
-    type?: React.InputHTMLAttributes<unknown>['type'];
+    type?: InputHTMLAttributes<unknown>['type'];
     select?: true;
     selectOptions?: string[];
   }) => {
@@ -86,7 +86,12 @@ export function PrintSettingsEdit({ ps }: Props) {
         {[Field({ prop: 'bank' }), Field({ prop: 'iban' }), Field({ prop: 'bic' })]}
       </Wrapper>
       <Wrapper title="Kontakt">
-        {[Field({ prop: 'phone' }), Field({ prop: 'mobile' }), Field({ prop: 'fax' }), Field({ prop: 'email' })]}
+        {[
+          Field({ prop: 'phone' }),
+          Field({ prop: 'mobile' }),
+          Field({ prop: 'fax' }),
+          Field({ prop: 'email' }),
+        ]}
       </Wrapper>
       <Wrapper title="Adresse">
         {[
@@ -104,7 +109,10 @@ export function PrintSettingsEdit({ ps }: Props) {
         {[Field({ prop: 'textBefore', multiline }), Field({ prop: 'textAfter', multiline })]}
       </Wrapper>
       <Wrapper title="Rechnung | Textblöcke">
-        {[Field({ multiline, prop: 'invoiceTextBefore' }), Field({ prop: 'invoiceTextAfter', multiline })]}
+        {[
+          Field({ multiline, prop: 'invoiceTextBefore' }),
+          Field({ prop: 'invoiceTextAfter', multiline }),
+        ]}
       </Wrapper>
     </ColFlexBox>
   );
@@ -113,7 +121,7 @@ export function PrintSettingsEdit({ ps }: Props) {
 interface WrapperProps {
   title?: string;
 }
-const Wrapper = ({ children, title }: React.PropsWithChildren<WrapperProps>) => {
+const Wrapper = ({ children, title }: PropsWithChildren<WrapperProps>) => {
   return (
     <Card elevation={0}>
       <CardHeader title={title} />

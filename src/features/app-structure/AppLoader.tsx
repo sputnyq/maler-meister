@@ -11,7 +11,7 @@ import { loadServices } from '../../store/servicesReducer';
 import { loadUsers } from '../../store/usersReducer';
 import { LoadingScreen } from './LoadingScreen';
 
-export default function AppLoader({ children }: PropsWithChildren) {
+export default function AppLoader({ children }: Readonly<PropsWithChildren>) {
   const appLoaded = useSelector<AppState, boolean>((s) => s.login.appLoaded);
 
   const user = useCurrentUser();

@@ -192,6 +192,6 @@ function AppRoutes() {
   );
 }
 
-function LazyLoad({ children }: PropsWithChildren) {
+function LazyLoad({ children }: Readonly<PropsWithChildren>) {
   return <Suspense fallback={<LoadingScreen />}>{children}</Suspense>;
 }

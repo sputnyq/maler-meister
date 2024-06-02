@@ -9,7 +9,7 @@ const theme = createTheme(
     palette: {
       background: {
         default: '#F3F6F9',
-        paper: '#fff',
+        paper: '#ffffff',
       },
     },
     typography: {

@@ -1,9 +1,10 @@
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 
 import { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import ApplicationToolbar from '../../components/ApplicationToolbar';
 import { InvoiceActions } from '../invoices/InvoiceActions';
 import Logout from '../log-in-out/Logout';
 import OfferActions from '../offers/OfferActions';
@@ -43,15 +44,13 @@ export default function TopBar() {
 
   return (
     <Box flexGrow={1}>
-      <AppBar position="fixed" elevation={1} color="primary">
-        <Toolbar variant="dense">
-          {homeButton}
-          <PageName />
-          <Box display="flex" justifyContent={'flex-end'}>
-            {actions}
-          </Box>
-        </Toolbar>
-      </AppBar>
+      <ApplicationToolbar position="fixed">
+        {homeButton}
+        <PageName />
+        <Box display="flex" justifyContent={'flex-end'}>
+          {actions}
+        </Box>
+      </ApplicationToolbar>
     </Box>
   );
 }

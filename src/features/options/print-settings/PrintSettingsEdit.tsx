@@ -13,7 +13,7 @@ interface Props {
   ps: PrintSettingsRoot;
 }
 
-export function PrintSettingsEdit({ ps }: Props) {
+export function PrintSettingsEdit({ ps }: Readonly<Props>) {
   const [settings, setSettings] = useState(ps.settings || {});
 
   const dispatch = useDispatch<AppDispatch>();

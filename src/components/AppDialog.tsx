@@ -10,17 +10,16 @@ import {
   SxProps,
   Theme,
 } from '@mui/material';
-import AppBar from '@mui/material/AppBar';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import Slide from '@mui/material/Slide';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { TransitionProps } from '@mui/material/transitions';
 
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
 import { useIsSmall } from '../hooks/useIsSmall';
+import ApplicationToolbar from './ApplicationToolbar';
 
 interface Props {
   open: boolean;
@@ -31,7 +30,7 @@ interface Props {
   onDelete?: () => void;
 }
 
-export function AppDialog(props: Readonly<React.PropsWithChildren<Props>>) {
+export function AppDialog(props: Readonly<PropsWithChildren<Props>>) {
   const isSmall = useIsSmall();
   const onDelete = props.onDelete
     ? () => {
@@ -68,29 +67,27 @@ function MobileDialog({
   onClose,
   onConfirm,
   onDelete,
-}: React.PropsWithChildren<Props>) {
+}: PropsWithChildren<Props>) {
   return (
     <Dialog fullScreen open={open} onClose={onClose} TransitionComponent={Transition}>
-      <AppBar sx={{ position: 'relative' }}>
-        <Toolbar>
-          <IconButton edge="start" color="inherit" onClick={onClose} aria-label="close">
-            <CloseOutlinedIcon />
+      <ApplicationToolbar position="relative">
+        <IconButton edge="start" onClick={onClose} aria-label="close">
+          <CloseOutlinedIcon />
+        </IconButton>
+        <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+          {title}
+        </Typography>
+        {onDelete && (
+          <IconButton color="error" onClick={onDelete}>
+            <DeleteForeverOutlinedIcon />
           </IconButton>
-          <Typography sx={{ ml: 2, flex: 1 }} color={'inherit'} variant="h6" component="div">
-            {title}
-          </Typography>
-          {onDelete && (
-            <IconButton color="error" onClick={onDelete}>
-              <DeleteForeverOutlinedIcon />
-            </IconButton>
-          )}
-          {onConfirm && (
-            <IconButton disabled={confirmDisabled} onClick={onConfirm} color={'inherit'}>
-              <CheckIcon />
-            </IconButton>
-          )}
-        </Toolbar>
-      </AppBar>
+        )}
+        {onConfirm && (
+          <IconButton disabled={confirmDisabled} onClick={onConfirm}>
+            <CheckIcon />
+          </IconButton>
+        )}
+      </ApplicationToolbar>
       <DialogContent sx={dialogContentSX}>{children}</DialogContent>
     </Dialog>
   );
@@ -104,7 +101,7 @@ function DesktopDialog({
   onClose,
   onConfirm,
   onDelete,
-}: React.PropsWithChildren<Props>) {
+}: PropsWithChildren<Props>) {
   return (
     <Dialog maxWidth={'md'} fullWidth={true} open={open} onClose={onClose}>
       <DialogTitle>

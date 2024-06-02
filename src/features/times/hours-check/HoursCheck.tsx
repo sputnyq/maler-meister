@@ -21,7 +21,21 @@ import { useIsSmall } from '../../../hooks/useIsSmall';
 import { useWorkers } from '../../../hooks/useWorkers';
 import { HoursCheckRow } from './HoursCheckRow';
 
-import { addMonths, addWeeks, eachDayOfInterval, endOfMonth, endOfWeek, startOfMonth, startOfWeek } from 'date-fns';
+import {
+  addMonths,
+  addWeeks,
+  eachDayOfInterval,
+  endOfMonth,
+  endOfWeek,
+  startOfMonth,
+  startOfWeek,
+} from 'date-fns';
+
+const formatter = new Intl.DateTimeFormat('de-DE', {
+  weekday: 'short',
+  day: 'numeric',
+  month: 'numeric',
+});
 
 export function HoursCheck() {
   const small = useIsSmall();
@@ -80,7 +94,7 @@ export function HoursCheck() {
               <TableCell sx={{ position: 'sticky', left: '0' }} />
               {allDays.map((day) => (
                 <TableCell align="center" key={day.getDate()}>
-                  {new Intl.DateTimeFormat('de-DE', { weekday: 'short', day: 'numeric', month: 'numeric' }).format(day)}
+                  {formatter.format(day)}
                 </TableCell>
               ))}
             </TableRow>
@@ -88,7 +102,12 @@ export function HoursCheck() {
 
           <TableBody>
             {workers.map((user) => (
-              <HoursCheckRow key={user.username} user={user} start={interval.start} end={interval.end} />
+              <HoursCheckRow
+                key={user.username}
+                user={user}
+                start={interval.start}
+                end={interval.end}
+              />
             ))}
           </TableBody>
         </StyledTable>
@@ -105,8 +124,6 @@ const StyledTable = styled(Table)(({ theme }) => ({
     padding: '5px',
   },
   '& th': {
-    background: theme.palette.primary.light,
-    color: 'white',
     fontWeight: 'bold',
   },
 }));

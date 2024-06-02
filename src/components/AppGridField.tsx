@@ -1,6 +1,8 @@
 import { Grid } from '@mui/material';
 
-export function AppGridField(props: React.PropsWithChildren) {
+import { PropsWithChildren } from 'react';
+
+export function AppGridField(props: Readonly<PropsWithChildren>) {
   return (
     <Grid item xs={12} sm={4} lg={2}>
       {props.children}

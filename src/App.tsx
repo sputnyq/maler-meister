@@ -2,7 +2,7 @@ import { Box, CssBaseline, ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-import { Suspense, lazy } from 'react';
+import { PropsWithChildren, Suspense, lazy } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
 
 import { RootBox } from './components/RootBox';
@@ -192,6 +192,6 @@ function AppRoutes() {
   );
 }
 
-function LazyLoad({ children }: React.PropsWithChildren) {
+function LazyLoad({ children }: PropsWithChildren) {
   return <Suspense fallback={<LoadingScreen />}>{children}</Suspense>;
 }

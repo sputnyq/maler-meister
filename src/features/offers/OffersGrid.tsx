@@ -1,4 +1,4 @@
-import { Button, Card, CardContent } from '@mui/material';
+import { Box, Button, Card, CardContent } from '@mui/material';
 import { GridCellParams, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 
 import { useEffect, useMemo, useState } from 'react';
@@ -128,11 +128,14 @@ export default function OffersGrid() {
       {
         field: 'id',
         headerName: 'ID',
+        width: 80,
         renderCell({ id }) {
           return (
-            <Link to={`${id}`}>
-              <Button>{id}</Button>
-            </Link>
+            <Box>
+              <Link to={`${id}`}>
+                <Button size="small">{id}</Button>
+              </Link>
+            </Box>
           );
         },
       },

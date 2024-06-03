@@ -2,12 +2,19 @@ name: AI Code Review
 
 on:
   pull_request:
-    paths:
-      - 'src/**'
-      - '.github/**'
+    paths-ignore:
+      - '**/*.json'
+      - '**/*.md'
+      - '**/*.png'
+      - '**/*.jpg'
+      - '**/*.jpeg'
+      - '**/*.gif'
+      - '**/*.svg'
+      - '.gitgnore'
 
 jobs:
   code-review:
+    if: github.event.pull_request.user.name != 'renovate'
     runs-on: ubuntu-latest
     permissions:
       contents: read

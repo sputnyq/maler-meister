@@ -13,7 +13,6 @@ const theme = createTheme(
       },
     },
     typography: {
-      fontSize: 13,
       allVariants: {
         fontFamily: ['Arial', 'Helvetica', 'sans-serif'].join(','),
       },

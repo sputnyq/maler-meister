@@ -35,6 +35,16 @@ export default function OffersGrid() {
   const [offerIdSearch, setOfferIdSearch] = useState<string>('');
   const [constrIdSearch, setConstrIdSearch] = useState<string>('');
 
+  const [dateRange, setDateRange] = useState<AppDateRange>({
+    start: undefined,
+    end: undefined,
+  });
+
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize,
+  });
+
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       setOfferIdSearch(offerId);
@@ -59,16 +69,6 @@ export default function OffersGrid() {
     return () => clearTimeout(delayDebounceFn);
   }, [lastName]);
 
-  const [dateRange, setDateRange] = useState<AppDateRange>({
-    start: undefined,
-    end: undefined,
-  });
-
-  const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize,
-  });
-
   useEffect(() => {
     let queryObj;
 
@@ -87,7 +87,7 @@ export default function OffersGrid() {
             $containsi: lastNameSearch === '' ? undefined : lastNameSearch,
           },
           constructionId: constrIdSearch === '' ? undefined : constrIdSearch,
-          createdAt: {
+          updatedAt: {
             $gte: dateRange.start,
             $lte: dateRange.end,
           },

@@ -118,7 +118,7 @@ export function InvoicesGrid() {
           },
           offerId: offerIdSearch === '' ? undefined : offerIdSearch,
           constructionId: constrIdSearch === '' ? undefined : constrIdSearch,
-          createdAt: {
+          updatedAt: {
             $gte: dateRange.start,
             $lte: dateRange.end,
           },

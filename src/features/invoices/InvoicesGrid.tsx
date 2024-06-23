@@ -123,7 +123,7 @@ export function InvoicesGrid() {
             $lte: dateRange.end,
           },
         },
-        sort: { '0': 'createdAt:desc' },
+        sort: { '0': 'updatedAt:desc' },
         pagination: {
           page: paginationModel.page + 1,
           pageSize: paginationModel.pageSize,

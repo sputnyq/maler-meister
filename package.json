@@ -16,6 +16,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@fontsource/roboto": "^5.0.13",
     "@fullcalendar/core": "^6.1.8",
     "@fullcalendar/interaction": "^6.1.8",
     "@fullcalendar/multimonth": "^6.1.8",

@@ -12,11 +12,6 @@ const theme = createTheme(
         paper: '#ffffff',
       },
     },
-    typography: {
-      allVariants: {
-        fontFamily: ['Arial', 'Helvetica', 'sans-serif'].join(','),
-      },
-    },
   },
   deDE,
 );

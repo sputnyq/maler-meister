@@ -50,7 +50,7 @@ export default function DocumentActions({
   const disabled = isDraft || unsavedChanges;
 
   const DownloadButton = () => (
-    <IconButton color="inherit" disabled={disabled} onClick={onDownload}>
+    <IconButton disabled={disabled} onClick={onDownload}>
       <FileDownloadIcon />
     </IconButton>
   );
@@ -62,7 +62,7 @@ export default function DocumentActions({
   );
 
   const CopyButton = () => (
-    <IconButton color="inherit" disabled={disabled} onClick={onCopy}>
+    <IconButton disabled={disabled} onClick={onCopy}>
       <FileCopyIcon />
     </IconButton>
   );
@@ -76,7 +76,7 @@ export default function DocumentActions({
   if (isSmall) {
     return (
       <>
-        <IconButton color="inherit" onClick={handleClick} id="doc-menu-button">
+        <IconButton onClick={handleClick} id="doc-menu-button">
           <Badge color={color} variant="dot">
             <MoreVertOutlinedIcon />
           </Badge>
@@ -130,7 +130,7 @@ export default function DocumentActions({
   return (
     <Stack direction="row" spacing={1}>
       <Tooltip title="Speichern">
-        <IconButton color="inherit" onClick={onSave}>
+        <IconButton onClick={onSave}>
           <Badge color={color} variant="dot">
             <SaveIcon />
           </Badge>
@@ -139,7 +139,11 @@ export default function DocumentActions({
 
       {disabled ? CopyButton() : <Tooltip title="Kopieren">{CopyButton()}</Tooltip>}
 
-      {disabled ? DownloadButton() : <Tooltip title="Als PDF speichern">{DownloadButton()}</Tooltip>}
+      {disabled ? (
+        DownloadButton()
+      ) : (
+        <Tooltip title="Als PDF speichern">{DownloadButton()}</Tooltip>
+      )}
 
       {isDraft ? DeleteButton() : <Tooltip title="Löschen">{DeleteButton()}</Tooltip>}
     </Stack>

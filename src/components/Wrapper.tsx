@@ -1,16 +1,17 @@
-import { Card, CardContent, CardHeader } from '@mui/material';
+import { Card, CardContent, CardHeader, CardProps } from '@mui/material';
 
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 
 import { ColFlexBox } from './ColFlexBox';
 
 interface WrapperProps {
-  title: string;
+  title: ReactNode;
+  cardProps?: CardProps;
 }
 
-export function Wrapper({ children, title }: PropsWithChildren<WrapperProps>) {
+export function Wrapper({ children, title, cardProps = {} }: PropsWithChildren<WrapperProps>) {
   return (
-    <Card elevation={0}>
+    <Card elevation={0} {...cardProps}>
       <CardHeader title={title} />
       <CardContent>
         <ColFlexBox>{children}</ColFlexBox>

@@ -1,4 +1,4 @@
-import { Box, Chip, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import { useWorkers } from '../../hooks/useWorkers';
 import { getFullWorkerName } from '../../utilities';
@@ -14,10 +14,12 @@ export function MyConstructionPlanRenderer({ constructionPlan }: Readonly<Props>
 
   return (
     <Box>
-      <Typography color={'secondary'}>{name}</Typography>
+      <Typography>{name}</Typography>
       <Box display="flex" flexWrap="wrap" gap={1}>
         {usernames.map((username) => (
-          <Chip color="info" size="small" label={getFullWorkerName(username, workers)} />
+          <Typography key={username} variant="caption">
+            {getFullWorkerName(username, workers)}
+          </Typography>
         ))}
       </Box>
     </Box>

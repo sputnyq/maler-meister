@@ -51,14 +51,14 @@ export default function PageName() {
         return 'PDF Einstellungen';
       case '/time-capture':
         return 'Zeiterfassung';
-      case '/info':
-        return 'Informationen';
+      case '/profile':
+        return 'Mein Profile';
       default:
         return '';
     }
   }, [pathname]);
   return (
-    <Typography variant="h6" flex={1} align="center" color={'inherit'}>
+    <Typography variant="h6" flex={1} align="center">
       {pageName}
     </Typography>
   );

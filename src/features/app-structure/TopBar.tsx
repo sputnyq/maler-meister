@@ -1,18 +1,17 @@
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { Box, IconButton } from '@mui/material';
 
 import { useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import ApplicationToolbar from '../../components/ApplicationToolbar';
 import { InvoiceActions } from '../invoices/InvoiceActions';
-import Logout from '../log-in-out/Logout';
 import OfferActions from '../offers/OfferActions';
 import PageName from './PageName';
 
 export default function TopBar() {
   const location = useLocation();
-  const navigate = useNavigate();
   const isRootLocation = location.pathname === '/';
   const isLoginLocation = location.pathname === '/login';
 
@@ -23,11 +22,13 @@ export default function TopBar() {
     }
 
     return (
-      <IconButton color="inherit" onClick={() => navigate('/')}>
-        <HomeOutlinedIcon />
-      </IconButton>
+      <Link to="/">
+        <IconButton>
+          <HomeOutlinedIcon />
+        </IconButton>
+      </Link>
     );
-  }, [isRootLocation, isLoginLocation, navigate]);
+  }, [isRootLocation, isLoginLocation]);
 
   const actions = useMemo(() => {
     if (location.pathname.startsWith('/offers/')) {
@@ -37,7 +38,13 @@ export default function TopBar() {
       return <InvoiceActions />;
     }
     if (isRootLocation) {
-      return <Logout />;
+      return (
+        <Link to="profile">
+          <IconButton>
+            <AccountCircleOutlinedIcon />
+          </IconButton>
+        </Link>
+      );
     }
     return <Box width={40} />;
   }, [location, isRootLocation]);

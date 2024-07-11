@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 
 import { ColFlexBox } from '../../components/ColFlexBox';
+import { Wrapper } from '../../components/Wrapper';
 import { loadShifts } from '../../fetch/api';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { StrapiQueryObject } from '../../utilities';
 import { MyShiftRenderer } from './MyShiftRenderer';
 
-import { addDays, formatISO } from 'date-fns';
+import { formatISO } from 'date-fns';
 
 export function MyShifts() {
   const user = useCurrentUser();
@@ -17,9 +18,9 @@ export function MyShifts() {
     const queryObj: StrapiQueryObject = {
       filters: {
         tenant: user?.tenant,
-        start: {
+
+        end: {
           $gte: formatISO(new Date(), { representation: 'date' }),
-          $lte: formatISO(addDays(new Date(), 5), { representation: 'date' }),
         },
       },
     };
@@ -36,13 +37,15 @@ export function MyShifts() {
   }
 
   return (
-    <ColFlexBox>
-      {shifts
-        .filter((shift) => isMyShift(shift, user.username))
-        .map((shift) => (
-          <MyShiftRenderer key={shift.id} shift={shift} />
-        ))}
-    </ColFlexBox>
+    <Wrapper title="Meine Schichten">
+      <ColFlexBox>
+        {shifts
+          .filter((shift) => isMyShift(shift, user.username))
+          .map((shift) => (
+            <MyShiftRenderer key={shift.id} shift={shift} />
+          ))}
+      </ColFlexBox>
+    </Wrapper>
   );
 }
 

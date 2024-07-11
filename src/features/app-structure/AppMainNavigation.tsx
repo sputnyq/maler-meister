@@ -2,13 +2,11 @@ import AccessTimeIcon from '@mui/icons-material/AccessTimeOutlined';
 import ArticleIcon from '@mui/icons-material/ArticleOutlined';
 import BeachAccessIcon from '@mui/icons-material/BeachAccessOutlined';
 import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FormatPaintOutlinedIcon from '@mui/icons-material/FormatPaintOutlined';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import MoreTimeIcon from '@mui/icons-material/MoreTimeOutlined';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLongOutlined';
 import TuneIcon from '@mui/icons-material/TuneOutlined';
-import { Accordion, AccordionDetails, AccordionSummary, Card, Grid, List } from '@mui/material';
+import { Card, Grid, List } from '@mui/material';
 
 import { ColFlexBox } from '../../components/ColFlexBox';
 import { MyShifts } from '../my-shifts';
@@ -18,9 +16,9 @@ import Tile from './Tile';
 export default function MainNavigation() {
   return (
     <ColFlexBox marginTop={8}>
-      <Grid container justifyContent={'center'}>
+      <Grid gap={2} container justifyContent={'center'}>
         <Grid item xs={12} md={6}>
-          <Card sx={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
+          <Card elevation={0}>
             <List sx={{ padding: 0 }}>
               <Tile requiredRoles={['accountant', 'admin']} to="offers" title="Angebote">
                 <ArticleIcon />
@@ -32,14 +30,6 @@ export default function MainNavigation() {
 
               <Tile requiredRoles={['admin']} to="planing" title="Planung">
                 <EventOutlinedIcon />
-              </Tile>
-
-              <Tile requiredRoles={['accountant', 'admin']} to="time" title="Alle Stunden">
-                <AccessTimeIcon />
-              </Tile>
-
-              <Tile requiredRoles={['worker']} to="time-capture" title="Zeiterfassung">
-                <MoreTimeIcon />
               </Tile>
 
               <Tile requiredRoles={['worker', 'admin']} to="my-vacations" title="Mein Urlaub">
@@ -54,21 +44,31 @@ export default function MainNavigation() {
                 <TuneIcon />
               </Tile>
 
-              <Tile hasDivider={false} requiredRoles={['worker', 'admin', 'accountant']} to="info" title="Info">
-                <InfoOutlinedIcon />
+              <Tile
+                hasDivider={false}
+                requiredRoles={['accountant', 'admin']}
+                to="time"
+                title="Alle Stunden"
+              >
+                <AccessTimeIcon />
+              </Tile>
+
+              <Tile
+                hasDivider={false}
+                requiredRoles={['worker']}
+                to="time-capture"
+                title="Zeiterfassung"
+              >
+                <MoreTimeIcon />
               </Tile>
             </List>
           </Card>
-
-          <RoleBased requiredRoles={['worker']}>
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>Meine Schichten</AccordionSummary>
-              <AccordionDetails>
-                <MyShifts />
-              </AccordionDetails>
-            </Accordion>
-          </RoleBased>
         </Grid>
+        <RoleBased requiredRoles={['worker']}>
+          <Grid item xs={12} md={6}>
+            <MyShifts />
+          </Grid>
+        </RoleBased>
       </Grid>
     </ColFlexBox>
   );

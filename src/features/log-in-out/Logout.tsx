@@ -1,5 +1,5 @@
 import LogoutIcon from '@mui/icons-material/LogoutOutlined';
-import { IconButton, Tooltip } from '@mui/material';
+import { Button, Tooltip } from '@mui/material';
 
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -24,9 +24,9 @@ export default function Logout() {
 
   return (
     <Tooltip title="Abmelden">
-      <IconButton onClick={onClick} color="inherit">
-        <LogoutIcon />
-      </IconButton>
+      <Button disableElevation variant="contained" onClick={onClick} endIcon={<LogoutIcon />}>
+        Abmelden
+      </Button>
     </Tooltip>
   );
 }

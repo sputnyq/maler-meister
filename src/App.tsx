@@ -27,7 +27,7 @@ const Times = lazy(() => import('./features/times'));
 const Upload = lazy(() => import('./routes/Upload'));
 const Planing = lazy(() => import('./features/planing'));
 const MyVacations = lazy(() => import('./features/my-vacations'));
-const Info = lazy(() => import('./features/info'));
+const Profile = lazy(() => import('./features/profile'));
 const Jobs = lazy(() => import('./features/options/jobs'));
 const PrintSettings = lazy(() => import('./features/options/print-settings'));
 const BgbServices = lazy(() => import('./features/options/services/bgb'));
@@ -65,10 +65,10 @@ function AppRoutes() {
       >
         <Route index element={<MainNavigation />} />
         <Route
-          path="info"
+          path="profile"
           element={
             <LazyLoad>
-              <Info />
+              <Profile />
             </LazyLoad>
           }
         />

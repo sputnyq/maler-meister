@@ -1,3 +1,5 @@
+import { Typography } from '@mui/material';
+
 import { useEffect, useState } from 'react';
 
 import { AppDialog } from '../../components/AppDialog';
@@ -5,7 +7,6 @@ import { loadConstructionById } from '../../fetch/api';
 import { constructionById } from '../../fetch/endpoints';
 import { appRequest } from '../../fetch/fetch-client';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { LoadingScreen } from '../app-structure/LoadingScreen';
 import EditConstructionWidget from './EditConstructionWidget';
 
 interface Props {
@@ -24,7 +25,7 @@ export default function EditConstructionDialog({
   initEnd,
   onClose,
   onCreateSuccess,
-}: Props) {
+}: Readonly<Props>) {
   const user = useCurrentUser();
   const [construction, setConstruction] = useState<Maybe<Construction>>(null);
 
@@ -49,7 +50,7 @@ export default function EditConstructionDialog({
   }, [constructionId, user, initStart, initEnd]);
 
   const handleSaveRequest = () => {
-    appRequest(constructionId ? 'put' : 'post')(constructionById(constructionId || ''), {
+    appRequest(constructionId ? 'put' : 'post')(constructionById(constructionId ?? ''), {
       data: construction,
     })
       .then(() => {
@@ -70,7 +71,7 @@ export default function EditConstructionDialog({
       onConfirm={handleSaveRequest}
     >
       {construction === null ? (
-        <LoadingScreen />
+        <Typography>Unbekannte Baustellen-ID</Typography>
       ) : (
         <EditConstructionWidget construction={construction} setConstruction={setConstruction} />
       )}

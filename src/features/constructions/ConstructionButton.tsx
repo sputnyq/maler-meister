@@ -15,8 +15,6 @@ export default function ConstructionButton(props: Readonly<Props & IconButtonPro
   const { constructionId } = props;
   if (!constructionId) return null;
 
-  console.log(constructionId);
-
   return (
     <>
       <EditConstructionDialog

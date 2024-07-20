@@ -1,4 +1,10 @@
-import { calculatePriceSummary, euroValue, fullCustomerName, numberValue } from '../utilities';
+import {
+  calculatePriceSummary,
+  customerAddress,
+  euroValue,
+  fullCustomerName,
+  numberValue,
+} from '../utilities';
 import PdfBuilder, { Margin } from './PdfBuilder';
 
 const NON_REGULAR_SPACES = /[\u00A0\u1680\u180e\u2000\u2009\u200a\u200b\u202f\u205f\u3000]/g;
@@ -41,7 +47,7 @@ export function addCustomer(builder: PdfBuilder, doc: AppOffer | AppInvoice) {
   left.push(
     ...[
       `${fullCustomerName(doc)}`,
-      `${doc.street} ${doc.number}, ${doc.zip} ${doc.city}`,
+      `${customerAddress(doc)}`,
       `${doc.phone ? '+'.concat(doc.phone) : ''}${doc.email ? ' | '.concat(doc.email) : ''}`,
     ],
   );

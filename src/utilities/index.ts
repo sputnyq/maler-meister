@@ -124,7 +124,22 @@ export const getFullWorkerName = (username: string, users: User[]) => {
 };
 
 export const fullCustomerName = (obj: AppOffer | AppInvoice) => {
-  const { salutation, lastName, firstName } = obj as AppOffer;
+  const { salutation, lastName, firstName } = obj;
 
   return `${salutation || ''} ${firstName || ''} ${lastName || ''}`;
+};
+
+export const customerAddress = (obj: AppOffer | AppInvoice) => {
+  const { street, number, zip, city } = obj;
+
+  const arr: string[] = [];
+
+  if (street && number) {
+    arr.push(`${street} ${number}`);
+  }
+  if (zip && city) {
+    arr.push(`${zip} ${city}`);
+  }
+
+  return arr.join(', ');
 };

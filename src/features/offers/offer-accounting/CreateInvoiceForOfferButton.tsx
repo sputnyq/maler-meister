@@ -36,7 +36,7 @@ export default function CreateInvoiceForOfferButton() {
       variant="outlined"
       endIcon={<PostAddOutlinedIcon />}
     >
-      Rechnung erstellen
+      Erstellen
     </Button>
   );
 }

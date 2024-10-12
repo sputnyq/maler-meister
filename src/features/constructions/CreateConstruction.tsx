@@ -9,7 +9,7 @@ interface Props {
   onCreateSuccess?: () => void;
 }
 
-export function CreateConstruction({ onCreateSuccess }: Props) {
+export function CreateConstruction({ onCreateSuccess }: Readonly<Props>) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {

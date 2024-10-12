@@ -1,4 +1,5 @@
 import {
+  Box,
   Card,
   CardContent,
   Checkbox,
@@ -49,7 +50,7 @@ export function AbschlagStep({ services, setServices }: Readonly<Props>) {
         {(offer.offerServices || []).map((os, index) => {
           const labelId = `checkbox-list-label-${index}`;
           return (
-            <ListItem>
+            <ListItem key={os.id} disablePadding>
               <ListItemButton role={undefined} onClick={handleToggle(os)}>
                 <ListItemIcon>
                   <Checkbox
@@ -62,14 +63,18 @@ export function AbschlagStep({ services, setServices }: Readonly<Props>) {
                 </ListItemIcon>
 
                 <ListItemText
-                  primary={os.name}
-                  secondary={
-                    <>
-                      <Typography variant="caption">{os.description}</Typography>
-                      <Typography variant="body1" textAlign={'end'} color={'InfoText'}>
+                  primary={
+                    <Box display={'flex'} justifyContent={'space-between'}>
+                      <Typography p={0}>{os.name}</Typography>
+                      <Typography p={0} textAlign={'end'}>
                         {euroValue(os.netto)}
                       </Typography>
-                    </>
+                    </Box>
+                  }
+                  secondary={
+                    <Typography variant="caption" color="text.secondary">
+                      {os.description}
+                    </Typography>
                   }
                 />
               </ListItemButton>

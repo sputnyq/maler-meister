@@ -11,7 +11,7 @@ import { useCheckLogin } from '../../hooks/useCheckLogin';
 import { setLoginData } from './login-utils';
 
 export default function Login() {
-  const [identifier, setIdetifier] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
 
   const [showPassword, setShowPassword] = useState(false);
@@ -42,58 +42,56 @@ export default function Login() {
   };
 
   return (
-    <>
-      <Box mt={10} display="flex" justifyContent="center">
-        <Card elevation={0}>
-          <CardHeader title="Anmeldung" />
-          <CardContent>
-            <form>
-              <Box display="flex" flexDirection="column" gap={3} minWidth="300px">
-                <AppTextField
-                  value={identifier}
-                  label="Nutzer"
-                  autoCapitalize="none"
-                  onChange={(ev) => {
-                    setIdetifier(ev.target.value);
-                  }}
-                  inputProps={{
-                    autoCapitalize: 'none',
-                  }}
-                />
-                <AppTextField
-                  InputProps={{
-                    endAdornment: (
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={() => {
-                          setShowPassword((sp) => !sp);
-                        }}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    ),
-                  }}
-                  onKeyDown={({ key }) => {
-                    if (key === 'Enter') {
-                      loginUser();
-                    }
-                  }}
-                  type={showPassword ? 'text' : 'password'}
-                  label="Passwort"
-                  value={password}
-                  onChange={(ev) => {
-                    setPassword(ev.target.value);
-                  }}
-                />
-                <Button disableElevation onClick={loginUser} variant="contained">
-                  Login
-                </Button>
-              </Box>
-            </form>
-          </CardContent>
-        </Card>
-      </Box>
-    </>
+    <Box mt={10} display="flex" justifyContent="center">
+      <Card elevation={0}>
+        <CardHeader title="Anmeldung" />
+        <CardContent>
+          <form>
+            <Box display="flex" flexDirection="column" gap={3} minWidth="300px">
+              <AppTextField
+                value={identifier}
+                label="Nutzer"
+                autoCapitalize="none"
+                onChange={(ev) => {
+                  setIdentifier(ev.target.value);
+                }}
+                inputProps={{
+                  autoCapitalize: 'none',
+                }}
+              />
+              <AppTextField
+                InputProps={{
+                  endAdornment: (
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => {
+                        setShowPassword((sp) => !sp);
+                      }}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  ),
+                }}
+                onKeyDown={({ key }) => {
+                  if (key === 'Enter') {
+                    loginUser();
+                  }
+                }}
+                type={showPassword ? 'text' : 'password'}
+                label="Passwort"
+                value={password}
+                onChange={(ev) => {
+                  setPassword(ev.target.value);
+                }}
+              />
+              <Button disableElevation onClick={loginUser} variant="contained">
+                Login
+              </Button>
+            </Box>
+          </form>
+        </CardContent>
+      </Card>
+    </Box>
   );
 }

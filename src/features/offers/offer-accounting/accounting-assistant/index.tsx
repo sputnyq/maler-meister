@@ -20,7 +20,7 @@ export function AccountingAssistant() {
         onClick={() => setDialogOpen(true)}
         endIcon={<AssistantOutlinedIcon />}
       >
-        Rechnungsassistent
+        Assistent
       </Button>
     </>
   );

@@ -9,6 +9,38 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      workbox: {
+        runtimeCaching: [
+          {
+            urlPattern: /.*.woff2/gm,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365,
+              },
+              cacheableResponse: {
+                statuses: [200],
+              },
+            },
+          },
+          {
+            urlPattern: /.*\/api\/constructions\/.*/gm,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'constructions-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 10,
+              },
+              cacheableResponse: {
+                statuses: [200],
+              },
+            },
+          },
+        ],
+      },
       registerType: 'autoUpdate',
       manifest: {
         id: '/',

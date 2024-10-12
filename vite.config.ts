@@ -32,7 +32,7 @@ export default defineConfig({
               cacheName: 'constructions-cache',
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 10,
+                maxAgeSeconds: 60 * 60 * 24,
               },
               cacheableResponse: {
                 statuses: [200],

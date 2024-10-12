@@ -9,12 +9,16 @@ interface Props {
   setDateRange(dateRange: AppDateRange): void;
 }
 
-export function ConstructionsDateRangeFilter({ dateRange, setDateRange }: Props) {
+export function ConstructionsDateRangeFilter({ dateRange, setDateRange }: Readonly<Props>) {
   const definedRanges = getDateRanges();
 
   return (
     <AppGridField>
-      <DateRangeWidget definedRanges={definedRanges} dateRange={dateRange} setDateRange={setDateRange} />
+      <DateRangeWidget
+        definedRanges={definedRanges}
+        dateRange={dateRange}
+        setDateRange={setDateRange}
+      />
     </AppGridField>
   );
 }

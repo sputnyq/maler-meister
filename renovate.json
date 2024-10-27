@@ -7,5 +7,5 @@
       "automerge": true
     }
   ],
-  "automergeSchedule": ["before 4am on the first day of the month"]
+  "schedule": ["after 10pm on saturday"]
 }

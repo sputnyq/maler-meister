@@ -1,5 +1,13 @@
-import { FormControl } from '@mui/base';
-import { Card, CardContent, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Typography,
+} from '@mui/material';
 
 import { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,8 +28,12 @@ export default function OfferActions() {
   const [prindDialogOpen, setPrindDialogOpen] = useState(false);
 
   const unsavedChanges = useSelector<AppState, boolean>((s) => s.offer.unsavedChanges);
-  const allPrintSettings = useSelector<AppState, PrintSettingsRoot[] | undefined>((s) => s.prinSettings.all);
-  const [printSettingID, setPrintSettingID] = useState<string | undefined>(allPrintSettings?.[0]?.id.toString());
+  const allPrintSettings = useSelector<AppState, PrintSettingsRoot[] | undefined>(
+    (s) => s.prinSettings.all,
+  );
+  const [printSettingID, setPrintSettingID] = useState<string | undefined>(
+    allPrintSettings?.[0]?.id.toString(),
+  );
 
   const [type, setType] = useState('Angebot');
   const offer = useCurrentOffer();
@@ -87,7 +99,11 @@ export default function OfferActions() {
         <ColFlexBox>
           <FormControl>
             <FormLabel id="print-settings-label">PDF erzeugen für:</FormLabel>
-            <RadioGroup aria-labelledby="print-settings-label" value={printSettingID} onChange={handlePSChange}>
+            <RadioGroup
+              aria-labelledby="print-settings-label"
+              value={printSettingID}
+              onChange={handlePSChange}
+            >
               {allPrintSettings.map((ps) => (
                 <FormControlLabel key={ps.name} value={ps.id} control={<Radio />} label={ps.name} />
               ))}
@@ -97,7 +113,11 @@ export default function OfferActions() {
             <FormLabel id="art-label">Erzeugen als:</FormLabel>
             <RadioGroup aria-labelledby="art-label" value={type} onChange={handleTypeChange}>
               <FormControlLabel value={'Angebot'} control={<Radio />} label={'Angebot'} />
-              <FormControlLabel value={'Kostenvoranschlag'} control={<Radio />} label={'Kostenvoranschlag'} />
+              <FormControlLabel
+                value={'Kostenvoranschlag'}
+                control={<Radio />}
+                label={'Kostenvoranschlag'}
+              />
             </RadioGroup>
           </FormControl>
         </ColFlexBox>

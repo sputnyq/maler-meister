@@ -29,7 +29,7 @@
     "@mui/x-tree-view": "^7.0.0",
     "@reduxjs/toolkit": "^2.0.1",
     "array-move": "^4.0.0",
-    "axios": "^1.6.2",
+    "axios": "^1.8.2",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.7.0",
     "lodash": "^4.17.21",

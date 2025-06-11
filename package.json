@@ -30,7 +30,7 @@
     "@reduxjs/toolkit": "^2.0.1",
     "array-move": "^4.0.0",
     "axios": "^1.6.2",
-    "jspdf": "^2.5.1",
+    "jspdf": "^3.0.0",
     "jspdf-autotable": "^3.7.0",
     "lodash": "^4.17.21",
     "mui-daterange-picker-orient": "^1.0.1",

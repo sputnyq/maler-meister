@@ -35,6 +35,7 @@ interface AppOffer {
   constructionId: number;
   createdAt: string;
   updatedAt: string;
+  date: string | null;
 }
 
 /**

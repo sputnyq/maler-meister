@@ -13,7 +13,7 @@ export interface OfferFieldProps {
   path: Path;
   label?: string;
   placeholder?: string;
-  type?: 'text' | 'number' | 'email' | 'tel';
+  type?: 'text' | 'number' | 'email' | 'tel' | 'date';
   multiline?: true;
   select?: true;
   selectOptions?: string[];

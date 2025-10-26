@@ -4,6 +4,7 @@ import { appRequest } from '../fetch/fetch-client';
 import { genericConverter } from '../utilities';
 
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { formatISO } from 'date-fns';
 import { cloneDeep, set } from 'lodash';
 
 interface RootState {
@@ -19,7 +20,7 @@ const initialState: RootState = {
 const initializeOffer = () => {
   const offer = {
     offerServices: [{} as OfferService],
-
+    date: formatISO(new Date(), { representation: 'date' }),
     text: '',
   } as AppOffer;
   return offer;
@@ -47,24 +48,25 @@ export const updateOffer = createAsyncThunk<AppOffer, void, { state: AppState }>
   },
 );
 
-export const createOffer = createAsyncThunk<AppOffer, { cb: (id: string | number) => void }, { state: AppState }>(
-  'offers/create',
-  async (payload, thunkApi) => {
-    const offer = thunkApi.getState().offer.current!; // never happens
-    const tenant = thunkApi.getState().login.user?.tenant;
+export const createOffer = createAsyncThunk<
+  AppOffer,
+  { cb: (id: string | number) => void },
+  { state: AppState }
+>('offers/create', async (payload, thunkApi) => {
+  const offer = thunkApi.getState().offer.current!; // never happens
+  const tenant = thunkApi.getState().login.user?.tenant;
 
-    const response = await appRequest('post')(offerById(''), {
-      data: {
-        ...offer,
-        tenant,
-        constructionId: String(offer.constructionId) === '' ? undefined : offer.constructionId,
-      },
-    });
-    const converted = genericConverter<AppOffer>(response.data);
-    payload.cb(converted.id);
-    return converted;
-  },
-);
+  const response = await appRequest('post')(offerById(''), {
+    data: {
+      ...offer,
+      tenant,
+      constructionId: String(offer.constructionId) === '' ? undefined : offer.constructionId,
+    },
+  });
+  const converted = genericConverter<AppOffer>(response.data);
+  payload.cb(converted.id);
+  return converted;
+});
 
 const offerSlice = createSlice({
   name: 'offer',

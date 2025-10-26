@@ -1,4 +1,11 @@
-import { Checkbox, FormControl, FormControlLabel, FormGroup, InputProps, MenuItem } from '@mui/material';
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  InputProps,
+  MenuItem,
+} from '@mui/material';
 
 import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +20,7 @@ export interface InvoiceFieldProps {
   path: Path;
   label?: string;
   placeholder?: string;
-  type?: 'text' | 'number' | 'email' | 'tel';
+  type?: 'text' | 'number' | 'email' | 'tel' | 'date';
   multiline?: true;
   select?: true;
   selectOptions?: readonly string[];

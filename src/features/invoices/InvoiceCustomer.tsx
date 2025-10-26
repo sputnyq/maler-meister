@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 
 import AppGrid from '../../components/AppGrid';
 import { ColFlexBox } from '../../components/ColFlexBox';
+import { DocIDRenderer } from '../../components/DocIDRenderer';
 import { Wrapper } from '../../components/Wrapper';
 import { InvoiceTypeArray } from '../../constants';
 import { useCurrentInvoice } from '../../hooks/useCurrentInvoice';
@@ -33,14 +34,11 @@ export function InvoiceCustomer() {
 
   return (
     <ColFlexBox>
-      <Wrapper title="Allgemeine Informationen">
+      <Wrapper title="Allgemein">
         <AppGrid>
-          <Field
-            path="invoiceType"
-            label="Rechnungstyp"
-            select
-            selectOptions={InvoiceTypeArray}
-          ></Field>
+          <Field path="date" type="date" label="Angebotsdatum" />
+          <DocIDRenderer doc={invoice} label="Rechnungsnummer" />
+          <Field path="invoiceType" label="Rechnungstyp" select selectOptions={InvoiceTypeArray} />
           <Field path="isPaid" as="checkbox" label="Rechnung bezahlt?"></Field>
         </AppGrid>
       </Wrapper>

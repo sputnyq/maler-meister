@@ -63,7 +63,7 @@ export function addCustomer(builder: PdfBuilder, doc: AppOffer | AppInvoice) {
 }
 
 export function addDate(builder: PdfBuilder, doc: AppOffer | AppInvoice) {
-  const date = new Date(doc.updatedAt);
+  const date = new Date(doc.date || doc.updatedAt);
   builder.addText(
     `Datum: ${new Intl.DateTimeFormat('de-DE', { dateStyle: 'long' }).format(date)}`,
     9,
@@ -157,9 +157,11 @@ export function addDocumentNumber(builder: PdfBuilder, doc: AppOffer | AppInvoic
 }
 
 export function buildDocId(doc: AppOffer | AppInvoice) {
-  const { id, createdAt } = doc;
-  const date = new Date(createdAt);
-  return `${date.getFullYear()}-${monthToPrint(date)}.${id}`;
+  const { id, date, updatedAt } = doc;
+
+  const _date = new Date(date || updatedAt);
+
+  return `${_date.getFullYear()}-${monthToPrint(_date)}.${id}`;
 }
 
 export function addConstruction(

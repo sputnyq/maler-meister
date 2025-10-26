@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 
 import AppGrid from '../../components/AppGrid';
 import { ColFlexBox } from '../../components/ColFlexBox';
+import { DocIDRenderer } from '../../components/DocIDRenderer';
 import { Wrapper } from '../../components/Wrapper';
 import { useCurrentOffer } from '../../hooks/useCurrentOffer';
 import ConstructionButton from '../constructions/ConstructionButton';
@@ -32,6 +33,12 @@ export default function OfferCustomer() {
 
   return (
     <ColFlexBox>
+      <Wrapper title="Allgemein">
+        <AppGrid>
+          <Field path="date" type="date" label="Angebotsdatum" />
+          <DocIDRenderer doc={offer} label="Angebotsnummer" />
+        </AppGrid>
+      </Wrapper>
       <Wrapper title="Kunde">
         <AppGrid>
           <Field path="company" label="Firmenname" />

@@ -4,6 +4,7 @@ import { appRequest } from '../fetch/fetch-client';
 import { genericConverter } from '../utilities';
 
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { formatISO } from 'date-fns';
 import { cloneDeep, set } from 'lodash';
 
 interface RootState {
@@ -19,7 +20,7 @@ const initialState: RootState = {
 const initializeInvoice = () => {
   const offer = {
     offerServices: [{} as OfferService],
-
+    date: formatISO(new Date(), { representation: 'date' }),
     text: '',
   } as AppInvoice;
   return offer;
@@ -47,24 +48,25 @@ export const updateInvoice = createAsyncThunk<AppInvoice, void, { state: AppStat
   },
 );
 
-export const createInvoice = createAsyncThunk<AppInvoice, { cb: (id: string | number) => void }, { state: AppState }>(
-  'offers/create',
-  async (payload, thunkApi) => {
-    const invoice = thunkApi.getState().invoice.current!; // never happens
-    const tenant = thunkApi.getState().login.user?.tenant;
+export const createInvoice = createAsyncThunk<
+  AppInvoice,
+  { cb: (id: string | number) => void },
+  { state: AppState }
+>('offers/create', async (payload, thunkApi) => {
+  const invoice = thunkApi.getState().invoice.current!; // never happens
+  const tenant = thunkApi.getState().login.user?.tenant;
 
-    const response = await appRequest('post')(invoiceById(''), {
-      data: {
-        ...invoice,
-        tenant,
-        constructionId: String(invoice.constructionId) === '' ? undefined : invoice.constructionId,
-      },
-    });
-    const converted = genericConverter<AppInvoice>(response.data);
-    payload.cb(converted.id);
-    return converted;
-  },
-);
+  const response = await appRequest('post')(invoiceById(''), {
+    data: {
+      ...invoice,
+      tenant,
+      constructionId: String(invoice.constructionId) === '' ? undefined : invoice.constructionId,
+    },
+  });
+  const converted = genericConverter<AppInvoice>(response.data);
+  payload.cb(converted.id);
+  return converted;
+});
 
 const invoiceSlice = createSlice({
   name: 'invoice',

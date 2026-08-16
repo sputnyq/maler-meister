@@ -31,7 +31,7 @@
     "array-move": "^4.0.0",
     "axios": "^1.16.0",
     "jspdf": "^2.5.1",
-    "jspdf-autotable": "^3.7.0",
+    "jspdf-autotable": "^5.0.0",
     "lodash": "^4.17.21",
     "mui-daterange-picker-orient": "^1.0.1",
     "qs": "^6.11.2",
